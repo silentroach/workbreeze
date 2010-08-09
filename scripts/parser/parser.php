@@ -27,10 +27,11 @@ class Parser {
 		echo 'New job with id [' . $info['id'] . "]\n";
 
 		$this->db->jobs->insert(array(
-			'site' => $this->parserId,
-			'id'   => $info['id'],
-			'url'  => $info['url'],
-			'name' => $info['name']
+			'stamp' => time(),
+			'site'  => $this->parserId,
+			'id'    => $info['id'],
+			'url'   => $info['url'],
+			'name'  => $info['name']
 		));
 
 		$this->collection->update(

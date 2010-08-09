@@ -1,0 +1,14 @@
+#!/usr/bin/php
+<?
+
+require 'defines.php';
+
+$mongo = new Mongo();
+
+$dbname = DB;
+
+$db = $mongo->$dbname;
+
+if ($db->repair()) {
+	echo "Repaired...\n";
+}

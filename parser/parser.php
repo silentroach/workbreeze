@@ -3,12 +3,16 @@
 class Parser {
 
 	private $db;
-	private $doc;
+
+	private $collection;
+	private $parserId;
+	private $lastJobId;
 
 	public function __construct($db) {
 		$this->db = $db;
+		$this->collection = $this->db->parsers;
 
-		$this->checkParser();
+		$this->init();
 	}
 
 	protected function checkJob($info = array()) {
@@ -17,40 +21,22 @@ class Parser {
 		if ($id < 0)
 			return false;
 
-		if ($id <= $this->lastJobId())
+		if ($id <= $this->lastJobId)
 			return false;
 
 		$this->db->jobs->insert(array(
-			'site' => $this->getCode(),
+			'site' => $this->parserId,
 			'id'   => $info['id'],
 			'url'  => $info['url'],
 			'name' => $info['name']
 		));
 
-		$this->doc['lastjobid'] = $id;
-		$this->db->parsers->save($this->doc);
+		$this->collection->update(
+			array('_id' => $this->parserId),
+			array('$set' => array('lastjobid' => $id))
+		);
 
 		return true;
-	}
-
-	private function lastJobId() {
-		if (isset($this->doc['lastjobid'])) {
-			return $this->doc['lastjobid'];
-		} else
-			return 0;
-	}
-
-	private function lastCheckStamp() {
-		if (isset($this->doc['lastcheck'])) {
-			return $this->doc['lastcheck'];
-		} else 
-			return 0;
-	}
-
-	private function updateDoc() {
-		$this->doc = $this->db->parsers->findOne(array(
-			'code' => $this->getCode()
-		));
 	}
 
 	private function log($message = '') {
@@ -59,13 +45,13 @@ class Parser {
 		}
 
 		$m = $this->db->log->findOne(array(
-			'site' => $this->getCode(),
+			'site' => $this->parserId,
 			'message' => $message
 		));
 
 		if (null === $m) {
 			$this->db->log->insert(array(
-				'site' => $this->getCode(),
+				'site' => $this->parserId,
 				'stamp' => time(),
 				'message' => $message
 			));
@@ -74,7 +60,7 @@ class Parser {
 		} else {
 			$this->db->log->update(
 				array('_id', $m['_id']),
-				array('$set', array('stamp' => time()))
+				array('$set' => array('stamp' => time()))
 			);
 		}
 	}
@@ -86,7 +72,7 @@ class Parser {
 
 		foreach($cat as $key => $catname) {
 			$map = $c->findOne(array(
-				'site' => $this->doc['_id'],
+				'site' => $this->parserId,
 				'cat' => $key
 			));
 
@@ -102,7 +88,7 @@ class Parser {
 		return array_unique($result);
 	}
 
-	private function checkParser() {
+	private function init() {
 		$code = $this->getCode();
 		$name = $this->getName();
 
@@ -114,24 +100,29 @@ class Parser {
 			throw new Exception('Parser name is not defined');
 		}
 
-		$c = $this->db->parsers;
+		$c = $this->collection;
 
-		$this->updateDoc();
+		$doc = $c->findOne(array(
+			'code' => $this->getCode()
+		));
 
-		if (null === $this->doc) {
-			$c->insert(
-				array(
-					'code' => $code,
-					'name' => $name
-				)
+		$this->parserId = $doc['_id'];
+		$this->lastJobId = isset($doc['lastjobid']) ? $doc['lastjobid'] : 0;
+
+		if (null === $doc) {
+			$obj = array(
+				'code' => $code,
+				'name' => $name
 			);
 
-			return true;
-		}
+			$c->insert($obj);
 
-		if ($this->doc['name'] != $name) {
-			$this->doc['name'] = $name;
-			$c->save($this->doc);
+			$this->parserId = $obj['_id'];
+		} else {
+			$c->update(
+				array('_id' => $this->parserId),
+				array('$set' => array('name' => $name))
+			);
 		}
 	}
 

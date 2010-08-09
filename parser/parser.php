@@ -149,6 +149,8 @@ class Parser {
 	public function processJobs() {
 		$pageNum = 0;
 
+		echo "Parsing first page...\n";
+
 		$page = $this->getJobPage();
 
 		if (!$page) {
@@ -160,6 +162,8 @@ class Parser {
 			&& $pageNum < 4
 		) {
 			$pageNum++;
+
+			echo 'Parsing page ' . $pageNum . "...\n";
 
 			$page = $this->getJobPage($pageNum);
 

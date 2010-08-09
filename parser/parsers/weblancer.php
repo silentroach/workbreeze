@@ -33,18 +33,24 @@ class Parser_weblancer extends Parser {
 
 		if (isset($matches[1])) {
 			$info['url'] = $matches[1];
-		} else
+		} else {
+			echo "Url not found\n";
 			return false;
+		}
 
 		if (isset($matches[2])) {
 			$info['id'] = $matches[2];
-		} else
+		} else {
+			echo "Id not found\n";
 			return false;
+		}
 
 		if (isset($matches[4])) {
 			$info['name'] = $matches[4];
-		} else
+		} else {
+			echo "Name not fond\n";
 			return false;
+		}
 
 		preg_match_all('/<a href=\"\/projects\/\?category_id=(.*?)\">(.*?)<\/a>/', $part, $matches);
 
@@ -54,6 +60,7 @@ class Parser_weblancer extends Parser {
 			!isset($matches[0])
 			|| !isset($matches[1])
 		) {
+			echo "Category matches mismatch\n";
 			return false;
 		}
 
@@ -70,6 +77,7 @@ class Parser_weblancer extends Parser {
 		$i = strpos($page, '<table class="items_list">');
 
 		if (false === $i) {
+			$this->log('Job table begin not found');
 			return false;
 		}
 
@@ -78,6 +86,7 @@ class Parser_weblancer extends Parser {
 		$i = strpos($page, '</table>');
 
 		if (false === $i) {
+			$this->log('Job table end not found');
 			return false;
 		}
 	
@@ -101,6 +110,8 @@ class Parser_weblancer extends Parser {
 
 			$i = strpos($page, '</tr>');
 		}
+
+		return true;
 	}
 
 }

@@ -1,7 +1,10 @@
 #!/usr/bin/php
 <?
 
-// requiring something
+// something like config
+require dirname(dirname(__FILE__)) . '/defines.php';
+
+// requiring helpers
 require 'scheduler.php';
 
 // initialize mongo connection
@@ -11,7 +14,9 @@ try {
 	die("Can't connect to mongo db\n");
 }
 
-$db = $mongo->breeze;
+$dbname = DB;
+
+$db = $mongo->$dbname;
 
 // lets do it
 $scheduler = new Scheduler($db);

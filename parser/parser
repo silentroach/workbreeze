@@ -1,0 +1,18 @@
+#!/usr/bin/php
+<?
+
+// requiring something
+require 'scheduler.php';
+
+// initialize mongo connection
+try {
+	$mongo = new Mongo();
+} catch (MongoConnectionException $e) {
+	die("Can't connect to mongo db\n");
+}
+
+$db = $mongo->breeze;
+
+// lets do it
+$scheduler = new Scheduler($db);
+$scheduler->process();

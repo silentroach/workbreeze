@@ -1,0 +1,42 @@
+#!/usr/bin/php
+<?
+
+require('defines.php');
+
+class DBChecker {
+	private $db;
+
+	private $categories;
+
+	public function __construct($db) {
+		$this->db = $db;
+
+		$this->categories = $this->db->categories;
+	}
+	
+	public function checkCat($alias = '') {
+		$cat = array(
+			'alias' => $alias
+		);
+
+		$catElement = $this->categories->findOne($cat);
+
+		if (null === $catElement) {
+			$this->categories->insert($cat);
+		}
+	}
+}
+
+$mongo = new Mongo();
+
+$dbname = DB;
+
+$db = $mongo->$dbname;
+
+$c = new DBChecker($db);
+
+$c->checkCat('dev');
+$c->checkCat('sysadm');
+$c->checkCat('write');
+$c->checkCat('manage');
+$c->checkCat('design');

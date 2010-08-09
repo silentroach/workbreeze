@@ -1,0 +1,2 @@
+<?
+	define('DB', 'breeze');

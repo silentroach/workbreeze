@@ -20,7 +20,6 @@ class Parser_weblancer extends Parser {
 			$url .= '?page=' . ($page - 1);
 		}
 
-//		$page = file_get_contents('index.html');
 		$page = file_get_contents($url);
 
 		return iconv('cp1251', 'utf-8', $page);

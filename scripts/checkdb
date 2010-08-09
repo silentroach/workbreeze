@@ -22,6 +22,8 @@ class DBChecker {
 		$catElement = $this->categories->findOne($cat);
 
 		if (null === $catElement) {
+			echo '[' . $alias . "] category not found...\n";
+
 			$this->categories->insert($cat);
 		}
 	}
@@ -40,3 +42,4 @@ $c->checkCat('sysadm');
 $c->checkCat('write');
 $c->checkCat('manage');
 $c->checkCat('design');
+$c->checkCat('other');

@@ -24,6 +24,8 @@ class Parser {
 		if ($id <= $this->lastJobId)
 			return false;
 
+		echo 'New job with id [' . $info['id'] . "]\n";
+
 		$this->db->jobs->insert(array(
 			'site' => $this->parserId,
 			'id'   => $info['id'],
@@ -163,7 +165,7 @@ class Parser {
 		) {
 			$pageNum++;
 
-			echo 'Parsing page ' . $pageNum . "...\n";
+			echo 'Parsing page ' . ($pageNum + 1) . "...\n";
 
 			$page = $this->getJobPage($pageNum);
 

@@ -1,0 +1,8 @@
+#!/usr/bin/php
+<?
+
+$mongo = new Mongo();
+
+if ($mongo->breeze->drop()) {
+	echo "Cleared...\n";
+}

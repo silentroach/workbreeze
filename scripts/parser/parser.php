@@ -15,14 +15,26 @@ class Parser {
 		$this->init();
 	}
 
-	protected function checkJob($info = array()) {
+	protected function checkJob($info = array(), $checkid = true) {
 		$id = isset($info['id']) ? intval($info['id']) : -1;
 
 		if ($id < 0)
 			return false;
 
-		if ($id <= $this->lastJobId)
+		if (
+			$checkid
+			&& $id <= $this->lastJobId
+		) {
 			return false;
+		} else {
+			$job = $this->db->jobs->findOne(array(
+				'site' => $this->parserId,
+				'id'   => $info['id']
+			));
+
+			if (null !== $job)
+				return true;
+		}
 
 		echo 'New job with id [' . $info['id'] . "]\n";
 

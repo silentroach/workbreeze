@@ -28,6 +28,8 @@ class Parser_weblancer extends Parser {
 	private function processJobPagePart($part = '') {
 		$info = array();
 
+		$featured = false !== strpos('il_featured', $part);
+
 		preg_match('/<a href=\"(\/projects\/(\d+).html)\"(.*?)>(.*?)<\/a>/', $part, $matches);
 
 		if (isset($matches[1])) {
@@ -69,7 +71,7 @@ class Parser_weblancer extends Parser {
 			$info['categories'] = $categories;
 		}
 		
-		return $this->checkJob($info);
+		return $this->checkJob($info, !$featured);
 	}
 
 	protected function processJobPage($page = '') {

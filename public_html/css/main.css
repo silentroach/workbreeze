@@ -1,0 +1,52 @@
+body {
+	margin: 6px;
+	padding: 0px;
+	
+	background-color: #2e3436;
+	color: silver;
+	
+	font-family: "Lucida Sans", "Trebuchet MS", Tahoma, sans-serif;
+	font-size: 12pt;
+}
+
+ul {
+	list-style: none;
+	margin: 0px;
+}
+
+#logo {
+	font-size: 14pt;
+	font-weight: bold;
+	text-shadow: black 1px 1px 1px;
+}
+
+#main {
+	margin-top: 1em;
+}
+
+ul.job {
+	clear: both;
+	float: right;
+	font-size: 10pt;
+	border: 1px solid grey;
+	width: 28%;
+	padding: 5px;
+	display: none;
+	margin-right: 0.5%;
+	margin-bottom: 0.5%;
+}
+
+ul.job .title {
+	font-weight: bold;
+	color: white;
+	margin-bottom: 0.5em;
+	float: left;
+}
+
+ul.job .time {
+	float: right;
+}
+
+ul.job .desc {
+	clear: both;
+}

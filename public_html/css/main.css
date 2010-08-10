@@ -24,15 +24,26 @@ ul {
 	margin-top: 1em;
 }
 
+#wrapper {
+	position: fixed;
+	top: 0px;
+	padding-top: 5px;
+	width: 55%;
+}
+
+#right {
+	float: right;
+	width: 40%;
+}
+
 ul.job {
 	clear: both;
 	float: right;
 	font-size: 10pt;
 	border: 1px solid grey;
-	width: 28%;
+	width: 99%;
+	display: block;
 	padding: 5px;
-	display: none;
-	margin-right: 0.5%;
 	margin-bottom: 0.5%;
 }
 

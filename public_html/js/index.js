@@ -34,8 +34,6 @@ function checkQueue() {
 
 function addJob(job) {
 	jobEl = jobTemplate.clone();
-	
-//	alert(job.description);
 
 	jobEl.hide();
 
@@ -54,23 +52,6 @@ function init() {
 	
 	// removing right content
 	$('#right > *').remove();
-	
-	job = {
-		title: 'test',
-		description: 'desc',
-		time: '23:20'
-	};
-	
-	job2 = {
-		title: 'blabla',
-		description: 'hrenhren',
-		time: '21:09'
-	}
-	
-	addJob(job);
-	addJob(job2);
-	
-//	jobTemplate.appendTo(jobPlace).show();
 }
 
 $( function() {

@@ -1,3 +1,0 @@
-[submodule "nodes/3rdparty/mongo"]
-	path = nodes/3rdparty/mongo
-	url = http://github.com/christkv/node-mongodb-native.git

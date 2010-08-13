@@ -5,19 +5,23 @@ function fail() {
 	die();
 }
 
-if (!isset($_SERVER['REQUEST_URI']))
+if (!isset($_SERVER['REQUEST_URI'])) {
 	fail();
+}
 	
 $uri = $_SERVER['REQUEST_URI'];
 
-$query = explode('/', $uri);
+$params = explode('?', $uri);
+
+$query = explode('/', array_shift($params));
 
 array_shift($query);
 
 $module = array_shift($query);
 
-if (null === $module)
+if (null === $module) {
 	fail();
+}
 	
 $here = dirname(__FILE__) . DIRECTORY_SEPARATOR;
 
@@ -25,8 +29,9 @@ require($here . 'module.php');
 
 $mname = $here . 'modules' . DIRECTORY_SEPARATOR . $module . '.php';
 
-if (!file_exists($mname))
+if (!file_exists($mname)) {
 	fail();
+}
 	
 $className = 'M' . ucfirst($module);
 	

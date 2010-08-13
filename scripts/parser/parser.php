@@ -5,6 +5,7 @@ class Parser {
 	private $db;
 
 	private $collection;
+	private $parserCode;
 	private $parserId;
 	private $lastJobId;
 
@@ -28,7 +29,7 @@ class Parser {
 			return false;
 		} else {
 			$job = $this->db->jobs->findOne(array(
-				'site' => $this->parserId,
+				'site' => $this->parserCode,
 				'id'   => $info['id']
 			));
 
@@ -40,7 +41,7 @@ class Parser {
 
 		$this->db->jobs->insert(array(
 			'stamp' => time(),
-			'site'  => $this->parserId,
+			'site'  => $this->parserCode,
 			'id'    => $info['id'],
 			'url'   => $info['url'],
 			'name'  => $info['name']
@@ -106,10 +107,7 @@ class Parser {
 	private function init() {
 		$code = $this->getCode();
 		$name = $this->getName();
-
-		if (!$code) {
-			throw new Exception('Parser code is not defined');
-		}
+		$url  = $this->getUrl();
 
 		if (!$name) {
 			throw new Exception('Parser name is not defined');
@@ -121,13 +119,15 @@ class Parser {
 			'code' => $this->getCode()
 		));
 
+		$this->parserCode = $code;
 		$this->parserId = $doc['_id'];
 		$this->lastJobId = isset($doc['lastjobid']) ? $doc['lastjobid'] : 0;
 
 		if (null === $doc) {
 			$obj = array(
 				'code' => $code,
-				'name' => $name
+				'name' => $name,
+				'url'  => $url
 			);
 
 			$c->insert($obj);
@@ -136,12 +136,15 @@ class Parser {
 		} else {
 			$c->update(
 				array('_id' => $this->parserId),
-				array('$set' => array('name' => $name))
+				array('$set' => array(
+					'name' => $name,
+					'url'  => $url
+				))
 			);
 		}
 	}
 
-	protected function getBaseUrl() {
+	protected function getUrl() {
 		return '';
 	}
 

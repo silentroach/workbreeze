@@ -7,6 +7,11 @@ var checkTimer;
 var jobTemplate;
 var jobPlace;
 var queue = [];
+var sites = [];
+
+function checkQueue() {
+
+}
 
 function dropTimer() {
 	if (null != checkTimer) {
@@ -52,6 +57,24 @@ function init() {
 	
 	// removing right content
 	$('#right > *').remove();
+	
+	// init request
+	$.ajax({
+		url: '/init',
+		dataType: 'json',
+		success: function(data) {
+			dsites = data[0];
+				
+			for (i = 0; i < dsites.length; i++) {				
+				dsite = dsites[i];
+				
+				sites[dsite[0]] = {
+					name: dsite[1],
+					url: dsite[2]
+				}
+			}
+		}
+	});
 }
 
 $( function() {

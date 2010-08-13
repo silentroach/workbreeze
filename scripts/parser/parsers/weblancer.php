@@ -2,19 +2,19 @@
 class Parser_weblancer extends Parser {
 
 	public function getCode() {
-		return 'weblancer';
+		return 0;
 	}
 
 	public function getName() {
-		return 'WebLancer parser 1.0';
+		return 'WebLancer';
 	}
 
-	protected function getBaseUrl() {
+	protected function getUrl() {
 		return 'http://www.weblancer.net/';
 	}
 	
 	protected function getJobPage($page = 0) {
-		$url = $this->getBaseUrl() . 'projects/';
+		$url = $this->getUrl() . 'projects/';
 
 		if ($page > 0) {
 			$url .= '?page=' . ($page - 1);

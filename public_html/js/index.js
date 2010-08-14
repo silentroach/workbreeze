@@ -37,7 +37,7 @@ function checkQueue() {
 		popFromQueue();
 }
 
-function addJob(job) {
+function addJob(job, instantly) {
 	jobEl = jobTemplate.clone();
 
 	jobEl.hide();
@@ -47,6 +47,9 @@ function addJob(job) {
 	$('li.time', jobEl).html(job.time);
 	
 	queue.push(jobEl);
+	
+	if (instantly = 1)
+		popFromQueue();
 }
 
 function init() {
@@ -72,6 +75,21 @@ function init() {
 					name: dsite[1],
 					url: dsite[2]
 				}
+			}
+			
+			jobs = data[1];
+			
+			for (i = 0; i < jobs.length; i++) {
+				job = jobs[i];
+					
+				pjob = {
+					site: job[0],
+					id: job[1],
+					stamp: job[2],
+					title: job[3]
+				};
+				
+				addJob(pjob, true);				
 			}
 		}
 	});

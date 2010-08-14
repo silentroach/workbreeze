@@ -1,8 +1,10 @@
 <?php
 
-class MInit extends Module {
+require 'jobs.php';
 
-	private function siteList() {
+class MInit extends MJobs {
+
+	private function getSites() {
 		$db = $this->db();
 		
 		$c = $db->parsers;
@@ -20,7 +22,8 @@ class MInit extends Module {
 
 	protected function runModule() {
 		return array(
-			$this->siteList()
+			$this->getSites(),
+			$this->getJobs()
 		);
 	}
 

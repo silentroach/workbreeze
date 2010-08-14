@@ -20,4 +20,4 @@ $db = $mongo->$dbname;
 
 // lets do it
 $scheduler = new Scheduler($db);
-$scheduler->process();
+$scheduler->processJobList();

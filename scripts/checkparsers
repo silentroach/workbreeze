@@ -1,0 +1,44 @@
+#!/usr/bin/php
+<?php
+
+require('defines.php');
+require('crawler/parser.php');
+
+$mongo = new Mongo();
+
+$dbname = DB;
+
+$db = $mongo->$dbname;
+
+$pc = $db->sites;
+
+$parsers = glob('crawler/parsers/*.php');
+
+foreach($parsers as $parser) {
+	require($parser);
+	
+	$pinfo = pathinfo($parser);
+	
+	$className = 'Parser_' . $pinfo['filename'];
+	
+	$parser = new $className($db);
+	
+	$info = array(
+		'code' => $parser->getSiteCode()
+	);
+	
+	$tmp = $pc->findOne($info);
+	
+	if (null != $tmp) {
+		$pc->remove($info);
+	}
+	
+	$info['class']  = $className;
+	$info['name']   = $parser->getSiteName();
+	$info['url']    = $parser->getUrl();
+	$info['script'] = $pinfo['basename'];
+	
+	$pc->insert($info);
+}
+
+echo "Done\n";

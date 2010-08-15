@@ -9,13 +9,14 @@ dt=`date +%T`
 desc "Lets begin (${dt})"
 
 desc 'Removing temp folder contents'
-#rm -rf ./tmp/*
+rm -rf ./tmp/*
 
 desc 'Rsync contents'
-#rsync -rupEogtz --exclude-from=./excludes ../../ tmp/ > /dev/null
+rsync -rupEogtz --exclude-from=./excludes ../../ tmp/ > /dev/null
 
-desc 'Preparing js'
-#mkdir tmp/public_html/js
+desc 'Preparing folders'
+mkdir tmp/public_html/js
+mkdir tmp/public_html/css
 
 desc 'Compressing javascript'
 echo 'jQuery...'
@@ -25,3 +26,8 @@ gzip -c9 tmp/public_html/js/jquery.js > tmp/public_html/js/jquery.js.gz
 echo 'Index script...'
 java -jar tmp/utils/compiler.jar --js ../../public_html/js/index.js --warning_level QUIET --externs tmp/public_html/js/jquery.js --compilation_level ADVANCED_OPTIMIZATIONS > tmp/public_html/js/index.js
 gzip -c9 tmp/public_html/js/index.js > tmp/public_html/js/index.js.gz
+
+desc 'Compressing css'
+echo 'main...'
+java -jar tmp/utils/yui.jar --type css -o tmp/public_html/css/main.css ../../public_html/css/main.css
+gzip -c9 tmp/public_html/css/main.css > tmp/public_html/css/main.css.gz

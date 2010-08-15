@@ -28,24 +28,43 @@ class Parser {
 		$this->jobs  = $db->jobs;
 	}
 	
-	protected function log($url, $message, $page) {
-		$info = array(
-			'url' => $url,
-			'message' => $message,
-			'page' => $page
-		);
+	protected function log($info) {
+		$tmp = $this->db->log->findOne($info);
 		
-		$this->db->log->insert($info);
+		if (null === $tmp) {
+			$info['stamp'] = time();
+			$this->db->log->insert($info);
+		}
 	}
 	
 	protected function checkCategories($cats) {
-		return array();
+		$cmap = $this->db->cats_map;
+		
+		$rcats = array();
+		
+		foreach($cats as $key => $cat) {
+			$tmp = $cmap->findOne(array(
+				'site' => $this->getSiteCode(),
+				'id'   => $key
+			));
+			
+			if (null != $tmp) {
+				$rcats[] = $tmp['map'];
+			} else {
+				$this->log(array(
+					'site' => $this->getSiteCode(),
+					'msg'  => 'category is not mapped',
+					'cat'  => $key . ' -> ' . $cat
+				));
+			}
+		}
+
+		return $rcats;
 	}
 	
 	protected function queueJobLink($jobId, $link) {
 		$info = array(
 			'site' => $this->getSiteCode(),
-			'type' => 'job',
 			'id'   => $jobId
 		);
 	
@@ -53,6 +72,8 @@ class Parser {
 		
 		if (null != $tmp)
 			return false;
+			
+		$info['type'] = 'job';
 			
 		$tmp = $this->queue->findOne($info);
 		
@@ -67,6 +88,24 @@ class Parser {
 		
 		$this->queuedCount++;
 		
+		return true;
+	}
+	
+	protected function addJob($info) {
+		$info['site']  = $this->getSiteCode();
+		$info['stamp'] = time();
+		
+		if (
+			isset($info['categories'])
+			&& 0 === count($info['categories'])
+		) {
+			unset($info['categories']);
+		}
+	
+		$this->db->jobs->insert($info);
+		
+		echo 'Job ' . $info['id'] . " added\n";
+
 		return true;
 	}
 	

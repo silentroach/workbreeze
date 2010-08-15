@@ -11,11 +11,12 @@ class DBChecker {
 	public function __construct($db) {
 		$this->db = $db;
 
-		$this->categories = $this->db->categories;
+		$this->categories = $this->db->cats;
 	}
 	
-	public function checkCat($alias = '') {
+	public function checkCat($code, $alias = '') {
 		$cat = array(
+			'code'  => $code,
 			'alias' => $alias
 		);
 
@@ -37,9 +38,9 @@ $db = $mongo->$dbname;
 
 $c = new DBChecker($db);
 
-$c->checkCat('dev');
-$c->checkCat('sysadm');
-$c->checkCat('write');
-$c->checkCat('manage');
-$c->checkCat('design');
-$c->checkCat('other');
+$c->checkCat(0, 'dev');
+$c->checkCat(1, 'sysadm');
+$c->checkCat(2, 'write');
+$c->checkCat(3, 'manage');
+$c->checkCat(4, 'design');
+$c->checkCat(5, 'other');

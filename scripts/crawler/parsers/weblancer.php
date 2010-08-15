@@ -1,4 +1,4 @@
-<?php
+L<?php
 
 class Parser_weblancer extends Parser implements IParser {
 
@@ -38,11 +38,12 @@ class Parser_weblancer extends Parser implements IParser {
 	}
 	
 	public function processJob($id, $url) {
-//		$res = $this->getRequest($url);
-		
-		$res = file_get_contents('test.txt');
+		$res = $this->getRequest($url);
 
-		$info = array();
+		$info = array(
+			'id'  => $id,
+			'url' => $url
+		);
 		
 /*
 <div class="title_box">
@@ -57,7 +58,11 @@ s</div>
 		preg_match('/<div class=\"title_box\">(.*?)<h1>(.*?)<\/h1>/', $res, $matches);
 		
 		if (3 != count($matches)) {
-			log($url, 'can\'t extract title', $res);
+			$this->log(array(
+				'url'  => $url, 
+				'msg'  => 'can\'t extract title', 
+				'page' => $res
+			));
 			return true;
 		}
 		
@@ -72,7 +77,11 @@ s</div>
 		preg_match('/id_description">(.*)<a name="bid/is', $res, $matches);
 		
 		if (2 != count($matches)) {
-			log($url, 'can\'t extract description', $res);
+			$this->log(array(
+				'url'  => $url, 
+				'msg'  => 'can\'t extract description', 
+				'page' => $res
+			));
 			return true;
 		}
 		
@@ -94,27 +103,13 @@ s</div>
 
 		$info['desc'] = str_replace('<br /><br />', '<br />', $description);
 		
-		if (preg_match('/([^ \n\r]+[ \n\r]+){1,30}/s', $description, $match))
+		if (preg_match('/([^ \n\r]+[ \n\r]+){30}/s', $description, $match))
 			$info['short'] = $match[0] . '...';
 				
-		print_r($info);
-				
-		die();
+		$this->addJob($info);
+		
+		return true;
 	}
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

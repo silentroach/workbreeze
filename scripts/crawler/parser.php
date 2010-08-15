@@ -7,11 +7,12 @@ interface IParser {
 	public function getUrl();
 
 	public function processJobList();
+	public function processJob($id, $url);
 }
 
 class Parser {
 
-	const Agent = 'workbreeze crawler 0.1';
+	const Agent = 'workbreeze crawler';
 	
 	private $db;
 
@@ -25,6 +26,20 @@ class Parser {
 		
 		$this->queue = $db->queue;
 		$this->jobs  = $db->jobs;
+	}
+	
+	protected function log($url, $message, $page) {
+		$info = array(
+			'url' => $url,
+			'message' => $message,
+			'page' => $page
+		);
+		
+		$this->db->log->insert($info);
+	}
+	
+	protected function checkCategories($cats) {
+		return array();
 	}
 	
 	protected function queueJobLink($jobId, $link) {

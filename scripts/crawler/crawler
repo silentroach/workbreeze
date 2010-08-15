@@ -1,5 +1,5 @@
 #!/usr/bin/php
-<?
+<?php
 
 // something like config
 require dirname(dirname(__FILE__)) . '/defines.php';
@@ -20,4 +20,12 @@ $db = $mongo->$dbname;
 
 // lets do it
 $scheduler = new Scheduler($db);
-$scheduler->processJobList();
+
+$action = isset($argv[1]) ? $argv[1] : 'joblist';
+
+if ('joblist' === $action) {
+	$scheduler->processJobList();
+} else
+if ('queue' === $action) {
+	$scheduler->processQueue();
+}

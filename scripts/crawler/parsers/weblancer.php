@@ -1,4 +1,4 @@
-L<?php
+<?php
 
 class Parser_weblancer extends Parser implements IParser {
 
@@ -24,6 +24,9 @@ class Parser_weblancer extends Parser implements IParser {
 	
 	public function processJobList() {
 		$res = $this->getRequest('http://www.weblancer.net/projects/');
+
+		if (!$res)
+			return false;
 	
 		preg_match_all('/<a href=\"(\/projects\/(\d+).html)\"/', $res, $matches);
 		
@@ -39,6 +42,13 @@ class Parser_weblancer extends Parser implements IParser {
 	
 	public function processJob($id, $url) {
 		$res = $this->getRequest($url);
+		
+		if (!$res)
+			return false;
+			
+		if (404 === $res)
+			// drop queued jobs that are not found
+			return true;
 
 		$info = array(
 			'id'  => $id,

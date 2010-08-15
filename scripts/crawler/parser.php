@@ -116,13 +116,44 @@ class Parser {
 	protected function getRequest($url) {
 		$c = curl_init();
 		
+		echo $url . '... ';
+		
 		curl_setopt($c, CURLOPT_URL, $url);
 		curl_setopt($c, CURLOPT_USERAGENT, Parser::Agent);
 		curl_setopt($c, CURLOPT_ENCODING, 'gzip');
 		curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
 		
 		$result = curl_exec($c);
+			
+		$info = curl_getinfo($c);
+		
 		curl_close($c);
+		
+		if (
+			isset($info['size_download'])
+		) {
+			$bytes = (int) $info['size_download'];
+			$symbol = array('b', 'kb', 'mb');
+
+			$exp = 0;
+			$converted_value = 0;
+			if ($bytes > 0) {
+				$exp = floor( log($bytes)/log(1024) );
+				$converted_value = ( $bytes/pow(1024,floor($exp)) );
+			}
+
+			echo '[' . sprintf( '%.2f '.$symbol[$exp], $converted_value ) . "]\n";
+		}
+		
+		if (
+			isset($info['http_code'])
+			&& 200 != $info['http_code']
+		) {
+			if (404 == $info['http_code']) {
+				return 404;
+			} else		
+				return false; 
+		}
 	
 		$result = $this->afterRequest($result);
 		

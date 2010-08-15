@@ -34,6 +34,7 @@ foreach($parsers as $parser) {
 	}
 	
 	$info['class']  = $className;
+	$info['folder'] = $parser->getSiteFolder();
 	$info['name']   = $parser->getSiteName();
 	$info['url']    = $parser->getUrl();
 	$info['script'] = $pinfo['basename'];

@@ -7,14 +7,14 @@ class MInit extends MJobs {
 	private function getSites() {
 		$db = $this->db();
 		
-		$c = $db->parsers;
+		$c = $db->sites;
 		
 		$sites = array();
 		
 		$cursor = $c->find();
 		
 		while ($site = $cursor->getNext()) {
-			$sites[] = array($site['code'], $site['name'], $site['url']);
+			$sites[] = array($site['code'], $site['folder'], $site['name'], $site['url']);
 		}
 		
 		return $sites;

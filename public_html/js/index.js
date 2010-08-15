@@ -42,8 +42,14 @@ function addJob(job, instantly) {
 
 	jobEl.hide();
 
-	$('li.title', jobEl).html(job.title);
-	$('li.desc', jobEl).html(job.description);
+	lnk = $("<a>")
+		.attr({
+			'href': '/jobs/' + sites[job.site].folder + '/' + job.id + '.html'
+		})
+		.html(job.title)
+		.appendTo($('li.title', jobEl));
+
+	$('li.desc', jobEl).html(job.desc);
 	$('li.time', jobEl).html(job.time);
 	
 	queue.push(jobEl);
@@ -72,8 +78,9 @@ function init() {
 				dsite = dsites[i];
 				
 				sites[dsite[0]] = {
-					name: dsite[1],
-					url: dsite[2]
+					folder: dsite[1],
+					name: dsite[2],
+					url: dsite[3]
 				}
 			}
 			
@@ -86,7 +93,8 @@ function init() {
 					site: job[0],
 					id: job[1],
 					stamp: job[2],
-					title: job[3]
+					title: job[3],
+					desc: job[4]
 				};
 				
 				addJob(pjob, true);				

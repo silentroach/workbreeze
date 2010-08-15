@@ -11,7 +11,7 @@ class MJobs extends Module {
 		
 		$cursor = $c->find();
 		$cursor->sort(array(
-			'stamp' => 1
+			'stamp' => 0
 		));
 		$cursor->limit(10);
 		
@@ -20,7 +20,8 @@ class MJobs extends Module {
 				$job['site'],
 				$job['id'],
 				$job['stamp'],
-				$job['name']
+				$job['title'],
+				isset($job['short']) ? $job['short'] : $job['desc']
 			);
 		}
 		

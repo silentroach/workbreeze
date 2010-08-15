@@ -76,7 +76,7 @@ s</div>
 			return true;
 		}
 		
-		$info['title'] = $matches[2];
+		$info['title'] = trim($matches[2]);
 		
 		preg_match_all('/<a href="\/projects\/\?category_id=(\d+)">(.*?)<\/a>/', $res, $matches);
 		
@@ -106,14 +106,14 @@ s</div>
 		}
 		
 		$description = preg_replace('/<div class="disabled">(.*)<\/div>/', '', $description);
-		$description = strip_tags($description);
+		$description = strip_tags($description, '<a>');
 		$description = trim($description);
 		
 		$description = str_replace(array("\r\n", "\r", "\n"), '<br />', $description);
 
 		$info['desc'] = str_replace('<br /><br />', '<br />', $description);
 		
-		if (preg_match('/([^ \n\r]+[ \n\r]+){30}/s', $description, $match))
+		if (preg_match('/([^ \n\r]+[ \n\r]+){30}/s', $info['desc'], $match))
 			$info['short'] = $match[0] . '...';
 				
 		$this->addJob($info);

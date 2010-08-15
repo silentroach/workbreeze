@@ -28,6 +28,10 @@ class Parser {
 		$this->jobs  = $db->jobs;
 	}
 	
+	public function getQueuedCount() {
+		return $this->queuedCount;
+	}
+	
 	protected function log($info) {
 		$tmp = $this->db->log->findOne($info);
 		
@@ -35,6 +39,9 @@ class Parser {
 			$info['stamp'] = time();
 			$this->db->log->insert($info);
 		}
+		
+		if (isset($info['msg']))
+			echo $info['msg'] . "\n";
 	}
 	
 	protected function checkCategories($cats) {

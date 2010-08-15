@@ -23,9 +23,18 @@ $scheduler = new Scheduler($db);
 
 $action = isset($argv[1]) ? $argv[1] : 'joblist';
 
+$lockname = 'lock_' . $action . '.tmp';
+
+if (file_exists($lockname))
+	die();
+
+touch($lockname);
+
 if ('joblist' === $action) {
 	$scheduler->processJobList();
 } else
 if ('queue' === $action) {
 	$scheduler->processQueue();
 }
+
+unlink($lockname);

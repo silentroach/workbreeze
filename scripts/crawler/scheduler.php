@@ -23,12 +23,26 @@ class Scheduler {
 	public function processJobList() {
 		$c = $this->db->sites->find();
 		
-		while ($site = $c->getNext()) {			
+		while ($site = $c->getNext()) {					
 			$parser = $this->initParser($site);
 			
 			echo 'Process main pages for ' . $site['name'] . "\n";
 			
 			$parser->processJobList();
+			
+			if ($parser->getQueuedCount() > 0) {
+				$info = array(
+					'site' => $parser->getSiteCode(),
+					'wday' => date('N')
+				);
+				
+				$this->db->slog->remove($info);
+				
+				$info['time']  = date('G') * 60 + date('i');
+				$info['count'] = $parser->getQueuedCount(); 
+			
+				$this->db->slog->insert($info);
+			}
 		}
 	}
 	

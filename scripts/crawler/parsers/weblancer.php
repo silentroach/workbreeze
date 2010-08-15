@@ -14,6 +14,10 @@ class Parser_weblancer extends Parser implements IParser {
 		return 'WebLancer parser 0.1';
 	}
 	
+	public function getSiteFolder() {
+		return 'weblancer';
+	}
+	
 	public function getUrl() {
 		return 'http://www.weblancer.net';
 	}

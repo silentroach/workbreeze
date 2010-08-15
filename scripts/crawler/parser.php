@@ -3,6 +3,7 @@
 interface IParser {
 	public function getSiteCode();
 	public function getSiteName();
+	public function getSiteFolder();
 	public function getParserName();
 	public function getUrl();
 
@@ -98,6 +99,42 @@ class Parser {
 		return true;
 	}
 	
+	private function getJobPagePath($id) {
+		return PUBLIC_JOBS_DIR . $this->getSiteFolder() . DIRECTORY_SEPARATOR . $id . '.html';
+	}
+	
+	private function generateJobPage($info) {
+		$fname = $this->getJobPagePath($info['id']);
+		
+		if (!file_exists(dirname($fname))) {
+			mkdir(dirname($fname), 0777, true);
+		}
+		
+		$content = <<<EOF
+<!DOCTYPE html>
+<html>
+        <title>WorkBreeze - {$info['title']}</title>
+
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <link rel="stylesheet" href="/css/main.css" type="text/css" />
+<body>
+<div id="logo"><a href="/index.html">WorkBreeze</a></div>
+<br />
+
+{$info['desc']}
+<br /><br />
+
+<a href="{$info['url']}">Перейти на объявление на сайте {$this->getSiteName()}</a>
+</body>
+</html>
+EOF;
+
+		$content = str_replace(array("\t", "\r", "\n"), '', $content);
+		$content = str_replace('  ', ' ', $content);
+		
+		file_put_contents($fname, $content);
+	}
+	
 	protected function addJob($info) {
 		$info['site']  = $this->getSiteCode();
 		$info['stamp'] = time();
@@ -110,6 +147,8 @@ class Parser {
 		}
 	
 		$this->db->jobs->insert($info);
+		
+		$this->generateJobPage($info);
 		
 		echo 'Job ' . $info['id'] . " added\n";
 

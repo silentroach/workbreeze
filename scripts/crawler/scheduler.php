@@ -19,30 +19,63 @@ class Scheduler {
 		
 		return $this->parsers[$info['code']];
 	}
+	
+	private function makeTodaySchedule($code) {
+		for ($i = 0; $i < 24 * 60 - 1; $i = $i + 2) {
+			$this->db->stoday->insert(array(
+				'site' => $code,
+				'time' => $i
+			));
+		}
+	}
 
 	public function processJobList() {
 		$c = $this->db->sites->find();
 		
 		while ($site = $c->getNext()) {					
 			$parser = $this->initParser($site);
+
+			$time = date('G') * 60 + date('i');
+		
+			$tmp = $this->db->stoday->
+				find(array(
+					'site' => $parser->getSiteCode()
+				))->
+				sort(array(
+					'time' => 1
+				))->
+				limit(1);
+	
+			if ($rec = $tmp->getNext()) {
+				if ($rec['time'] >= $time)
+					// 'tis not the time to start
+					continue;		
+			} else
+				$this->makeTodaySchedule($parser->getSiteCode());
 			
 			echo 'Process main pages for ' . $site['name'] . "\n";
 			
 			$parser->processJobList();
 			
 			if ($parser->getQueuedCount() > 0) {
-				$info = array(
-					'site' => $parser->getSiteCode(),
-					'wday' => date('N')
-				);
-				
-				$this->db->slog->remove($info);
-				
-				$info['time']  = date('G') * 60 + date('i');
-				$info['count'] = $parser->getQueuedCount(); 
+				$this->db->slog->remove(array(
+					'site'  => $parser->getSiteCode(),
+					'wyear' => array('$lt' => date('W'))
+				));
 			
-				$this->db->slog->insert($info);
+				$this->db->slog->insert(array(
+					'site'  => $parser->getSiteCode(),
+					'wday'  => date('N'),
+					'wyear' => date('W'),
+					'time'  => date('G') * 60 + date('i'),
+					'count' => $parser->getQueuedCount()
+				));
 			}
+			
+			$this->db->stoday->remove(array(
+				'site' => $parser->getSiteCode(),
+				'time' => array('$lt' => date('G') * 60 + date('i'))
+			));
 		}
 	}
 	

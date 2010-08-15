@@ -1,6 +1,9 @@
 #!/usr/bin/php
 <?php
 
+define('PUBLIC_DIR', dirname(dirname(dirname(__FILE__))) . DIRECTORY_SEPARATOR . 'public_html' . DIRECTORY_SEPARATOR);
+define('PUBLIC_JOBS_DIR', PUBLIC_DIR . 'jobs' . DIRECTORY_SEPARATOR);
+
 // something like config
 require dirname(dirname(__FILE__)) . '/defines.php';
 

@@ -21,11 +21,17 @@ class Scheduler {
 	}
 	
 	private function makeTodaySchedule($code) {
-		for ($i = 0; $i < 24 * 60 - 1; $i = $i + 2) {
+		$final = 23 * 60 + 58;
+	
+		$i = 0;
+		
+		while ($i < $final) {
 			$this->db->stoday->insert(array(
 				'site' => $code,
 				'time' => $i
 			));
+			
+			$i = $i + 2;		
 		}
 	}
 

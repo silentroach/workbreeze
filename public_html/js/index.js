@@ -24,12 +24,16 @@ function setTimer(interval) {
 	checkTimer = setInterval(function() { checkQueue(); }, 5000);
 }
 
-function popFromQueue() {
+function popFromQueue(instantly) {
 	tmpEl = queue.pop();
 	
 	tmpEl
-		.prependTo(jobPlace)
-		.slideDown('slow');
+		.prependTo(jobPlace);
+		
+	if (!instantly)
+		tmpEl.slideDown('slow');
+	else
+		tmpEl.show();
 }
 
 function checkQueue() {
@@ -50,12 +54,15 @@ function addJob(job, instantly) {
 		.appendTo($('li.title', jobEl));
 
 	$('li.desc', jobEl).html(job.desc);
-	$('li.time', jobEl).html(job.time);
+	
+	stmp = new Date(job.stamp * 1000);
+	
+	$('li.time', jobEl).html(stmp.toLocaleTimeString());
 	
 	queue.push(jobEl);
 	
 	if (instantly = 1)
-		popFromQueue();
+		popFromQueue(instantly);
 }
 
 function init() {
@@ -86,7 +93,7 @@ function init() {
 			
 			jobs = data[1];
 			
-			for (i = 0; i < jobs.length; i++) {
+			for (i = jobs.length - 1; i >= 0; i--) {
 				job = jobs[i];
 					
 				pjob = {

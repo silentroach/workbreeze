@@ -19,6 +19,10 @@ mkdir tmp/public_html/js
 mkdir tmp/public_html/css
 ln -s /srv/bstorage/jobs tmp/public_html/jobs
 
+desc 'Compressing html'
+echo 'main...'
+gzip -c9 tmp/public_html/index.html > tmp/public_html/index.html.gz
+
 desc 'Compressing javascript'
 echo 'jQuery...'
 java -jar tmp/utils/compiler.jar --js ../../public_html/js/jquery.js --warning_level QUIET > tmp/public_html/js/jquery.js

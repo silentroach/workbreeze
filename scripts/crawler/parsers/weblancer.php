@@ -22,6 +22,10 @@ class Parser_weblancer extends Parser implements IParser {
 		return 'http://www.weblancer.net';
 	}
 	
+	public function isProxyfied() {
+		return false;
+	}
+	
 	protected function afterRequest($data) {
 		return iconv('cp1251', 'utf-8', $data);
 	}

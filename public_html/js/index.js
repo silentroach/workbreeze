@@ -68,7 +68,7 @@ function popFromQueue(instantly) {
 
 function checkQueue() {
 	if (queue.length > 0)
-		popFromQueue();
+		popFromQueue(false);
 }
 
 function addJob(job, instantly) {

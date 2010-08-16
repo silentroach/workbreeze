@@ -6,6 +6,7 @@ interface IParser {
 	public function getSiteFolder();
 	public function getParserName();
 	public function getUrl();
+	public function isProxyfied();
 
 	public function processJobList();
 	public function processJob($id, $url);
@@ -145,6 +146,13 @@ EOF;
 		curl_setopt($c, CURLOPT_USERAGENT, Parser::Agent);
 		curl_setopt($c, CURLOPT_ENCODING, 'gzip');
 		curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
+		
+		if ($this->isProxyfied()) {
+			curl_setopt($c, CURLOPT_HTTPPROXYTUNNEL, true);
+			curl_setopt($c, CURLOPT_PROXY, 'localhost');
+			curl_setopt($c, CURLOPT_PROXYPORT, 9050);
+			curl_setopt($c, CURLOPT_PROXYTYPE, CURLPROXY_SOCKS5);
+		}
 		
 		$result = curl_exec($c);
 			

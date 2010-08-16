@@ -21,6 +21,10 @@ class Parser_freelance extends Parser implements IParser {
 	public function getUrl() {
 		return 'http://www.free-lance.ru';
 	}
+	
+	public function isProxyfied() {
+		return true;
+	}
 
 	protected function afterRequest($data) {
 		return iconv('cp1251', 'utf-8', $data);

@@ -82,11 +82,11 @@ s</div>
 		
 		$info['title'] = trim($matches[2]);
 		
-		preg_match_all('/<a href="\/projects\/\?category_id=(\d+)">(.*?)<\/a>/', $res, $matches);
+//		preg_match_all('/<a href="\/projects\/\?category_id=(\d+)">(.*?)<\/a>/', $res, $matches);
 		
-		array_shift($matches);
+//		array_shift($matches);
 		
-		$info['categories'] = $this->checkCategories(array_combine($matches[0], $matches[1]));
+//		$info['categories'] = $this->checkCategories(array_combine($matches[0], $matches[1]));
 
 		preg_match('/id_description">(.*)<a name="bid/is', $res, $matches);
 		

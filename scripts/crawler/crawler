@@ -26,7 +26,7 @@ $scheduler = new Scheduler($db);
 
 $action = isset($argv[1]) ? $argv[1] : 'joblist';
 
-$lockname = 'lock_' . $action . '.tmp';
+$lockname = '/tmp/lock_' . $action . '.tmp';
 
 if (file_exists($lockname))
 	die();

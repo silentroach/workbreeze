@@ -2,3 +2,5 @@ scripts/production
 public_html/jobs
 public_html/js
 public_html/css
+.git
+.git*

@@ -45,31 +45,6 @@ class Parser {
 			echo $info['msg'] . "\n";
 	}
 	
-	protected function checkCategories($cats) {
-		$cmap = $this->db->cats_map;
-		
-		$rcats = array();
-		
-		foreach($cats as $key => $cat) {
-			$tmp = $cmap->findOne(array(
-				'site' => $this->getSiteCode(),
-				'id'   => $key
-			));
-			
-			if (null != $tmp) {
-				$rcats[] = $tmp['map'];
-			} else {
-				$this->log(array(
-					'site' => $this->getSiteCode(),
-					'msg'  => 'category is not mapped',
-					'cat'  => $key . ' -> ' . $cat
-				));
-			}
-		}
-
-		return $rcats;
-	}
-	
 	protected function queueJobLink($jobId, $link) {
 		$info = array(
 			'site' => $this->getSiteCode(),
@@ -124,7 +99,7 @@ class Parser {
 {$info['desc']}
 <br /><br />
 
-<a href="{$info['url']}">Перейти на объявление на сайте {$this->getSiteName()}</a>
+<a href="{$info['url']}">&gt; {$this->getSiteName()}</a>
 </body>
 </html>
 EOF;

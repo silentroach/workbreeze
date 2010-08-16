@@ -17,6 +17,7 @@ rsync -rupEogtz --exclude-from=./excludes ../../ tmp/ > /dev/null
 desc 'Preparing folders'
 mkdir tmp/public_html/js
 mkdir tmp/public_html/css
+ln -s /srv/bstorage/jobs tmp/public_html/jobs
 
 desc 'Compressing javascript'
 echo 'jQuery...'
@@ -31,3 +32,10 @@ desc 'Compressing css'
 echo 'main...'
 java -jar tmp/utils/yui.jar --type css -o tmp/public_html/css/main.css ../../public_html/css/main.css
 gzip -c9 tmp/public_html/css/main.css > tmp/public_html/css/main.css.gz
+
+desc 'Sed configs'
+echo 'nginx...'
+sed "s/workbreeze.dev/workbreeze.com/;s/\/home\/silent\/Projects\/work/\/srv\//" ../../configs/nginx.conf > tmp/configs/nginx.conf
+
+desc 'Making iso'
+mkisofs -r -J -l -d -o breeze.iso tmp/

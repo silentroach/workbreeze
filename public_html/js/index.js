@@ -4,9 +4,10 @@
 var lastStamp = 0;
 var queueTimer;
 var newTimer;
-/** @const */ var checkInterval = 30000;
+/** @const */ var checkInterval = 60000;
 var jobTemplate;
 var jobPlace;
+
 var queue = [];
 var sites = [];
 
@@ -21,12 +22,12 @@ function checkNewJobs() {
 		},
 		dataType: 'json',
 		success: function(data) {
-			setNewTimer(30000);
+			setNewTimer(checkInterval);
 
 			parseJobs(data, false);
 		},
 		error: function() {
-			setNewTimer(30000);
+			setNewTimer(checkInterval);
 		}
 	});
 }

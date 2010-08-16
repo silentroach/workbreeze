@@ -1,8 +1,8 @@
 <?php
 
-require 'jobs.php';
+require 'j.php';
 
-class MInit extends MJobs {
+class MInit extends MJ {
 
 	private function getSites() {
 		$db = $this->db();

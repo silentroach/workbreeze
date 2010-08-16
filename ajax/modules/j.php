@@ -1,15 +1,21 @@
 <?php
 
-class MJobs extends Module {
+class MJ extends Module {
 
 	protected function getJobs() {
+		$stamp = isset($_POST['stamp']) ? intval($_POST['stamp']) : 0;
+	
 		$db = $this->db();
 		
 		$c = $db->jobs;
 		
 		$jobs = array();
 		
-		$cursor = $c->find();
+		$cursor = $c->find(array(
+			'stamp' => array(
+				'$gt' => $stamp
+			)
+		));
 		$cursor->sort(array(
 			'stamp' => 0
 		));
@@ -26,6 +32,10 @@ class MJobs extends Module {
 		}
 		
 		return $jobs;
+	}
+
+	protected function runModule() {
+		return 	$this->getJobs();
 	}
 
 }

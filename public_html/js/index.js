@@ -2,26 +2,55 @@
  * @type {number}
  */
 var lastStamp = 0;
-var checkTimer;
+var queueTimer;
+var newTimer;
 /** @const */ var checkInterval = 30000;
 var jobTemplate;
 var jobPlace;
 var queue = [];
 var sites = [];
 
-function checkQueue() {
+function checkNewJobs() {
+	dropNewTimer();
 
+	$.ajax({
+		url: '/j',
+		type: 'POST',
+		data: {
+			'stamp': lastStamp
+		},
+		dataType: 'json',
+		success: function(data) {
+			setNewTimer(30000);
+
+			parseJobs(data, false);
+		},
+		error: function() {
+			setNewTimer(30000);
+		}
+	});
 }
 
-function dropTimer() {
-	if (null != checkTimer) {
-		clearTimeout(checkTimer);
+function dropQueueTimer() {
+	if (null != queueTimer) {
+		clearTimeout(queueTimer);
 	}
 }
 
-function setTimer(interval) {
-	dropTimer();
-	checkTimer = setInterval(function() { checkQueue(); }, 5000);
+function dropNewTimer() {
+	if (null != newTimer) {
+		clearTimeout(newTimer);
+	}
+}
+
+function setQueueTimer(interval) {
+	dropQueueTimer();
+	queueTimer = setInterval(function() { checkQueue(); }, interval);
+}
+
+function setNewTimer(interval) {
+	dropNewTimer();
+	newTimer = setInterval(function() { checkNewJobs(); }, interval);
 }
 
 function popFromQueue(instantly) {
@@ -42,6 +71,10 @@ function checkQueue() {
 }
 
 function addJob(job, instantly) {
+	if (job.stamp > lastStamp) {
+		lastStamp = job.stamp;
+	}
+
 	jobEl = jobTemplate.clone();
 
 	jobEl.hide();
@@ -65,11 +98,28 @@ function addJob(job, instantly) {
 		popFromQueue(instantly);
 }
 
+function parseJobs(jobs, instantly) {
+	for (i = jobs.length - 1; i >= 0; i--) {
+		job = jobs[i];
+			
+		pjob = {
+			site:  job[0],
+			id:    job[1],
+			stamp: job[2],
+			title: job[3],
+			desc:  job[4]
+		};
+		
+		addJob(pjob, instantly);
+	}
+}
+
 function init() {
 	jobTemplate = $('ul.job:first');
 	jobPlace    = $('#right');
 	
-	setTimer(5000);
+	setQueueTimer(5000);
+	setNewTimer(5000);
 	
 	// removing right content
 	$('#right > *').remove();
@@ -93,19 +143,7 @@ function init() {
 			
 			jobs = data[1];
 			
-			for (i = jobs.length - 1; i >= 0; i--) {
-				job = jobs[i];
-					
-				pjob = {
-					site: job[0],
-					id: job[1],
-					stamp: job[2],
-					title: job[3],
-					desc: job[4]
-				};
-				
-				addJob(pjob, true);				
-			}
+			parseJobs(jobs, true);
 		}
 	});
 }

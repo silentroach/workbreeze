@@ -147,7 +147,10 @@ EOF;
 		curl_setopt($c, CURLOPT_ENCODING, 'gzip');
 		curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
 		
-		if ($this->isProxyfied()) {
+		if (
+			$this->isProxyfied()
+			&& file_exists('/var/run/tor')
+		) {
 			curl_setopt($c, CURLOPT_HTTPPROXYTUNNEL, true);
 			curl_setopt($c, CURLOPT_PROXY, 'localhost');
 			curl_setopt($c, CURLOPT_PROXYPORT, 9050);

@@ -95,7 +95,8 @@ class Parser {
         <link rel="stylesheet" href="/css/main.css" type="text/css" />
 <body>
 <div id="logo"><a href="/">WorkBreeze</a></div>
-<br />
+
+<p class="title">{$info['title']}</p>
 
 {$info['desc']}
 <br /><br />

@@ -8,15 +8,30 @@ var newTimer;
 var jobTemplate;
 var jobPlace;
 
-var queue = [];
-var sites = [];
+var queue    = [];
+var joblist  = [];
+var sites    = [];
 
+/**
+ * Check leading zero in single char int
+ * @param {!number} i Number
+ * @return {string}
+ */ 
 function checkTimeVal(i) {
 	if (i < 10) {
 		i = "0" + i;
 	}
 
 	return i;
+}
+
+function checkJobPlace() {
+	while (joblist.length > 15) {
+		tmpEl = joblist.shift();
+		tmpEl.fadeOut('slow', function() { 
+			$(this).remove();
+		});
+	}
 }
 
 function checkNewJobs() {
@@ -52,18 +67,32 @@ function dropNewTimer() {
 	}
 }
 
+/**
+ * Sets the queue checker timer
+ * @param {!number} interval Interval
+ */
 function setQueueTimer(interval) {
 	dropQueueTimer();
 	queueTimer = setInterval(function() { checkQueue(); }, interval);
 }
 
+/**
+ * Sets the new jobs checker timer
+ * @param {!number} interval Interval
+ */
 function setNewTimer(interval) {
 	dropNewTimer();
 	newTimer = setInterval(function() { checkNewJobs(); }, interval);
 }
 
+/**
+ * Pop the job from queue
+ * @param {!boolean} instantly Disable slideDown animation
+ */
 function popFromQueue(instantly) {
-	tmpEl = queue.pop();
+	var tmpEl = queue.pop();
+
+	joblist.push(tmpEl);
 	
 	tmpEl
 		.hide()
@@ -73,6 +102,8 @@ function popFromQueue(instantly) {
 		tmpEl.slideDown('slow');
 	else
 		tmpEl.show();
+
+	checkJobPlace();
 }
 
 function checkQueue() {
@@ -80,12 +111,17 @@ function checkQueue() {
 		popFromQueue(false);
 }
 
+/**
+ * Add job to queue
+ * @param {!Object} job Job object
+ * @param {!boolean} instantly Disable slideDown animation
+ */
 function addJob(job, instantly) {
 	if (job.stamp > lastStamp) {
 		lastStamp = job.stamp;
 	}
 
-	jobEl = jobTemplate.clone();
+	var jobEl = jobTemplate.clone();
 
 	jobEl.hide();
 
@@ -100,7 +136,7 @@ function addJob(job, instantly) {
 
 	$('li.desc', jobEl).html(job.desc);
 	
-	stmp = new Date(job.stamp * 1000);
+	var stmp = new Date(job.stamp * 1000);
 	
 	$('li.time', jobEl).html(
 		checkTimeVal(stmp.getHours()) + ':' +
@@ -113,11 +149,16 @@ function addJob(job, instantly) {
 		popFromQueue(instantly);
 }
 
+/**
+ * Parse job info
+ * @param {!Array} job Job info array
+ * @param {!boolean} instantly Disable slideDown animation
+ */
 function parseJobs(jobs, instantly) {
-	for (i = jobs.length - 1; i >= 0; i--) {
-		job = jobs[i];
+	for (var i = jobs.length - 1; i >= 0; i--) {
+		var job = jobs[i];
 			
-		pjob = {
+		var pjob = {
 			site:  job[0],
 			id:    job[1],
 			stamp: job[2],
@@ -146,8 +187,8 @@ function init() {
 		success: function(data) {
 			dsites = data[0];
 				
-			for (i = 0; i < dsites.length; i++) {				
-				dsite = dsites[i];
+			for (var i = 0; i < dsites.length; i++) {				
+				var dsite = dsites[i];
 				
 				sites[dsite[0]] = {
 					folder: dsite[1],
@@ -156,7 +197,7 @@ function init() {
 				}
 			}
 			
-			jobs = data[1];
+			var jobs = data[1];
 			
 			parseJobs(jobs, true);
 		}

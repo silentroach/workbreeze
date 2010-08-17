@@ -20,13 +20,18 @@ ul {
 	margin: 0px;
 }
 
-#logo {
+#logor, #logo {
 	font-size: 18pt;
 	font-weight: bold;
 	text-shadow: black 1px 1px 1px;
 }
 
-#logo a {
+#logor {
+	float: right;
+	margin-right: 0.5em;
+}
+
+#logo a, #logor a {
 	border-bottom: 0px;
 }
 
@@ -56,9 +61,12 @@ ul.job {
 	margin-bottom: 1%;
 }
 
-ul.job .title, ul.job .title a {
+.title, .title a {
 	font-weight: bold;
 	color: white;
+}
+
+ul.job .title, ul.job .title a {
 	margin-bottom: 0.5em;
 	float: left;
 	border-bottom: 0px;

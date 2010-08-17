@@ -94,7 +94,7 @@ class Parser {
         <meta http-equiv="content-type" content="text/html; charset=utf-8" />
         <link rel="stylesheet" href="/css/main.css" type="text/css" />
 <body>
-<div id="logo"><a href="/">WorkBreeze</a></div>
+<div id="logor"><a href="/">WorkBreeze</a></div>
 
 <p class="title">{$info['title']}</p>
 

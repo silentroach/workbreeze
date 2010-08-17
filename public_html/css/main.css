@@ -38,12 +38,12 @@ ul {
 	position: fixed;
 	top: 0px;
 	padding-top: 5px;
-	width: 50%;
+	width: 45%;
 }
 
 #right {
 	float: right;
-	width: 40%;
+	width: 50%;
 }
 
 ul.job {
@@ -61,6 +61,7 @@ ul.job .title, ul.job .title a {
 	color: white;
 	margin-bottom: 0.5em;
 	float: left;
+	border-bottom: 0px;
 }
 
 ul.job .time {
@@ -69,4 +70,18 @@ ul.job .time {
 
 ul.job .desc {
 	clear: both;
+}
+
+.ico {
+	padding-left: 22px;
+	background-repeat: no-repeat;
+	background-position: left;
+}
+
+.ico_freelance_ru {
+	background-image: url('/img/favicons/freelance_ru.png');
+}
+
+.ico_weblancer_net {
+	background-image: url('/img/favicons/weblancer_net.png');
 }

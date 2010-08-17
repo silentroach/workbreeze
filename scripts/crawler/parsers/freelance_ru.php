@@ -1,6 +1,6 @@
 <?php
 
-class Parser_freelance extends Parser implements IParser {
+class Parser_freelance_ru extends Parser implements IParser {
 
 	public function getSiteCode() {
 		return 1;
@@ -11,7 +11,7 @@ class Parser_freelance extends Parser implements IParser {
 	}
 	
 	public function getSiteFolder() {
-		return 'freelance';
+		return 'freelance_ru';
 	}
 
 	public function getParserName() {

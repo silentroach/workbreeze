@@ -11,6 +11,14 @@ var jobPlace;
 var queue = [];
 var sites = [];
 
+function checkTimeVal(i) {
+	if (i < 10) {
+		i = "0" + i;
+	}
+
+	return i;
+}
+
 function checkNewJobs() {
 	dropNewTimer();
 
@@ -82,6 +90,8 @@ function addJob(job, instantly) {
 	jobEl.hide();
 
 	lnk = $("<a>")
+		.addClass('ico')
+		.addClass('ico_' + sites[job.site].folder)
 		.attr({
 			'href': '/jobs/' + sites[job.site].folder + '/' + job.id + '.html'
 		})
@@ -92,7 +102,10 @@ function addJob(job, instantly) {
 	
 	stmp = new Date(job.stamp * 1000);
 	
-	$('li.time', jobEl).html(stmp.toLocaleTimeString());
+	$('li.time', jobEl).html(
+		checkTimeVal(stmp.getHours()) + ':' +
+		checkTimeVal(stmp.getMinutes())
+	);
 	
 	queue.push(jobEl);
 	

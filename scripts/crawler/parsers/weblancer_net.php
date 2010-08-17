@@ -1,6 +1,6 @@
 <?php
 
-class Parser_weblancer extends Parser implements IParser {
+class Parser_weblancer_net extends Parser implements IParser {
 
 	public function getSiteCode() {
 		return 0;
@@ -15,7 +15,7 @@ class Parser_weblancer extends Parser implements IParser {
 	}
 	
 	public function getSiteFolder() {
-		return 'weblancer';
+		return 'weblancer_net';
 	}
 	
 	public function getUrl() {

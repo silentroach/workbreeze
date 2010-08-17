@@ -58,6 +58,7 @@ function popFromQueue(instantly) {
 	tmpEl = queue.pop();
 	
 	tmpEl
+		.hide()
 		.prependTo(jobPlace);
 		
 	if (!instantly)
@@ -95,7 +96,7 @@ function addJob(job, instantly) {
 	
 	queue.push(jobEl);
 	
-	if (instantly = 1)
+	if (instantly)
 		popFromQueue(instantly);
 }
 

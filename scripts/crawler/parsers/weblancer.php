@@ -78,8 +78,7 @@ s</div>
 		if (3 != count($matches)) {
 			$this->log(array(
 				'url'  => $url, 
-				'msg'  => 'can\'t extract title', 
-				'page' => $res
+				'msg'  => 'can\'t extract title' 
 			));
 			return true;
 		}
@@ -97,8 +96,7 @@ s</div>
 		if (2 != count($matches)) {
 			$this->log(array(
 				'url'  => $url, 
-				'msg'  => 'can\'t extract description', 
-				'page' => $res
+				'msg'  => 'can\'t extract description' 
 			));
 			return true;
 		}

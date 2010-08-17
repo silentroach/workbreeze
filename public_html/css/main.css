@@ -5,7 +5,7 @@ body {
 	background-color: #2e3436;
 	color: silver;
 	
-	font-family: "Lucida Sans", "Trebuchet MS", Tahoma, sans-serif;
+	font-family: "Trebuchet MS", "Lucida Sans", Tahoma, sans-serif;
 	font-size: 12pt;
 }
 
@@ -21,7 +21,7 @@ ul {
 }
 
 #logo {
-	font-size: 14pt;
+	font-size: 18pt;
 	font-weight: bold;
 	text-shadow: black 1px 1px 1px;
 }
@@ -38,7 +38,7 @@ ul {
 	position: fixed;
 	top: 0px;
 	padding-top: 5px;
-	width: 55%;
+	width: 50%;
 }
 
 #right {
@@ -48,13 +48,12 @@ ul {
 
 ul.job {
 	clear: both;
-	float: right;
 	font-size: 10pt;
 	border: 1px solid grey;
-	width: 99%;
+	width: 90%;
 	display: block;
 	padding: 5px;
-	margin-bottom: 0.5%;
+	margin-bottom: 1%;
 }
 
 ul.job .title, ul.job .title a {

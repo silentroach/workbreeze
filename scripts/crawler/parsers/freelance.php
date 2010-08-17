@@ -105,8 +105,7 @@ class Parser_freelance extends Parser implements IParser {
 			if (2 != count($matches)) {
 				$this->log(array(
 					'url'  => $url, 
-					'msg'  => 'can\'t extract title', 
-					'page' => $res
+					'msg'  => 'can\'t extract title' 
 				));
 				return true;
 			}
@@ -115,8 +114,7 @@ class Parser_freelance extends Parser implements IParser {
 		} else {
 				$this->log(array(
 					'url'  => $url, 
-					'msg'  => 'can\'t extract title', 
-					'page' => $res
+					'msg'  => 'can\'t extract title' 
 				));
 				return true;
 		}
@@ -127,8 +125,7 @@ class Parser_freelance extends Parser implements IParser {
 			if (3 != count($matches)) {
 				$this->log(array(
 					'url'  => $url, 
-					'msg'  => 'can\'t extract description', 
-					'page' => $res
+					'msg'  => 'can\'t extract description' 
 				));
 				return true;
 			}
@@ -143,8 +140,7 @@ class Parser_freelance extends Parser implements IParser {
 			if (2 != count($matches)) {
 				$this->log(array(
 					'url'  => $url, 
-					'msg'  => 'can\'t extract contest description', 
-					'page' => $res
+					'msg'  => 'can\'t extract contest description' 
 				));
 				return true;
 			}

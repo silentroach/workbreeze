@@ -1,6 +1,6 @@
 <?
 
-require 'parser.php';
+require(PATH_CLASSES . 'parser.php');
 
 class Scheduler {
 

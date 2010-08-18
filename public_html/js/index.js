@@ -38,7 +38,7 @@ function checkNewJobs() {
 	dropNewTimer();
 
 	$.ajax({
-		url: '/j',
+		url: '/up',
 		type: 'POST',
 		data: {
 			'stamp': lastStamp
@@ -156,17 +156,7 @@ function addJob(job, instantly) {
  */
 function parseJobs(jobs, instantly) {
 	for (var i = jobs.length - 1; i >= 0; i--) {
-		var job = jobs[i];
-			
-		var pjob = {
-			site:  job[0],
-			id:    job[1],
-			stamp: job[2],
-			title: job[3],
-			desc:  job[4]
-		};
-		
-		addJob(pjob, instantly);
+		addJob(jobs[i], instantly);
 	}
 }
 
@@ -185,19 +175,19 @@ function init() {
 		url: '/init',
 		dataType: 'json',
 		success: function(data) {
-			dsites = data[0];
+			dsites = data.sites;
 				
 			for (var i = 0; i < dsites.length; i++) {				
 				var dsite = dsites[i];
 				
-				sites[dsite[0]] = {
-					folder: dsite[1],
-					name: dsite[2],
-					url: dsite[3]
+				sites[dsite.id] = {
+					folder: dsite.folder,
+					name:  dsite.name,
+					url:    dsite.url
 				}
 			}
 			
-			var jobs = data[1];
+			var jobs = data.jobs;
 			
 			parseJobs(jobs, true);
 		}

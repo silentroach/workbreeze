@@ -1,4 +1,7 @@
 #!/usr/bin/php
 <?
 
-require('tester.php');
+require('../defines.php');
+require(PATH_CLASSES . 'tester.php');
+
+Tester::testFolder(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'tests' . DIRECTORY_SEPARATOR);

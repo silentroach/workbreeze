@@ -1,6 +1,6 @@
 <?php
 
-class MJ extends Module {
+class MUp extends Module {
 
 	protected function getJobs() {
 		$stamp = isset($_POST['stamp']) ? intval($_POST['stamp']) : 0;
@@ -23,11 +23,11 @@ class MJ extends Module {
 		
 		while ($job = $cursor->getNext()) {
 			$jobs[] = array(
-				$job['site'],
-				$job['id'],
-				$job['stamp'],
-				$job['title'],
-				isset($job['short']) ? $job['short'] : $job['desc']
+				'site'  => $job['site'],
+				'id'    => $job['id'],
+				'stamp' => $job['stamp'],
+				'title' => $job['title'],
+				'desc'  => isset($job['short']) ? $job['short'] : $job['desc']
 			);
 		}
 		

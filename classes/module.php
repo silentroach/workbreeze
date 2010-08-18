@@ -12,7 +12,7 @@ class Module {
 	protected function db() {
 		if (!$this->db) {
 			$db = new Mongo();
-			$this->db = $db->selectDB('breeze');
+			$this->db = $db->selectDB(DB);
 		}
 		
 		return $this->db;

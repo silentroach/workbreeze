@@ -1,8 +1,8 @@
 #!/usr/bin/php
 <?php
 
-require('defines.php');
-require('crawler/parser.php');
+require('../defines.php');
+require(PATH_CLASSES . 'parser.php');
 
 $mongo = new Mongo();
 
@@ -12,7 +12,7 @@ $db = $mongo->$dbname;
 
 $pc = $db->sites;
 
-$parsers = glob('crawler/parsers/*.php');
+$parsers = glob(PATH_CLASSES . 'parsers' . DIRECTORY_SEPARATOR . '*.php');
 
 foreach($parsers as $parser) {
 	require($parser);

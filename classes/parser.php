@@ -76,7 +76,9 @@ class Parser {
 	}
 	
 	private function getJobPagePath($id) {
-		return PUBLIC_JOBS_DIR . $this->getSiteFolder() . DIRECTORY_SEPARATOR . $id . '.html';
+		return PATH_PUBLIC . 'jobs' 
+			. DIRECTORY_SEPARATOR . $this->getSiteFolder() 
+			. DIRECTORY_SEPARATOR . $id . '.html';
 	}
 	
 	private function generateJobPage($info) {

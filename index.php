@@ -22,12 +22,11 @@ $module = array_shift($query);
 if (null === $module) {
 	fail();
 }
-	
-$here = dirname(__FILE__) . DIRECTORY_SEPARATOR;
 
-require($here . 'module.php');
+require('defines.php');	
+require(PATH_CLASSES . 'module.php');
 
-$mname = $here . 'modules' . DIRECTORY_SEPARATOR . $module . '.php';
+$mname = PATH_CLASSES . 'modules' . DIRECTORY_SEPARATOR . $module . '.php';
 
 if (!file_exists($mname)) {
 	fail();

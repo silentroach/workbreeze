@@ -1,8 +1,8 @@
 <?php
 
-require 'j.php';
+require 'up.php';
 
-class MInit extends MJ {
+class MInit extends MUp {
 
 	private function getSites() {
 		$db = $this->db();
@@ -14,7 +14,12 @@ class MInit extends MJ {
 		$cursor = $c->find();
 		
 		while ($site = $cursor->getNext()) {
-			$sites[] = array($site['code'], $site['folder'], $site['name'], $site['url']);
+			$sites[] = array(
+				'id'     => $site['code'], 
+				'folder' => $site['folder'], 
+				'name'   => $site['name'], 
+				'url'    => $site['url']
+			);
 		}
 		
 		return $sites;
@@ -22,8 +27,8 @@ class MInit extends MJ {
 
 	protected function runModule() {
 		return array(
-			$this->getSites(),
-			$this->getJobs()
+			'sites' => $this->getSites(),
+			'jobs'  => $this->getJobs()
 		);
 	}
 

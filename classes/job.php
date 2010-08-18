@@ -14,11 +14,21 @@ class Job {
 	}
 
 	public function setDescription($text = '') {
+		$text = trim($text);
+		
+		while (false !== strpos($text, '  ')) {
+			$text = str_replace('  ', ' ', $text);
+		}
+	
 		$text = str_replace(
-			array(' />', '<br/>', '  ', '> ', ' <', "\n\n\n"), 
-			array('/>' , "\n"   , ' ' , '>' ,  '<', "\n\n"), 
+			array(' />', '<br/>', '<br>', '> ', ' </'),
+			array('/>' , "\n"   , "\n"  , '>' ,  '</'),
 			$text
 		);
+		
+		while (false !== strpos($text, "\n\n\n")) {
+			$text = str_replace("\n\n\n", "\n\n", $text);
+		}
 		
 		$text = strip_tags($text, '<a>');
 		

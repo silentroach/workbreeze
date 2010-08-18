@@ -4,7 +4,7 @@
 var lastStamp = 0;
 var queueTimer;
 var newTimer;
-/** @const */ var checkInterval = 60000;
+/** @const */ var checkInterval = 30000;
 var jobTemplate;
 var jobPlace;
 

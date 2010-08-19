@@ -29,7 +29,7 @@ java -jar tmp/other/utils/compiler.jar --js ../../public_html/js/jquery.js --war
 gzip -c9 tmp/public_html/js/jquery.js > tmp/public_html/js/jquery.js.gz
 
 echo 'Index script...'
-java -jar tmp/other/utils/compiler.jar --js ../../public_html/js/index.js --warning_level QUIET --externs tmp/public_html/js/jquery.js --compilation_level ADVANCED_OPTIMIZATIONS > tmp/public_html/js/index.js
+java -jar tmp/other/utils/compiler.jar --js ../../public_html/js/index.js --warning_level QUIET --externs tmp/public_html/js/jquery.js --compilation_level WHITESPACE_ONLY > tmp/public_html/js/index.js
 gzip -c9 tmp/public_html/js/index.js > tmp/public_html/js/index.js.gz
 
 desc 'Compressing css'

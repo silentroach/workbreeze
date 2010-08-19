@@ -5,7 +5,7 @@
 require('../defines.php');
 
 // requiring helpers
-require(PATH_CLASSES . 'scheduler.php';
+require(PATH_CLASSES . 'scheduler.php');
 
 // initialize mongo connection
 try {

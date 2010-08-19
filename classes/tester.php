@@ -7,7 +7,7 @@ class Tester {
 	private $job;
 	
 	public function __construct() {
-		$this->job = new Job();
+		$this->job = new Job(null);
 	}
 	
 	private function testFile($file) {

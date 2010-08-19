@@ -85,7 +85,7 @@ class Scheduler {
 		}
 	}
 	
-	public function processQueue() {
+	public function processQueue() {	
 		$queue = $this->db->queue;
 		$sites = $this->db->sites;
 		

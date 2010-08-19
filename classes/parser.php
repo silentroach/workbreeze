@@ -1,5 +1,7 @@
 <?php
 
+require(PATH_CLASSES . 'job.php');
+
 interface IParser {
 	public function getSiteCode();
 	public function getSiteName();
@@ -81,8 +83,8 @@ class Parser {
 			. DIRECTORY_SEPARATOR . $id . '.html';
 	}
 	
-	private function generateJobPage($info) {
-		$fname = $this->getJobPagePath($info['id']);
+	private function generateJobPage($job) {
+		$fname = $this->getJobPagePath($job->getId());
 		
 		if (!file_exists(dirname($fname))) {
 			mkdir(dirname($fname), 0777, true);
@@ -91,49 +93,47 @@ class Parser {
 		$content = <<<EOF
 <!DOCTYPE html>
 <html>
-        <title>WorkBreeze - {$info['title']}</title>
+        <title>WorkBreeze - {$job->getTitle()}</title>
 
         <meta http-equiv="content-type" content="text/html; charset=utf-8" />
         <link rel="stylesheet" href="/css/main.css" type="text/css" />
 <body>
 <div id="logor"><a href="/">WorkBreeze</a></div>
 
-<p class="title">{$info['title']}</p>
+<p class="title">{$job->getTitle()}</p>
 
-{$info['desc']}
+{$job->getDescription()}
 <br /><br />
 
-<a href="{$info['url']}">&gt; {$this->getSiteName()}</a>
+<a href="{$job->getUrl()}">&gt; {$this->getSiteName()}</a>
 </body>
 </html>
 EOF;
 
 		$content = str_replace(array("\t", "\r", "\n"), '', $content);
-		$content = str_replace('  ', ' ', $content);
+		
+		while (false !== strpos($content, '  ')) {
+			$content = str_replace('  ', ' ', $content);
+		}
 		
 		file_put_contents($fname, $content);
 		
 		$out = system('gzip -c9 ' . $fname . ' > ' . $fname . '.gz');
 	}
 	
-	protected function addJob($info) {
-		$info['site']  = $this->getSiteCode();
-		$info['stamp'] = time();
-		
-		if (
-			isset($info['categories'])
-			&& 0 === count($info['categories'])
-		) {
-			unset($info['categories']);
+	protected function addJob($job) {
+		if ($job->insert()) {		
+			$this->generateJobPage($job);
+			echo 'Job ' . $job->getId() . " added\n";
+			
+			return true;
 		}
-	
-		$this->db->jobs->insert($info);
-		
-		$this->generateJobPage($info);
-		
-		echo 'Job ' . $info['id'] . " added\n";
 
-		return true;
+		return false;
+	}
+	
+	protected function newJob() {
+		return Job::createBySite($this->db, $this->getSiteCode());
 	}
 	
 	protected function afterRequest($data) {

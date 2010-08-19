@@ -57,11 +57,6 @@ class Parser_weblancer_net extends Parser implements IParser {
 		if (404 === $res)
 			// drop queued jobs that are not found
 			return true;
-
-		$info = array(
-			'id'  => $id,
-			'url' => $url
-		);
 		
 /*
 <div class="title_box">
@@ -83,13 +78,7 @@ s</div>
 			return true;
 		}
 		
-		$info['title'] = trim($matches[2]);
-		
-//		preg_match_all('/<a href="\/projects\/\?category_id=(\d+)">(.*?)<\/a>/', $res, $matches);
-		
-//		array_shift($matches);
-		
-//		$info['categories'] = $this->checkCategories(array_combine($matches[0], $matches[1]));
+		$title = trim($matches[2]);
 
 		preg_match('/id_description">(.*)<a name="bid/is', $res, $matches);
 		
@@ -103,26 +92,24 @@ s</div>
 		
 		array_shift($matches);
 		
-		$description = array_shift($matches);
+		$desc = array_shift($matches);
 		
-		$i = mb_strpos($description, '[Приложения]');
+		$i = mb_strpos($desc, '[Приложения]');
 		
 		if (false !== $i) {
-			$description = mb_substr($description, 0, $i) . '</div>';
+			$desc = mb_substr($desc, 0, $i) . '</div>';
 		}
 		
-		$description = preg_replace('/<div class="disabled">(.*)<\/div>/', '', $description);
-		$description = strip_tags($description, '<a>');
-		$description = trim($description);
-		
-		$description = str_replace(array("\r\n", "\r", "\n"), '<br />', $description);
+		$desc = preg_replace('/<div class="disabled">(.*)<\/div>/', '', $desc);
 
-		$info['desc'] = str_replace('<br /><br />', '<br />', $description);
-		
-		if (preg_match('/([^ \n\r]+[ \n\r]+){30}/s', $info['desc'], $match))
-			$info['short'] = $match[0] . '...';
+		$job = $this->newJob();
+		$job->
+			setId($id)->
+			setUrl($url)->
+			setTitle($title)->
+			setDescription($desc);
 				
-		$this->addJob($info);
+		$this->addJob($job);
 		
 		return true;
 	}

@@ -65,11 +65,6 @@ class Parser_freelance_ru extends Parser implements IParser {
 		if (404 === $res)
 			// drop queued jobs that are not found
 			return true;
-			
-		$info = array(
-			'id'  => $id,
-			'url' => $url
-		);
 		
 /*
 <h2 class="prj_name">Курьер в компанию Free-lance.ru</h2>
@@ -96,7 +91,7 @@ class Parser_freelance_ru extends Parser implements IParser {
 			preg_match('/<h3>(.*?)<\/h3>/', $res, $matches)
 			&& 2 === count($matches)
 		) {
-			$info['title'] = trim($matches[1]);
+			$title = trim($matches[1]);
 			
 			$contest = true;
 		} else
@@ -110,7 +105,7 @@ class Parser_freelance_ru extends Parser implements IParser {
 				return true;
 			}
 		
-			$info['title'] = trim($matches[1]);
+			$title = trim($matches[1]);
 		} else {
 				$this->log(array(
 					'url'  => $url, 
@@ -133,7 +128,7 @@ class Parser_freelance_ru extends Parser implements IParser {
 			array_shift($matches);
 			array_shift($matches);
 		
-			$description = array_shift($matches);
+			$desc = array_shift($matches);
 		} else {
 			preg_match('/<\/h3>(.*?)<\/div/is', $res, $matches);
 			
@@ -145,41 +140,17 @@ class Parser_freelance_ru extends Parser implements IParser {
 				return true;
 			}
 					
-			$description = $matches[1];
+			$desc = $matches[1];
 		}
 		
-		$description = str_replace('&nbsp;', '', $description);
-		$description = str_replace('  ', ' ', $description);
-		$description = str_replace('> ', '>', $description);
-		$description = str_replace('<br/>', "\n", $description);
-		$description = str_replace("\n\n\n", "\n\n", $description);
-		
-		$description = strip_tags($description, '<a>');
-		$description = trim($description);
-		
-		$description = str_replace(array("\r\n", "\r", "\n"), '<br />', $description);
-		
-		if (preg_match_all('/a href="\/a.php\?href=(.*?)"/', $description, $matches)) {
-			array_shift($matches);
-			
-			$urls = array_shift($matches);
-			
-			foreach($urls as $url) {
-				$urlnew = urldecode($url);
-
-				$description = str_replace('/a.php?href=' . $url, $urlnew, $description);
-			}
-			
-			$description = str_replace('target="_blank"', '', $description);
-			$description = str_replace('  ', ' ', $description);
-		}
-		
-		$info['desc'] = str_replace('<br /><br />', '<br />', $description);
-		
-		if (preg_match('/([^ \n\r]+[ \n\r]+){30}/s', $info['desc'], $match))
-			$info['short'] = $match[0] . '...';
-		
-		$this->addJob($info);
+		$job = $this->newJob();
+		$job->
+			setId($id)->
+			setUrl($url)->
+			setTitle($title)->
+			setDescription($desc);
+				
+		$this->addJob($job);
 		
 		return true;
 	}

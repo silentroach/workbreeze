@@ -26,7 +26,7 @@ function checkTimeVal(i) {
 }
 
 function checkJobPlace() {
-	while (joblist.length > 15) {
+	while (joblist.length > 20) {
 		tmpEl = joblist.shift();
 		tmpEl.fadeOut('slow', function() { 
 			$(this).remove();

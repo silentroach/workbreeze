@@ -37,7 +37,9 @@ echo 'main...'
 java -jar tmp/other/utils/yui.jar --type css -o tmp/public_html/css/main.css ../../public_html/css/main.css
 gzip -c9 tmp/public_html/css/main.css > tmp/public_html/css/main.css.gz
 
-desc 'Sed configs'
+desc 'Sed something'
+echo 'debug in defines'
+sed 's/DEBUG/UNDEBUG/' ../../defines.php > tmp/defines.php
 echo 'nginx...'
 sed "s/workbreeze.dev/workbreeze.com/;s/\/home\/silent\/Projects\/work/\/srv\//" ../../other/configs/nginx.conf > tmp/other/configs/nginx.conf
 

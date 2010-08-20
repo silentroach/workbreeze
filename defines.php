@@ -6,3 +6,5 @@
 	define('PATH_PUBLIC',  $basepath . $ds . 'public_html' . $ds);
 
 	define('DB', 'breeze');
+
+	define('DEBUG', 1);

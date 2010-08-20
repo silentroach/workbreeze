@@ -1,5 +1,7 @@
 <?php
 
+require(PATH_CLASSES . 'json.php');
+
 class Module {
 
 	private $request;
@@ -30,7 +32,7 @@ class Module {
 			|| is_array($object)
 		) {
 			header('Content-Type: application/json');
-			echo json_encode($object);
+			echo JSON::encode($object);
 		}
 	}
 

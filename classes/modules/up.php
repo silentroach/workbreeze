@@ -19,7 +19,7 @@ class MUp extends Module {
 		$cursor->sort(array(
 			'stamp' => 0
 		));
-		$cursor->limit(10);
+		$cursor->limit(15);
 		
 		while ($job = $cursor->getNext()) {
 			$jobs[] = array(

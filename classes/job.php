@@ -168,7 +168,8 @@ class Job {
 		$text = strip_tags($text, '<a>');
 		
 		$text = str_replace(array("\r\n", "\r", "\n"), '<br />', $text);
-		
+		$text = str_replace(array(' . ', ' , '), array('. ', ', '), $text);
+	
 		$text = trim($text);
 		
 		while ('<br />' === mb_substr($text, strlen($text) - 6, 6)) {
@@ -179,7 +180,7 @@ class Job {
 			$text = mb_substr($text, 6, strlen($text) - 6);
 		}
 		
-		$this->description = $text;
+		$this->description = trim($text);
 		
 		if (preg_match('/([^ \n\r]+[ \n\r]+){20}/s', $text, $match))
 			$this->description_short = str_replace('<br /><br />', '<br />', $match[0]) . '...';

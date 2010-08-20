@@ -56,8 +56,6 @@ class Parser_freelance_ru extends Parser implements IParser {
 	
 	public function processJob($id, $url) {
 		$res = $this->getRequest($url);
-		
-//		$res = file_get_contents('test.txt');
 	
 		if (!$res)
 			return false;

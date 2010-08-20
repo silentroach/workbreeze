@@ -12,6 +12,7 @@ class Tester {
 	
 	private function testFile($file) {
 		$i = pathinfo($file);
+
 		$outname = $i['dirname'] . DIRECTORY_SEPARATOR . $i['filename'] . '.html';
 		
 		$text = trim(file_get_contents($file));
@@ -20,7 +21,9 @@ class Tester {
 		$this->job->setDescription($text);
 		
 		if ($out != $this->job->getDescription()) {
-			return $out . "\n---------------------------------------------------\n" . $this->job->getDescription() . "\n";
+			return $this->job->getDescription() . 
+				"\n---------------------------------------------------\n" . 
+				$out . "\n";
 		}
 	
 		return true;

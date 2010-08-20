@@ -81,7 +81,7 @@ class Job {
 	}
 	
 	public function setTitle($title) {
-		$this->title = strip_tags($title);
+		$this->title = trim(strip_tags($title));
 		return $this;
 	}
 	
@@ -138,11 +138,6 @@ class Job {
 			}
 		}
 
-		$text = preg_replace(
-			"#\[(([a-zA-Z]+://)([a-zA-Z0-9?&%.;:/=+_-]*))\]#e", 
-			"'<a href=\"$1\" target=\"_blank\">' . reduceurl(\"$3\", 30) . '</a>'", 
-			$text);
-
 		$text = str_replace('•', '- ', $text);
 		
 		$text = str_replace('&nbsp;', ' ', $text);
@@ -151,9 +146,15 @@ class Job {
 		while (false !== strpos($text, '  ')) {
 			$text = str_replace('  ', ' ', $text);
 		}
-		
+
 		$text = str_replace(
 			array('<br />', '<br>', '<br/>'),
+			'<br />',
+			$text
+		);
+		
+		$text = str_replace(
+			'<br />',
 			"\n",
 			$text
 		);

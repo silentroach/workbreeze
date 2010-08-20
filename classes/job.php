@@ -137,7 +137,12 @@ class Job {
 				$text = str_replace($url, '<a href="' . $href . '">' . $val . '</a>', $text);
 			}
 		}
-		
+
+		$text = preg_replace(
+			"#\[(([a-zA-Z]+://)([a-zA-Z0-9?&%.;:/=+_-]*))\]#e", 
+			"'<a href=\"$1\" target=\"_blank\">' . reduceurl(\"$3\", 30) . '</a>'", 
+			$text);
+
 		$text = str_replace('•', '- ', $text);
 		
 		$text = str_replace('&nbsp;', ' ', $text);

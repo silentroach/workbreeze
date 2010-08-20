@@ -43,12 +43,12 @@ ul {
 	position: fixed;
 	top: 0px;
 	padding-top: 5px;
-	width: 45%;
+	width: 35%;
 }
 
 #right {
 	float: right;
-	width: 50%;
+	width: 60%;
 }
 
 ul.job {
@@ -64,6 +64,7 @@ ul.job {
 .title, .title a {
 	font-weight: bold;
 	color: white;
+	white-space: nowrap;
 }
 
 ul.job .title, ul.job .title a {
@@ -80,16 +81,15 @@ ul.job .desc {
 	clear: both;
 }
 
-.ico {
+.sico {
 	padding-left: 22px;
 	background-repeat: no-repeat;
-	background-position: left;
+	background-image: url('/img/favicons.png');
 }
 
-.ico_freelance_ru {
-	background-image: url('/img/favicons/freelance_ru.png');
+.sico_freelance_ru {
+	background-position-y: 1px;
 }
-
-.ico_weblancer_net {
-	background-image: url('/img/favicons/weblancer_net.png');
+.sico_weblancer_net {
+	background-position-y: -31px;
 }

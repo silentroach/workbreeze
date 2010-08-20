@@ -126,8 +126,8 @@ function addJob(job, instantly) {
 	jobEl.hide();
 
 	lnk = $("<a>")
-		.addClass('ico')
-		.addClass('ico_' + sites[job.site].folder)
+		.addClass('sico')
+		.addClass('sico_' + sites[job.site].folder)
 		.attr({
 			'href': '/jobs/' + sites[job.site].folder + '/' + job.id + '.html'
 		})

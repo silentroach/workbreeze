@@ -1,0 +1,64 @@
+#!/usr/bin/php
+<?php
+
+require('../defines.php');
+require(PATH_CLASSES . 'parser.php');
+
+$mongo = new Mongo();
+
+$dbname = DB;
+
+$db = $mongo->$dbname;
+
+$pc = $db->sites;
+
+$parsers = glob(PATH_CLASSES . 'parsers' . DIRECTORY_SEPARATOR . '*.php');
+
+$icons = array();
+
+foreach($parsers as $parser) {
+        require($parser);
+
+        $pinfo = pathinfo($parser);
+
+        $className = 'Parser_' . $pinfo['filename'];
+
+        $parser = new $className($db);
+
+	$icons[] = array(
+		'filename' => dirname(__FILE__) . 
+			DIRECTORY_SEPARATOR . 'favicons' .
+			DIRECTORY_SEPARATOR . $parser->getSiteFolder() . '.png',
+		'folder' => $parser->getSiteFolder()
+	);
+}
+
+$img = imagecreatetruecolor(16, count($icons) * 2 * 16 - 16);
+imagealphablending($img, true);
+
+$top = 0;
+$css = '';
+
+foreach($icons as $key => $icon) {
+	$imgf = imagecreatefrompng($icon['filename']);
+
+	imagecopy($img, $imgf, 0, $top, 0, 0, 16, 16);
+
+	$tt = -$top + 1;
+
+	$css .= <<<EOF
+.sico_{$icon['folder']} {
+	background-position-y: {$tt}px;
+}
+
+EOF;
+
+	$top = $top + 32;
+
+	imagedestroy($imgf);
+}
+
+imagepng($img, PATH_PUBLIC . 'img' . DIRECTORY_SEPARATOR . 'favicons.png');
+imagedestroy($img);
+
+echo $css . "\n";

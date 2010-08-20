@@ -51,8 +51,7 @@ class Parser {
 	protected function queueJobLink($jobId, $link) {
 		$info = array(
 			'site' => $this->getSiteCode(),
-			'id'   => $jobId,
-			'rnd'  => rand(1, 10000)
+			'id'   => $jobId
 		);
 	
 		$tmp = $this->jobs->findOne($info);
@@ -70,6 +69,7 @@ class Parser {
 		echo 'Queueing job [' . $link . "]\n";
 		
 		$info['url'] = $link;
+		$info['rnd'] = rand(1, 10000);
 		
 		$this->queue->insert($info);
 		

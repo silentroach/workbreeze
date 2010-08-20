@@ -66,6 +66,8 @@ class Scheduler {
 			if ('job' === $item['type']) {
 				if ($parser->processJob($item['id'], $item['url'])) {
 					$queue->remove(array('_id' => $item['_id']));	
+					// stamps must be unique
+					sleep(1);
 				}
 			}
 		}

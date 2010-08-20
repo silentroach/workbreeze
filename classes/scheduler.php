@@ -51,7 +51,9 @@ class Scheduler {
 		$queue = $this->db->queue;
 		$sites = $this->db->sites;
 		
-		$c = $queue->find()->sort(array('$random' => 1))->limit(10);
+		$c = $queue->find();
+		$c->sort(array('rnd' => 1));
+		$c->limit(10);
 		
 		while ($item = $c->getNext()) {
 			$site = $sites->findOne(array('code' => $item['site']));

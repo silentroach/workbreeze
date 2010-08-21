@@ -4,13 +4,16 @@
 var lastStamp = 0;
 var queueTimer;
 var newTimer;
+var filterTimer;
 /** @const */ var checkInterval = 30000;
 var jobTemplate;
 var jobPlace;
+var keywords = [];
 
 var queue    = [];
 var joblist  = [];
 var sites    = [];
+var lang     = [];
 
 /**
  * Check leading zero in single char int
@@ -99,7 +102,9 @@ function popFromQueue(instantly) {
 		.prependTo(jobPlace);
 		
 	if (!instantly)
-		tmpEl.slideDown('slow');
+		tmpEl.slideDown('slow', function() {
+			checkJobForKeys($(this));
+		} );
 	else
 		tmpEl.show();
 
@@ -156,8 +161,109 @@ function addJob(job, instantly) {
  */
 function parseJobs(jobs, instantly) {
 	for (var i = jobs.length - 1; i >= 0; i--) {
-		addJob(jobs[i], instantly);
+		var job = {
+			id:    jobs[i].i,
+			site:  jobs[i].s,
+			stamp: jobs[i].st,
+			title: jobs[i].t,
+			desc:  jobs[i].d
+		};
+		
+		addJob(job, instantly);
 	}
+}
+
+/**
+ * Parse sites info
+ * @param {!Array} s sites info array
+ */
+function parseSites(s) {
+	for (var i = 0; i < s.length; i++) {				
+		var site = s[i];
+	
+		sites[site.i] = {
+			folder: site.f,
+			name:  site.n,
+			url:    site.u
+		}
+	}
+}
+
+/**
+ * Localize items on the page
+ */
+function localize() {
+	$('.l').each(function() {
+		if (
+			$(this).hasClass('lp')
+			&& undefined != $(this).attr('lp')
+			&& undefined != lang[ $(this).attr('lp') ]
+		) {
+			$(this).attr( {
+				'placeholder': lang[$(this).attr('lp')]
+			} );
+		}
+	});
+}
+
+function checkJobForKeys(element) {
+	var str = $('.title', element).html() + $('.desc', element).html();
+	str = str.toLowerCase();
+	
+	var found = false;
+
+	if (0 != keywords.length)	{
+		for (var i = 0; i < keywords.length; i++) {
+			if (str.indexOf(keywords[i].toLowerCase()) >= 0) {
+				found = true;
+				break;
+			}
+		}
+	}
+	
+	if (found) {
+		if (!element.hasClass('jsel')) {
+			element.addClass('jsel');
+			
+			element.animate( {
+				'margin-left': '10px'
+			} );
+		}
+	} else if (element.hasClass('jsel')) {
+		element.removeClass('jsel');
+		
+		element.animate( {
+			'margin-left': '0px'
+		} );
+	}
+}
+
+function checkFeedForKeys() {	
+	for (var i = 0; i < joblist.length; i++) {
+		checkJobForKeys(joblist[i]);
+	}
+}
+
+function handleFilter() {
+	$('#keyword')
+		.animate( {
+			'opacity': 0.7
+		}, function() {
+			$(this).
+				animate( {
+					'opacity': 1
+				} );
+		} );
+		
+	var tmp = $('#keyword').val().trim();
+	
+	if ('' == tmp) {
+		keywords = [];
+	} else {	
+		keywords = tmp.split(',');
+	}
+	
+	checkFeedForKeys();
 }
 
 function init() {
@@ -175,23 +281,26 @@ function init() {
 		url: '/init',
 		dataType: 'json',
 		success: function(data) {
-			dsites = data.sites;
-				
-			for (var i = 0; i < dsites.length; i++) {				
-				var dsite = dsites[i];
-				
-				sites[dsite.id] = {
-					folder: dsite.folder,
-					name:  dsite.name,
-					url:    dsite.url
-				}
-			}
+			lang = data.l;
+			localize();
 			
-			var jobs = data.jobs;
-			
-			parseJobs(jobs, true);
+			parseSites(data.s);			
+			parseJobs(data.j, true);
 		}
 	});
+	
+	$('#keyword')
+		.keyup(function(e) {
+			if (null != filterTimer) {
+				clearTimeout(filterTimer);
+			}
+	
+			if (e.keyCode == 13) {
+				handleFilter();
+			} else {
+				filterTimer = setTimeout(handleFilter, 2000);
+			}
+		});
 }
 
 $( function() {

@@ -4,6 +4,12 @@ require 'up.php';
 
 class MInit extends MUp {
 
+	private function getLang() {
+		return array(
+			'keywords' => 'ключевые слова через запятую'
+		);
+	}
+
 	private function getSites() {
 		$db = $this->db();
 		
@@ -15,10 +21,10 @@ class MInit extends MUp {
 		
 		while ($site = $cursor->getNext()) {
 			$sites[] = array(
-				'id'     => $site['code'], 
-				'folder' => $site['folder'], 
-				'name'   => $site['name'], 
-				'url'    => $site['url']
+				'i' => $site['code'], 
+				'f' => $site['folder'], 
+				'n' => $site['name'], 
+				'u' => $site['url']
 			);
 		}
 		
@@ -27,8 +33,9 @@ class MInit extends MUp {
 
 	protected function runModule() {
 		return array(
-			'sites' => $this->getSites(),
-			'jobs'  => $this->getJobs()
+			'l'  => $this->getLang(),
+			's' => $this->getSites(),
+			'j'  => $this->getJobs()
 		);
 	}
 

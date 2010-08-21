@@ -23,11 +23,11 @@ class MUp extends Module {
 		
 		while ($job = $cursor->getNext()) {
 			$jobs[] = array(
-				'site'  => $job['site'],
-				'id'    => $job['id'],
-				'stamp' => $job['stamp'],
-				'title' => $job['title'],
-				'desc'  => isset($job['short']) ? $job['short'] : $job['desc']
+				's'  => $job['site'],
+				'i'  => $job['id'],
+				'st' => $job['stamp'],
+				't'  => $job['title'],
+				'd'  => isset($job['short']) ? $job['short'] : $job['desc']
 			);
 		}
 		

@@ -22,6 +22,7 @@ function php2js($a = false, $level = 0)
 		// Character replacements for JSON.
 		static $jsonReplaces = array(array("\\", "/", "\n", "\t", "\r", "\b", "\f", '"'),
 			array('\\\\', '\\/', '\\n', '\\t', '\\r', '\\b', '\\f', '\"'));
+			
 		return '"' . str_replace($jsonReplaces[0], $jsonReplaces[1], $a) . '"';
 	}
 

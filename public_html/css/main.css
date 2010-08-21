@@ -4,7 +4,9 @@ body {
 	
 	background-color: #2e3436;
 	color: silver;
-	
+}
+
+body, input {
 	font-family: "Trebuchet MS", "Lucida Sans", Tahoma, sans-serif;
 	font-size: 12pt;
 }
@@ -18,6 +20,13 @@ a {
 ul {
 	list-style: none;
 	margin: 0px;
+}
+
+input {
+	background-color: #2e3436;
+	border: 1px solid grey;
+	color: silver;
+	padding: 4px;
 }
 
 #logor, #logo {
@@ -79,6 +88,14 @@ ul.job .time {
 
 ul.job .desc {
 	clear: both;
+}
+
+#filter {
+	margin-top: 2em;
+}
+
+#keyword {
+	width: 100%;
 }
 
 .sico {

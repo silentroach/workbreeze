@@ -53,7 +53,7 @@ class Scheduler {
 		
 		$c = $queue->find();
 		$c->sort(array('rnd' => 1));
-		$c->limit(10);
+		$c->limit(20);
 		
 		while ($item = $c->getNext()) {
 			$site = $sites->findOne(array('code' => $item['site']));

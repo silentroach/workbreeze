@@ -51,7 +51,7 @@ while ($item = $c->getNext()) {
 		'http://workbreeze.com/jobs/' . $site['folder'] . '/' . $item['id'] . '.html'
 	);
 
-	$xml->writeElement('lastmod', date('Y-m-d', $item['stamp']) . 'T' . date('H:i:s', $item['stamp']));
+	$xml->writeElement('lastmod', date('c', $item['stamp']));
 	$xml->writeElement('changefreq', 'weekly');
 
 	$b = time() - $item['stamp'];

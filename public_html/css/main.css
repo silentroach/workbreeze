@@ -52,19 +52,18 @@ input {
 	position: fixed;
 	top: 0px;
 	padding-top: 5px;
-	width: 35%;
+	width: 40%;
 }
 
 #right {
 	float: right;
-	width: 60%;
+	width: 55%;
 }
 
 ul.job {
 	clear: both;
 	font-size: 10pt;
 	border: 1px solid grey;
-	width: 90%;
 	display: block;
 	padding: 5px;
 	margin-bottom: 1%;

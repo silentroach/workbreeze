@@ -219,21 +219,32 @@ function checkJobForKeys(element) {
 				break;
 			}
 		}
-	}
+	} else
+		found = true;
 	
 	if (found) {
-		if (!element.hasClass('jsel')) {
-			element.addClass('jsel');
+		if (
+			!element.hasClass('jsel')
+			|| element.hasClass('jrem')
+		) {
+			element
+				.removeClass('jrem')
+				.addClass('jsel');
 			
 			element.animate( {
-				'margin-left': '10px'
+				'opacity': 1
 			} );
 		}
-	} else if (element.hasClass('jsel')) {
-		element.removeClass('jsel');
+	} else if (
+		!element.hasClass('jrem')
+		|| element.hasClass('jsel')
+	) {
+		element
+			.removeClass('jsel')
+			.addClass('jrem');
 		
 		element.animate( {
-			'margin-left': '0px'
+			'opacity': 0.2
 		} );
 	}
 }

@@ -178,6 +178,10 @@ class Job {
 	
 		$text = trim($text);
 		
+		while (false !== strpos($text, '<br /><br /><br />')) {
+			$text = str_replace('<br /><br /><br />', '<br /><br />', $text);
+		}
+		
 		while ('<br />' === mb_substr($text, strlen($text) - 6, 6)) {
 			$text = mb_substr($text, 0, strlen($text) - 6);
 		}

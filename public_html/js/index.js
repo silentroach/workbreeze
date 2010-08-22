@@ -250,6 +250,14 @@ function localize() {
 				'placeholder': lang[$(this).attr('lp')]
 			} );
 		}
+		
+		if (
+			$(this).hasClass('lv')
+			&& undefined != $(this).attr('lv')
+			&& undefined != lang[ $(this).attr('lv') ]
+		) {
+			$(this).html( lang[$(this).attr('lv')] );
+		}
 	});
 }
 

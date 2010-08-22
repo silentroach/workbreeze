@@ -9,6 +9,9 @@ var filterTimer;
 var jobTemplate;
 var jobPlace;
 
+var playbtn;
+var pausebtn;
+
 var keywords = [];
 var selsites = [];
 
@@ -334,6 +337,25 @@ function handleFilter() {
 function init() {
 	jobTemplate = $('ul.job:first');
 	jobPlace    = $('#right');
+	
+	playbtn = $('#play');
+	pausebtn = $('#pause');
+	
+	pausebtn.click(function() {
+		pausebtn.slideUp('slow');
+		playbtn.slideDown('slow');
+	
+		queue = [];
+		dropNewTimer();
+	} );
+	
+	playbtn.click(function() {
+		playbtn.slideUp('slow');
+		pausebtn.slideDown('slow');
+
+		lastStamp = Math.round(new Date().getTime() / 1000);
+		setNewTimer(5000);
+	} );
 	
 	setQueueTimer(5000);
 	setNewTimer(5000);

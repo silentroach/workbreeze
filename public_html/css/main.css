@@ -77,6 +77,16 @@ input {
 	margin-right: 6px;
 }
 
+#pp {
+	clear: both;
+	padding-left: 0px;
+	padding-top: 1em;
+}
+
+#play {
+	display: none;
+}
+
 ul.job {
 	clear: both;
 	font-size: 10pt;

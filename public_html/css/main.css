@@ -131,14 +131,14 @@ ul.job .desc {
 }
 
 .sico_freelance_ru {
-	background-position-y: 1px;
+	background-position: 0px 1px;
 }
 .sico_freelancejob_ru {
-	background-position-y: -31px;
+	background-position: 0px -31px;
 }
 .sico_freelancer_com {
-	background-position-y: -63px;
+	background-position: 0px -63px;
 }
 .sico_weblancer_net {
-	background-position-y: -95px;
+	background-position: 0px -95px;
 }

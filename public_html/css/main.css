@@ -60,6 +60,23 @@ input {
 	width: 55%;
 }
 
+#sites {
+	margin-top: 0.3em;
+	padding: 0.5em;
+}
+
+#sites li {
+	width: 50%;
+	float: left;
+	list-style: none;
+	margin-bottom: 0.5em;
+	font-size: 10pt;
+}
+
+#sites li input {
+	margin-right: 6px;
+}
+
 ul.job {
 	clear: both;
 	font-size: 10pt;

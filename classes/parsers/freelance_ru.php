@@ -7,7 +7,7 @@ class Parser_freelance_ru extends Parser implements IParser {
 	}
 	
 	public function getSiteName() {
-		return 'Free-Lance.ru';
+		return 'free-lance.ru';
 	}
 	
 	public function getSiteFolder() {

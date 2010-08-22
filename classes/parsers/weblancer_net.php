@@ -7,7 +7,7 @@ class Parser_weblancer_net extends Parser implements IParser {
 	}
 	
 	public function getSiteName() {
-		return 'WebLancer';
+		return 'weblancer.net';
 	}
 
 	public function getParserName() {

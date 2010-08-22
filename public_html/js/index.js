@@ -8,7 +8,9 @@ var filterTimer;
 /** @const */ var checkInterval = 30000;
 var jobTemplate;
 var jobPlace;
+
 var keywords = [];
+var selsites = [];
 
 var queue    = [];
 var joblist  = [];
@@ -103,7 +105,7 @@ function popFromQueue(instantly) {
 		
 	if (!instantly)
 		tmpEl.slideDown('slow', function() {
-			checkJobForKeys($(this));
+			checkJobForFilter($(this));
 		} );
 	else
 		tmpEl.show();
@@ -128,7 +130,11 @@ function addJob(job, instantly) {
 
 	var jobEl = jobTemplate.clone();
 
-	jobEl.hide();
+	jobEl
+		.attr( {
+			'site': job.site
+		} )
+		.hide();
 
 	lnk = $("<a>")
 		.addClass('sico')
@@ -179,6 +185,8 @@ function parseJobs(jobs, instantly) {
  * @param {!Array} s sites info array
  */
 function parseSites(s) {
+	var splace = $('#sites');
+
 	for (var i = 0; i < s.length; i++) {				
 		var site = s[i];
 	
@@ -187,6 +195,41 @@ function parseSites(s) {
 			name:  site.n,
 			url:    site.u
 		}
+		
+		selsites.push(site.i);
+		
+		var c = $('<input />')
+			.attr( {
+				'type'   : 'checkbox',
+				'id'     : 'c' + site.i,
+				'site'   : site.i,
+				'checked': 'checked'
+			} )
+			.click(handleFilter);
+			
+		var l = $('<label></label>')
+			.attr( {
+				'for' : 'c' + site.i
+			} )
+			.addClass('sico')
+			.addClass('sico_' + site.f)
+			.html(site.n);
+		
+		/*
+		var a = $('<a></a>')
+			.attr( {
+				'href': '/' + site.f + '/index.html',
+			} )
+			.appendTo(splace);
+		*/
+			
+		var li = $('<li></li>');
+		
+		c.appendTo(li);
+		l.appendTo(li);
+		//a.appendTo(li);
+		
+		li.appendTo(splace);			
 	}
 }
 
@@ -207,23 +250,26 @@ function localize() {
 	});
 }
 
-function checkJobForKeys(element) {
+function checkJobForFilter(element) {
 	var str = $('.title', element).html() + $('.desc', element).html();
 	str = str.toLowerCase();
 	
-	var found = false;
+	var keyfound = false;
 
 	if (0 != keywords.length)	{
 		for (var i = 0; i < keywords.length; i++) {
 			if (str.indexOf(keywords[i].toLowerCase()) >= 0) {
-				found = true;
+				keyfound = true;
 				break;
 			}
 		}
 	} else
-		found = true;
+		keyfound = true;
 	
-	if (found) {
+	if (
+		selsites.indexOf(element.attr('site')) >= 0
+		&& keyfound
+	) {
 		if (
 			!element.hasClass('jsel')
 			|| element.hasClass('jrem')
@@ -250,16 +296,16 @@ function checkJobForKeys(element) {
 	}
 }
 
-function checkFeedForKeys() {	
+function checkFeedForFilter() {	
 	for (var i = 0; i < joblist.length; i++) {
-		checkJobForKeys(joblist[i]);
+		checkJobForFilter(joblist[i]);
 	}
 }
 
 function handleFilter() {
-	$('#keyword')
+	$('#keyword, #sites')
 		.animate( {
-			'opacity': 0.7
+			'opacity': 0.8
 		}, function() {
 			$(this).
 				animate( {
@@ -268,6 +314,13 @@ function handleFilter() {
 		} );
 		
 	var tmp = $('#keyword').val().trim();
+	selsites = [];
+	
+	$('input', '#sites').each( function() {
+		if ($(this).attr('checked')) {
+			selsites.push($(this).attr('site'));
+		}
+	} );
 	
 	if ('' == tmp) {
 		keywords = [];
@@ -275,7 +328,7 @@ function handleFilter() {
 		keywords = tmp.split(',');
 	}
 	
-	checkFeedForKeys();
+	checkFeedForFilter();
 }
 
 function init() {

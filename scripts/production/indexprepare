@@ -1,0 +1,15 @@
+#!/usr/bin/php
+<?php
+
+$res = file_get_contents('../../public_html/index.html');
+$analytics = file_get_contents('../../other/ga.js');
+
+$res = str_replace('<!-- ga !-->', $analytics, $res);
+
+$res = str_replace(array("\t", "\n"), '', $res);
+
+while (false !== strpos($res, '  ')) {
+	$res = str_replace('  ', ' ', $res);
+}
+
+echo $res;

@@ -90,7 +90,9 @@ class Parser {
 		if (!file_exists(dirname($fname))) {
 			mkdir(dirname($fname), 0777, true);
 		}
-		
+	
+		$ga = file_get_contents(PATH_OTHER . 'ga.js');
+	
 		$content = <<<EOF
 <!DOCTYPE html>
 <html>
@@ -107,6 +109,8 @@ class Parser {
 <br /><br />
 
 <a href="{$job->getUrl()}">&gt; {$this->getSiteName()}</a>
+
+{$ga}
 </body>
 </html>
 EOF;

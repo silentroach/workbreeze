@@ -23,7 +23,7 @@ class Parser_freelancejob_ru extends Parser implements IParser {
 	}
 	
 	public function isProxyFied() {
-		return true;
+		return false;
 	}
 	
 	protected function afterRequest($data) {

@@ -5,6 +5,7 @@ $res = file_get_contents('../../public_html/index.html');
 $analytics = file_get_contents('../../other/ga.js');
 
 $res = str_replace('<!-- ga !-->', $analytics, $res);
+$res = str_replace('"js/jquery.js"', '"http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"', $res); 
 
 $res = str_replace(array("\t", "\n"), '', $res);
 

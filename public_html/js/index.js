@@ -134,7 +134,8 @@ function addJob(job, instantly) {
 		.addClass('sico')
 		.addClass('sico_' + sites[job.site].folder)
 		.attr({
-			'href': '/jobs/' + sites[job.site].folder + '/' + job.id + '.html'
+			'href': '/jobs/' + sites[job.site].folder + '/' + job.id + '.html',
+			'title': job.title + ' ' + lang['on'] + ' ' + sites[job.site].name
 		})
 		.html(job.title)
 		.appendTo($('li.title', jobEl));

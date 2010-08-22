@@ -6,7 +6,8 @@ class MInit extends MUp {
 
 	private function getLang() {
 		return array(
-			'keywords' => 'ключевые слова через запятую'
+			'kwds' => 'ключевые слова через запятую',
+			'on'   => 'на'
 		);
 	}
 

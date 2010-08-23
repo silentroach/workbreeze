@@ -31,6 +31,8 @@ if (0 == count($argv)) {
 	exit;
 }
 
+$db->keys->remove(array('key' => $key));
+
 $vals = explode(',', array_shift($argv));
 
 echo $key . ' = { ' . implode($vals, ', ') . " }\n";

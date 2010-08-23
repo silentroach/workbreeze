@@ -44,6 +44,12 @@ checkCI($db, 'queue', array(
 	)
 ));
 
+checkCI($db, 'keys', array(
+	array(
+		'key' => 1
+	)
+));
+
 echo "Repairing...\n";
 
 $db->repair();

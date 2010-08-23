@@ -85,6 +85,13 @@ class Parser {
 	}
 	
 	private function generateJobPage($job) {
+		$keys = $job->getKeywords();
+		$kw = '';
+
+		if (0 != count($keys)) {
+			$kw = '<meta name="keywords" content="' . implode(',', $keys) . '" />';
+		}
+
 		$fname = $this->getJobPagePath($job->getId());
 		
 		if (!file_exists(dirname($fname))) {
@@ -99,6 +106,8 @@ class Parser {
         <title>WorkBreeze - {$job->getTitle()}</title>
 
         <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	{$kw}
+
         <link rel="stylesheet" href="/css/main.css" type="text/css" />
 <body>
 <div id="logor"><a href="/">WorkBreeze</a></div>
@@ -127,6 +136,8 @@ EOF;
 	}
 	
 	protected function addJob($job) {
+		$job->rebuildKeywords();
+	
 		if ($job->insert()) {		
 			$this->generateJobPage($job);
 			echo 'Job ' . $job->getId() . " added\n";

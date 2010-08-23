@@ -1,7 +1,13 @@
 #!/usr/bin/php
 <?
 
-require('../defines.php');
+require(dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'defines.php');
 require(PATH_CLASSES . 'tester.php');
 
-Tester::testFolder(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'tests' . DIRECTORY_SEPARATOR);
+$mongo = new Mongo();
+
+$dbname = DB;
+
+$db = $mongo->$dbname;
+
+Tester::testFolder($db, dirname(__FILE__) . DIRECTORY_SEPARATOR . 'tests' . DIRECTORY_SEPARATOR);

@@ -1,0 +1,49 @@
+#!/usr/bin/php
+<?php
+
+require('../defines.php');
+
+$mongo = new Mongo();
+
+$dbname = DB;
+
+$db = $mongo->$dbname;
+
+function checkCI($db, $collection, $indexes = array()) {
+	$c = $db->$collection;
+
+	$c->deleteIndexes();
+
+	foreach($indexes as $index) {
+		echo 'Creating index on ' . $collection . ":\n";
+		foreach($index as $key => $sort) {
+			echo '  ' . $key . ' => ' . $sort . "\n";
+		}
+
+		echo "\n";
+
+		$c->ensureIndex($index);
+	}
+}
+
+checkCI($db, 'sites', array(
+	array(
+		'code' => 1
+	)
+));
+
+checkCI($db, 'jobs', array(
+	array(
+		'stamp' => 1
+	)
+));
+
+checkCI($db, 'queue', array(
+	array(
+		'rnd' => 1
+	)
+));
+
+echo "Repairing...\n";
+
+$db->repair();

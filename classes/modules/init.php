@@ -8,7 +8,7 @@ class MInit extends MUp {
 		return array(
 			'kwds' => 'ключевые слова через запятую',
 			'on'   => 'на',
-			'pl'   => 'запустить',
+			'pl'   => 'запуск',
 			'pa'   => 'пауза'
 		);
 	}
@@ -37,7 +37,7 @@ class MInit extends MUp {
 	protected function runModule() {
 		return array(
 			'l'  => $this->getLang(),
-			's' => $this->getSites(),
+			's'  => $this->getSites(),
 			'j'  => $this->getJobs()
 		);
 	}

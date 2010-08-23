@@ -1,0 +1,41 @@
+#!/usr/bin/php
+<?php
+
+if ($argc < 2) {
+	echo "Key count mismatch\n";
+	exit;
+}
+
+require('../defines.php');
+
+array_shift($argv);
+
+$mongo = new Mongo();
+
+$dbname = DB;
+
+$db = $mongo->$dbname;
+$k = $db->keys;
+
+$key = array_shift($argv);
+
+if (0 == count($argv)) {
+	$kk = $db->keys->findOne(array('key' => $key));
+
+	if (null != $kk) {
+		print_r($kk['words']);
+	} else {
+		echo "not found\n";
+	}	
+
+	exit;
+}
+
+$vals = explode(',', array_shift($argv));
+
+echo $key . ' = { ' . implode($vals, ', ') . " }\n";
+
+$k->insert(array(
+	'key' => $key,
+	'words' => $vals
+));

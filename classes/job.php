@@ -14,6 +14,8 @@ class Job {
 	
 	private $description;
 	private $description_short = '';
+
+	private $keywords = array();
 	
 	public function __construct($db) {
 		$this->db = $db;
@@ -53,6 +55,10 @@ class Job {
 		
 		if ($this->getShortDescription()) {
 			$arr['short'] = $this->getShortDescription();
+		}
+		
+		if (count($this->getKeywords()) > 0) {
+			$arr['keys'] = $this->getKeywords();
 		}
 		
 		return $this->db->jobs->insert($arr);
@@ -104,6 +110,56 @@ class Job {
 		}
 		
 		return false;
+	}
+
+	public function rebuildKeywords() {
+		$desc = $this->getTitle() . ' ' . $this->getDescription();
+		$desc = strip_tags($desc);
+		$desc = html_entity_decode($desc);
+		
+		// strip encoded entities
+		$desc = preg_replace('/(&#(\d+);)/', '', $desc);
+		
+		$desc = str_replace(array(
+			'.', ',', '(', ')', '!', '/', '\\', ':', '?', '^', '%', '$', '#', '@', '-', '+', '[', ']',
+			'{', '}', '|', '\'', '"', ';'
+		), ' ', $desc);
+		
+		$desc = mb_strtolower($desc, 'utf-8');
+		
+		while (false !== mb_strpos($desc, '  '))
+			$desc = str_replace('  ', ' ', $desc);
+			
+		$keys = explode(' ', trim($desc));
+		$keys = array_count_values($keys);
+		
+		foreach($keys as $key => $count) {
+			if (mb_strlen($key, 'utf-8') < 3)
+				unset($keys[$key]);
+		}
+		
+		$words = array();
+		
+		foreach($keys as $key => $count) {
+			$kk = $this->db->keys->findOne(array(
+				'key' => $key
+			));
+			
+			if (null != $kk) {			
+				foreach($kk['words'] as $k) {
+					$words[] = $k;
+				}
+			}
+		}
+		
+		$words = array_count_values($words);
+		$a = arsort($words);
+
+		$this->keywords = array_keys($words);
+	}
+
+	public function getKeywords() {
+		return $this->keywords;
 	}
 
 	public function getDescription() {

@@ -1,4 +1,4 @@
-<?
+<?php
 
 require(PATH_CLASSES . 'job.php');
 
@@ -6,14 +6,14 @@ class Tester {
 
 	private $job;
 	
-	public function __construct() {
-		$this->job = new Job(null);
+	public function __construct($db) {
+		$this->job = new Job($db);
 	}
-	
-	private function testFile($file) {
+
+	private function testParserFile($file) {
 		$i = pathinfo($file);
 
-		$outname = $i['dirname'] . DIRECTORY_SEPARATOR . $i['filename'] . '.html';
+		$outname = $i['dirname'] . DIRECTORY_SEPARATOR . $i['filename'] . '.po';
 		
 		$text = trim(file_get_contents($file));
 		$out  = trim(file_get_contents($outname));
@@ -28,15 +28,22 @@ class Tester {
 	
 		return true;
 	}
+
+	private function printInfo($filename) {
+		$p = pathinfo($filename);
+
+		echo str_pad($p['filename'], 60, ' ');
+	}
 	
 	private function test($folder) {
-		$in = glob($folder . '*.in');
+		echo "Parsers...\n";
+
+		$in = glob($folder . '*.p');
 		
 		foreach($in as $file) {
-			$p = pathinfo($file);
-			echo str_pad($p['filename'], 60, ' ');
+			$this->printInfo($file);
 			
-			$res = $this->testFile($file);
+			$res = $this->testParserFile($file);
 			
 			if (true === $res) {			
 				echo "[ OK ]\n";
@@ -45,12 +52,12 @@ class Tester {
 				return false;
 			}
 		}
-		
+
 		return true;
 	}
 	
-	public static function testFolder($folder) {
-		$tester = new Tester();
+	public static function testFolder($db, $folder) {
+		$tester = new Tester($db);
 		$tester->test($folder);
 	}
 

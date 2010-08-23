@@ -21,11 +21,8 @@ $jc = $jobs->find(
 );
 
 $sfolders = array();
-$f = false;
 
 while ($job = $jc->getNext()) {
-	$f = true;
-
 	if (!isset($sfolders[$job['site']])) {
 		$tmp = $db->sites->findOne(
 			array('code' => $job['site'])	
@@ -48,10 +45,4 @@ while ($job = $jc->getNext()) {
 
 	unlink($file);
 	unlink($filegz);
-}
-
-if ($f) {
-	echo "repairing...\n";
-
-	$db->repair();
 }

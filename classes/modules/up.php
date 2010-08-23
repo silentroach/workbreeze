@@ -17,7 +17,7 @@ class MUp extends Module {
 			)
 		));
 		$cursor->sort(array(
-			'stamp' => 0
+			'stamp' => -1
 		));
 		$cursor->limit(15);
 		

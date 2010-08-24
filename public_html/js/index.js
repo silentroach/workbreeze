@@ -1,37 +1,20 @@
-/**
- * @type {number}
- */
-var lastStamp = 0;
+/** @type {number} **/ var lastStamp = 0;
 var queueTimer;
 var newTimer;
 var filterTimer;
 /** @const */ var checkInterval = 30000;
-var jobTemplate;
-var jobPlace;
+/** @type {jQuery} **/ var jobTemplate;
+/** @type {jQuery} **/ var jobPlace;
 
-var playbtn;
-var pausebtn;
+/** @type {jQuery} **/ var playbtn;
+/** @type {jQuery} **/ var pausebtn;
 
-var keywords = [];
-var selsites = [];
+/** @type {Array} **/ var keywords = [];
+/** @type {Array} **/ var selsites = [];
 
-var queue    = [];
-var joblist  = [];
-var sites    = [];
-var lang     = [];
-
-/**
- * Check leading zero in single char int
- * @param {!number} i Number
- * @return {string}
- */ 
-function checkTimeVal(i) {
-	if (i < 10) {
-		i = "0" + i;
-	}
-
-	return i;
-}
+/** @type {Array} **/ var queue    = [];
+/** @type {Array} **/ var joblist  = [];
+/** @type {Array} **/ var sites    = [];
 
 function checkJobPlace() {
 	while (joblist.length > 20) {
@@ -52,7 +35,7 @@ function checkNewJobs() {
 			'stamp': lastStamp
 		},
 		dataType: 'json',
-		success: function(data) {
+		success: /** @param {*} data JSON data **/ function(data) {
 			setNewTimer(checkInterval);
 
 			parseJobs(data, false);
@@ -144,7 +127,7 @@ function addJob(job, instantly) {
 		.addClass('sico_' + sites[job.site].folder)
 		.attr({
 			'href': '/jobs/' + sites[job.site].folder + '/' + job.id + '.html',
-			'title': job.title + ' ' + lang['on'] + ' ' + sites[job.site].name
+			'title': job.title + ' ' + langVal('on') + ' ' + sites[job.site].name
 		})
 		.html(job.title)
 		.appendTo($('li.title', jobEl));
@@ -172,11 +155,11 @@ function addJob(job, instantly) {
 function parseJobs(jobs, instantly) {
 	for (var i = jobs.length - 1; i >= 0; i--) {
 		var job = {
-			id:    jobs[i].i,
-			site:  jobs[i].s,
-			stamp: jobs[i].st,
-			title: jobs[i].t,
-			desc:  jobs[i].d
+			id:    jobs[i]['i'],
+			site:  jobs[i]['s'],
+			stamp: jobs[i]['st'],
+			title: jobs[i]['t'],
+			desc:  jobs[i]['d']
 		};
 		
 		addJob(job, instantly);
@@ -192,75 +175,47 @@ function parseSites(s) {
 
 	for (var i = 0; i < s.length; i++) {				
 		var site = s[i];
-	
-		sites[site.i] = {
-			folder: site.f,
-			name:  site.n,
-			url:    site.u
-		}
 		
-		selsites.push(site.i);
+		var id = site['i'];
+		
+		var item = {
+			folder: site['f'],
+			name:  site['n'],
+			url:    site['u']
+		}
+	
+		sites[id] = item;
+		
+		selsites.push(id);
 		
 		var c = $('<input />')
 			.attr( {
 				'type'   : 'checkbox',
-				'id'     : 'c' + site.i,
-				'site'   : site.i,
+				'id'     : 'c' + id,
+				'site'   : id,
 				'checked': 'checked'
 			} )
 			.click(handleFilter);
 			
 		var l = $('<label></label>')
 			.attr( {
-				'for' : 'c' + site.i
+				'for' : 'c' + id
 			} )
 			.addClass('sico')
-			.addClass('sico_' + site.f)
-			.html(site.n);
-		
-		/*
-		var a = $('<a></a>')
-			.attr( {
-				'href': '/' + site.f + '/index.html',
-			} )
-			.appendTo(splace);
-		*/
+			.addClass('sico_' + item.folder)
+			.html(item.name);
 			
 		var li = $('<li></li>');
 		
 		c.appendTo(li);
-		l.appendTo(li);
-		//a.appendTo(li);
-		
+		l.appendTo(li);		
 		li.appendTo(splace);			
 	}
 }
 
 /**
- * Localize items on the page
+ * @param {jQuery} element
  */
-function localize() {
-	$('.l').each(function() {
-		if (
-			$(this).hasClass('lp')
-			&& undefined != $(this).attr('lp')
-			&& undefined != lang[ $(this).attr('lp') ]
-		) {
-			$(this).attr( {
-				'placeholder': lang[$(this).attr('lp')]
-			} );
-		}
-		
-		if (
-			$(this).hasClass('lv')
-			&& undefined != $(this).attr('lv')
-			&& undefined != lang[ $(this).attr('lv') ]
-		) {
-			$(this).html( lang[$(this).attr('lv')] );
-		}
-	});
-}
-
 function checkJobForFilter(element) {
 	var str = $('.title', element).html() + $('.desc', element).html();
 	str = str.toLowerCase();
@@ -343,6 +298,8 @@ function handleFilter() {
 }
 
 function init() {
+	finit();
+
 	jobTemplate = $('ul.job:first');
 	jobPlace    = $('#right');
 	
@@ -374,13 +331,19 @@ function init() {
 	// init request
 	$.ajax({
 		url: '/init',
+		type: 'POST',
+		data: {
+			lang: getLangVersion()
+		},
 		dataType: 'json',
-		success: function(data) {
-			lang = data.l;
+		success: /** @param {*} data JSON data **/ function(data) {
+			if ('undefined' != typeof(data['l']))
+				loadLang(data['l']);
+
 			localize();
 			
-			parseSites(data.s);			
-			parseJobs(data.j, true);
+			parseSites(data['s']);			
+			parseJobs(data['j'], true);
 		}
 	});
 	

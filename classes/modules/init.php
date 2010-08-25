@@ -4,6 +4,8 @@ require 'up.php';
 
 class MInit extends MUp {
 
+	const VSITES = 1;
+
 	private function getLang($ver = 0) {
 		$l = array(
 			'v' => 1,
@@ -22,7 +24,10 @@ class MInit extends MUp {
 		return false;
 	}
 
-	private function getSites() {
+	private function getSites($ver = 0) {
+		if (self::VSITES === $ver)
+			return false;
+	
 		$db = $this->db();
 		
 		$c = $db->sites;
@@ -40,22 +45,30 @@ class MInit extends MUp {
 			);
 		}
 		
-		return $sites;
+		return array(
+			'v'  => self::VSITES,
+			'vl' => $sites
+		);
 	}
 
 	protected function runModule() {	
-		$vlang = isset($_POST['lang']) ? intval($_POST['lang']) : 0;
+		$vlang  = isset($_POST['lang'])  ? intval($_POST['lang']) : 0;
+		$vsites = isset($_POST['sites']) ? intval($_POST['sites']) : 0;
 		
-		$lang = $this->getLang($vlang);
+		$lang   = $this->getLang($vlang);
+		$sites  = $this->getSites($vsites);
 	
-		$r =  array(
-			's'  => $this->getSites(),
-			'j'  => $this->getJobs()
-		);
+		$r = array();
 		
 		if ($lang) {
 			$r['l'] = $lang;
 		}
+		
+		if ($sites) {
+			$r['s'] = $sites;
+		}
+		
+		$r['j'] = $this->getJobs();
 		
 		return $r;
 	}

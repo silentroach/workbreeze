@@ -200,8 +200,8 @@ function init() {
 		url: '/init',
 		type: 'POST',
 		data: {
-			lang: getLangVersion(),
-			sites: getSitesVersion()
+			'lang': getLangVersion(),
+			'sites': getSitesVersion()
 		},
 		dataType: 'json',
 		success: /** @param {*} data JSON data **/ function(data) {

@@ -29,18 +29,18 @@ input {
 	padding: 4px;
 }
 
-#logor, #logo {
+#gads {
+	float: right; 
+	padding-left: 2em;
+}
+
+#logo {
 	font-size: 18pt;
 	font-weight: bold;
 	text-shadow: black 1px 1px 1px;
 }
 
-#logor {
-	float: right;
-	margin-right: 0.5em;
-}
-
-#logo a, #logor a {
+#logo a {
 	border-bottom: 0px;
 }
 

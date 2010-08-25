@@ -17,7 +17,7 @@ function handleFilter() {
 	
 	$('input', '#sites').each( function() {
 		if ($(this).attr('checked')) {
-			selsites.push($(this).attr('site'));
+			selsites.push(parseInt($(this).attr('site')));
 		}
 	} );
 	
@@ -50,7 +50,7 @@ function checkJobForFilter(element) {
 		keyfound = true;
 	
 	if (
-		selsites.indexOf(element.attr('site')) >= 0
+		selsites.indexOf(parseInt(element.attr('site'))) >= 0
 		&& keyfound
 	) {
 		if (

@@ -32,6 +32,7 @@ input {
 #gads {
 	float: right; 
 	padding-left: 2em;
+	padding-bottom: 2em;
 }
 
 #logo {

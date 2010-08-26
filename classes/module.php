@@ -28,6 +28,11 @@ class Module {
 	
 	}
 
+	private function fail() {
+	        header('HTTP/1.0 404 Not Found');
+	        die();
+	}
+
 	public function run() {
 		if (
 			$this->isAjax()
@@ -40,7 +45,7 @@ class Module {
 				|| false !== strpos($_SERVER['HTTP_HOST'], $_SERVER['HTTP_REFERER'])
 			)
 		) {
-			fail();
+			$this->fail();
 		}
 	
 		$object = $this->runModule();

@@ -5,11 +5,14 @@ function fail() {
 	die();
 }
 
-if (!isset($_SERVER['REQUEST_URI'])) {
+if (
+	!isset($_SERVER['DOCUMENT_URI'])
+	|| !isset($_SERVER['REQUEST_URI'])
+) {
 	fail();
 }
 	
-$uri = $_SERVER['REQUEST_URI'];
+$uri = isset($_SERVER['DOCUMENT_URI']) ? $_SERVER['DOCUMENT_URI'] : $_SERVER['REQUEST_URI'];
 
 $params = explode('?', $uri);
 

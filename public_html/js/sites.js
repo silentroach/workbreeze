@@ -53,9 +53,9 @@ function loadSites(val) {
 }
 
 /**
- * Parse sites info
+ * Init sites info
  */
-function parseSites() {
+function initSites() {
 	var splace = $('#sites');
 
 	for (var i = 0; i < sites.length; i++) {				

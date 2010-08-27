@@ -200,8 +200,9 @@ function init() {
 		url: '/init',
 		type: 'POST',
 		data: {
-			'lang': getLangVersion(),
-			'sites': getSitesVersion()
+			'lang':  getLangVersion(),
+			'sites': getSitesVersion(),
+			'cats':  getCatsVersion()
 		},
 		dataType: 'json',
 		success: /** @param {*} data JSON data **/ function(data) {
@@ -210,10 +211,15 @@ function init() {
 
 			localize();
 			
+			if ('undefined' != typeof(data['c']))
+				loadCats(data['c']);
+				
+			initCats();
+			
 			if ('undefined' != typeof(data['s']))
 				loadSites(data['s']);
 			
-			parseSites();
+			initSites();
 			
 			parseJobs(data['j'], true);
 		}

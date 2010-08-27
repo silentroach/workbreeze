@@ -28,7 +28,7 @@ ln -s /srv/bstorage/jobs tmp/public_html/jobs
 
 desc 'Compressing'
 echo 'javascript...'
-java -jar tmp/other/utils/compiler.jar --js ../../public_html/js/funcs.js --js ../../public_html/js/filter.js --js ../../public_html/js/lang.js --js ../../public_html/js/sites.js --js ../../public_html/js/index.js --externs ../../public_html/js/jquery.js --compilation_level ADVANCED_OPTIMIZATIONS --warning_level QUIET > tmp/public_html/js/index.js
+java -jar tmp/other/utils/compiler.jar --js ../../public_html/js/funcs.js --js ../../public_html/js/filter.js --js ../../public_html/js/lang.js --js ../../public_html/js/sites.js --js ../../public_html/js/categories.js --js ../../public_html/js/index.js --externs ../../public_html/js/jquery.js --compilation_level ADVANCED_OPTIMIZATIONS --warning_level QUIET > tmp/public_html/js/index.js
 gzip -c9 tmp/public_html/js/index.js > tmp/public_html/js/index.js.gz
 
 echo 'css'

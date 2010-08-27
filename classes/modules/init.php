@@ -47,7 +47,10 @@ class MInit extends MUp {
 			Job::CAT_OTHER, Job::CAT_AUDIOVIDEO, Job::CAT_DESIGN, Job::CAT_PHOTO, Job::CAT_PROGRAMMING, 
 			Job::CAT_WEBPROG, Job::CAT_TRANSLATE, Job::CAT_TEXT, Job::CAT_ADVERTISING, Job::CAT_SYSADM
 		) as $el) {
-			$items['c' . $el] = $el;
+			$items[] = array(
+				'i' => $el,
+				'l' => 'c' . $el
+			);
 		}
 			
 		return array(

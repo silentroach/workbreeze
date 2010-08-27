@@ -127,11 +127,28 @@ class Parser_freelancejob_ru extends Parser implements IParser {
 			));
 			return true;
 		}
+
+		$cts = mb_substr($desc, $i, mb_strlen($desc) - $i);		
 		
 		$desc = mb_substr($desc, 1, $i);
 		
 		// special for freelancejob.ru
 		$desc = str_replace("\n", '', $desc);
+		
+		// categories
+		$cats = '';
+		
+		$i = mb_strpos($cts, 'Категория:');
+		
+		if (false !== $i) {
+			$cats = mb_substr($cts, $i, mb_strlen($cts) - $i);
+		
+			$i = mb_strpos($cats, 'Добавлено');
+		
+			if (false !== $i) {
+				$cats = mb_substr($cats, 0, $i);
+			}
+		}		
 		
 		$job = $this->newJob();
 		$job->
@@ -139,6 +156,10 @@ class Parser_freelancejob_ru extends Parser implements IParser {
 			setUrl($url)->
 			setTitle($title)->
 			setDescription($desc);
+			
+		if ('' != $cats) {
+			$job->setCategoriesByText($cats);
+		}
 				
 		$this->addJob($job);
 		

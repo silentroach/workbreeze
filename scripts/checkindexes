@@ -35,6 +35,10 @@ checkCI($db, 'sites', array(
 checkCI($db, 'jobs', array(
 	array(
 		'stamp' => 1
+	),
+	array(
+		'stamp' => 1,
+		'cats'  => 1
 	)
 ));
 

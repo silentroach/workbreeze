@@ -2,6 +2,36 @@
 
 class Job {
 
+	const CAT_OTHER  = 0;
+
+	const CAT_AUDIO       = 1;
+	const CAT_VIDEO       = 2;
+	const CAT_DESIGN      = 3;
+	const CAT_PHOTO       = 4;
+	const CAT_PROGRAMMING = 5;
+	const CAT_WEBPROG     = 6;
+	const CAT_TRANSLATE   = 7;
+	const CAT_TEXT        = 8;
+	const CAT_ADVERTISING = 9;
+	const CAT_ART         = 10;
+	
+	private $catlinks = array(
+		self::CAT_OTHER       => array('other', 'другое'),
+		self::CAT_AUDIO       => array('аудио', 'звук', 'audio', 'sound'),
+		self::CAT_VIDEO       => array('видео', 'клип', 'video', 'clip'),
+		self::CAT_DESIGN      => array('дизайн', 'design', 'баннер', 'banner', 'графика', 'graphic'),
+		self::CAT_PHOTO       => array('фото', 'photo'),
+		self::CAT_PROGRAMMING => array('программир', 'programm', 'разраб', 'software'),
+		self::CAT_WEBPROG     => array(
+			'скрипт', 'веб-разр', 'верстк', 'веб-прило', 'разработка сайт', 'script', 'web-prog', 'webprog',
+			'php', 'asp', 'wordpress', 'joomla'
+		),
+		self::CAT_TRANSLATE   => array('перевод', 'translat'),
+		self::CAT_TEXT        => array('текст', 'рерайтинг', 'text', 'writing'),
+		self::CAT_ADVERTISING => array('реклам', 'advertising'),
+		self::CAT_ART         => array('арт', 'худож', 'art')
+	);
+
 	private $db;
 
 	private $site;
@@ -11,6 +41,10 @@ class Job {
 	private $stamp;
 	
 	private $title;
+	
+	private $categories = array(
+		self::CAT_OTHER
+	);
 	
 	private $description;
 	private $description_short = '';
@@ -48,6 +82,7 @@ class Job {
 			'id'     => $this->getId(),
 			'url'    => $this->getUrl(),
 			'title'  => $this->getTitle(),
+			'cats'   => $this->getCategories(),
 			'desc'   => $this->getDescription()
 		);
 		
@@ -74,6 +109,32 @@ class Job {
 	public function setId($id) {
 		$this->id = $id;
 		return $this;
+	}
+	
+	public function setCategoriesByText($text) {
+		$tmp = mb_strtolower($text, 'utf-8');
+		
+		$cats = array();
+		
+		foreach ($this->catlinks as $cat => $words) {
+			foreach($words as $word) {
+				if (false !== strpos($tmp, $word)) {
+					$cats[] = $cat;
+					break;
+				}
+			}
+		}
+		
+		if (0 == count($cats))	{
+			echo 'Can\'t found category for: ' . $text . "\n";
+			$cats[] = self::CAT_OTHER;
+		}
+		
+		$this->categories = $cats;
+	}
+	
+	public function getCategories() {
+		return $this->categories;
 	}
 	
 	public function getTitle() {

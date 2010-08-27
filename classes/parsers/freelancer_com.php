@@ -58,7 +58,7 @@ class Parser_freelancer_com extends Parser implements IParser {
 	
 	public function processJob($id, $url) {
 		$res = $this->getRequest($url);
-	
+
 		if (!$res)
 			return false;
 			
@@ -133,12 +133,32 @@ class Parser_freelancer_com extends Parser implements IParser {
 		
 		$desc = mb_substr($desc, 0, $i);
 		
+		// categories
+		$cats = '';
+		
+		if (
+			preg_match_all('/projects\/by-job\/(.*?).html/', $res, $matches)
+			&& 2 == count($matches)
+		) {
+			array_shift($matches);
+			
+			$cc = array_shift($matches);
+			
+			foreach($cc as $wd) {
+				$cats .= $wd;
+			}
+		}
+		
 		$job = $this->newJob();
 		$job->
 			setId($id)->
 			setUrl($url)->
 			setTitle($title)->
 			setDescription($desc);
+		
+		if ('' !== $cats) {
+			$job->setCategoriesByText($cats);
+		}
 				
 		$this->addJob($job);
 

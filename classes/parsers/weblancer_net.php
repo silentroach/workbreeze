@@ -50,7 +50,7 @@ class Parser_weblancer_net extends Parser implements IParser {
 	
 	public function processJob($id, $url) {
 		$res = $this->getRequest($url);
-		
+
 		if (!$res)
 			return false;
 			
@@ -80,6 +80,22 @@ s</div>
 		
 		$title = trim($matches[2]);
 
+		$cats = '';
+
+		if (
+			preg_match_all('/<a href="\/projects\/\?category_id=(\d+)">(.*?)</si', $res, $matches)
+			&& 3 == count($matches)
+		) {
+			array_shift($matches);
+			array_shift($matches);
+			
+			$cc = array_shift($matches);
+			
+			foreach($cc as $k) {
+				$cats .= $k;
+			}
+		}
+
 		preg_match('/id_description">(.*)<a name="bid/is', $res, $matches);
 		
 		if (2 != count($matches)) {
@@ -108,6 +124,10 @@ s</div>
 			setUrl($url)->
 			setTitle($title)->
 			setDescription($desc);
+			
+		if ('' != $cats) {
+			$job->setCategoriesByText($cats);
+		}
 				
 		$this->addJob($job);
 		

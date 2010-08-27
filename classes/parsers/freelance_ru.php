@@ -141,12 +141,29 @@ class Parser_freelance_ru extends Parser implements IParser {
 			$desc = $matches[1];
 		}
 		
+		$cats = '';
+		
+		$k = mb_strlen('Раздел:');
+		$i = strpos($res, 'Раздел:');
+		
+		if (false !== $i) {
+			$n = strpos($res, '</div>', $i);
+			
+			if (false !== $n) {
+				$cats = mb_substr($res, $i + $k, $n - $i - $k);
+			}
+		}
+		
 		$job = $this->newJob();
 		$job->
 			setId($id)->
 			setUrl($url)->
 			setTitle($title)->
 			setDescription($desc);
+			
+		if ('' !== $cats) {
+			$job->setCategoriesByText($cats);
+		}
 				
 		$this->addJob($job);
 		

@@ -4,32 +4,37 @@ class Job {
 
 	const CAT_OTHER  = 0;
 
-	const CAT_AUDIO       = 1;
-	const CAT_VIDEO       = 2;
-	const CAT_DESIGN      = 3;
-	const CAT_PHOTO       = 4;
-	const CAT_PROGRAMMING = 5;
-	const CAT_WEBPROG     = 6;
-	const CAT_TRANSLATE   = 7;
-	const CAT_TEXT        = 8;
-	const CAT_ADVERTISING = 9;
-	const CAT_ART         = 10;
+	const CAT_AUDIOVIDEO  = 1;
+	const CAT_DESIGN      = 2;
+	const CAT_PHOTO       = 3;
+	const CAT_PROGRAMMING = 4;
+	const CAT_WEBPROG     = 5;
+	const CAT_TRANSLATE   = 6;
+	const CAT_TEXT        = 7;
+	const CAT_ADVERTISING = 8;
+	const CAT_ART         = 9;
+	const CAT_SYSADM      = 10;
 	
 	private $catlinks = array(
-		self::CAT_OTHER       => array('other', 'другое'),
-		self::CAT_AUDIO       => array('аудио', 'звук', 'audio', 'sound'),
-		self::CAT_VIDEO       => array('видео', 'клип', 'video', 'clip'),
-		self::CAT_DESIGN      => array('дизайн', 'design', 'баннер', 'banner', 'графика', 'graphic'),
+		self::CAT_OTHER       => array('other', 'другое', 'прочее'),
+		self::CAT_AUDIOVIDEO  => array(
+			'аудио', 'звук', 'audio', 'sound', 'видео', 'клип', 'video', 'clip', 'анимация'
+		),
+		self::CAT_DESIGN      => array(
+			'дизайн', 'design', 'баннер', 'banner', 'графика', 'graphic', 'flash',
+			'логотип', 'logo'
+		),
 		self::CAT_PHOTO       => array('фото', 'photo'),
-		self::CAT_PROGRAMMING => array('программир', 'programm', 'разраб', 'software'),
+		self::CAT_PROGRAMMING => array('программир', 'programm', 'разраб', 'software', 'delphi'),
 		self::CAT_WEBPROG     => array(
 			'скрипт', 'веб-разр', 'верстк', 'веб-прило', 'разработка сайт', 'script', 'web-prog', 'webprog',
-			'php', 'asp', 'wordpress', 'joomla'
+			'php', 'asp', 'wordpress', 'joomla', 'ajax', 'javascript', 'ruby', 'ecommerce', 'создание сайт'
 		),
 		self::CAT_TRANSLATE   => array('перевод', 'translat'),
-		self::CAT_TEXT        => array('текст', 'рерайтинг', 'text', 'writing'),
-		self::CAT_ADVERTISING => array('реклам', 'advertising'),
-		self::CAT_ART         => array('арт', 'худож', 'art')
+		self::CAT_TEXT        => array('текст', 'рерайтинг', 'text', 'writing', 'статьи', 'обзор'),
+		self::CAT_ADVERTISING => array('реклам', 'advertising', 'seo', 'раскрутка'),
+		self::CAT_ART         => array('арт', 'худож', 'art'),
+		self::CAT_SYSADM      => array('admin', 'админ')
 	);
 
 	private $db;

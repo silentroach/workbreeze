@@ -12,8 +12,7 @@ class Job {
 	const CAT_TRANSLATE   = 6;
 	const CAT_TEXT        = 7;
 	const CAT_ADVERTISING = 8;
-	const CAT_ART         = 9;
-	const CAT_SYSADM      = 10;
+	const CAT_SYSADM      = 9;
 	
 	private $catlinks = array(
 		self::CAT_OTHER       => array('other', 'другое', 'прочее'),
@@ -22,7 +21,7 @@ class Job {
 		),
 		self::CAT_DESIGN      => array(
 			'дизайн', 'design', 'баннер', 'banner', 'графика', 'graphic', 'flash',
-			'логотип', 'logo'
+			'логотип', 'logo', 'арт', 'худож', 'art'
 		),
 		self::CAT_PHOTO       => array('фото', 'photo'),
 		self::CAT_PROGRAMMING => array('программир', 'programm', 'разраб', 'software', 'delphi'),
@@ -33,7 +32,6 @@ class Job {
 		self::CAT_TRANSLATE   => array('перевод', 'translat'),
 		self::CAT_TEXT        => array('текст', 'рерайтинг', 'text', 'writing', 'статьи', 'обзор'),
 		self::CAT_ADVERTISING => array('реклам', 'advertising', 'seo', 'раскрутка'),
-		self::CAT_ART         => array('арт', 'худож', 'art'),
 		self::CAT_SYSADM      => array('admin', 'админ')
 	);
 

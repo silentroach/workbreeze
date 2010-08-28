@@ -1,21 +1,29 @@
 /** @type {number} **/ var lastStamp = 0;
+
 var queueTimer;
 var newTimer;
 var filterTimer;
-/** @const */ var checkInterval = 30000;
-/** @type {jQuery} **/ var jobTemplate;
-/** @type {jQuery} **/ var jobPlace;
-
-/** @type {jQuery} **/ var playbtn;
-/** @type {jQuery} **/ var pausebtn;
 
 /** @type {Array} **/ var queue    = [];
 /** @type {Array} **/ var joblist  = [];
 
+var places = {
+	/** @type {jQuery} **/ templateJob: null,
+	/** @type {jQuery} **/ placeJob:    null,
+	/** @type {jQuery} **/ buttonPlay:  null,
+	/** @type {jQuery} **/ buttonPause: null
+}
+
+var options = {
+	/** @const **/  checkInterval = 30000;
+	/** @const **/ siteIconPrefix: 'sico',
+	/** @const **/ animationSpeed: 'slow'
+}
+
 function checkJobPlace() {
 	while (joblist.length > 20) {
 		tmpEl = joblist.shift();
-		tmpEl.fadeOut('slow', function() { 
+		tmpEl.fadeOut(options.animationSpeed, function() { 
 			$(this).remove();
 		});
 	}
@@ -32,12 +40,12 @@ function checkNewJobs() {
 		},
 		dataType: 'json',
 		success: /** @param {*} data JSON data **/ function(data) {
-			setNewTimer(checkInterval);
+			setNewTimer(options.checkInterval);
 
 			parseJobs(data, false);
 		},
 		error: function() {
-			setNewTimer(checkInterval);
+			setNewTimer(options.checkInterval);
 		}
 	});
 }
@@ -83,10 +91,10 @@ function popFromQueue(instantly) {
 	
 	tmpEl
 		.hide()
-		.prependTo(jobPlace);
+		.prependTo(places.placeJob);
 		
 	if (!instantly)
-		tmpEl.slideDown('slow', function() {
+		tmpEl.slideDown(options.animationSpeed, function() {
 			checkJobForFilter($(this));
 		} );
 	else
@@ -110,7 +118,7 @@ function addJob(job, instantly) {
 		lastStamp = job.stamp;
 	}
 
-	var jobEl = jobTemplate.clone();
+	var jobEl = places.templateJob.clone();
 
 	jobEl
 		.attr( {
@@ -119,8 +127,8 @@ function addJob(job, instantly) {
 		.hide();
 
 	lnk = $("<a>")
-		.addClass('sico')
-		.addClass('sico_' + sites[job.site].folder)
+		.addClass(siteIconPrefix)
+		.addClass(siteIconPrefix + '_' + sites[job.site].folder)
 		.attr({
 			'href': '/jobs/' + sites[job.site].folder + '/' + job.id + '.html',
 			'title': job.title + ' ' + langVal('on') + ' ' + sites[job.site].name
@@ -167,23 +175,23 @@ function init() {
 
 	finit();
 
-	jobTemplate = $('ul.job:first');
-	jobPlace    = $('#right');
+	places.templateJob = $('ul.job:first');
+	places.placeJob    = $('#right');
 	
-	playbtn = $('#play');
-	pausebtn = $('#pause');
+	places.buttonPlay  = $('#play');
+	places.buttonPause = $('#play');
 	
-	pausebtn.click(function() {
-		pausebtn.slideUp('slow');
-		playbtn.slideDown('slow');
+	places.buttonPause.click(function() {
+		places.buttonPause.slideUp(options.animationSpeed);
+		places.buttonPlay.slideDown(options.animationSpeed);
 	
 		queue = [];
 		dropNewTimer();
 	} );
 	
-	playbtn.click(function() {
-		playbtn.slideUp('slow');
-		pausebtn.slideDown('slow');
+	places.buttonPlay.click(function() {
+		places.buttonPlay.slideUp(options.animationSpeed);
+		places.buttonPause.slideDown(options.animationSpeed);
 
 		lastStamp = Math.round(new Date().getTime() / 1000);
 		setNewTimer(5000);

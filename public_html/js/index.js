@@ -40,7 +40,7 @@ function checkJobPlace() {
 function checkNewJobs() {
 	dropNewTimer();
 	
-	var adata = [];
+	var adata = {};
 	
 	adata[options.elementJobStamp] = lastStamp;
 
@@ -229,7 +229,7 @@ function init() {
 	// removing right content
 	$('#right > *').remove();
 	
-	var adata = [];
+	var adata = {};
 	
 	adata[options.elementLang]     = getLangVersion();
 	adata[options.elementSites]    = getSitesVersion();

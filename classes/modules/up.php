@@ -118,7 +118,7 @@ class MUp extends Module {
 		return $jobs;
 	}
 	
-	private getIntParam($name) {
+	private function getIntParam($name) {
 		if (!isset($_POST[$name]))
 			return false;
 			

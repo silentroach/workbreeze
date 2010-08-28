@@ -61,12 +61,16 @@ input {
 	width: 55%;
 }
 
-#sites {
+#sites, #categories {
 	margin-top: 0.3em;
 	padding: 0.5em;
 }
 
-#sites li {
+#categories {
+	clear: both;
+}
+
+#sites li, #categories li {
 	float: left; 
 	list-style: none;
 	margin-bottom: 0.5em;

@@ -1,9 +1,11 @@
 /** @type {Array} **/ var keywords = [];
 /** @type {Array} **/ var selsites = [];
+/** @type {Array} **/ var selcats  = [];
 
 function handleFilter() {
 	var tmp = $('#keyword').val().trim();
 	selsites = [];
+	selcats  = [];
 	
 	$('li', '#sites').each( function() {
 		if ($(this).hasClass('checked')) {

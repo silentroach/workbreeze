@@ -15,7 +15,7 @@ var places = {
 }
 
 var options = {
-	/** @const **/  checkInterval:   30000,
+	/** @const **/ checkInterval:    30000,
 	/** @const **/ siteIconPrefix:   'sico',
 	/** @const **/ animationSpeed:   'slow',
 	

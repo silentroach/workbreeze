@@ -1,10 +1,5 @@
 <?php
 
-function fail() {
-	header('HTTP/1.0 404 Not Found');
-	die();
-}
-
 if (
 	!isset($_SERVER['DOCUMENT_URI'])
 	|| !isset($_SERVER['REQUEST_URI'])
@@ -22,18 +17,18 @@ array_shift($query);
 
 $module = array_shift($query);
 
-if (null === $module) {
-	fail();
-}
-
 require('defines.php');
+
+if (null === $module) {
+	Module::fail();
+}
 
 require(PATH_CLASSES . 'module.php');
 
 $mname = PATH_CLASSES . 'modules' . DIRECTORY_SEPARATOR . $module . '.php';
 
 if (!file_exists($mname)) {
-	fail();
+	Module::fail();
 }
 	
 $className = 'M' . ucfirst($module);

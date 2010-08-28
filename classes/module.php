@@ -28,7 +28,7 @@ class Module {
 	
 	}
 
-	private function fail() {
+	public static function fail() {
 	        header('HTTP/1.0 404 Not Found');
 	        die();
 	}
@@ -45,7 +45,7 @@ class Module {
 				|| false !== strpos($_SERVER['HTTP_HOST'], $_SERVER['HTTP_REFERER'])
 			)
 		) {
-			$this->fail();
+			self::fail();
 		}
 	
 		$object = $this->runModule();

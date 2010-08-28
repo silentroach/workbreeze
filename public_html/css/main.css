@@ -67,15 +67,26 @@ input {
 }
 
 #sites li {
-	width: 50%;
-	float: left;
+	float: left; 
 	list-style: none;
 	margin-bottom: 0.5em;
 	font-size: 10pt;
+	width: 45%;
 }
 
-#sites li input {
-	margin-right: 6px;
+li.checkable {
+	border: 1px solid transparent;
+	margin-left: 5px;
+	padding: 4px 5px 4px 5px;
+	cursor: pointer;
+}
+
+li.checkable:hover {
+	border: 1px solid silver;
+}
+
+li.checked {
+	border: 1px dotted grey;
 }
 
 #pp {

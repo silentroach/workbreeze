@@ -60,7 +60,7 @@ function checkNewJobs() {
 			setNewTimer(options.checkInterval);
 
 			if ('undefined' != typeof(data['j']))			
-				parseJobs(data, false);
+				parseJobs(data['j'], false);
 		},
 		error: function() {
 			setNewTimer(options.checkInterval * 2);
@@ -140,7 +140,8 @@ function addJob(job, instantly) {
 
 	jobEl
 		.attr( {
-			'site': job.site
+			'site': job.site,
+			'cats': job.cats.join(',')
 		} )
 		.hide();
 
@@ -181,6 +182,7 @@ function parseJobs(jobs, instantly) {
 			site:  jobs[i]['s'],
 			stamp: jobs[i]['st'],
 			title: jobs[i]['t'],
+			cats:  jobs[i]['c'],
 			desc:  jobs[i]['d']
 		};
 		

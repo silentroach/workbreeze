@@ -30,9 +30,9 @@ class Job {
 			'php', 'asp', 'wordpress', 'joomla', 'ajax', 'javascript', 'ruby', 'ecommerce', 'создание сайт'
 		),
 		self::CAT_TRANSLATE   => array('перевод', 'translat'),
-		self::CAT_TEXT        => array('текст', 'рерайтинг', 'text', 'writing', 'статьи', 'обзор'),
-		self::CAT_ADVERTISING => array('реклам', 'advertising', 'seo', 'раскрутка'),
-		self::CAT_SYSADM      => array('admin', 'админ')
+		self::CAT_TEXT        => array('текст', 'рерайтинг', 'text', 'writing', 'статьи', 'обзор', 'реферат', 'диплом'),
+		self::CAT_ADVERTISING => array('реклам', 'advertising', 'seo', 'раскрутка', 'маркетинг', 'marketing'),
+		self::CAT_SYSADM      => array('admin', 'админ', 'windows', 'linux', 'freebsd', 'unix')
 	);
 
 	private $db;

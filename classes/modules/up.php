@@ -108,6 +108,7 @@ class MUp extends Module {
 				'i'  => $job['id'],
 				'st' => $job['stamp'],
 				't'  => $job['title'],
+				'c'  => $job['cats'],
 				'd'  => isset($job['short']) ? $job['short'] : $job['desc']
 			);
 		}

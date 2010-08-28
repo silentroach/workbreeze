@@ -2,21 +2,11 @@
 /** @type {Array} **/ var selsites = [];
 
 function handleFilter() {
-	$('#keyword, #sites')
-		.animate( {
-			'opacity': 0.8
-		}, function() {
-			$(this).
-				animate( {
-					'opacity': 1
-				} );
-		} );
-		
 	var tmp = $('#keyword').val().trim();
 	selsites = [];
 	
-	$('input', '#sites').each( function() {
-		if ($(this).attr('checked')) {
+	$('li', '#sites').each( function() {
+		if ($(this).hasClass('checked')) {
 			selsites.push(parseInt($(this).attr('site')));
 		}
 	} );

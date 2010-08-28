@@ -52,28 +52,23 @@ function initSites() {
 		var site = sites[i];
 		
 		selsites.push(i);
-		
-		var c = $('<input />')
-			.attr( {
-				'type'   : 'checkbox',
-				'id'     : 'c' + i,
-				'site'   : i,
-				'checked': 'checked'
-			} )
-			.click(handleFilter);
-			
-		var l = $('<label></label>')
-			.attr( {
-				'for' : 'c' + i
-			} )
-			.addClass('sico')
-			.addClass('sico_' + site.folder)
+
+		var sp  = $('<span></span>')
+			.addClass('sico sico_' + site.folder)
 			.html(site.name);
-			
-		var li = $('<li></li>');
+	
+		var li = $('<li></li>')
+			.addClass('checkable checked')
+			.attr( {
+				'id'   : 'c' + i,
+				'site' : i
+			} )
+			.click(function() {
+				$(this).toggleClass('checked');
+				handleFilter();
+			} );
 		
-		c.appendTo(li);
-		l.appendTo(li);		
-		li.appendTo(splace);			
+		li.appendTo(splace);
+		sp.appendTo(li);
 	}
 }

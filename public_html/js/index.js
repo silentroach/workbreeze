@@ -50,9 +50,16 @@ function checkNewJobs() {
 		data: adata,
 		dataType: 'json',
 		success: /** @param {*} data JSON data **/ function(data) {
+			if (null == data) 
+				return;		
+		
+			if ('undefined' != typeof(_gaq)) {
+				_gaq.push(['_trackEvent', 'Stream', 'Update']);
+			}
+		
 			setNewTimer(options.checkInterval);
 
-			if (undefined != typeof(data['j']))			
+			if ('undefined' != typeof(data['j']))			
 				parseJobs(data, false);
 		},
 		error: function() {
@@ -193,6 +200,10 @@ function init() {
 	places.buttonPause = $('#play');
 	
 	places.buttonPause.click(function() {
+		if ('undefined' != typeof(_gaq)) {
+			_gaq.push(['_trackEvent', 'Stream', 'Pause']);
+		}
+	
 		places.buttonPause.slideUp(options.animationSpeed);
 		places.buttonPlay.slideDown(options.animationSpeed);
 	
@@ -201,6 +212,10 @@ function init() {
 	} );
 	
 	places.buttonPlay.click(function() {
+		if ('undefined' != typeof(_gaq)) {
+			_gaq.push(['_trackEvent', 'Stream', 'Resume']);
+		}
+	
 		places.buttonPlay.slideUp(options.animationSpeed);
 		places.buttonPause.slideDown(options.animationSpeed);
 
@@ -231,22 +246,22 @@ function init() {
 			if (null == data) 
 				return;
 		
-			if (undefined != typeof(data['l']))
+			if ('undefined' != typeof(data['l']))
 				loadLang(data['l']);
 
 			localize();
 			
-			if (undefined != typeof(data['c']))
+			if ('undefined' != typeof(data['c']))
 				loadCats(data['c']);
 				
 			initCats();
 			
-			if (undefined != typeof(data['s']))
+			if ('undefined' != typeof(data['s']))
 				loadSites(data['s']);
 			
 			initSites();
 			
-			if (undefined != typeof(data['j']))
+			if ('undefined' != typeof(data['j']))
 				parseJobs(data['j'], true);
 		}
 	});

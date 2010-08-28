@@ -3,7 +3,7 @@ var is_ls = false;
 /** @type {Array} **/ var ls_items = [];
 
 function finit() {
-	is_ls = (undefined != typeof(localStorage));
+	is_ls = ('undefined' != typeof(localStorage));
 }
 
 /**
@@ -31,8 +31,8 @@ function getLocalStorageItemVersion(itemName) {
 		return 0;
 		
 	if (
-		undefined == typeof(tmp)
-		|| undefined == typeof(tmp['v'])
+		'undefined' == typeof(tmp)
+		|| 'undefined' == typeof(tmp['v'])
 	) {
 		return 0;
 	}
@@ -51,7 +51,7 @@ function getLocalStorageItem(itemName) {
 	if (!is_ls)
 		return false;
 
-	if (undefined == ls_items[itemName]) {
+	if ('undefined' == typeof(ls_items[itemName])) {
 		try {
 			ls_items[itemName] = JSON.parse(localStorage.getItem(itemName));
 		} catch (err) {

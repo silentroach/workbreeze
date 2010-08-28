@@ -7,23 +7,17 @@
 function localize(place) {
 	var tmp = $('body');
 
-	if (undefined == place)
+	if ('undefined' == typeof(place))
 		tmp = place;
 
 	$('.l', place).each(function() {
-		if (
-			$(this).hasClass('lp')
-			&& undefined != $(this).attr('lp')
-		) {
+		if ($(this).hasClass('lp')) {
 			$(this).attr( {
 				'placeholder': langVal($(this).attr('lp'))
 			} );
 		}
 
-		if (
-			$(this).hasClass('lv')
-			&& undefined != $(this).attr('lv')
-		) {
+		if ($(this).hasClass('lv')) {
 			$(this).html( langVal($(this).attr('lv')) )
 		}
 	});
@@ -49,7 +43,7 @@ function getLangVersion() {
  * @return {string} Language value
  */
 function langVal(item) {
-	if (undefined == typeof(lang['vl']))
+	if ('undefined' == typeof(lang['vl']))
 		return '';
 		
 	if ('string' != typeof(lang['vl'][item]))

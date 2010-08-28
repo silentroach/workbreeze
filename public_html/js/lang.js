@@ -2,9 +2,15 @@
 
 /**
  * Localize items on the page
+ * @param {JQuery} place Place to localize
  */
-function localize() {
-	$('.l').each(function() {
+function localize(place) {
+	var tmp = $('body');
+
+	if ('undefined' === place)
+		tmp = place;
+
+	$('.l', place).each(function() {
 		if (
 			$(this).hasClass('lp')
 			&& undefined != $(this).attr('lp')

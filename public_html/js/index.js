@@ -24,7 +24,8 @@ var options = {
 	
 	/** @const **/ elementSites: 'sites',
 	/** @const **/ elementLang:  'lang',
-	/** @const **/ elementCats:  'cats'
+	/** @const **/ elementCats:  'cats',
+	/** @const **/ elementJobStamp: 'jstamp'
 }
 
 function checkJobPlace() {
@@ -38,21 +39,24 @@ function checkJobPlace() {
 
 function checkNewJobs() {
 	dropNewTimer();
+	
+	var adata = [];
+	
+	adata[options.elementJobStamp] = lastStamp;
 
 	$.ajax({
 		url: '/up',
 		type: 'POST',
-		data: {
-			'stamp': lastStamp
-		},
+		data: adata,
 		dataType: 'json',
 		success: /** @param {*} data JSON data **/ function(data) {
 			setNewTimer(options.checkInterval);
 
-			parseJobs(data, false);
+			if (undefined != typeof(data['j']))			
+				parseJobs(data, false);
 		},
 		error: function() {
-			setNewTimer(options.checkInterval);
+			setNewTimer(options.checkInterval * 2);
 		}
 	});
 }
@@ -212,13 +216,14 @@ function init() {
 	
 	var adata = [];
 	
-	adata[options.elementLang]  = getLangVersion();
-	adata[options.elementSites] = getSitesVersion();
-	adata[options.elementCats]  = getCatsVersion();
+	adata[options.elementLang]     = getLangVersion();
+	adata[options.elementSites]    = getSitesVersion();
+	adata[options.elementCats]     = getCatsVersion();
+	adata[options.elementJobStamp] = 0;
 	
 	// init request
 	$.ajax({
-		url: '/init',
+		url: '/up',
 		type: 'POST',
 		data: adata,
 		dataType: 'json',
@@ -241,7 +246,8 @@ function init() {
 			
 			initSites();
 			
-			parseJobs(data['j'], true);
+			if (undefined != typeof(data['j']))
+				parseJobs(data['j'], true);
 		}
 	});
 	

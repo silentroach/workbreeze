@@ -11,22 +11,22 @@ class MUp extends Module {
 		$l = array(
 			'v' => 2,
 			'vl' => array(
-				'kwds' => 'êëþ÷åâûå ñëîâà ÷åðåç çàïÿòóþ',
-				'on'   => 'íà',
-				'pl'   => 'çàïóñê',
-				'pa'   => 'ïàóçà',
-				'mt'   => 'ïî÷òà',
+				'kwds' => 'ÐºÐ»ÑŽÑ‡ÐµÐ²Ñ‹Ðµ ÑÐ»Ð¾Ð²Ð° Ñ‡ÐµÑ€ÐµÐ· Ð·Ð°Ð¿ÑÑ‚ÑƒÑŽ',
+				'on'   => 'Ð½Ð°',
+				'pl'   => 'Ð·Ð°Ð¿ÑƒÑÐº',
+				'pa'   => 'Ð¿Ð°ÑƒÐ·Ð°',
+				'mt'   => 'Ð¿Ð¾Ñ‡Ñ‚Ð°',
 				
-				'c' . Job::CAT_OTHER       => 'ïðî÷åå',
-				'c' . Job::CAT_AUDIOVIDEO  => 'àóäèî/âèäåî',
-				'c' . Job::CAT_DESIGN      => 'äèçàéí',
-				'c' . Job::CAT_PHOTO       => 'ôîòî',
-				'c' . Job::CAT_PROGRAMMING => 'ïðîãðàììèðîâàíèå',
-				'c' . Job::CAT_WEBPROG     => 'âåá-ðàçðàáîòêà',
-				'c' . Job::CAT_TRANSLATE   => 'ïåðåâîä',
-				'c' . Job::CAT_TEXT        => 'ðàáîòà ñ òåêñòîì',
-				'c' . Job::CAT_ADVERTISING => 'ðåêëàìà',
-				'c' . Job::CAT_SYSADM      => 'àäìèíèñòðèðîâàíèå'
+				'c' . Job::CAT_OTHER       => 'Ð¿Ñ€Ð¾Ñ‡ÐµÐµ',
+				'c' . Job::CAT_AUDIOVIDEO  => 'Ð°ÑƒÐ´Ð¸Ð¾/Ð²Ð¸Ð´ÐµÐ¾',
+				'c' . Job::CAT_DESIGN      => 'Ð´Ð¸Ð·Ð°Ð¹Ð½',
+				'c' . Job::CAT_PHOTO       => 'Ñ„Ð¾Ñ‚Ð¾',
+				'c' . Job::CAT_PROGRAMMING => 'Ð¿Ñ€Ð¾Ð³Ñ€Ð°Ð¼Ð¼Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð¸Ðµ',
+				'c' . Job::CAT_WEBPROG     => 'Ð²ÐµÐ±-Ñ€Ð°Ð·Ñ€Ð°Ð±Ð¾Ñ‚ÐºÐ°',
+				'c' . Job::CAT_TRANSLATE   => 'Ð¿ÐµÑ€ÐµÐ²Ð¾Ð´',
+				'c' . Job::CAT_TEXT        => 'Ñ€Ð°Ð±Ð¾Ñ‚Ð° Ñ Ñ‚ÐµÐºÑÑ‚Ð¾Ð¼',
+				'c' . Job::CAT_ADVERTISING => 'Ñ€ÐµÐºÐ»Ð°Ð¼Ð°',
+				'c' . Job::CAT_SYSADM      => 'Ð°Ð´Ð¼Ð¸Ð½Ð¸ÑÑ‚Ñ€Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð¸Ðµ'
 			)
 		);
 		
@@ -127,10 +127,10 @@ class MUp extends Module {
 
 	protected function runModule() {
 		$r = array();
-	
+
 		// check for outdated language pack
 		$vlang = $this->getIntParam('lang');
-		if ($vlang) {
+		if (false !== $vlang) {
 			$lang = $this->getLang($vlang);
 			
 			if ($lang) {
@@ -140,7 +140,7 @@ class MUp extends Module {
 		
 		// check for outdates sites
 		$vsites = $this->getIntParam('sites');
-		if ($vsites) {
+		if (false !== $vsites) {
 			$sites = $this->getSites($vsites);
 			
 			if ($sites) {
@@ -150,7 +150,7 @@ class MUp extends Module {
 
 		// check for outdates categories
 		$vcats = $this->getIntParam('cats');
-		if ($vcats) {
+		if (false !== $vcats) {
 			$cats = $this->getCats($vcats);
 			
 			if ($cats) {
@@ -160,14 +160,14 @@ class MUp extends Module {
 		
 		// check for jobs
 		$jstamp = $this->getIntParam('jstamp');
-		if ($jstamp) {
+		if (false !== $jstamp) {
 			$jobs = $this->getJobs($jstamp);
 			
 			if ($jobs) {
 				$r['j'] = $jobs;
 			}
 		}
-	
+
 		return $r;	
 	}
 

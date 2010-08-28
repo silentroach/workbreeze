@@ -30,7 +30,7 @@ function localize(place) {
 function getLangVersion() {
 	var lver = getLocalStorageItemVersion(options.elementLang);
 	
-	if (lver) {
+	if (lver > 0) {
 		lang = getLocalStorageItem(options.elementLang);
 	}
 

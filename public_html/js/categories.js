@@ -7,7 +7,7 @@
 function getCatsVersion() {
 	var cver = getLocalStorageItemVersion(options.elementCats);
 	
-	if (cver) {
+	if (cver > 0) {
 		cats = getLocalStorageItem(options.elementCats);
 	}
 

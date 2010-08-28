@@ -145,8 +145,8 @@ function addJob(job, instantly) {
 		.hide();
 
 	lnk = $("<a>")
-		.addClass(siteIconPrefix)
-		.addClass(siteIconPrefix + '_' + sites[job.site].folder)
+		.addClass(options.siteIconPrefix)
+		.addClass(options.siteIconPrefix + '_' + sites[job.site].folder)
 		.attr({
 			'href': '/jobs/' + sites[job.site].folder + '/' + job.id + '.html',
 			'title': job.title + ' ' + langVal('on') + ' ' + sites[job.site].name

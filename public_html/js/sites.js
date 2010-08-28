@@ -7,14 +7,14 @@
 function getSitesVersion() {
 	var sver = getLocalStorageItemVersion(options.elementSites);
 	
-	if (sver) {
+	if (sver > 0) {
 		var tmp = getLocalStorageItem(options.elementSites);
-	}
 
-	if ('undefined' != typeof(tmp['vl'])) {
-		sites = tmp['vl'];
-	} else {
-		return false;
+		if ('undefined' != typeof(tmp['vl'])) {
+			sites = tmp['vl'];
+		} else {
+			return 0;
+		}
 	}
 
 	return sver;

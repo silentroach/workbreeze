@@ -15,7 +15,7 @@ var places = {
 }
 
 var options = {
-	/** @const **/  checkInterval = 30000;
+	/** @const **/  checkInterval: 30000,
 	/** @const **/ siteIconPrefix: 'sico',
 	/** @const **/ animationSpeed: 'slow',
 	
@@ -210,17 +210,22 @@ function init() {
 	// removing right content
 	$('#right > *').remove();
 	
+	var adata = [];
+	
+	adata[options.elementLang]  = getLangVersion();
+	adata[options.elementSites] = getSitesVersion();
+	adata[options.elementCats]  = getCatsVersion();
+	
 	// init request
 	$.ajax({
 		url: '/init',
 		type: 'POST',
-		data: {
-			options.elementLang:  getLangVersion(),
-			options.elementSites: getSitesVersion(),
-			options.elementCats:  getCatsVersion()
-		},
+		data: adata,
 		dataType: 'json',
 		success: /** @param {*} data JSON data **/ function(data) {
+			if (null == data) 
+				return;
+		
 			if (undefined != typeof(data['l']))
 				loadLang(data['l']);
 

@@ -5,27 +5,13 @@
  * @return {number} Site object version
  */
 function getSitesVersion() {
-	if (!is_ls)
-		return 0;
-		
-	try {
-		var tmp = JSON.parse(localStorage.getItem('sites'));
-	} catch (err) {
-		return 0;
-	}
+	var sver = getLocalStorageItemVersion('sites');
 	
-	if (!tmp)
-		return 0;
+	if (sver) {
+		sites = getLocalStorageItem('sites');
+	}
 
-	if (
-		'undefined' == typeof(tmp)
-		|| 'undefined' == typeof(tmp['v'])
-	)
-		return 0;
-		
-	sites = tmp['vl'];
-
-	return Math.floor(tmp['v']);
+	return sver;
 }
 
 /**
@@ -47,9 +33,7 @@ function loadSites(val) {
 		sites[site['i']] = item;
 	}
 	
-	if (is_ls) {
-		localStorage.setItem('sites', JSON.stringify({'v': val['v'], 'vl': sites}));
-	}
+	addLocalStorageItem('sites', val['v'], sites);
 }
 
 /**

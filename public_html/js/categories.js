@@ -5,27 +5,13 @@
  * @return {number} Categories object version
  */
 function getCatsVersion() {
-	if (!is_ls)
-		return 0;
-		
-	try {
-		var tmp = JSON.parse(localStorage.getItem('cats'));
-	} catch (err) {
-		return 0;
-	}
+	var cver = getLocalStorageItemVersion('cats');
 	
-	if (!tmp)
-		return 0;
+	if (cver) {
+		cats = getLocalStorageItem('cats');
+	}
 
-	if (
-		'undefined' == typeof(tmp)
-		|| 'undefined' == typeof(tmp['v'])
-	)
-		return 0;
-		
-	cats = tmp['vl'];
-
-	return Math.floor(tmp['v']);
+	return cver;
 }
 
 /**
@@ -41,9 +27,7 @@ function loadCats(val) {
 		cats[cat['i']] = cat['l'];
 	}
 	
-	if (is_ls) {
-		localStorage.setItem('cats', JSON.stringify({'v': val['v'], 'vl': cats}));
-	}
+	addLocalStorageItem('cats', val['v'], cats);
 }
 
 /**

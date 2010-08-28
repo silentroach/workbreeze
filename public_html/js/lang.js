@@ -28,25 +28,13 @@ function localize() {
  * @return {number} Language object version
  */
 function getLangVersion() {
-	if (!is_ls)
-		return 0;
-
-	try {
-		lang = JSON.parse(localStorage.getItem('lang'));
-	} catch (err) {
-		return 0;
-	}
+	var lver = getLocalStorageItemVersion('lang');
 	
-	if (!lang)
-		return 0;
+	if (lver) {
+		lang = getLocalStorageItem('lang');
+	}
 
-	if (
-		'undefined' == typeof(lang)
-		|| 'undefined' == typeof(lang['v'])
-	)
-		return 0;
-
-	return Math.floor(lang['v']);
+	return lver;
 }
 
 /**
@@ -71,7 +59,5 @@ function langVal(item) {
 function loadLang(val) {
 	lang = val;
 	
-	if (is_ls) {
-		localStorage.setItem('lang', JSON.stringify(lang));
-	}
+	addLocalStorageItem('lang', lang['v'], lang['vl']);
 }

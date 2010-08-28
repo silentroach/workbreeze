@@ -34,10 +34,10 @@ function localize(place) {
  * @return {number} Language object version
  */
 function getLangVersion() {
-	var lver = getLocalStorageItemVersion('lang');
+	var lver = getLocalStorageItemVersion(options.elementLang);
 	
 	if (lver) {
-		lang = getLocalStorageItem('lang');
+		lang = getLocalStorageItem(options.elementLang);
 	}
 
 	return lver;
@@ -65,5 +65,5 @@ function langVal(item) {
 function loadLang(val) {
 	lang = val;
 	
-	addLocalStorageItem('lang', lang['v'], lang['vl']);
+	addLocalStorageItem(options.elementLang, lang['v'], lang['vl']);
 }

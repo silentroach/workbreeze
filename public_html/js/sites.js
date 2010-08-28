@@ -5,10 +5,10 @@
  * @return {number} Site object version
  */
 function getSitesVersion() {
-	var sver = getLocalStorageItemVersion('sites');
+	var sver = getLocalStorageItemVersion(options.elementSites);
 	
 	if (sver) {
-		sites = getLocalStorageItem('sites');
+		sites = getLocalStorageItem(options.elementSites);
 	}
 
 	return sver;
@@ -33,7 +33,7 @@ function loadSites(val) {
 		sites[site['i']] = item;
 	}
 	
-	addLocalStorageItem('sites', val['v'], sites);
+	addLocalStorageItem(options.elementSites, val['v'], sites);
 }
 
 /**

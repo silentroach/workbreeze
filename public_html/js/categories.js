@@ -5,10 +5,10 @@
  * @return {number} Categories object version
  */
 function getCatsVersion() {
-	var cver = getLocalStorageItemVersion('cats');
+	var cver = getLocalStorageItemVersion(options.elementCats);
 	
 	if (cver) {
-		cats = getLocalStorageItem('cats');
+		cats = getLocalStorageItem(options.elementCats);
 	}
 
 	return cver;
@@ -27,7 +27,7 @@ function loadCats(val) {
 		cats[cat['i']] = cat['l'];
 	}
 	
-	addLocalStorageItem('cats', val['v'], cats);
+	addLocalStorageItem(options.elementCats, val['v'], cats);
 }
 
 /**

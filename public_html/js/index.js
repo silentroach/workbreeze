@@ -17,7 +17,11 @@ var places = {
 var options = {
 	/** @const **/  checkInterval = 30000;
 	/** @const **/ siteIconPrefix: 'sico',
-	/** @const **/ animationSpeed: 'slow'
+	/** @const **/ animationSpeed: 'slow',
+	
+	/** @const **/ elementSites: 'sites',
+	/** @const **/ elementLang:  'lang',
+	/** @const **/ elementCats:  'cats'
 }
 
 function checkJobPlace() {
@@ -208,9 +212,9 @@ function init() {
 		url: '/init',
 		type: 'POST',
 		data: {
-			'lang':  getLangVersion(),
-			'sites': getSitesVersion(),
-			'cats':  getCatsVersion()
+			options.elementLang:  getLangVersion(),
+			options.elementSites: getSitesVersion(),
+			options.elementCats:  getCatsVersion()
 		},
 		dataType: 'json',
 		success: /** @param {*} data JSON data **/ function(data) {

@@ -15,17 +15,17 @@ var places = {
 }
 
 var options = {
-	/** @const **/  checkInterval: 30000,
-	/** @const **/ siteIconPrefix: 'sico',
-	/** @const **/ animationSpeed: 'slow',
+	/** @const **/  checkInterval:   30000,
+	/** @const **/ siteIconPrefix:   'sico',
+	/** @const **/ animationSpeed:   'slow',
 	
-	/** @const **/ classSelected: 'jsel',
+	/** @const **/ classSelected:    'jsel',
 	/** @const **/ classNotSelected: 'jrem',
 	
-	/** @const **/ elementSites: 'sites',
-	/** @const **/ elementLang:  'lang',
-	/** @const **/ elementCats:  'cats',
-	/** @const **/ elementJobStamp: 'jstamp'
+	/** @const **/ elementSites:     'sites',
+	/** @const **/ elementLang:      'lang',
+	/** @const **/ elementCats:      'cats',
+	/** @const **/ elementJobStamp:  'jstamp'
 }
 
 function checkJobPlace() {

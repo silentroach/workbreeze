@@ -1,10 +1,13 @@
 <?php
 
+require('defines.php');
+require(PATH_CLASSES . 'module.php');
+
 if (
 	!isset($_SERVER['DOCUMENT_URI'])
 	|| !isset($_SERVER['REQUEST_URI'])
 ) {
-	fail();
+	Module::fail();
 }
 	
 $uri = isset($_SERVER['DOCUMENT_URI']) ? $_SERVER['DOCUMENT_URI'] : $_SERVER['REQUEST_URI'];
@@ -17,13 +20,9 @@ array_shift($query);
 
 $module = array_shift($query);
 
-require('defines.php');
-
 if (null === $module) {
 	Module::fail();
 }
-
-require(PATH_CLASSES . 'module.php');
 
 $mname = PATH_CLASSES . 'modules' . DIRECTORY_SEPARATOR . $module . '.php';
 

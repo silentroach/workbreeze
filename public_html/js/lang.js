@@ -7,7 +7,7 @@
 function localize(place) {
 	var tmp = $('body');
 
-	if ('undefined' === place)
+	if (undefined == place)
 		tmp = place;
 
 	$('.l', place).each(function() {
@@ -49,7 +49,7 @@ function getLangVersion() {
  * @return {string} Language value
  */
 function langVal(item) {
-	if ('undefined' == typeof(lang['vl']))
+	if (undefined == typeof(lang['vl']))
 		return '';
 		
 	if ('string' != typeof(lang['vl'][item]))

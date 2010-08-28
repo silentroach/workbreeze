@@ -54,24 +54,24 @@ function checkJobForFilter(element) {
 		&& keyfound
 	) {
 		if (
-			!element.hasClass('jsel')
-			|| element.hasClass('jrem')
+			!element.hasClass(options.classSelected)
+			|| element.hasClass(options.classNotSelected)
 		) {
 			element
-				.removeClass('jrem')
-				.addClass('jsel');
+				.removeClass(options.classNotSelected)
+				.addClass(options.classSelected);
 			
 			element.animate( {
 				'opacity': 1
 			} );
 		}
 	} else if (
-		!element.hasClass('jrem')
-		|| element.hasClass('jsel')
+		!element.hasClass(options.classNotSelected)
+		|| element.hasClass(options.classSelected)
 	) {
 		element
-			.removeClass('jsel')
-			.addClass('jrem');
+			.removeClass(options.classSelected)
+			.addClass(options.classNotSelected);
 		
 		element.animate( {
 			'opacity': 0.2

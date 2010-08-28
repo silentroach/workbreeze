@@ -19,6 +19,9 @@ var options = {
 	/** @const **/ siteIconPrefix: 'sico',
 	/** @const **/ animationSpeed: 'slow',
 	
+	/** @const **/ classSelected: 'jsel',
+	/** @const **/ classNotSelected: 'jrem',
+	
 	/** @const **/ elementSites: 'sites',
 	/** @const **/ elementLang:  'lang',
 	/** @const **/ elementCats:  'cats'
@@ -218,17 +221,17 @@ function init() {
 		},
 		dataType: 'json',
 		success: /** @param {*} data JSON data **/ function(data) {
-			if ('undefined' != typeof(data['l']))
+			if (undefined != typeof(data['l']))
 				loadLang(data['l']);
 
 			localize();
 			
-			if ('undefined' != typeof(data['c']))
+			if (undefined != typeof(data['c']))
 				loadCats(data['c']);
 				
 			initCats();
 			
-			if ('undefined' != typeof(data['s']))
+			if (undefined != typeof(data['s']))
 				loadSites(data['s']);
 			
 			initSites();

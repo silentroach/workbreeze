@@ -26,7 +26,7 @@ function loadSites(val) {
 		
 		var item = {
 			folder: site['f'],
-			name:  site['n'],
+			name:   site['n'],
 			url:    site['u']
 		}
 		

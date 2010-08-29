@@ -1,4 +1,5 @@
 /** @type {number} **/ var lastStamp = 0;
+/** @type {number} **/ var updateCount = 0;
 
 var queueTimer;
 var newTimer;
@@ -11,7 +12,8 @@ var places = {
 	/** @type {jQuery} **/ templateJob: null,
 	/** @type {jQuery} **/ placeJob:    null,
 	/** @type {jQuery} **/ buttonPlay:  null,
-	/** @type {jQuery} **/ buttonPause: null
+	/** @type {jQuery} **/ buttonPause: null,
+	/** @type {jQuery} **/ logo:        null
 }
 
 var options = {
@@ -53,8 +55,14 @@ function checkNewJobs() {
 			if (null == data) 
 				return;		
 		
-			if ('undefined' != typeof(_gaq)) {
-				_gaq.push(['_trackEvent', 'Stream', 'Update']);
+			updateCount++;
+		
+			if (
+				updateCount >= 10
+				&& 'undefined' != typeof(_gaq)
+			) {
+				updateCount = 0;
+				_gaq.push(['_trackEvent', 'Stream', '10 updates']);
 			}
 		
 			setNewTimer(options.checkInterval);
@@ -190,18 +198,7 @@ function parseJobs(jobs, instantly) {
 	}
 }
 
-function init() {
-	$("#bfoot").css({'opacity': 0.7});
-
-	finit();
-
-	places.templateJob = $('ul.job:first');
-	places.placeJob    = $('#right');
-	
-	places.buttonPlay  = $('#play');
-	places.buttonPause = $('#play');
-	
-	places.buttonPause.click(function() {
+function streamPause() {
 		if ('undefined' != typeof(_gaq)) {
 			_gaq.push(['_trackEvent', 'Stream', 'Pause']);
 		}
@@ -211,9 +208,9 @@ function init() {
 	
 		queue = [];
 		dropNewTimer();
-	} );
-	
-	places.buttonPlay.click(function() {
+}
+
+function streamPlay() {
 		if ('undefined' != typeof(_gaq)) {
 			_gaq.push(['_trackEvent', 'Stream', 'Resume']);
 		}
@@ -223,7 +220,34 @@ function init() {
 
 		lastStamp = Math.round(new Date().getTime() / 1000);
 		setNewTimer(5000);
-	} );
+}
+
+function init() {
+	$("#bfoot").css({'opacity': 0.7});
+	
+	finit();
+
+	places.logo        = $('#logo');
+	places.templateJob = $('ul.job:first');
+	places.placeJob    = $('#right');
+	
+	places.buttonPlay  = $('#play');
+	places.buttonPause = $('#pause');
+	
+	places.buttonPause.click(streamPause);
+	places.buttonPlay.click(streamPlay);
+	
+	places.logo.ajaxStart(function() {
+		$(this).animate({
+			'opacity': 0.7
+		}, options.animationSpeed);
+	});
+	
+	places.logo.ajaxStop(function() {
+		$(this).animate({
+			'opacity': 1
+		});
+	});
 	
 	setQueueTimer(5000);
 	setNewTimer(5000);

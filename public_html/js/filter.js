@@ -12,6 +12,12 @@ function handleFilter() {
 			selsites.push(parseInt($(this).attr('site')));
 		}
 	} );
+
+	$('li', '#categories').each( function() {
+		if ($(this).hasClass('checked')) {
+			selcats.push(parseInt($(this).attr('cat')));
+		}
+	} );
 	
 	if ('' == tmp) {
 		keywords = [];
@@ -29,22 +35,40 @@ function checkJobForFilter(element) {
 	var str = $('.title', element).html() + $('.desc', element).html();
 	str = str.toLowerCase();
 	
-	var keyfound = false;
+	var wrong = !(selsites.indexOf(parseInt(element.attr('site'))) >= 0);
+	
+	if (!wrong) {
+		var cts = element.attr('cats').split(',');
 
-	if (0 != keywords.length)	{
-		for (var i = 0; i < keywords.length; i++) {
-			if (str.indexOf(keywords[i].toLowerCase()) >= 0) {
-				keyfound = true;
+		var cwrong = true;
+	
+		for (var i = 0; i < cts.length; i++) {
+			if (selcats.indexOf(parseInt(cts[i])) >= 0) {
+				cwrong = false;
 				break;
 			}
 		}
-	} else
-		keyfound = true;
-	
+		
+		if (cwrong) {
+			wrong = true;
+		}
+	}
+
 	if (
-		selsites.indexOf(parseInt(element.attr('site'))) >= 0
-		&& keyfound
+		!wrong
+		&& 0 != keywords.length
 	) {
+		wrong = true;
+	
+		for (var i = 0; i < keywords.length; i++) {
+			if (str.indexOf(keywords[i].toLowerCase()) >= 0) {
+				wrong = false;
+				break;
+			}
+		}
+	}
+	
+	if (!wrong) {
 		if (
 			!element.hasClass(options.classSelected)
 			|| element.hasClass(options.classNotSelected)

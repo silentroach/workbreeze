@@ -90,7 +90,7 @@ li.checkable {
 }
 
 li.checkable:hover {
-	color: white;
+	color: silver;
 }
 
 li.checked {
@@ -98,10 +98,12 @@ li.checked {
 	text-shadow: black 1px 1px 1px;
 }
 
+li.checked:hover {
+	color: white;
+}
+
 #pp {
-	clear: both;
-	padding-left: 0px;
-	padding-top: 1em;
+	float: right;
 }
 
 #play {

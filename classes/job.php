@@ -23,7 +23,7 @@ class Job {
 			'дизайн', 'design', 'баннер', 'banner', 'графика', 'graphic', 'flash',
 			'логотип', 'logo', 'арт', 'худож', 'art'
 		),
-		self::CAT_PHOTO       => array('фото', 'photo'),
+		self::CAT_PHOTO       => array('фото', 'photo '), // space to disallow photoshop
 		self::CAT_PROGRAMMING => array('программир', 'programm', 'разраб', 'software', 'delphi'),
 		self::CAT_WEBPROG     => array(
 			'скрипт', 'веб-разр', 'верстк', 'веб-прило', 'разработка сайт', 'script', 'web-prog', 'webprog',

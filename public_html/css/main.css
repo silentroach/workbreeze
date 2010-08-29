@@ -78,19 +78,24 @@ input {
 	width: 45%;
 }
 
+#categories {
+	padding-top: 1em;
+}
+
 li.checkable {
-	border: 1px solid transparent;
 	margin-left: 5px;
 	padding: 4px 5px 4px 5px;
 	cursor: pointer;
+	color: #5d5d5d;
 }
 
 li.checkable:hover {
-	border: 1px solid silver;
+	color: white;
 }
 
 li.checked {
-	border: 1px dotted grey;
+	color: silver;
+	text-shadow: black 1px 1px 1px;
 }
 
 #pp {

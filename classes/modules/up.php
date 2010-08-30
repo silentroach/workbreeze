@@ -17,7 +17,6 @@ class MUp extends Module {
 				'pa'   => 'пауза',
 				'mt'   => 'почта',
 				'ms'   => 'статистика',
-				'a'    => 'авторизация',
 				
 				'c' . Job::CAT_OTHER       => 'прочее',
 				'c' . Job::CAT_AUDIOVIDEO  => 'аудио/видео',

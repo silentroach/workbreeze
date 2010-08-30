@@ -25,13 +25,67 @@ function handleFilter() {
 		keywords = tmp.split(',');
 	}
 	
+	if (
+		0 == selsites.length
+		|| 0 == selcats.length
+	) {
+		streamAutoPause = true;
+		streamPause();
+	} else if (streamAutoPause) {
+		streamPlay();
+	}
+	
 	checkFeedForFilter();
 }
 
 /**
  * @param {jQuery} element
  */
+function jobSelect(element) {
+	if (
+		!element.hasClass(options.classSelected)
+		|| element.hasClass(options.classNotSelected)
+	) {
+		element
+			.removeClass(options.classNotSelected)
+			.addClass(options.classSelected);
+		
+		element.animate( {
+			'opacity': 1
+		} );
+	}
+}
+
+/**
+ * @param {jQuery} element
+ */
+function jobUnselect(element) {
+	if (
+		!element.hasClass(options.classNotSelected)
+		|| element.hasClass(options.classSelected)
+	) {
+		element
+			.removeClass(options.classSelected)
+			.addClass(options.classNotSelected);
+		
+		element.animate( {
+			'opacity': 0.2
+		} );
+	}
+}
+
+/**
+ * @param {jQuery} element
+ */
 function checkJobForFilter(element) {
+	if (
+		0 == selsites.length
+		|| 0 == selcats.length
+	) {
+		jobSelect(element);
+		return;
+	}
+
 	var str = $('.title', element).html() + $('.desc', element).html();
 	str = str.toLowerCase();
 	
@@ -69,29 +123,9 @@ function checkJobForFilter(element) {
 	}
 	
 	if (!wrong) {
-		if (
-			!element.hasClass(options.classSelected)
-			|| element.hasClass(options.classNotSelected)
-		) {
-			element
-				.removeClass(options.classNotSelected)
-				.addClass(options.classSelected);
-			
-			element.animate( {
-				'opacity': 1
-			} );
-		}
-	} else if (
-		!element.hasClass(options.classNotSelected)
-		|| element.hasClass(options.classSelected)
-	) {
-		element
-			.removeClass(options.classSelected)
-			.addClass(options.classNotSelected);
-		
-		element.animate( {
-			'opacity': 0.2
-		} );
+		jobSelect(element);
+	} else {
+		jobUnselect(element);
 	}
 }
 

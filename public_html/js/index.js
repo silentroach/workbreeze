@@ -5,6 +5,8 @@ var queueTimer;
 var newTimer;
 var filterTimer;
 
+var streamAutoPause = false;
+
 /** @type {Array} **/ var queue    = [];
 /** @type {Array} **/ var joblist  = [];
 
@@ -201,27 +203,29 @@ function parseJobs(jobs, instantly) {
 }
 
 function streamPause() {
-		if ('undefined' != typeof(_gaq)) {
-			_gaq.push(['_trackEvent', 'Stream', 'Pause']);
-		}
-	
-		places.buttonPause.slideUp(options.animationSpeed);
-		places.buttonPlay.slideDown(options.animationSpeed);
-	
-		queue = [];
-		dropNewTimer();
+	if ('undefined' != typeof(_gaq)) {
+		_gaq.push(['_trackEvent', 'Stream', 'Pause']);
+	}
+
+	places.buttonPause.slideUp(options.animationSpeed);
+	places.buttonPlay.slideDown(options.animationSpeed);
+
+	queue = [];
+	dropNewTimer();
 }
 
 function streamPlay() {
-		if ('undefined' != typeof(_gaq)) {
-			_gaq.push(['_trackEvent', 'Stream', 'Resume']);
-		}
-	
-		places.buttonPlay.slideUp(options.animationSpeed);
-		places.buttonPause.slideDown(options.animationSpeed);
+	streamAutoPause = false;
 
-		lastStamp = Math.round(new Date().getTime() / 1000);
-		setNewTimer(5000);
+	if ('undefined' != typeof(_gaq)) {
+		_gaq.push(['_trackEvent', 'Stream', 'Resume']);
+	}
+
+	places.buttonPlay.slideUp(options.animationSpeed);
+	places.buttonPause.slideDown(options.animationSpeed);
+
+	lastStamp = Math.round(new Date().getTime() / 1000);
+	setNewTimer(5000);
 }
 
 function init() {

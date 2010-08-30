@@ -114,7 +114,6 @@ li.checkable:hover {
 
 li.checked {
 	color: silver;
-	text-shadow: black 1px 1px 1px;
 }
 
 li.checked:hover {

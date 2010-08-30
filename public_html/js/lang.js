@@ -20,6 +20,12 @@ function localize(place) {
 		if ($(this).hasClass('lv')) {
 			$(this).html( langVal($(this).attr('lv')) )
 		}
+
+		if ($(this).hasClass('lt')) {
+			$(this).attr( {
+				'title': langVal($(this).attr('lt'))
+			} );
+		}
 	});
 }
 

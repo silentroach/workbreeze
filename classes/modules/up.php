@@ -9,13 +9,15 @@ class MUp extends Module {
 	
 	private function getLang($ver = 0) {
 		$l = array(
-			'v' => 2,
+			'v' => 4,
 			'vl' => array(
 				'kwds' => 'ключевые слова через запятую',
 				'on'   => 'на',
 				'pl'   => 'запуск',
 				'pa'   => 'пауза',
 				'mt'   => 'почта',
+				'ms'   => 'статистика',
+				'a'    => 'авторизация',
 				
 				'c' . Job::CAT_OTHER       => 'прочее',
 				'c' . Job::CAT_AUDIOVIDEO  => 'аудио/видео',

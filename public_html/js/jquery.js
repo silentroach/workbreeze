@@ -2597,6 +2597,9 @@ function liveConvert( type, selector ) {
  */
 jQuery.prototype.keyup = function(fn) {};
 
+jQuery.prototype.ajaxStart = function(fn) {};
+jQuery.prototype.ajaxStop  = function(fn) {};
+
 jQuery.each( ("blur focus focusin focusout load resize scroll unload click dblclick " +
 	"mousedown mouseup mousemove mouseover mouseout mouseenter mouseleave " +
 	"change select submit keydown keypress keyup error").split(" "), function( i, name ) {

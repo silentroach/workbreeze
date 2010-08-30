@@ -13,7 +13,9 @@ var places = {
 	/** @type {jQuery} **/ placeJob:    null,
 	/** @type {jQuery} **/ buttonPlay:  null,
 	/** @type {jQuery} **/ buttonPause: null,
-	/** @type {jQuery} **/ logo:        null
+	/** @type {jQuery} **/ logo:        null,
+	/** @type {jQuery} **/ menu:        null,
+	/** @type {jQuery} **/ auth:        null
 }
 
 var options = {
@@ -228,6 +230,8 @@ function init() {
 	finit();
 
 	places.logo        = $('#logo');
+	places.menu        = $('#menu');
+	places.auth        = $('#auth');
 	places.templateJob = $('ul.job:first');
 	places.placeJob    = $('#right');
 	
@@ -248,7 +252,20 @@ function init() {
 			'opacity': 1
 		});
 	});
-	
+
+	places.auth.css( {
+		'opacity': 0
+	} ).hide();
+
+	$('#login')
+		.click(function() {
+			places.auth
+				.show()
+				.animate( {
+					'opacity': 0.7
+				} );
+		});
+
 	setQueueTimer(5000);
 	setNewTimer(5000);
 	

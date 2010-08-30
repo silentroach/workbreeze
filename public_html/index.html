@@ -1,21 +1,25 @@
 <!DOCTYPE html>
 <html>
+<head>
 	<title>WorkBreeze</title>
 	
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 
 	<link rel="stylesheet" href="css/main.css" type="text/css" />
+</head>
 <body>
-	<script language="javascript" src="js/jquery.js"></script>
+	<script src="js/jquery.js"></script>
 
 <!-- jsbeg !-->
-	<script language="javascript" src="js/storage.js"></script>	
-	<script language="javascript" src="js/filter.js"></script>	
-	<script language="javascript" src="js/lang.js"></script>
-	<script language="javascript" src="js/sites.js"></script>
-	<script language="javascript" src="js/categories.js"></script>
-	<script language="javascript" src="js/index.js"></script>
+	<script src="js/storage.js"></script>	
+	<script src="js/filter.js"></script>	
+	<script src="js/lang.js"></script>
+	<script src="js/sites.js"></script>
+	<script src="js/categories.js"></script>
+	<script src="js/index.js"></script>
 <!-- jsend !-->
+
+	<div id="auth"></div>
 	
 	<div id="wrapper">
 		<ul id="pp">
@@ -24,6 +28,9 @@
 		</ul>
 		
 		<div id="logo">WorkBreeze</div>
+		<div id="menu">
+			<a id="login" href="#" class="l lv" lv="a"></a>
+		</div>
 		
 		<div id="filter">
 			<input type="text" id="keyword" class="l lp" lp="kwds" />

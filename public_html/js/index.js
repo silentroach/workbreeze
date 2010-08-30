@@ -4,6 +4,7 @@
 var queueTimer;
 var newTimer;
 var filterTimer;
+var updatingBottom = false;
 
 var streamAutoPause = false;
 
@@ -33,7 +34,7 @@ var options = {
 }
 
 function checkJobPlace() {
-	while (joblist.length > 20) {
+	while (joblist.length > 30) {
 		tmpEl = joblist.shift();
 		tmpEl.fadeOut(options.animationSpeed, function() { 
 			$(this).remove();
@@ -56,9 +57,10 @@ function checkNewJobs() {
 		success: /** @param {*} data JSON data **/ function(data) {
 			if (null == data) 
 				return;		
-		
+
+/* <production>
 			updateCount++;
-		
+
 			if (
 				updateCount >= 10
 				&& 'undefined' != typeof(_gaq)
@@ -66,11 +68,16 @@ function checkNewJobs() {
 				updateCount = 0;
 				_gaq.push(['_trackEvent', 'Stream', '10 updates']);
 			}
-		
+</production> */	
 			setNewTimer(options.checkInterval);
 
-			if ('undefined' != typeof(data['j']))			
+			if ('undefined' != typeof(data['j'])) {
+/* <debug> */
+				console.info('New jobs: ' + data['j'].length);
+/* </debug> */
+
 				parseJobs(data['j'], false);
+			}
 		},
 		error: function() {
 			setNewTimer(options.checkInterval * 2);
@@ -150,6 +157,7 @@ function addJob(job, instantly) {
 
 	jobEl
 		.attr( {
+			'stamp': job.stamp,
 			'site': job.site,
 			'cats': job.cats.join(',')
 		} )
@@ -176,8 +184,9 @@ function addJob(job, instantly) {
 	
 	queue.push(jobEl);
 	
-	if (instantly)
+	if (instantly) {
 		popFromQueue(instantly);
+	}
 }
 
 /**
@@ -201,9 +210,11 @@ function parseJobs(jobs, instantly) {
 }
 
 function streamPause() {
+/* <production>
 	if ('undefined' != typeof(_gaq)) {
 		_gaq.push(['_trackEvent', 'Stream', 'Pause']);
 	}
+</production> */
 
 	places.buttonPause.slideUp(options.animationSpeed);
 	places.buttonPlay.slideDown(options.animationSpeed);
@@ -222,15 +233,28 @@ function streamPlay() {
 
 	streamAutoPause = false;
 
+/* <production>
 	if ('undefined' != typeof(_gaq)) {
 		_gaq.push(['_trackEvent', 'Stream', 'Resume']);
 	}
+</production> */
 
 	places.buttonPlay.slideUp(options.animationSpeed);
 	places.buttonPause.slideDown(options.animationSpeed);
 
 	lastStamp = Math.round(new Date().getTime() / 1000);
 	setNewTimer(5000);
+}
+
+function updateBottom() {
+	dropNewTimer();
+	updatingBottom = true;
+
+	var lastStamp = $('#right ul:last').attr('stamp');
+
+/* <debug> */
+	console.info('update less than ' + lastStamp);
+/* </debug> */
 }
 
 function init() {
@@ -315,6 +339,15 @@ function init() {
 				filterTimer = setTimeout(handleFilter, 2000);
 			}
 		});
+
+	$(window).scroll(function() {
+		if (
+			$(window).scrollTop() >= $(document).height() - $(window).height()
+			&& !updatingBottom
+		) {
+			updateBottom();
+		}
+	} );
 }
 
 $( function() {

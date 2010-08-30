@@ -4,6 +4,14 @@ var is_ls = false;
 
 function finit() {
 	is_ls = ('undefined' != typeof(localStorage));
+
+/* <debug> */
+	if (is_ls) {
+		console.info('local storage enabled');
+	} else {
+		console.warn('local storage not available');
+	}
+/* </debug> */
 }
 
 /**

@@ -19,10 +19,14 @@ function handleFilter() {
 		}
 	} );
 	
-	if ('' == tmp) {
-		keywords = [];
-	} else {	
-		keywords = tmp.split(',');
+	keywords = [];
+
+	if ('' != tmp) {
+		keys = tmp.split(',');
+
+		for (var i = 0; i < keys.length; i++) {
+			keywords.push(keys[i].trim());
+		}
 	}
 	
 	if (
@@ -34,6 +38,15 @@ function handleFilter() {
 	} else if (streamAutoPause) {
 		streamPlay();
 	}
+
+/* <debug> */
+	console.group('new filter');
+	console.log('sites', selsites);
+	console.log('cats', selcats);
+	if (0 < keywords.length) 
+		console.log('keys', keywords);
+	console.groupEnd();
+/* </debug> */
 	
 	checkFeedForFilter();
 }

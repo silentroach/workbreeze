@@ -21,7 +21,7 @@ class Job {
 		),
 		self::CAT_DESIGN      => array(
 			'дизайн', 'design', 'баннер', 'banner', 'графика', 'graphic', 'flash',
-			'логотип', 'logo', 'арт', 'худож', 'art'
+			'логотип', 'logo', 'арт', 'худож', 'art', 'иллюстра'
 		),
 		self::CAT_PHOTO       => array('фото', 'photo '), // space to disallow photoshop
 		self::CAT_PROGRAMMING => array('программир', 'programm', 'разраб', 'software', 'delphi'),

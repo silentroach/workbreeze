@@ -26,7 +26,7 @@ class Job {
 		self::CAT_PHOTO       => array('фото', 'photo '), // space to disallow photoshop
 		self::CAT_PROGRAMMING => array('программир', 'programm', 'разраб', 'software', 'delphi'),
 		self::CAT_WEBPROG     => array(
-			'скрипт', 'веб-разр', 'верстк', 'веб-прило', 'разработка сайт', 'script', 'web-prog', 'webprog',
+			'скрипт', 'веб-разр', 'верстк', 'веб-прило', 'разработка сайт', 'script', 'web-prog', 'webprog', 'веб-программ',
 			'php', 'asp', 'wordpress', 'joomla', 'ajax', 'javascript', 'ruby', 'ecommerce', 'создание сайт'
 		),
 		self::CAT_TRANSLATE   => array('перевод', 'translat'),

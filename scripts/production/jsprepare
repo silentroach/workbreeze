@@ -1,0 +1,41 @@
+#!/usr/bin/php
+<?php
+
+if ($argc < 2) {
+	echo "No input file specified\n";
+	die();
+}
+
+$filename = array_pop($argv);
+
+if (!file_exists($filename)) {
+	echo "File not found\n";
+	die();
+}
+
+$content = file_get_contents($filename);
+
+$needmore = true;
+
+while ($needmore) {
+	$i = mb_strpos($content, '/* <debug> */');
+	if (false === $i) {
+		break;
+	}
+
+	$n = mb_strpos($content, '/* </debug> */');
+	if (false === $n) {
+		echo 'Final tag not found\n';
+		die();
+	}
+
+	$content = mb_substr($content, 0, $i) . mb_substr($content, $n + 14, mb_strlen($content) - $n - 14);
+}
+
+$content = str_replace(
+	array(
+		'/* <production>',
+		'</production> */'
+	), '', $content);
+
+echo $content;

@@ -4,6 +4,7 @@
 var queueTimer;
 var newTimer;
 var filterTimer;
+var updating = false;
 var updatingBottom = false;
 
 var streamAutoPause = false;
@@ -20,21 +21,27 @@ var places = {
 }
 
 var options = {
-	/** @const **/ checkInterval:    30000,
-	/** @const **/ siteIconPrefix:   'sico',
-	/** @const **/ animationSpeed:   'slow',
+	/** @type {number} **/ defJobPageCount: 30,
+	/** @type {number} **/ maxJobPageCount: 30,
+	/** @const **/ checkInterval:           30000,
+	/** @const **/ siteIconPrefix:          'sico',
+	/** @const **/ animationSpeed:          'slow',
 	
-	/** @const **/ classSelected:    'jsel',
-	/** @const **/ classNotSelected: 'jrem',
+	/** @const **/ classSelected:           'jsel',
+	/** @const **/ classNotSelected:        'jrem',
 	
-	/** @const **/ elementSites:     'sites',
-	/** @const **/ elementLang:      'lang',
-	/** @const **/ elementCats:      'cats',
-	/** @const **/ elementJobStamp:  'jstamp'
+	/** @const **/ elementSites:            'sites',
+	/** @const **/ elementLang:             'lang',
+	/** @const **/ elementCats:             'cats',
+	/** @const **/ elementJobStamp:         'jstamp'
 }
 
 function checkJobPlace() {
-	while (joblist.length > 30) {
+	while (joblist.length > options.maxJobPageCount) {
+/* <debug> */
+		console.info('Removing last job');
+/* </debug> */
+	
 		tmpEl = joblist.shift();
 		tmpEl.fadeOut(options.animationSpeed, function() { 
 			$(this).remove();
@@ -42,21 +49,23 @@ function checkJobPlace() {
 	}
 }
 
-function checkNewJobs() {
-	dropNewTimer();
-	
-	var adata = {};
-	
-	adata[options.elementJobStamp] = lastStamp;
+function updateRequest(adata, callback) {
+	if (updating)
+		return;
+		
+	updating = true;
 
 	$.ajax({
 		url: '/up',
 		type: 'POST',
 		data: adata,
 		dataType: 'json',
-		success: /** @param {*} data JSON data **/ function(data) {
+		cache: false,
+		success: function(data) {
+			updating = false;
+		
 			if (null == data) 
-				return;		
+				return;
 
 /* <production>
 			updateCount++;
@@ -69,20 +78,57 @@ function checkNewJobs() {
 				_gaq.push(['_trackEvent', 'Stream', '10 updates']);
 			}
 </production> */	
-			setNewTimer(options.checkInterval);
-
+		
+			if ('undefined' != typeof(data['l'])) {
+/* <debug> */
+				console.info('New lang pack');
+/* </debug> */
+				loadLang(data['l']);
+			}
+			
+			if ('undefined' != typeof(data['c'])) {
+/* <debug> */
+				console.info('New categories pack');
+/* </debug> */
+				loadCats(data['c']);
+			}
+			
+			if ('undefined' != typeof(data['s'])) {
+/* <debug> */
+				console.info('New sites pack');
+/* </debug> */
+				loadSites(data['s']);
+			}
+			
 			if ('undefined' != typeof(data['j'])) {
 /* <debug> */
-				console.info('New jobs: ' + data['j'].length);
+				console.info('New jobs pack: ' + data['j'].length);
 /* </debug> */
-
-				parseJobs(data['j'], false);
+				parseJobs(data['j'], true);
+			}
+			
+			if (undefined !== callback) {
+				callback();
 			}
 		},
 		error: function() {
-			setNewTimer(options.checkInterval * 2);
+			updating = false;
+		
+/* <debug> */
+				console.error('Error while getting up response');
+/* </debug> */
+			setNewTimer(options.checkInterval * 2)		
 		}
 	});
+}
+
+function checkNewJobs() {
+	dropNewTimer();
+
+	var adata = {};	
+	adata[options.elementJobStamp] = lastStamp;
+
+	updateRequest(adata);
 }
 
 function dropQueueTimer() {
@@ -120,20 +166,45 @@ function setNewTimer(interval) {
  * @param {!boolean} instantly Disable slideDown animation
  */
 function popFromQueue(instantly) {
-	var tmpEl = queue.pop();
+	var tmpJob = queue.pop();
+	var tmpEl = tmpJob.element;
 
 	joblist.push(tmpEl);
 	
 	tmpEl
-		.hide()
-		.prependTo(places.placeJob);
+		.hide();
+		
+	if (tmpJob.stamp < 0) {
+		tmpEl.appendTo(places.placeJob);
+		
+/* <debug> */
+		console.info('increment maxJobPageCount');
+/* </debug> */
+		
+		options.maxJobPageCount++;
+	} else {
+		if (
+			$(window).scrollTop() == 0
+			&& options.maxJobPageCount - 2 >= options.defJobPageCount
+		) {
+/* <debug> */
+			console.info('decrement maxJobPageCount');
+/* </debug> */
+		
+			options.maxJobPageCount = options.maxJobPageCount - 2;
+		}
+	
+		tmpEl.prependTo(places.placeJob);
+	}
 		
 	if (!instantly)
 		tmpEl.slideDown(options.animationSpeed, function() {
 			checkJobForFilter($(this));
 		} );
-	else
+	else {
 		tmpEl.show();
+		checkJobForFilter(tmpEl);
+	}
 
 	checkJobPlace();
 }
@@ -157,7 +228,7 @@ function addJob(job, instantly) {
 
 	jobEl
 		.attr( {
-			'stamp': job.stamp,
+			'stamp': Math.abs(job.stamp),
 			'site': job.site,
 			'cats': job.cats.join(',')
 		} )
@@ -182,7 +253,12 @@ function addJob(job, instantly) {
 		checkTimeVal(stmp.getMinutes())
 	);
 	
-	queue.push(jobEl);
+	var jEl = {
+		stamp: job.stamp,
+		element: jobEl
+	};
+	
+	queue.push(jEl);
 	
 	if (instantly) {
 		popFromQueue(instantly);
@@ -247,14 +323,22 @@ function streamPlay() {
 }
 
 function updateBottom() {
-	dropNewTimer();
 	updatingBottom = true;
 
-	var lastStamp = $('#right ul:last').attr('stamp');
+	dropNewTimer();
+
+	var firstStamp = $('#right ul:last').attr('stamp');
 
 /* <debug> */
-	console.info('update less than ' + lastStamp);
+	console.info('update less than ' + firstStamp);
 /* </debug> */
+
+	var adata = {};	
+	adata[options.elementJobStamp] = -firstStamp;
+
+	updateRequest(adata, function() {
+		updatingBottom = false;
+	});
 }
 
 function init() {
@@ -297,34 +381,21 @@ function init() {
 	adata[options.elementCats]     = getCatsVersion();
 	adata[options.elementJobStamp] = 0;
 	
-	// init request
-	$.ajax({
-		url: '/up',
-		type: 'POST',
-		data: adata,
-		dataType: 'json',
-		success: /** @param {*} data JSON data **/ function(data) {
-			if (null == data) 
-				return;
+	updateRequest(adata, function() {
+		$('html, body').css({scrollTop:0});
+	
+		localize();
+		initCats();
+		initSites();
 		
-			if ('undefined' != typeof(data['l']))
-				loadLang(data['l']);
-
-			localize();
-			
-			if ('undefined' != typeof(data['c']))
-				loadCats(data['c']);
-				
-			initCats();
-			
-			if ('undefined' != typeof(data['s']))
-				loadSites(data['s']);
-			
-			initSites();
-			
-			if ('undefined' != typeof(data['j']))
-				parseJobs(data['j'], true);
-		}
+		$(window).scroll(function() {
+			if (
+				$(window).scrollTop() >= $(document).height() - $(window).height()
+				&& !updatingBottom
+			) {
+				updateBottom();
+			}
+		} );
 	});
 	
 	$('#keyword')
@@ -339,15 +410,6 @@ function init() {
 				filterTimer = setTimeout(handleFilter, 2000);
 			}
 		});
-
-	$(window).scroll(function() {
-		if (
-			$(window).scrollTop() >= $(document).height() - $(window).height()
-			&& !updatingBottom
-		) {
-			updateBottom();
-		}
-	} );
 }
 
 $( function() {

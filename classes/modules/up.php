@@ -93,21 +93,23 @@ class MUp extends Module {
 		
 		$jobs = array();
 		
-		$cursor = $c->find(array(
-			'stamp' => array(
-				'$gt' => $stamp
-			)
-		));
-		$cursor->sort(array(
-			'stamp' => -1
-		));
+		if ($stamp < 0) {
+			$mod = -1;
+			$st = array('$lt' => -$stamp);
+		} else {
+			$mod = 1;
+			$st = array('$gt' => $stamp);
+		}
+				
+		$cursor = $c->find(array('stamp' => $st));
+		$cursor->sort(array('stamp' => -1));
 		$cursor->limit(25);
 		
 		while ($job = $cursor->getNext()) {
 			$jobs[] = array(
 				's'  => $job['site'],
 				'i'  => $job['id'],
-				'st' => $job['stamp'],
+				'st' => $job['stamp'] * $mod,
 				't'  => $job['title'],
 				'c'  => $job['cats'],
 				'd'  => isset($job['short']) ? $job['short'] : $job['desc']
@@ -116,6 +118,10 @@ class MUp extends Module {
 		
 		if (0 == count($jobs))
 			return false;
+		
+		if ($stamp < 0) {
+			return array_reverse($jobs);
+		}
 		
 		return $jobs;
 	}

@@ -220,15 +220,17 @@ function checkQueue() {
  * @param {!boolean} instantly Disable slideDown animation
  */
 function addJob(job, instantly) {
-	if (job.stamp > lastStamp) {
-		lastStamp = job.stamp;
+	var abstemp = Math.abs(job.stamp);
+
+	if (abstemp > lastStamp) {
+		lastStamp = abstemp;
 	}
 
 	var jobEl = places.templateJob.clone();
 
 	jobEl
 		.attr( {
-			'stamp': Math.abs(job.stamp),
+			'stamp': abstemp,
 			'site': job.site,
 			'cats': job.cats.join(',')
 		} )
@@ -246,7 +248,7 @@ function addJob(job, instantly) {
 
 	$('li.desc', jobEl).html(job.desc);
 	
-	var stmp = new Date(job.stamp * 1000);
+	var stmp = new Date(abstemp * 1000);
 	
 	$('li.time', jobEl).html(
 		checkTimeVal(stmp.getHours()) + ':' +

@@ -99,7 +99,7 @@ function checkJobForFilter(element) {
 		return;
 	}
 
-	var str = $('.title', element).html() + $('.desc', element).html();
+	var str = $('li.title', element).html() + $('li.desc', element).html();
 	str = str.toLowerCase();
 	
 	var wrong = !(selsites.indexOf(parseInt(element.attr('site'))) >= 0);

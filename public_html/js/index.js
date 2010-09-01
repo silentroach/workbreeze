@@ -79,28 +79,28 @@ function updateRequest(adata, callback) {
 			}
 </production> */	
 		
-			if ('undefined' != typeof(data['l'])) {
+			if ('l' in data) {
 /* <debug> */
 				console.info('New lang pack');
 /* </debug> */
 				loadLang(data['l']);
 			}
 			
-			if ('undefined' != typeof(data['c'])) {
+			if ('c' in data) {
 /* <debug> */
 				console.info('New categories pack');
 /* </debug> */
 				loadCats(data['c']);
 			}
 			
-			if ('undefined' != typeof(data['s'])) {
+			if ('s' in data) {
 /* <debug> */
 				console.info('New sites pack');
 /* </debug> */
 				loadSites(data['s']);
 			}
 			
-			if ('undefined' != typeof(data['j'])) {
+			if ('j' in data) {
 /* <debug> */
 				console.info('New jobs pack: ' + data['j'].length);
 /* </debug> */

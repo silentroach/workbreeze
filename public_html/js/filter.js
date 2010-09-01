@@ -9,13 +9,13 @@ function handleFilter() {
 	
 	$('li', '#sites').each( function() {
 		if ($(this).hasClass('checked')) {
-			selsites.push(parseInt($(this).attr('site')));
+			selsites.push($(this).attr('site'));
 		}
 	} );
 
 	$('li', '#categories').each( function() {
 		if ($(this).hasClass('checked')) {
-			selcats.push(parseInt($(this).attr('cat')));
+			selcats.push($(this).attr('cat'));
 		}
 	} );
 	
@@ -102,7 +102,7 @@ function checkJobForFilter(element) {
 	var str = $('li.title', element).html() + $('li.desc', element).html();
 	str = str.toLowerCase();
 	
-	var wrong = !(selsites.indexOf(parseInt(element.attr('site'))) >= 0);
+	var wrong = selsites.indexOf(element.attr('site')) < 0;
 	
 	if (!wrong) {
 		var cts = element.attr('cats').split(',');
@@ -110,7 +110,7 @@ function checkJobForFilter(element) {
 		var cwrong = true;
 	
 		for (var i = 0; i < cts.length; i++) {
-			if (selcats.indexOf(parseInt(cts[i])) >= 0) {
+			if (selcats.indexOf(cts[i]) >= 0) {
 				cwrong = false;
 				break;
 			}

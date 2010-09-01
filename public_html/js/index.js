@@ -52,7 +52,8 @@ function checkJobPlace() {
 function updateRequest(adata, callback) {
 	if (updating)
 		return;
-		
+
+	dropNewTimer();		
 	updating = true;
 
 	$.ajax({
@@ -110,6 +111,8 @@ function updateRequest(adata, callback) {
 			if (undefined !== callback) {
 				callback();
 			}
+
+			setNewTimer(options.checkInterval);
 		},
 		error: function() {
 			updating = false;
@@ -123,8 +126,6 @@ function updateRequest(adata, callback) {
 }
 
 function checkNewJobs() {
-	dropNewTimer();
-
 	var adata = {};	
 	adata[options.elementJobStamp] = lastStamp;
 

@@ -238,10 +238,10 @@ function addJob(job, instantly) {
 
 	lnk = $("<a>")
 		.addClass(options.siteIconPrefix)
-		.addClass(options.siteIconPrefix + '_' + sites[job.site].folder)
+		.addClass(options.siteIconPrefix + '_' + sites[job.site][1])
 		.attr({
-			'href': '/jobs/' + sites[job.site].folder + '/' + job.id + '.html',
-			'title': job.title + ' ' + langVal('on') + ' ' + sites[job.site].name
+			'href': '/jobs/' + sites[job.site][1] + '/' + job.id + '.html',
+			'title': job.title + ' ' + langVal('on') + ' ' + sites[job.site][2]
 		})
 		.html(job.title)
 		.appendTo($('li.title', jobEl));

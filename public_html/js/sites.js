@@ -10,11 +10,7 @@ function getSitesVersion() {
 	if (sver > 0) {
 		var tmp = getLocalStorageItem(options.elementSites);
 
-		if ('undefined' != typeof(tmp['vl'])) {
-			sites = tmp['vl'];
-		} else {
-			return 0;
-		}
+		sites = tmp[1];
 	}
 
 	return sver;
@@ -30,13 +26,13 @@ function loadSites(val) {
 	for (var i = 0; i < tmp.length; i++) {
 		var site = tmp[i];
 		
-		var item = {
-			folder: site['f'],
-			name:   site['n'],
-			url:    site['u']
-		}
+		var item = [];
+		item[0] = site['i'];  // id
+		item[1] = site['f'];  // folder
+		item[2] = site['n'];  // name
+		item[3] = site['u'];  // url
 		
-		sites[site['i']] = item;
+		sites[item[0]] = item;
 	}
 	
 	addLocalStorageItem(options.elementSites, val['v'], sites);
@@ -48,14 +44,13 @@ function loadSites(val) {
 function initSites() {
 	var splace = $('#sites');
 
-	for (var i = 0; i < sites.length; i++) {				
+	for (var i in sites) {
 		var site = sites[i];
-		
 		selsites.push(i);
 
 		var sp  = $('<span></span>')
-			.addClass('sico sico_' + site.folder)
-			.html(site.name);
+			.addClass('sico sico_' + site[1])
+			.html(site[2]);
 	
 		var li = $('<li></li>')
 			.addClass('checkable checked')

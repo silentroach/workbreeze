@@ -35,19 +35,15 @@ function checkTimeVal(i) {
 function getLocalStorageItemVersion(itemName) {
 	var tmp = getLocalStorageItem(itemName);
 	
-	if (!tmp)
-		return 0;
-		
 	if (
-		'undefined' == typeof(tmp)
-		|| 'undefined' == typeof(tmp['v'])
-	) {
+		!tmp
+		|| tmp.length != 2
+	)
 		return 0;
-	}
 	
 	ls_items[itemName] = tmp;
 	
-	return Math.floor(tmp['v']);
+	return Math.floor(tmp[0]);
 }
 
 /**
@@ -59,7 +55,7 @@ function getLocalStorageItem(itemName) {
 	if (!is_ls)
 		return false;
 
-	if ('undefined' == typeof(ls_items[itemName])) {
+	if (!(itemName in ls_items)) {
 		try {
 			ls_items[itemName] = JSON.parse(localStorage.getItem(itemName));
 		} catch (err) {
@@ -80,5 +76,5 @@ function addLocalStorageItem(itemName, version, object) {
 	if (!is_ls)
 		return;
 		
-	localStorage.setItem(itemName, JSON.stringify({'v': version, 'vl': object}));
+	localStorage.setItem(itemName, JSON.stringify([version, object]));
 }

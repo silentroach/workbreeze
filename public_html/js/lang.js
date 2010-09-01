@@ -37,7 +37,9 @@ function getLangVersion() {
 	var lver = getLocalStorageItemVersion(options.elementLang);
 	
 	if (lver > 0) {
-		lang = getLocalStorageItem(options.elementLang);
+		var tmp = getLocalStorageItem(options.elementLang);
+		
+		lang = tmp[1];
 	}
 
 	return lver;
@@ -49,13 +51,10 @@ function getLangVersion() {
  * @return {string} Language value
  */
 function langVal(item) {
-	if ('undefined' == typeof(lang['vl']))
+	if (item in lang) {
+		return lang[item];
+	} else
 		return '';
-		
-	if ('string' != typeof(lang['vl'][item]))
-		return '';
-		
-	return lang['vl'][item];
 }
 
 /**
@@ -63,7 +62,7 @@ function langVal(item) {
  * @param {!Object} val Load language object from ajax request
  */
 function loadLang(val) {
-	lang = val;
+	lang = val['vl'];
 	
-	addLocalStorageItem(options.elementLang, lang['v'], lang['vl']);
+	addLocalStorageItem(options.elementLang, val['v'], lang);
 }

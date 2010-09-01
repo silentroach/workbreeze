@@ -10,11 +10,7 @@ function getCatsVersion() {
 	if (cver > 0) {
 		var tmp = getLocalStorageItem(options.elementCats);
 
-                if ('undefined' != typeof(tmp['vl'])) {
-                        cats = tmp['vl'];
-                } else {
-                        return 0;
-                }
+		cats = tmp[1];
 	}
 
 	return cver;
@@ -27,15 +23,14 @@ function getCatsVersion() {
 function loadCats(val) {
 	var tmp = val['vl'];
 	
-	for (var i = 0; i < tmp.length; i++) {
+	for (var i in tmp) {
 		var cat = tmp[i];
 
-		item = {
-			id: cat['i'],
-			name: cat['l']
-		}
+		item = [];
+		item[0] = cat['i'];  // id
+		item[1] = cat['l'];  // lang val
 		
-		cats.push(item);
+		cats[item[0]] = item; 
 	}
 	
 	addLocalStorageItem(options.elementCats, val['v'], cats);
@@ -47,13 +42,12 @@ function loadCats(val) {
 function initCats() {
 	var cplace = $('#categories');
 	
-	for (var i = 0; i < cats.length; i++) {
+	for (var i in cats) {
 		var cat = cats[i];
-
 		selcats.push(i);
 
 		var sp = $('<span></span>')
-			.html(langVal(cat.name));
+			.html(langVal(cat[1]));
 
 		var li = $('<li></li>')
 			.addClass('checkable checked')

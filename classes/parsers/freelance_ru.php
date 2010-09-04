@@ -21,6 +21,10 @@ class Parser_freelance_ru extends Parser implements IParser {
 	public function getUrl() {
 		return 'http://www.free-lance.ru';
 	}
+
+	public function getLang() {
+		return Language::RUSSIAN;
+	}
 	
 	public function isProxyfied() {
 		return true;

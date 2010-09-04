@@ -22,6 +22,10 @@ class Parser_freelancejob_ru extends Parser implements IParser {
 		return 'http://freelancejob.ru';
 	}
 	
+	public function getLang() {
+		return Language::RUSSIAN;
+	}
+	
 	public function isProxyFied() {
 		return false;
 	}
@@ -70,8 +74,10 @@ class Parser_freelancejob_ru extends Parser implements IParser {
 <table width="100%" cellpadding="5" cellspacing="1"> 
 <tr> 
 <td> 
-Нужен интернет-магазин, корректно, просто и понятно работающий, можно шаблон без дизайна.Остальное обсуждается в ICQ.Ждем Ваших предложений по e-mail, ICQ,и по телефону 8-915-216-30-91.<br/><br/><br/> 
-<b>Телефон:</b> 89153540853<br/><b>Город:</b> 2<br/><b>Вид предложения:</b> Удаленная работа<br/><b>Категория:</b> Верстка сайтов<br/><br/>Добавлено: 20.08.2010 в 16:38<br/><br/><br/><br/> 
+Нужен интернет-магазин, корректно, просто и понятно работающий, можно шаблон без дизайна.Остальное 
+обсуждается в ICQ.Ждем Ваших предложений по e-mail, ICQ,и по телефону 8-915-216-30-91.<br/><br/><br/> 
+<b>Телефон:</b> 89153540853<br/><b>Город:</b> 2<br/><b>Вид предложения:</b> Удаленная работа<br/>
+<b>Категория:</b> Верстка сайтов<br/><br/>Добавлено: 20.08.2010 в 16:38<br/><br/><br/><br/> 
 </td> 
 </tr> 
 </table> 

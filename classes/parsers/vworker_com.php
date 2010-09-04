@@ -22,6 +22,10 @@ class Parser_vworker_com extends Parser implements IParser {
 		return 'http://www.vworker.com';
 	}
 	
+	public function getLang() {
+		return Language::ENGLISH;
+	}
+	
 	public function isProxyFied() {
 		return false;
 	}

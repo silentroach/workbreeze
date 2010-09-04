@@ -37,6 +37,7 @@ foreach($parsers as $parser) {
 	$info['folder'] = $parser->getSiteFolder();
 	$info['name']   = $parser->getSiteName();
 	$info['url']    = $parser->getUrl();
+	$info['lang']   = $parser->getLang();
 	$info['script'] = $pinfo['basename'];
 	
 	$pc->insert($info);

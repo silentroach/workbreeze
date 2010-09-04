@@ -22,6 +22,10 @@ class Parser_freelancer_com extends Parser implements IParser {
 		return 'http://www.freelancer.com';
 	}
 	
+	public function getLang() {
+		return Language::ENGLISH;
+	}
+	
 	public function isProxyFied() {
 		return false;
 	}

@@ -22,6 +22,10 @@ class Parser_getacoder_com extends Parser implements IParser {
 		return 'http://www.getacoder.com';
 	}
 	
+	public function getLang() {
+		return Language::ENGLISH;
+	}
+	
 	public function isProxyFied() {
 		return false;
 	}

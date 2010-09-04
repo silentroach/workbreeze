@@ -8,33 +8,26 @@ class MUp extends Module {
 	const VCATS  = 1;
 	
 	private function getLang($ver = 0) {
-		$l = array(
-			'v' => 4,
-			'vl' => array(
-				'kwds' => 'ключевые слова через запятую',
-				'on'   => 'на',
-				'pl'   => 'запуск',
-				'pa'   => 'пауза',
-				'mt'   => 'почта',
-				'ms'   => 'статистика',
-				
-				'c' . Job::CAT_OTHER       => 'прочее',
-				'c' . Job::CAT_AUDIOVIDEO  => 'аудио/видео',
-				'c' . Job::CAT_DESIGN      => 'дизайн',
-				'c' . Job::CAT_PHOTO       => 'фото',
-				'c' . Job::CAT_PROGRAMMING => 'программирование',
-				'c' . Job::CAT_WEBPROG     => 'веб-разработка',
-				'c' . Job::CAT_TRANSLATE   => 'перевод',
-				'c' . Job::CAT_TEXT        => 'работа с текстом',
-				'c' . Job::CAT_ADVERTISING => 'реклама',
-				'c' . Job::CAT_SYSADM      => 'администрирование'
-			)
-		);
-		
-		if ($l['v'] != $ver)
-			return $l;
+		if ($ver == Language::VERSION)
+			return false;
 			
-		return false;
+		$lang = Language::getUserLanguage();
+		
+		$c = $this->db()->sites->find(array(
+			'lang' => $lang
+		), array('code'));
+		
+		$sites = array();
+		
+		while ($site = $c->getNext()) {		
+			$sites[] = $site['code'];
+		}
+	
+		return array(
+			'v'  => Language::VERSION,
+			'vl' => Language::getLang(),
+			's'  => $sites
+		);
 	}	
 	
 	private function getCats($ver = 0) {

@@ -22,6 +22,10 @@ class Parser_weblancer_net extends Parser implements IParser {
 		return 'http://www.weblancer.net';
 	}
 	
+	public function getLang() {
+		return Language::RUSSIAN;
+	}
+	
 	public function isProxyfied() {
 		return false;
 	}

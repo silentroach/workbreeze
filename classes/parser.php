@@ -1,6 +1,7 @@
 <?php
 
 require(PATH_CLASSES . 'job.php');
+require_once(PATH_CLASSES . 'language.php');
 
 interface IParser {
 	public function getSiteCode();
@@ -8,6 +9,7 @@ interface IParser {
 	public function getSiteFolder();
 	public function getParserName();
 	public function getUrl();
+	public function getLang();
 	public function isProxyfied();
 
 	public function processJobList();

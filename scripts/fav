@@ -49,7 +49,7 @@ foreach($icons as $key => $icon) {
 	$tt = -$top + 1;
 
 	$css .= <<<EOF
-.sico_{$icon['folder']} {
+.sico_{$key} {
 	background-position: 0px {$tt}px;
 }
 

@@ -44,19 +44,25 @@ function loadSites(val) {
 function initSites() {
 	var splace = $('#sites');
 
-	for (var i in sites) {
-		var site = sites[i];
+	nsites = sites;
+
+	nsites.sort(function(a, b) {
+		return (b[2] < a[2]) ? 1 : -1;
+	});
+
+	for (var i in nsites) {
+		var site = nsites[i];
 		selsites.push(i);
 
 		var sp  = $('<span></span>')
-			.addClass('sico sico_' + site[1])
+			.addClass('sico sico_' + site[0])
 			.html(site[2]);
 	
 		var li = $('<li></li>')
 			.addClass('checkable checked')
 			.attr( {
-				'id'   : 'c' + i,
-				'site' : i
+				'id'   : 'c' + site[0],
+				'site' : site[0]
 			} )
 			.click(function() {
 				$(this).toggleClass('checked');

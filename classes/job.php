@@ -15,24 +15,44 @@ class Job {
 	const CAT_SYSADM      = 9;
 	
 	private $catlinks = array(
-		self::CAT_OTHER       => array('other', 'другое', 'прочее'),
+		self::CAT_OTHER       => array(
+			array('other', 'другое', 'прочее')
+		),
 		self::CAT_AUDIOVIDEO  => array(
-			'аудио', 'звук', 'audio', 'sound', 'видео', 'клип', 'video', 'clip', 'анимация'
+			array('аудио', 'звук', 'audio', 'sound', 'видео', 'клип', 'video', 'clip', 'анимация')
 		),
 		self::CAT_DESIGN      => array(
-			'дизайн', 'design', 'баннер', 'banner', 'графика', 'graphic', 'flash',
-			'логотип', 'logo', 'арт', 'худож', 'art', 'иллюстра'
+			array(
+				'дизайн', 'design', 'баннер', 'banner', 'графика', 'graphic', 'flash',
+				'логотип', 'logo', 'арт', 'худож', 'art', 'иллюстра'
+			)
 		),
-		self::CAT_PHOTO       => array('фото', 'photo '), // space to disallow photoshop
-		self::CAT_PROGRAMMING => array('программир', 'programm', 'разраб', 'software', 'delphi'),
+		self::CAT_PHOTO       => array(
+			array('фото', 'photo ') // space to disallow photoshop
+		),
+		self::CAT_PROGRAMMING => array(
+			array('программир', 'programm', 'разраб', 'software', 'delphi')
+		),
 		self::CAT_WEBPROG     => array(
-			'скрипт', 'веб-разр', 'верстк', 'веб-прило', 'разработка сайт', 'script', 'web-prog', 'webprog', 'веб-программ',
-			'php', 'asp', 'wordpress', 'joomla', 'ajax', 'javascript', 'ruby', 'ecommerce', 'создание сайт'
+			array(
+				'скрипт', 'веб-разр', 'верстк', 'веб-прило', 'разработка сайт', 'script', 'web-prog', 
+				'webprog', 'веб-программ', 'php', 'asp', 'wordpress', 'joomla', 'ajax', 'javascript', 
+				'ruby', 'ecommerce', 'создание сайт', 'системы админист'
+			)
 		),
-		self::CAT_TRANSLATE   => array('перевод', 'translat'),
-		self::CAT_TEXT        => array('текст', 'рерайтинг', 'text', 'writing', 'статьи', 'обзор', 'реферат', 'диплом'),
-		self::CAT_ADVERTISING => array('реклам', 'advertising', 'seo', 'раскрутка', 'маркетинг', 'marketing'),
-		self::CAT_SYSADM      => array('admin', 'админ', 'windows', 'linux', 'freebsd', 'unix')
+		self::CAT_TRANSLATE   => array(
+			array('перевод', 'translat')
+		),
+		self::CAT_TEXT        => array(
+			array('текст', 'рерайтинг', 'text', 'writing', 'статьи', 'обзор', 'реферат', 'диплом')
+		),
+		self::CAT_ADVERTISING => array(
+			array('реклам', 'advertising', 'seo', 'раскрутка', 'маркетинг', 'marketing')
+		),
+		self::CAT_SYSADM      => array(
+			array('admin', 'админ', 'windows', 'linux', 'freebsd', 'unix'),
+			array('системы админ')
+		)
 	);
 
 	private $db;
@@ -119,13 +139,34 @@ class Job {
 		
 		$cats = array();
 		
-		foreach ($this->catlinks as $cat => $words) {
+		foreach ($this->catlinks as $cat => $wa) {
+			$words = array_shift($wa);
+			
+			$foundcat = -1;
+		
 			foreach($words as $word) {
 				if (false !== strpos($tmp, $word)) {
-					$cats[] = $cat;
+					$foundcat = $cat;
 					break;
 				}
 			}
+			
+			$non = array_shift($wa);
+			
+			if (
+				$foundcat != -1
+				&& $non
+			) {
+				foreach($words as $word) {
+					if (false !== strpos($tmp, $word)) {
+						$foundcat = -1;
+						break;
+					}
+				}
+			}
+			
+			if ($foundcat != -1)
+				$cats[] = $foundcat;
 		}
 		
 		if (0 == count($cats))	{

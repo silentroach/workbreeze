@@ -25,13 +25,15 @@ foreach($parsers as $parser) {
 
         $parser = new $className($db);
 
-	$icons[] = array(
+	$icons[$parser->getSiteCode()] = array(
 		'filename' => dirname(__FILE__) . 
 			DIRECTORY_SEPARATOR . 'favicons' .
 			DIRECTORY_SEPARATOR . $parser->getSiteFolder() . '.png',
 		'folder' => $parser->getSiteFolder()
 	);
 }
+
+ksort($icons);
 
 $img = imagecreatetruecolor(16, count($icons) * 2 * 16 - 16);
 imagealphablending($img, true);

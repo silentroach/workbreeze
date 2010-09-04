@@ -36,6 +36,8 @@ foreach($parsers as $parser) {
 ksort($icons);
 
 $img = imagecreatetruecolor(16, count($icons) * 2 * 16 - 16);
+imagesavealpha($img, true);
+imagefill($img, 0, 0, imagecolorallocatealpha($img, 0, 0, 0, 127));
 imagealphablending($img, true);
 
 $top = 0;

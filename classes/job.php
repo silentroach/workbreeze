@@ -298,7 +298,7 @@ class Job {
 		$this->description = trim($text);
 		
 		if (preg_match('/([^ \n\r]+[ \n\r]+){20}/s', $text, $match))
-			$this->description_short = str_replace('<br /><br />', '<br />', $match[0]) . '...';
+			$this->description_short = trim(str_replace('<br /><br />', '<br />', $match[0])) . '...';
 		
 		return $this;
 	}

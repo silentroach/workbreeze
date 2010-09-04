@@ -105,7 +105,7 @@ function updateRequest(adata, callback) {
 /* <debug> */
 				console.info('New jobs pack: ' + data['j'].length);
 /* </debug> */
-				parseJobs(data['j'], true);
+				parseJobs(data['j']);
 			}
 			
 			if (undefined !== callback) {
@@ -164,9 +164,8 @@ function setNewTimer(interval) {
 
 /**
  * Pop the job from queue
- * @param {!boolean} instantly Disable slideDown animation
  */
-function popFromQueue(instantly) {
+function popFromQueue() {
 	var tmpJob = queue.pop();
 	var tmpEl = tmpJob.element;
 
@@ -198,14 +197,8 @@ function popFromQueue(instantly) {
 		tmpEl.prependTo(places.placeJob);
 	}
 		
-	if (!instantly)
-		tmpEl.slideDown(options.animationSpeed, function() {
-			checkJobForFilter($(this));
-		} );
-	else {
-		tmpEl.show();
-		checkJobForFilter(tmpEl);
-	}
+	tmpEl.show();
+	checkJobForFilter(tmpEl);
 
 	checkJobPlace();
 }
@@ -218,9 +211,8 @@ function checkQueue() {
 /**
  * Add job to queue
  * @param {!Object} job Job object
- * @param {!boolean} instantly Disable slideDown animation
  */
-function addJob(job, instantly) {
+function addJob(job) {
 	var abstemp = Math.abs(job.stamp);
 
 	if (abstemp > lastStamp) {
@@ -263,17 +255,14 @@ function addJob(job, instantly) {
 	
 	queue.push(jEl);
 	
-	if (instantly) {
-		popFromQueue(instantly);
-	}
+	popFromQueue();
 }
 
 /**
  * Parse job info
  * @param {!Array} job Job info array
- * @param {!boolean} instantly Disable slideDown animation
  */
-function parseJobs(jobs, instantly) {
+function parseJobs(jobs) {
 	for (var i = jobs.length - 1; i >= 0; i--) {
 		var job = {
 			id:    jobs[i]['i'],
@@ -284,7 +273,7 @@ function parseJobs(jobs, instantly) {
 			desc:  jobs[i]['d']
 		};
 		
-		addJob(job, instantly);
+		addJob(job);
 	}
 }
 

@@ -121,8 +121,6 @@ class Parser_vworker_com extends Parser implements IParser {
 			return true;
 		}
 		
-		echo $desc . "\n";
-		
 		$cats = array_pop($matches);
 		
 		$job = $this->newJob();

@@ -25,10 +25,23 @@ $action = isset($argv[1]) ? $argv[1] : 'joblist';
 
 $lockname = '/tmp/lock_' . $action . '.tmp';
 
-if (file_exists($lockname))
-	die();
+if (file_exists($lockname)) {
+	$mtime = filemtime($lockname);
 
-touch($lockname);
+	if (time() - $mtime > 120) {
+		$pid = file_get_contents($lockname);
+
+		if ($pid) {
+			echo 'Dropping old process ' . $pid . "\n";
+			$cmd = 'kill ' . $pid;
+			$tmp = system($cmd);
+		}
+	} else {
+		die();
+	}
+}
+
+file_put_contents($lockname, getmypid());
 
 if ('joblist' === $action) {
 	$scheduler->processJobList();

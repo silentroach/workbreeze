@@ -150,6 +150,10 @@ ul.job {
 	margin-bottom: 1%;
 }
 
+	ul.filter {
+		margin-top: 2em;
+	}
+
 	ul.job .title, ul.job .title a {
 		margin-bottom: 0.5em;
 		float: left;

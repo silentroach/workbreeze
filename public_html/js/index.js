@@ -239,7 +239,7 @@ function addJob(job, instantly) {
 
 	lnk = $("<a>")
 		.addClass(options.siteIconPrefix)
-		.addClass(options.siteIconPrefix + '_' + sites[job.site][1])
+		.addClass(options.siteIconPrefix + '_' + sites[job.site][0])
 		.attr({
 			'href': '/jobs/' + sites[job.site][1] + '/' + job.id + '.html',
 			'title': job.title + ' ' + langVal('on') + ' ' + sites[job.site][2]

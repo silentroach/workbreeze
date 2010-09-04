@@ -69,7 +69,8 @@ class MUp extends Module {
 		
 		$sites = array();
 		
-		$cursor = $c->find();
+		$cursor = $c->
+			find();
 		
 		while ($site = $cursor->getNext()) {
 			$sites[] = array(

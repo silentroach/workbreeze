@@ -23,7 +23,7 @@ function getSitesVersion() {
 function loadSites(val) {
 	var tmp = val['vl'];
 	
-	for (var i = 0; i < tmp.length; i++) {
+	for (var i in tmp) {
 		var site = tmp[i];
 		
 		var item = [];
@@ -44,18 +44,13 @@ function loadSites(val) {
 function initSites() {
 	var splace = $('#sites');
 
-	nsites = sites;
-
-	nsites.sort(function(a, b) {
-		return (b[2] < a[2]) ? 1 : -1;
-	});
-
-	for (var i in nsites) {
-		var site = nsites[i];
-		selsites.push(i);
+	for (var i in sites) {
+		var site = sites[i];
+		selsites.push(site[0]);
 
 		var sp  = $('<span></span>')
-			.addClass('sico sico_' + site[0])
+			.addClass(options.siteIconPrefix)
+			.addClass(options.siteIconPrefix + '_' + site[0])
 			.html(site[2]);
 	
 		var li = $('<li></li>')

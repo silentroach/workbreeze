@@ -82,7 +82,7 @@ class Parser_vworker_com extends Parser implements IParser {
 </span><br></font> 
 */
 		if (
-			!preg_match('/<div class="KonaBody">(.*?)<\/div>/is', $res, $matches)
+			!preg_match('/<div class="KonaBody">(.*?)<\/span>/is', $res, $matches)
 			|| 2 != count($matches)
 		) {
 			$this->log(array(
@@ -120,6 +120,8 @@ class Parser_vworker_com extends Parser implements IParser {
 			));
 			return true;
 		}
+		
+		echo $desc . "\n";
 		
 		$cats = array_pop($matches);
 		

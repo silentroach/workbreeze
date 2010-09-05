@@ -319,7 +319,7 @@ function updateBottom() {
 
 	dropNewTimer();
 
-	var firstStamp = $('#right ul:last').attr('stamp');
+	var firstStamp = $('ul:last', places.placeJob).attr('stamp');
 
 /* <debug> */
 	console.info('update less than ' + firstStamp);
@@ -334,8 +334,8 @@ function updateBottom() {
 }
 
 function init() {
-	$("#bfoot").css({'opacity': 0.7});
-	
+	$('#bfoot').css({'opacity': 0.7});
+
 	finit();
 
 	places.logo        = $('#logo');
@@ -349,15 +349,11 @@ function init() {
 	places.buttonPlay.click(streamPlay);
 	
 	places.logo.ajaxStart(function() {
-		$(this).animate({
-			'opacity': 0.7
-		}, options.animationSpeed);
+		$(this).animate({'opacity': 0.7}, options.animationSpeed);
 	});
 	
 	places.logo.ajaxStop(function() {
-		$(this).animate({
-			'opacity': 1
-		});
+		$(this).animate({'opacity': 1});
 	});
 
 	setQueueTimer(5000);

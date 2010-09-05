@@ -51,12 +51,16 @@ class Module {
 	
 		$object = $this->runModule();
 		
-		if (
-			is_object($object) 
-			|| is_array($object)
-		) {
-			header('Content-Type: application/json');
-			echo JSON::encode($object);
+		if (is_array($object)) {
+			if (0 === count($object)) {
+				header('HTTP/1.0 204 No Content');
+				header('Content-Length: 0', true);
+
+				die();
+			} else {			
+				header('Content-Type: application/json');
+				echo JSON::encode($object);
+			}
 		} else {
 			echo $object;
 		}

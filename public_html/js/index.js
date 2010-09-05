@@ -64,7 +64,9 @@ function updateRequest(adata, callback) {
 		cache: false,
 		success: function(data) {
 			updating = false;
-		
+	
+			setNewTimer(options.checkInterval);
+	
 			if (null == data) 
 				return;
 
@@ -111,8 +113,6 @@ function updateRequest(adata, callback) {
 			if (undefined !== callback) {
 				callback();
 			}
-
-			setNewTimer(options.checkInterval);
 		},
 		error: function() {
 			updating = false;

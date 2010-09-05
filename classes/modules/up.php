@@ -11,22 +11,9 @@ class MUp extends Module {
 		if ($ver == Language::VERSION)
 			return false;
 			
-		$lang = Language::getUserLanguage();
-		
-		$c = $this->db()->sites->find(array(
-			'lang' => $lang
-		), array('code'));
-		
-		$sites = array();
-		
-		while ($site = $c->getNext()) {		
-			$sites[] = $site['code'];
-		}
-	
 		return array(
 			'v'  => Language::VERSION,
-			'vl' => Language::getLang(),
-			's'  => $sites
+			'vl' => Language::getLang()
 		);
 	}	
 	

@@ -247,6 +247,15 @@ function addJob(job) {
 		checkTimeVal(stmp.getHours()) + ':' +
 		checkTimeVal(stmp.getMinutes())
 	);
+
+	var tmpDesc = job.title + ' ' + job.desc;
+	tmpDesc = tmpDesc.replace(/&(lt|gt);/g, function(strMatch, p1) {
+		return (p1 == 'lt') ? '<' : '>';
+	});
+	tmpDesc = tmpDesc.replace(/<\/?[^>]+(>|$)/g, '');
+	tmpDesc = tmpDesc.toLowerCase();
+
+	$('li.k', jobEl).html(tmpDesc);
 	
 	var jEl = {
 		stamp: job.stamp,

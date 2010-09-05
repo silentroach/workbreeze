@@ -168,6 +168,10 @@ ul.job {
 		clear: both;
 	}
 
+	ul.job .k {
+		display: none;
+	}
+
 #filter {
 	clear: both;
 	padding-top: 1em;

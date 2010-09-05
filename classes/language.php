@@ -86,9 +86,9 @@ class Language {
 			$lang = $_SERVER['HTTP_ACCEPT_LANGUAGE'];
 		
 			if (
-				false !== strpos('uk', $lang)
-				|| false !== strpos('ru', $lang)
-				|| false !== strpos('be', $lang)
+				false !== strpos($lang, 'uk')
+				|| false !== strpos($lang, 'ru')
+				|| false !== strpos($lang, 'be')
 			) {
 				$lng = self::RUSSIAN;
 			} else {

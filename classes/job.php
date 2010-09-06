@@ -277,12 +277,10 @@ class Job {
 		}
 		
 		$text = strip_tags($text, '<a>');
-		
+
 		$text = str_replace(array("\r\n", "\r", "\n"), '<br />', $text);
 		$text = str_replace(array(' . ', ' , '), array('. ', ', '), $text);
 	
-		$text = trim($text);
-		
 		while (false !== strpos($text, '<br /><br /><br />')) {
 			$text = str_replace('<br /><br /><br />', '<br /><br />', $text);
 		}

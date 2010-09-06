@@ -25,7 +25,10 @@ function handleFilter() {
 		keys = tmp.split(',');
 
 		for (var i in keys) {
-			keywords.push(keys[i].trim());
+			var tmp = keys[i].trim();
+			if ('' != tmp) {
+				keywords.push(tmp);
+			}
 		}
 	}
 	

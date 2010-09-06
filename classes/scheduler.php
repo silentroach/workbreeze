@@ -59,13 +59,13 @@ class Scheduler {
 			$s = $st[$item['site']];
 			
 			$writer->writeElement('title', $s['name'] . ': ' . $item['title']);
-			$writer->writeElement('link', $item['url']);
+			$writer->writeElement('link', 'http://workbreeze.com/jobs/' . 
+				$s['folder'] . '/' . $item['id'] . '.html');
 			$writer->startElement('description');
 			$writer->writeCData($item['desc']);
 			$writer->endElement();
 			
-			$writer->writeElement('guid', 'http://workbreeze.com/jobs/' . 
-				$s['folder'] . '/' . $item['id'] . '.html');
+			$writer->writeElement('guid', $item['url']);
 				
 			$writer->writeElement('pubDate', date('D, d M Y H:i:s e', $item['stamp']));
 			

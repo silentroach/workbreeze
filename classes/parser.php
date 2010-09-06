@@ -164,6 +164,8 @@ EOF;
 		
 		echo $url . '... ';
 		
+		$url = str_replace(' ', '%20', $url);
+		
 		curl_setopt($c, CURLOPT_URL, $url);
 		curl_setopt($c, CURLOPT_USERAGENT, Parser::Agent);
 		curl_setopt($c, CURLOPT_ENCODING, 'gzip');

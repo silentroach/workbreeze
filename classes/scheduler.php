@@ -47,6 +47,7 @@ class Scheduler {
 		$writer->writeElement('title', 'WorkBreeze');
 		$writer->writeElement('description', 'WorkBreeze');
 		$writer->writeElement('link', 'http://workbreeze.com');
+		$writer->writeElement('ttl', 5);
 		$writer->writeElement('pubDate', date('D, d M Y H:i:s e'));
 		
 		while ($item = $cursor->getNext()) {
@@ -62,10 +63,16 @@ class Scheduler {
 			$writer->writeElement('link', 'http://workbreeze.com/jobs/' . 
 				$s['folder'] . '/' . $item['id'] . '.html');
 			$writer->startElement('description');
-			$writer->writeCData($item['desc']);
+			
+			$cdata = <<<EOF
+{$item['desc']}<br /><p style="padding: 0.2em; background-color: silver; border: 1px dotted black; align: center;" align="center"><a href="{$item['url']}">{$item['title']}</a></p>
+EOF;
+			
+			$writer->writeCData($cdata);
 			$writer->endElement();
 			
-			$writer->writeElement('guid', $item['url']);
+			$writer->writeElement('guid', 'http://workbreeze.com/jobs/' . 
+				$s['folder'] . '/' . $item['id'] . '.html');
 				
 			$writer->writeElement('pubDate', date('D, d M Y H:i:s e', $item['stamp']));
 			

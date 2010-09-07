@@ -62,7 +62,12 @@ EOF;
 	imagedestroy($imgf);
 }
 
-imagepng($img, PATH_PUBLIC . 'img' . DIRECTORY_SEPARATOR . 'favicons.png');
+imagepng($img, '/tmp/fav.png');
 imagedestroy($img);
+
+echo system('optipng /tmp/fav.png');
+echo "\n";
+
+rename('/tmp/fav.png', PATH_PUBLIC . 'img' . DIRECTORY_SEPARATOR . 'favicons.png');
 
 echo $css . "\n";

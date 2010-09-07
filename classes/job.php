@@ -44,7 +44,7 @@ class Job {
 			array('перевод', 'translat')
 		),
 		self::CAT_TEXT        => array(
-			array('текст', 'рерайтинг', 'text', 'writing', 'статьи', 'обзор', 'реферат', 'диплом')
+			array('текст', 'рерайтинг', 'text', 'writing', 'статьи', 'обзор', 'реферат', 'диплом', 'posting')
 		),
 		self::CAT_ADVERTISING => array(
 			array('реклам', 'advertising', 'seo', 'раскрутка', 'маркетинг', 'marketing')

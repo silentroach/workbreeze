@@ -5,7 +5,7 @@ class Language {
 	const ENGLISH = 'en';
 	const RUSSIAN = 'ru';
 	
-	const VERSION = 5;
+	const VERSION = 6;
 	
 	private static $lang = null;
 	
@@ -21,6 +21,11 @@ class Language {
 			'pl'   => 'start',
 			'pa'   => 'pause',
 			'mt'   => 'mail',
+			
+			'hk'   => 'Example: <span class="ex">word1, !word2</span><br />will be found jobs contains [word1] and <strong>not</strong> contains [word21]',
+			'hs'   => 'Site list. Everything is trigger.',
+			'hc'   => 'Category list. Everything is trigger.',
+			'hj'   => 'Job list. You can get a full info by clicking on the header. You can scroll it down forever.',
 			
 			'c' . Job::CAT_OTHER       => 'other',
 			'c' . Job::CAT_AUDIOVIDEO  => 'audio/video',
@@ -42,6 +47,11 @@ class Language {
 			'pl'   => 'запуск',
 			'pa'   => 'пауза',
 			'mt'   => 'почта',
+			
+			'hk'   => 'Пример: <span class="ex">слово1, !слово2</span><br />найдутся задания, в содержимом которого упоминается [слово1] и <strong>не</strong> упоминается [слово2].',
+			'hs'   => 'Список сайтов, каждый элемент - переключатель.',
+			'hc'   => 'Список категорий предложений, каждый элемент - переключатель.',
+			'hj'   => 'Список предложений, для просмотра полной информации следует щелкнуть по заголовку. Можно прокручивать вниз до бесконечности.',
 			
 			'c' . Job::CAT_OTHER       => 'прочее',
 			'c' . Job::CAT_AUDIOVIDEO  => 'аудио/видео',

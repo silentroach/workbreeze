@@ -349,7 +349,7 @@ function init() {
 
 	places.logo        = $('#logo');
 	places.templateJob = $('ul.job:first');
-	places.placeJob    = $('#right');
+	places.placeJob    = $('#jobs');
 	
 	places.buttonPlay  = $('#play');
 	places.buttonPause = $('#pause');
@@ -369,7 +369,7 @@ function init() {
 	setNewTimer(5000);
 	
 	// removing right content
-	$('#right > *').remove();
+	$('#right ul').remove();
 	
 	var adata = {};
 	

@@ -110,6 +110,22 @@ li.checked:hover {
 	color: white;
 }
 
+div.help {
+	clear: both;
+	background-color: black;
+	padding: 0.5em;
+	font-size: 8pt;
+	color: white;
+	opacity: 0.5;
+}
+
+	div.help span.ex {
+		background-color: white;
+		color: black;
+		padding: 0 2px 0 2px;
+		font-weight: bold;
+	}
+
 #pp {
 	float: right;
 }
@@ -177,7 +193,7 @@ ul.job {
 	padding-top: 1em;
 }
 
-#keyword {
+.fw {
 	width: 100%;
 }
 

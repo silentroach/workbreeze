@@ -51,9 +51,7 @@ foreach($icons as $key => $icon) {
 	$tt = -$top + 1;
 
 	$css .= <<<EOF
-.sico_{$key} {
-	background-position: 0px {$tt}px;
-}
+.sico_{$key} { background-position: 0px {$tt}px; }
 
 EOF;
 
@@ -66,7 +64,6 @@ imagepng($img, '/tmp/fav.png');
 imagedestroy($img);
 
 echo system('optipng /tmp/fav.png');
-echo "\n";
 
 rename('/tmp/fav.png', PATH_PUBLIC . 'img' . DIRECTORY_SEPARATOR . 'favicons.png');
 

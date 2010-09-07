@@ -1,0 +1,50 @@
+#!/usr/bin/php
+<?php
+
+require('../defines.php');
+
+$icons = array();
+$dir = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'icons' . DIRECTORY_SEPARATOR;
+
+$files = glob($dir . '*.png');
+
+foreach($files as $file) {
+        $pinfo = pathinfo($file);
+
+	$icons[$pinfo['filename']] = $file;
+}
+ksort($icons);
+
+$img = imagecreatetruecolor(16, count($icons) * 2 * 16 - 16);
+imagesavealpha($img, true);
+imagefill($img, 0, 0, imagecolorallocatealpha($img, 0, 0, 0, 127));
+imagealphablending($img, true);
+
+$top = 0;
+$css = '';
+
+foreach($icons as $key => $icon) {
+	$imgf = imagecreatefrompng($icon);
+
+	imagecopy($img, $imgf, 0, $top, 0, 0, 16, 16);
+
+	$tt = -$top + 1;
+
+	$css .= <<<EOF
+.i_{$key} { background-position: 0px {$tt}px; }
+
+EOF;
+
+	$top = $top + 32;
+
+	imagedestroy($imgf);
+}
+
+imagepng($img, '/tmp/icons.png');
+imagedestroy($img);
+
+echo system('optipng /tmp/icons.png');
+
+rename('/tmp/icons.png', PATH_PUBLIC . 'img' . DIRECTORY_SEPARATOR . 'icons.png');
+
+echo $css . "\n";

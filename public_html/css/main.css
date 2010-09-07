@@ -41,17 +41,19 @@ input {
 	text-shadow: black 1px 1px 1px;
 }
 
-	#logo a {
-		border-bottom: 0px;
-	}
-
 #menu {
 	font-size: 10pt;
-	padding-left: 1px;
+	padding: 5px 0 0 0;
 }
 
-	#menu a {
-		border-bottom: 0px;
+	#menu li {
+		cursor: pointer;
+		display: inline-block;
+	}
+	
+	#menu li.i {
+		width: 16px;
+		height: 16px;
 	}
 
 #main {
@@ -112,17 +114,19 @@ li.checked:hover {
 
 div.help {
 	clear: both;
-	background-color: black;
+	display: none;
+	background-color: #262b2d;
 	padding: 0.5em;
 	font-size: 8pt;
 	color: white;
-	opacity: 0.5;
+	margin: 2px 0 3px 0;
+	font-style: italic;
 }
 
 	div.help span.ex {
-		background-color: white;
-		color: black;
-		padding: 0 2px 0 2px;
+		font-style: normal;
+		border: 1px solid gray;
+		padding: 0 4px 0 4px;
 		font-weight: bold;
 	}
 
@@ -203,21 +207,16 @@ ul.job {
 	background-image: url('/img/favicons.png');
 }
 
-.sico_0 {
-	background-position: 0px 1px;
+.sico_0 { background-position: 0px 1px; }
+.sico_1 { background-position: 0px -31px; }
+.sico_2 { background-position: 0px -63px; }
+.sico_3 { background-position: 0px -95px; }
+.sico_4 { background-position: 0px -127px; }
+.sico_5 { background-position: 0px -159px; }
+
+.i {
+	background-image: url('/img/icons.png');
+	background-repeat: no-repeat;
 }
-.sico_1 {
-	background-position: 0px -31px;
-}
-.sico_2 {
-	background-position: 0px -63px;
-}
-.sico_3 {
-	background-position: 0px -95px;
-}
-.sico_4 {
-	background-position: 0px -127px;
-}
-.sico_5 {
-	background-position: 0px -159px;
-}
+
+.i_help { background-position: 0px 1px; }

@@ -21,11 +21,12 @@ class Language {
 			'pl'   => 'start',
 			'pa'   => 'pause',
 			'mt'   => 'mail',
+			'h'    => 'help hints',
 			
-			'hk'   => 'Example: <span class="ex">word1, !word2</span><br />will be found jobs contains [word1] and <strong>not</strong> contains [word21]',
-			'hs'   => 'Site list. Everything is trigger.',
-			'hc'   => 'Category list. Everything is trigger.',
-			'hj'   => 'Job list. You can get a full info by clicking on the header. You can scroll it down forever.',
+			'hk'   => 'Example: <span class="ex">word1, word2</span><br />The offers containing [word1] <strong>or</strong> [word2] will be found.',
+			'hs'   => '<strong>Site list</strong>. Each element is a trigger.',
+			'hc'   => '<strong>Offers category list</strong>. Each element is a trigger.',
+			'hj'   => '<strong>Offers list</strong>. Click the title to have more information. You can scroll it down endlessly.',
 			
 			'c' . Job::CAT_OTHER       => 'other',
 			'c' . Job::CAT_AUDIOVIDEO  => 'audio/video',
@@ -47,11 +48,12 @@ class Language {
 			'pl'   => 'запуск',
 			'pa'   => 'пауза',
 			'mt'   => 'почта',
+			'h'    => 'подсказки',
 			
-			'hk'   => 'Пример: <span class="ex">слово1, !слово2</span><br />найдутся задания, в содержимом которого упоминается [слово1] и <strong>не</strong> упоминается [слово2].',
-			'hs'   => 'Список сайтов, каждый элемент - переключатель.',
-			'hc'   => 'Список категорий предложений, каждый элемент - переключатель.',
-			'hj'   => 'Список предложений, для просмотра полной информации следует щелкнуть по заголовку. Можно прокручивать вниз до бесконечности.',
+			'hk'   => 'Пример: <span class="ex">слово1, слово2</span><br />Найдутся предложения, в содержимом которого упоминается [слово1] <strong>или</strong> [слово2].',
+			'hs'   => '<strong>Список сайтов</strong>, где каждый элемент - переключатель.',
+			'hc'   => '<strong>Список категорий предложений</strong>, где каждый элемент - переключатель.',
+			'hj'   => '<strong>Список предложений</strong>. Для просмотра полной информации следует щелкнуть по заголовку. Можно прокручивать вниз до бесконечности.',
 			
 			'c' . Job::CAT_OTHER       => 'прочее',
 			'c' . Job::CAT_AUDIOVIDEO  => 'аудио/видео',

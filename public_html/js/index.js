@@ -6,6 +6,7 @@ var newTimer;
 var filterTimer;
 var updating = false;
 var updatingBottom = false;
+var helpVisible = false;
 
 var streamAutoPause = false;
 
@@ -343,33 +344,9 @@ function updateBottom() {
 }
 
 function init() {
-	$('#bfoot').css({'opacity': 0.7});
-
-	finit();
-
 	places.logo        = $('#logo');
 	places.templateJob = $('ul.job:first');
 	places.placeJob    = $('#jobs');
-	
-	places.buttonPlay  = $('#play');
-	places.buttonPause = $('#pause');
-	
-	places.buttonPause.click(streamPause);
-	places.buttonPlay.click(streamPlay);
-	
-	places.logo.ajaxStart(function() {
-		$(this).animate({'opacity': 0.7}, options.animationSpeed);
-	});
-	
-	places.logo.ajaxStop(function() {
-		$(this).animate({'opacity': 1});
-	});
-
-	setQueueTimer(5000);
-	setNewTimer(5000);
-	
-	// removing right content
-	$('#right ul').remove();
 	
 	var adata = {};
 	
@@ -393,6 +370,34 @@ function init() {
 				updateBottom();
 			}
 		} );
+	});
+	
+	$('#bfoot, .help, #menu').css({'opacity': 0.7});
+
+	finit();
+	
+	places.buttonPlay  = $('#play');
+	places.buttonPause = $('#pause');
+	
+	places.buttonPause.click(streamPause);
+	places.buttonPlay.click(streamPlay);
+	
+	places.logo.ajaxStart(function() {
+		$(this).animate({'opacity': 0.7}, options.animationSpeed);
+	});
+	
+	places.logo.ajaxStop(function() {
+		$(this).animate({'opacity': 1});
+	});
+
+	setQueueTimer(5000);
+	
+	// removing right content
+	$('#right ul').remove();
+	
+	$('#help').click(function() {
+		$('.help').animate({'opacity': 'toggle', 'height': 'toggle'}, options.animationSpeed);
+		helpVisible = !helpVisible;
 	});
 	
 	$('#keyword')

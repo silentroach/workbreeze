@@ -372,7 +372,7 @@ function init() {
 		} );
 	});
 	
-	$('#bfoot, .help, #menu').css({'opacity': 0.7});
+	$('#bfoot, .help, #menu').css({'opacity': 0.8});
 
 	finit();
 	
@@ -397,6 +397,11 @@ function init() {
 	
 	$('#help').click(function() {
 		$('.help').animate({'opacity': 'toggle', 'height': 'toggle'}, options.animationSpeed);
+		
+		if (!helpVisible) {
+			$('html, body').animate({'scrollTop':0}, 'slow');
+		}
+		
 		helpVisible = !helpVisible;
 	});
 	

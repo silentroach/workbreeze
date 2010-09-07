@@ -29,19 +29,16 @@ input {
 	padding: 4px;
 }
 
-#gads {
-	float: right; 
-	padding-left: 2em;
-	padding-bottom: 2em;
-}
-
 #logo {
+	display: inline-block;
 	font-size: 18pt;
 	font-weight: bold;
 	text-shadow: black 1px 1px 1px;
 }
 
 #menu {
+	display: inline-block;
+	margin-left: 1em;
 	font-size: 10pt;
 	padding: 5px 0 0 0;
 }
@@ -82,7 +79,7 @@ input {
 }
 
 #sites li, #categories li {
-	float: left; 
+	display: inline-block; 
 	list-style: none;
 	margin-bottom: 0.5em;
 	font-size: 10pt;
@@ -169,10 +166,6 @@ ul.job {
 	padding: 5px;
 	margin-bottom: 1%;
 }
-
-	ul.filter {
-		margin-top: 2em;
-	}
 
 	ul.job .title, ul.job .title a {
 		margin-bottom: 0.5em;

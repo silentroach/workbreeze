@@ -81,13 +81,12 @@ input {
 #sites li, #categories li {
 	display: inline-block; 
 	list-style: none;
-	margin-bottom: 0.5em;
 	font-size: 10pt;
 	width: 45%;
 }
 
 #categories {
-	padding-top: 1em;
+	padding-top: 0.3em;
 }
 
 li.checkable {

@@ -211,6 +211,10 @@ class Job {
 		return false;
 	}
 
+	public function getHTMLDescription() {
+		return str_replace("\n", '<br />', $this->getDescription());
+	}
+
 	public function getDescription() {
 		return $this->description;
 	}
@@ -254,12 +258,6 @@ class Job {
 
 		$text = str_replace(
 			array('<br />', '<br>', '<br/>'),
-			'<br />',
-			$text
-		);
-		
-		$text = str_replace(
-			'<br />',
 			"\n",
 			$text
 		);
@@ -278,25 +276,25 @@ class Job {
 		
 		$text = strip_tags($text, '<a>');
 
-		$text = str_replace(array("\r\n", "\r", "\n"), '<br />', $text);
+		$text = str_replace("\r", "\n", $text);
 		$text = str_replace(array(' . ', ' , '), array('. ', ', '), $text);
 	
-		while (false !== strpos($text, '<br /><br /><br />')) {
-			$text = str_replace('<br /><br /><br />', '<br /><br />', $text);
+		while (false !== strpos($text, "\n\n\n")) {
+			$text = str_replace("\n\n\n", "\n\n", $text);
 		}
 		
-		while ('<br />' === mb_substr($text, strlen($text) - 6, 6)) {
+		while ("\n" === mb_substr($text, strlen($text) - 6, 6)) {
 			$text = mb_substr($text, 0, strlen($text) - 6);
 		}
 		
-		while ('<br />' === mb_substr($text, 0, 6)) {
+		while ("\n" === mb_substr($text, 0, 6)) {
 			$text = mb_substr($text, 6, strlen($text) - 6);
 		}
 		
 		$this->description = trim($text);
 		
 		if (preg_match('/([^ \n\r]+[ \n\r]+){20}/s', $text, $match))
-			$this->description_short = trim(str_replace('<br /><br />', '<br />', $match[0])) . '...';
+			$this->description_short = trim(str_replace("\n\n", "\n", $match[0])) . '...';
 		
 		return $this;
 	}

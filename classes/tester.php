@@ -18,10 +18,10 @@ class Tester {
 		$text = trim(file_get_contents($file));
 		$out  = trim(file_get_contents($outname));
 		
-		$this->job->setDescription($text);
-		
-		if ($out != $this->job->getDescription()) {
-			return $this->job->getDescription() . 
+		$this->job->setDescription($text);	
+	
+		if ($out != $this->job->getHTMLDescription()) {
+			return $this->job->getHTMLDescription() . 
 				"\n---------------------------------------------------\n" . 
 				$out . "\n";
 		}

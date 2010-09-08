@@ -110,8 +110,6 @@ EOF;
 					'count' => $parser->getQueuedCount()
 				));
 			}
-
-			$this->updateGlobalRSS();
 		}
 	}
 	
@@ -123,7 +121,11 @@ EOF;
 		$c->sort(array('rnd' => 1));
 		$c->limit(20);
 		
+		$cnt = 0;
+
 		while ($item = $c->getNext()) {
+			$cnt++;
+
 			$site = $sites->findOne(array('code' => $item['site']));
 			
 			if (null === $site)
@@ -138,6 +140,10 @@ EOF;
 					sleep(1);
 				}
 			}
+		}
+
+		if ($cnt > 0) {
+			$this->updateGlobalRSS();
 		}
 	}
 

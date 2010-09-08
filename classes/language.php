@@ -5,7 +5,7 @@ class Language {
 	const ENGLISH = 'en';
 	const RUSSIAN = 'ru';
 	
-	const VERSION = 6;
+	const VERSION = 7;
 	
 	private static $lang = null;
 	
@@ -22,6 +22,7 @@ class Language {
 			'pa'   => 'pause',
 			'mt'   => 'mail',
 			'h'    => 'help hints',
+			's'    => 'statistics',
 			
 			'hk'   => 'Example: <span class="ex">word1, word2</span><br />The offers containing [word1] <strong>or</strong> [word2] will be found.',
 			'hs'   => '<strong>Site list</strong>. Each element is a trigger.',
@@ -49,6 +50,7 @@ class Language {
 			'pa'   => 'пауза',
 			'mt'   => 'почта',
 			'h'    => 'подсказки',
+			's'    => 'статистика',
 			
 			'hk'   => 'Пример: <span class="ex">слово1, слово2</span><br />Найдутся предложения, в содержимом которого упоминается [слово1] <strong>или</strong> [слово2].',
 			'hs'   => '<strong>Список сайтов</strong>, где каждый элемент - переключатель.',

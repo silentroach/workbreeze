@@ -109,7 +109,7 @@ class Parser {
 
 <p class="title">{$job->getTitle()}</p>
 
-{$job->getDescription()}
+{$job->getHTMLDescription()}
 <br /><br />
 
 <a href="{$job->getUrl()}">&gt; {$this->getSiteName()}</a>

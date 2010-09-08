@@ -36,6 +36,10 @@ input {
 	text-shadow: black 1px 1px 1px;
 }
 
+	#logo a {
+		border-bottom: 0px;
+	}
+
 #menu {
 	display: inline-block;
 	margin-left: 1em;
@@ -48,9 +52,11 @@ input {
 		display: inline-block;
 	}
 	
-	#menu li.i {
+	#menu li.i, #menu a.i {
+		display: inline-block;
 		width: 16px;
 		height: 16px;
+		border-bottom: 0px;
 	}
 
 #main {
@@ -212,3 +218,4 @@ ul.job {
 }
 
 .i_help { background-position: 0px 1px; }
+.i_stats { background-position: 0px -31px; }

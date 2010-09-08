@@ -50,87 +50,29 @@ function checkJobPlace() {
 	}
 }
 
-function updateRequest(adata, callback) {
-	if (updating)
-		return;
+function checkNewJobs() {
+	var adata = {};	
+	adata[options.elementJobStamp] = lastStamp;
 
-	dropNewTimer();		
-	updating = true;
-
-	$.ajax({
-		url: '/up',
-		type: 'POST',
+	$.up({
 		data: adata,
-		dataType: 'json',
-		cache: false,
 		success: function(data) {
-			updating = false;
-	
-			setNewTimer(options.checkInterval);
-	
 			if (null == data) 
 				return;
-
-/* <production>
-			updateCount++;
-
-			if (
-				updateCount >= 10
-				&& 'undefined' != typeof(_gaq)
-			) {
-				updateCount = 0;
-				_gaq.push(['_trackEvent', 'Stream', '10 updates']);
-			}
-</production> */	
 		
-			if ('l' in data) {
-/* <debug> */
-				console.info('New lang pack');
-/* </debug> */
-				loadLang(data['l']);
-			}
-			
-			if ('c' in data) {
-/* <debug> */
-				console.info('New categories pack');
-/* </debug> */
-				loadCats(data['c']);
-			}
-			
-			if ('s' in data) {
-/* <debug> */
-				console.info('New sites pack');
-/* </debug> */
-				loadSites(data['s']);
-			}
-			
 			if ('j' in data) {
 /* <debug> */
 				console.info('New jobs pack: ' + data['j'].length);
 /* </debug> */
 				parseJobs(data['j']);
 			}
-			
-			if (undefined !== callback) {
-				callback();
-			}
+		
+			setNewTimer(options.checkInterval);
 		},
 		error: function() {
-			updating = false;
-		
-/* <debug> */
-				console.error('Error while getting up response');
-/* </debug> */
-			setNewTimer(options.checkInterval * 2)		
+			setNewTimer(options.checkInterval * 2);
 		}
 	});
-}
-
-function checkNewJobs() {
-	var adata = {};	
-	adata[options.elementJobStamp] = lastStamp;
-
-	updateRequest(adata);
 }
 
 function dropQueueTimer() {
@@ -338,8 +280,19 @@ function updateBottom() {
 	var adata = {};	
 	adata[options.elementJobStamp] = -firstStamp;
 
-	updateRequest(adata, function() {
-		updatingBottom = false;
+	$.up({
+		data: adata,
+		success: function(data) {
+			if ('j' in data) {
+/* <debug> */
+				console.info('New jobs bottom pack: ' + data['j'].length);
+/* </debug> */
+				parseJobs(data['j']);
+			}	
+		},
+		ping: function() {
+			updatingBottom = false;
+		}
 	});
 }
 
@@ -355,23 +308,60 @@ function init() {
 	adata[options.elementCats]     = getCatsVersion();
 	adata[options.elementJobStamp] = 0;
 	
-	updateRequest(adata, function() {
-		$('html, body').css({scrollTop:0});
+	$.up({
+		data: adata,
+		success: function(data) {
+			$('html, body').css({scrollTop:0});
+			
+			setNewTimer(options.checkInterval);
 	
-		localize();
-		initCats();
-		initSites();
-		
-		$(window).scroll(function() {
-			if (
-				$(window).scrollTop() >= $(document).height() - $(window).height()
-				&& !updatingBottom
-			) {
-				updateBottom();
+			if (null == data) 
+				return;
+
+			if ('l' in data) {
+/* <debug> */
+				console.info('New lang pack');
+/* </debug> */
+				loadLang(data['l']);
 			}
-		} );
+			
+			if ('c' in data) {
+/* <debug> */
+				console.info('New categories pack');
+/* </debug> */
+				loadCats(data['c']);
+			}
+			
+			if ('s' in data) {
+/* <debug> */
+				console.info('New sites pack');
+/* </debug> */
+				loadSites(data['s']);
+			}
+			
+			if ('j' in data) {
+/* <debug> */
+				console.info('New jobs pack: ' + data['j'].length);
+/* </debug> */
+				parseJobs(data['j']);
+			}
+		},
+		ping: function() {
+			$(window).scroll(function() {
+				if (
+					$(window).scrollTop() >= $(document).height() - $(window).height()
+					&& !updatingBottom
+				) {
+					updateBottom();
+				}
+			} );
+			
+			localize();
+			initCats();
+			initSites();
+		}
 	});
-	
+		
 	$('#bfoot, .help, #menu').css({'opacity': 0.8});
 
 	finit();

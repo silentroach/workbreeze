@@ -41,16 +41,16 @@ function loadCats(val) {
  */
 function initCats() {
 	var cplace = $('#categories');
+	var cempty = $settings.selcats.length == 0;
 	
 	for (var i in cats) {
 		var cat = cats[i];
-		selcats.push(i);
 
 		var sp = $('<span></span>')
 			.html(langVal(cat[1]));
 
 		var li = $('<li></li>')
-			.addClass('checkable checked')
+			.addClass('checkable')
 			.attr( {
 				'id'   : 'c' + i,
 				'cat' : i
@@ -59,6 +59,17 @@ function initCats() {
 				$(this).toggleClass('checked');
 				handleFilter();
 			} );
+
+                if (
+                        cempty
+                        || $settings.selcats.indexOf(i) >= 0
+                ) {
+                        li.addClass('checked');
+                }
+
+                if (cempty) {
+                        $settings.addCat(i);
+                }
 
 		li.appendTo(cplace);
 		sp.appendTo(li);

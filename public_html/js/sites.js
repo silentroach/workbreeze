@@ -43,18 +43,18 @@ function loadSites(val) {
  */
 function initSites() {
 	var splace = $('#sites');
+	var sempty = $settings.selsites.length == 0;
 
 	for (var i in sites) {
 		var site = sites[i];
-		selsites.push(site[0]);
 
 		var sp  = $('<span></span>')
 			.addClass(options.siteIconPrefix)
 			.addClass(options.siteIconPrefix + '_' + site[0])
 			.html(site[2]);
-	
+
 		var li = $('<li></li>')
-			.addClass('checkable checked')
+			.addClass('checkable')
 			.attr( {
 				'id'   : 'c' + site[0],
 				'site' : site[0]
@@ -63,6 +63,17 @@ function initSites() {
 				$(this).toggleClass('checked');
 				handleFilter();
 			} );
+
+		if (
+			sempty
+			|| $settings.selsites.indexOf(site[0]) >= 0
+		) {
+			li.addClass('checked');
+		}
+
+		if (sempty) {
+			$settings.addSite(site[0]);
+		}
 		
 		li.appendTo(splace);
 		sp.appendTo(li);

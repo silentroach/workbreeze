@@ -51,7 +51,7 @@ function getLocalStorageItemVersion(itemName) {
  * @param {!string} itemName Name of localStorage object
  * @return {Object|Boolean}
  */
-function getLocalStorageItem(itemName) {
+function getLocalStorageItem(itemName, skipcache) {
 	if (!is_ls)
 		return false;
 

@@ -7,8 +7,10 @@ $analytics = file_get_contents('../../other/ga.js');
 $res = str_replace('<!-- ga !-->', $analytics, $res);
 $res = str_replace('"js/jquery.js"', '"http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"', $res); 
 
+$dd = date('mdHi');
+
 $res = preg_replace('/<\!-- jsbeg(.*?)jsend \!-->/si', '
-<script language="javascript" src="/js/index.js"></script>
+<script language="javascript" src="/js/index.js?' . $dd . '"></script>
 ', $res);
 
 $res = str_replace(array("\t", "\n"), '', $res);

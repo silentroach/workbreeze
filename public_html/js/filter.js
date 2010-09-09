@@ -1,25 +1,23 @@
-/** @type {Array} **/ var keywords = [];
-/** @type {Array} **/ var selsites = [];
-/** @type {Array} **/ var selcats  = [];
+var $settings;
 
 function handleFilter() {
 	var tmp = $('#keyword').val().trim();
-	selsites = [];
-	selcats  = [];
+	$settings.selsites = [];
+	$settings.selcats  = [];
 	
 	$('li', '#sites').each( function() {
 		if ($(this).hasClass('checked')) {
-			selsites.push($(this).attr('site'));
+			$settings.addSite($(this).attr('site'));
 		}
 	} );
 
 	$('li', '#categories').each( function() {
 		if ($(this).hasClass('checked')) {
-			selcats.push($(this).attr('cat'));
+			$settings.addCat($(this).attr('cat'));
 		}
 	} );
 	
-	keywords = [];
+	$settings.keywords = [];
 
 	if ('' != tmp) {
 		keys = tmp.split(',');
@@ -27,14 +25,14 @@ function handleFilter() {
 		for (var i in keys) {
 			var tmp = keys[i].trim();
 			if ('' != tmp) {
-				keywords.push(tmp);
+				$settings.addKeyword(tmp);
 			}
 		}
 	}
 	
 	if (
-		0 == selsites.length
-		|| 0 == selcats.length
+		0 == $settings.selsites.length
+		|| 0 == $settings.selcats.length
 	) {
 		streamAutoPause = true;
 		streamPause();
@@ -42,12 +40,14 @@ function handleFilter() {
 		streamPlay();
 	}
 
+	$settings.save();
+
 /* <debug> */
 	console.group('new filter');
-	console.log('sites', selsites);
-	console.log('cats', selcats);
-	if (0 < keywords.length) 
-		console.log('keys', keywords);
+	console.log('sites', $settings.selsites);
+	console.log('cats', $settings.selcats);
+	if (0 < $settings.keywords.length) 
+		console.log('keys', $settings.keywords);
 	console.groupEnd();
 /* </debug> */
 	
@@ -95,8 +95,8 @@ function jobUnselect(element) {
  */
 function checkJobForFilter(element) {
 	if (
-		0 == selsites.length
-		|| 0 == selcats.length
+		0 == $settings.selsites.length
+		|| 0 == $settings.selcats.length
 	) {
 		jobSelect(element);
 		return;
@@ -104,7 +104,7 @@ function checkJobForFilter(element) {
 
 	var str = $('li.k', element).html();
 	
-	var wrong = selsites.indexOf(element.attr('site')) < 0;
+	var wrong = $settings.selsites.indexOf(element.attr('site')) < 0;
 	
 	if (!wrong) {
 		var cts = element.attr('cats').split(',');
@@ -112,7 +112,7 @@ function checkJobForFilter(element) {
 		var cwrong = true;
 	
 		for (var i = 0; i < cts.length; i++) {
-			if (selcats.indexOf(cts[i]) >= 0) {
+			if ($settings.selcats.indexOf(cts[i]) >= 0) {
 				cwrong = false;
 				break;
 			}
@@ -125,12 +125,12 @@ function checkJobForFilter(element) {
 
 	if (
 		!wrong
-		&& 0 != keywords.length
+		&& 0 != $settings.keywords.length
 	) {
 		wrong = true;
 	
-		for (var i in keywords) {
-			if (str.indexOf(keywords[i].toLowerCase()) >= 0) {
+		for (var i in $settings.keywords) {
+			if (str.indexOf($settings.keywords[i].toLowerCase()) >= 0) {
 				wrong = false;
 				break;
 			}

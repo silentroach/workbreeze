@@ -18,7 +18,8 @@ var places = {
 	/** @type {jQuery} **/ placeJob:    null,
 	/** @type {jQuery} **/ buttonPlay:  null,
 	/** @type {jQuery} **/ buttonPause: null,
-	/** @type {jQuery} **/ logo:        null
+	/** @type {jQuery} **/ logo:        null,
+	/** @type {jQuery} **/ keyword:     null
 }
 
 var options = {
@@ -300,6 +301,15 @@ function init() {
 	places.logo        = $('#logo');
 	places.templateJob = $('ul.job:first');
 	places.placeJob    = $('#jobs');
+	places.keyword     = $('#keyword');
+
+	finit();
+	$settings = new settings();
+	$settings.init();
+
+	if ($settings.keywords.length != 0) {
+		places.keyword.val($settings.keywords.join(', '));
+	}
 	
 	var adata = {};
 	
@@ -364,8 +374,6 @@ function init() {
 		
 	$('#bfoot, .help, #menu').css({'opacity': 0.8});
 
-	finit();
-	
 	places.buttonPlay  = $('#play');
 	places.buttonPause = $('#pause');
 	
@@ -395,7 +403,7 @@ function init() {
 		helpVisible = !helpVisible;
 	});
 	
-	$('#keyword')
+	places.keyword
 		.keyup(function(e) {
 			if (null != filterTimer) {
 				clearTimeout(filterTimer);

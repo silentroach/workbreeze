@@ -108,23 +108,34 @@ class Parser_freelancer_com extends Parser implements IParser {
 		if (false === $i) {
 			$this->log(array(
 				'url'  => $url, 
-				'msg'  => 'can\'t found description' 
+				'msg'  => 'can\'t found description (h3 begin)' 
 			));
 			return true;
 		}
 		
 		$desc = mb_substr($res, $i, mb_strlen($res) - $i);
 
-		$i = strpos($desc, '<td>');
+		$i = strpos($desc, '<td');
 		if (false === $i) {
 			$this->log(array(
 				'url'  => $url, 
-				'msg'  => 'can\'t found description' 
+				'msg'  => 'can\'t found description (td after h3)' 
 			));
 			return true;
 		}
 		
-		$desc = mb_substr($desc, $i + 4, mb_strlen($desc) - $i - 4);
+		$desc = mb_substr($desc, $i + 3, mb_strlen($desc) - $i - 3);
+
+		$i = strpos($desc, '>');
+		if (false === $i) {
+			$this->log(array(
+				'url' => $url,
+				'msg' => 'can\'t found description (td end after h3)'
+			));
+			return true;
+		}
+
+		$desc = mb_substr($desc, $i + 1, mb_strlen($desc) - $i - 1);
 		
 		$i = strpos($desc, '</td>');
 		if (false === $i) {

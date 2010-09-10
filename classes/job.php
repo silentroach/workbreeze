@@ -283,12 +283,12 @@ class Job {
 			$text = str_replace("\n\n\n", "\n\n", $text);
 		}
 		
-		while ("\n" === mb_substr($text, strlen($text) - 6, 6)) {
-			$text = mb_substr($text, 0, strlen($text) - 6);
+		while ("\n" === mb_substr($text, strlen($text) - 1, 1)) {
+			$text = mb_substr($text, 0, strlen($text) - 1);
 		}
 		
-		while ("\n" === mb_substr($text, 0, 6)) {
-			$text = mb_substr($text, 6, strlen($text) - 6);
+		while ("\n" === mb_substr($text, 0, 1)) {
+			$text = mb_substr($text, 1, strlen($text) - 1);
 		}
 		
 		$this->description = trim($text);

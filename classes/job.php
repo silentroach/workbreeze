@@ -37,7 +37,7 @@ class Job {
 			array(
 				'скрипт', 'веб-разр', 'верстк', 'веб-прило', 'разработка сайт', 'script', 'web-prog', 
 				'webprog', 'веб-программ', 'php', 'asp', 'wordpress', 'joomla', 'ajax', 'javascript', 
-				'ruby', 'ecommerce', 'создание сайт', 'системы админист'
+				'ruby', 'ecommerce', 'создание сайт', 'системы админист', 'drupal'
 			)
 		),
 		self::CAT_TRANSLATE   => array(

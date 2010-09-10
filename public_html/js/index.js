@@ -293,6 +293,8 @@ function updateBottom() {
 		},
 		ping: function() {
 			updatingBottom = false;
+
+			setNewTimer(options.checkInterval);
 		}
 	});
 }

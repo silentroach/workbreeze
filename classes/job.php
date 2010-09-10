@@ -31,7 +31,7 @@ class Job {
 			array('фото', 'photo ') // space to disallow photoshop
 		),
 		self::CAT_PROGRAMMING => array(
-			array('программир', 'programm', 'разраб', 'software', 'delphi')
+			array('программир', 'programm', 'разраб', 'software', 'delphi', 'c++')
 		),
 		self::CAT_WEBPROG     => array(
 			array(

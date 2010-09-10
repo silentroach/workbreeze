@@ -1,7 +1,43 @@
+/**
+ * Settings
+ * @constructor
+ */
 function settings() {
-	this.keywords = [];
-	this.selsites = [];
-	this.selcats  = [];
+	/**
+	 * Settings storage name
+	 * @type {string}
+	 * @private
+	 * @const
+	 */
+	this.lsname = 'settings';
+
+	/**
+	 * Sites element name
+	 * @type {string}
+	 * @private
+	 * @const
+	 */
+	this.psites = 'sites';
+
+	/**
+	 * Categories element name
+	 * @type {string}
+	 * @private
+	 * @const
+	 */
+	this.pcats  = 'cats';
+
+	/**
+	 * Keywords element name
+	 * @type {string}
+	 * @private
+	 * @const
+	 */
+	this.pkeys  = 'keys';
+
+	/** @type {Array} **/ this.keywords = [];
+	/** @type {Array} **/ this.selsites = [];
+	/** @type {Array} **/ this.selcats  = [];
 
 	this.init = function() {
 		this.load();
@@ -12,7 +48,7 @@ function settings() {
 			return;
 		}
 
-		var tmp = localStorage.getItem('settings');
+		var tmp = localStorage.getItem(this.lsname);
 		if (
 			null === tmp
 			|| '' == tmp
@@ -26,16 +62,16 @@ function settings() {
 			return;
 		}
 
-		if ('sites' in obj) {
-			this.selsites = obj['sites'];
+		if (this.psites in obj) {
+			this.selsites = obj[this.psites];
 		}
 
-		if ('cats' in obj) {
-			this.selcats = obj['cats'];
+		if (this.pcats in obj) {
+			this.selcats = obj[this.pcats];
 		}
 
-		if ('keys' in obj) {
-			this.keywords = obj['keys'];
+		if (this.pkeys in obj) {
+			this.keywords = obj[this.pkeys];
 		}
 	}
 
@@ -45,11 +81,11 @@ function settings() {
 		}
 
 		var obj = {};
-		obj['sites'] = this.selsites;
-		obj['cats']  = this.selcats;
-		obj['keys']  = this.keywords;
+		obj[this.psites] = this.selsites;
+		obj[this.pcats]  = this.selcats;
+		obj[this.pkeys]  = this.keywords;
 
-		localStorage.setItem('settings', JSON.stringify(obj));
+		localStorage.setItem(this.lsname, JSON.stringify(obj));
 	}
 
 	this.addSite = function(site) {

@@ -5,17 +5,14 @@
  * @param {JQuery} place Place to localize
  */
 function localize(place) {
-	var tmp = $('body');
-
-	if ('undefined' == typeof(place))
-		tmp = place;
+	var tmp = (undefined !== place) ? place : $('body');
 
 	$('.l', place).each(function() {
 		var el = $(this);
 		
 		var tmp = el.attr('lp');
 		if (tmp !== undefined) {
-			el.attr('placeholder': langVal(tmp));
+			el.attr('placeholder', langVal(tmp));
 		}
 	
 		tmp = el.attr('lv');
@@ -25,7 +22,7 @@ function localize(place) {
 		
 		tmp = el.attr('lt');
 		if (tmp !== undefined) {
-			el.attr('title': langVal(tmp));
+			el.attr('title', langVal(tmp));
 		}
 	});
 }

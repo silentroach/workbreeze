@@ -11,19 +11,21 @@ function localize(place) {
 		tmp = place;
 
 	$('.l', place).each(function() {
-		if ($(this).hasClass('lp')) {
-			$(this).attr( {
-				'placeholder': langVal($(this).attr('lp'))
+		var el = $(this);
+	
+		if (el.hasClass('lp')) {
+			el.attr( {
+				'placeholder': langVal(el.attr('lp'))
 			} );
 		}
 
-		if ($(this).hasClass('lv')) {
-			$(this).html( langVal($(this).attr('lv')) )
+		if (el.hasClass('lv')) {
+			el.html( langVal(el.attr('lv')) )
 		}
 
-		if ($(this).hasClass('lt')) {
-			$(this).attr( {
-				'title': langVal($(this).attr('lt'))
+		if (el.hasClass('lt')) {
+			el.attr( {
+				'title': langVal(el.attr('lt'))
 			} );
 		}
 	});

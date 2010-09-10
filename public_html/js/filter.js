@@ -6,14 +6,18 @@ function handleFilter() {
 	$settings.selcats  = [];
 	
 	$('li', '#sites').each( function() {
-		if ($(this).hasClass('checked')) {
-			$settings.addSite($(this).attr('site'));
+		var el = $(this);
+	
+		if (el.hasClass('checked')) {
+			$settings.addSite(el.attr('site'));
 		}
 	} );
 
 	$('li', '#categories').each( function() {
-		if ($(this).hasClass('checked')) {
-			$settings.addCat($(this).attr('cat'));
+		var el = $(this);
+	
+		if (el.hasClass('checked')) {
+			$settings.addCat(el.attr('cat'));
 		}
 	} );
 	

@@ -12,21 +12,20 @@ function localize(place) {
 
 	$('.l', place).each(function() {
 		var el = $(this);
+		
+		var tmp = el.attr('lp');
+		if (tmp !== undefined) {
+			el.attr('placeholder': langVal(tmp));
+		}
 	
-		if (el.hasClass('lp')) {
-			el.attr( {
-				'placeholder': langVal(el.attr('lp'))
-			} );
+		tmp = el.attr('lv');
+		if (tmp !== undefined) {
+			el.html(langVal(tmp));
 		}
-
-		if (el.hasClass('lv')) {
-			el.html( langVal(el.attr('lv')) )
-		}
-
-		if (el.hasClass('lt')) {
-			el.attr( {
-				'title': langVal(el.attr('lt'))
-			} );
+		
+		tmp = el.attr('lt');
+		if (tmp !== undefined) {
+			el.attr('title': langVal(tmp));
 		}
 	});
 }

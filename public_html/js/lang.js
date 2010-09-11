@@ -19,9 +19,28 @@ function checkTimeVal(i) {
  * @return {string}
  */
 function humanizedTime(stamp) {
-	var curdate = new Date();
+	/** @const **/ var one_day = 1000 * 60 * 60 * 24;
 
-	return 'вчера';
+	var curdate = new Date();
+	var tspan = curdate.getTimezoneOffset() + 240;
+
+	if (tspan != 0) {
+		stamp = new Date(stamp + tspan * 1000);
+	}
+	
+	var timestr = stamp.toLocaleTimeString();
+	var datestr = stamp.toLocaleDateString();
+	
+	var dtsp = Math.round(Math.abs(curdate.getTime() - stamp.getTime()) / one_day);
+	
+	if (dtsp == 1) {
+		datestr = langVal('y');
+	} else 
+	if (dtsp == 0) {
+		datestr = '';
+	}
+
+	return datestr + (datestr != '' ? ', ' : '') + timestr;
 }
 
 /**

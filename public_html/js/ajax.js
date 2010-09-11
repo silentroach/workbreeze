@@ -1,10 +1,14 @@
 /** @type {Boolean} **/ var updating = false;
 
-$.up = function(settings) {
+/**
+ * Ajax /up caller
+ * @param {Object} s Settings
+ */
+$.up = function(s) {
 	if (updating) {
 		// see ya next time
 		setTimeout(function() {
-			$.up(settings);
+			$.up(s);
 		}, 30000)
 		
 		return;
@@ -15,18 +19,18 @@ $.up = function(settings) {
 	$.ajax({
 		url: '/up',
 		type: 'POST',
-		data: settings.data,
+		data: s.data,
 		dataType: 'json',
 		cache: false,
 		success: function(data) {
 			updating = false;
 		
-			if (undefined !== settings.success) {
-				settings.success(data);
+			if (s.success) {
+				s.success(data);
 			}
 			
-			if (undefined !== settings.ping) {
-				settings.ping();
+			if (s.ping) {
+				s.ping();
 			}
 		},
 		error: function(request, status, error) {
@@ -36,13 +40,13 @@ $.up = function(settings) {
 			console.error(request.statusText, error);
 /* </debug> */
 			
-			if (undefined !== settings.error) {
-				settings.error();
+			if (s.error) {
+				s.error();
 			}
 			
-			if (undefined !== settings.ping) {
-				settings.ping();
+			if (s.ping) {
+				s.ping();
 			}
 		}
 	});
-}
+};

@@ -18,7 +18,7 @@ interface IParser {
 
 class Parser {
 
-	const Agent = 'workbreeze crawler';
+	const Agent = 'Mozilla/5.0 (compatible; WorkbreezeCrawler/1.0; +http://workbreeze.com)';
 	
 	private $db;
 

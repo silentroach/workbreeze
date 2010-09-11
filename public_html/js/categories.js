@@ -5,10 +5,10 @@
  * @return {number} Categories object version
  */
 function getCatsVersion() {
-	var cver = getLocalStorageItemVersion(options.elementCats);
+	var cver = storage.getVersion(options.elementCats);
 	
 	if (cver > 0) {
-		var tmp = getLocalStorageItem(options.elementCats);
+		var tmp = storage.get(options.elementCats);
 
 		cats = tmp[1];
 	}
@@ -33,7 +33,7 @@ function loadCats(val) {
 		cats[item[0]] = item; 
 	}
 	
-	addLocalStorageItem(options.elementCats, val['v'], cats);
+	storage.set(options.elementCats, cats, val['v']);
 }
 
 /**
@@ -41,7 +41,7 @@ function loadCats(val) {
  */
 function initCats() {
 	var cplace = $('#categories');
-	var cempty = $settings.selcats.length == 0;
+	var cempty = settings.selcats.length == 0;
 	
 	for (var i in cats) {
 		var cat = cats[i];
@@ -62,13 +62,13 @@ function initCats() {
 
                 if (
                         cempty
-                        || $settings.selcats.indexOf(i) >= 0
+                        || settings.selcats.indexOf(i) >= 0
                 ) {
                         li.addClass('checked');
                 }
 
                 if (cempty) {
-                        $settings.addCat(i);
+                        settings.addCat(i);
                 }
 
 		li.appendTo(cplace);

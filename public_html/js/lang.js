@@ -1,6 +1,30 @@
 /** @type {Array} **/ var lang = [];
 
 /**
+ * Add leading zero to val
+ * @param {!number} i Number to check
+ * @return {string}
+ */
+function checkTimeVal(i) {
+	if (i < 10) {
+		return "0" + i;
+	} else {
+		return i.toString();
+	}
+}
+
+/**
+ * Get a humanized label for time
+ * @param {Date} stamp Job unix timestamp
+ * @return {string}
+ */
+function humanizedTime(stamp) {
+	var curdate = new Date();
+
+	return 'вчера';
+}
+
+/**
  * Localize items on the page
  * @param {JQuery} place Place to localize
  */
@@ -32,10 +56,10 @@ function localize(place) {
  * @return {number} Language object version
  */
 function getLangVersion() {
-	var lver = getLocalStorageItemVersion(options.elementLang);
+	var lver = storage.getVersion(options.elementLang);
 	
 	if (lver > 0) {
-		var tmp = getLocalStorageItem(options.elementLang);
+		var tmp = storage.get(options.elementLang);
 		
 		lang = tmp[1];
 	}
@@ -62,5 +86,5 @@ function langVal(item) {
 function loadLang(val) {
 	lang = val['vl'];
 	
-	addLocalStorageItem(options.elementLang, val['v'], lang);
+	storage.set(options.elementLang, lang, val['v']);
 }

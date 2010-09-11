@@ -4,9 +4,10 @@
 var queueTimer;
 var newTimer;
 var filterTimer;
-var updating = false;
-var updatingBottom = false;
-var helpVisible = false;
+
+/** @type {Boolean} **/ var updatingBottom = false;
+/** @type {Boolean} **/ var helpVisible = false;
+/** @type {number} **/  var lastBottom = 0;
 
 var streamAutoPause = false;
 
@@ -187,10 +188,7 @@ function addJob(job) {
 	
 	var stmp = new Date(abstemp * 1000);
 	
-	$('li.time', jobEl).html(
-		checkTimeVal(stmp.getHours()) + ':' +
-		checkTimeVal(stmp.getMinutes())
-	);
+	$('li.time', jobEl).html(humanizedTime(stmp));
 
 	var tmpDesc = job.title + ' ' + job.desc;
 	tmpDesc = tmpDesc.replace(/&(lt|gt);/g, function(strMatch, p1) {
@@ -268,11 +266,17 @@ function streamPlay() {
 }
 
 function updateBottom() {
+	var firstStamp = $('ul:last', places.placeJob).attr('stamp');
+	
+	if (lastBottom == firstStamp) {
+		return;
+	} else {
+		lastBottom = firstStamp;
+	}
+
 	updatingBottom = true;
 
 	dropNewTimer();
-
-	var firstStamp = $('ul:last', places.placeJob).attr('stamp');
 
 /* <debug> */
 	console.info('update less than ' + firstStamp);
@@ -284,6 +288,10 @@ function updateBottom() {
 	$.up({
 		data: adata,
 		success: function(data) {
+			if (null === data) {
+				return;
+			}
+			
 			if ('j' in data) {
 /* <debug> */
 				console.info('New jobs bottom pack: ' + data['j'].length);
@@ -305,12 +313,8 @@ function init() {
 	places.placeJob    = $('#jobs');
 	places.keyword     = $('#keyword');
 
-	finit();
-	$settings = new settings();
-	$settings.init();
-
-	if ($settings.keywords.length != 0) {
-		places.keyword.val($settings.keywords.join(', '));
+	if (settings.keywords.length != 0) {
+		places.keyword.val(settings.keywords.join(', '));
 	}
 	
 	var adata = {};
@@ -417,7 +421,7 @@ function init() {
 				filterTimer = setTimeout(handleFilter, 2000);
 			}
 		});
-}
+};
 
 $( function() {
 	init();

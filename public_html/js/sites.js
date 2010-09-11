@@ -5,10 +5,10 @@
  * @return {number} Site object version
  */
 function getSitesVersion() {
-	var sver = getLocalStorageItemVersion(options.elementSites);
+	var sver = storage.getVersion(options.elementSites);
 	
 	if (sver > 0) {
-		var tmp = getLocalStorageItem(options.elementSites);
+		var tmp = storage.get(options.elementSites);
 
 		sites = tmp[1];
 	}
@@ -35,7 +35,7 @@ function loadSites(val) {
 		sites[item[0]] = item;
 	}
 	
-	addLocalStorageItem(options.elementSites, val['v'], sites);
+	storage.set(options.elementSites, sites, val['v']);
 }
 
 /**
@@ -43,7 +43,7 @@ function loadSites(val) {
  */
 function initSites() {
 	var splace = $('#sites');
-	var sempty = $settings.selsites.length == 0;
+	var sempty = settings.selsites.length == 0;
 
 	for (var i in sites) {
 		var site = sites[i];
@@ -66,13 +66,13 @@ function initSites() {
 
 		if (
 			sempty
-			|| $settings.selsites.indexOf(site[0]) >= 0
+			|| settings.selsites.indexOf(site[0]) >= 0
 		) {
 			li.addClass('checked');
 		}
 
 		if (sempty) {
-			$settings.addSite(site[0]);
+			settings.addSite(site[0]);
 		}
 		
 		li.appendTo(splace);

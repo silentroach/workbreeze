@@ -1,15 +1,13 @@
-var $settings;
-
 function handleFilter() {
 	var tmp = $('#keyword').val().trim();
-	$settings.selsites = [];
-	$settings.selcats  = [];
+	settings.selsites = [];
+	settings.selcats  = [];
 	
 	$('li', '#sites').each( function() {
 		var el = $(this);
 	
 		if (el.hasClass('checked')) {
-			$settings.addSite(el.attr('site'));
+			settings.addSite(el.attr('site'));
 		}
 	} );
 
@@ -17,26 +15,26 @@ function handleFilter() {
 		var el = $(this);
 	
 		if (el.hasClass('checked')) {
-			$settings.addCat(el.attr('cat'));
+			settings.addCat(el.attr('cat'));
 		}
 	} );
 	
-	$settings.keywords = [];
+	settings.keywords = [];
 
 	if ('' != tmp) {
 		keys = tmp.split(',');
 
 		for (var i in keys) {
-			var tmp = keys[i].trim();
-			if ('' != tmp) {
-				$settings.addKeyword(tmp);
+			var tmpk = keys[i].trim();
+			if ('' != tmpk) {
+				settings.addKeyword(tmpk);
 			}
 		}
 	}
 	
 	if (
-		0 == $settings.selsites.length
-		|| 0 == $settings.selcats.length
+		0 == settings.selsites.length
+		|| 0 == settings.selcats.length
 	) {
 		streamAutoPause = true;
 		streamPause();
@@ -44,14 +42,14 @@ function handleFilter() {
 		streamPlay();
 	}
 
-	$settings.save();
+	settings.save();
 
 /* <debug> */
 	console.group('new filter');
-	console.log('sites', $settings.selsites);
-	console.log('cats', $settings.selcats);
-	if (0 < $settings.keywords.length) 
-		console.log('keys', $settings.keywords);
+	console.log('sites', settings.selsites);
+	console.log('cats', settings.selcats);
+	if (0 < settings.keywords.length) 
+		console.log('keys', settings.keywords);
 	console.groupEnd();
 /* </debug> */
 	
@@ -99,8 +97,8 @@ function jobUnselect(element) {
  */
 function checkJobForFilter(element) {
 	if (
-		0 == $settings.selsites.length
-		|| 0 == $settings.selcats.length
+		0 == settings.selsites.length
+		|| 0 == settings.selcats.length
 	) {
 		jobSelect(element);
 		return;
@@ -108,7 +106,7 @@ function checkJobForFilter(element) {
 
 	var str = $('li.k', element).html();
 	
-	var wrong = $settings.selsites.indexOf(element.attr('site')) < 0;
+	var wrong = settings.selsites.indexOf(element.attr('site')) < 0;
 	
 	if (!wrong) {
 		var cts = element.attr('cats').split(',');
@@ -116,7 +114,7 @@ function checkJobForFilter(element) {
 		var cwrong = true;
 	
 		for (var i = 0; i < cts.length; i++) {
-			if ($settings.selcats.indexOf(cts[i]) >= 0) {
+			if (settings.selcats.indexOf(cts[i]) >= 0) {
 				cwrong = false;
 				break;
 			}
@@ -129,12 +127,12 @@ function checkJobForFilter(element) {
 
 	if (
 		!wrong
-		&& 0 != $settings.keywords.length
+		&& 0 != settings.keywords.length
 	) {
 		wrong = true;
 	
-		for (var i in $settings.keywords) {
-			if (str.indexOf($settings.keywords[i].toLowerCase()) >= 0) {
+		for (var i in settings.keywords) {
+			if (str.indexOf(settings.keywords[i].toLowerCase()) >= 0) {
 				wrong = false;
 				break;
 			}

@@ -2,7 +2,7 @@
  * Settings
  * @constructor
  */
-function settings() {
+function Settings() {
 	/**
 	 * Settings storage name
 	 * @type {string}
@@ -41,24 +41,12 @@ function settings() {
 
 	this.init = function() {
 		this.load();
-	}
+	};
 
 	this.load = function() {
-		if (!is_ls) {
-			return;
-		}
+		var obj = storage.get(this.lsname);
 
-		var tmp = localStorage.getItem(this.lsname);
-		if (
-			null === tmp
-			|| '' == tmp
-		) {
-			return;
-		}
-
-		try {
-			var obj = JSON.parse(tmp);
-		} catch (err) {
+		if (!obj) {
 			return;
 		}
 
@@ -73,30 +61,29 @@ function settings() {
 		if (this.pkeys in obj) {
 			this.keywords = obj[this.pkeys];
 		}
-	}
+	};
 
 	this.save = function() {
-		if (!is_ls) {
-			return;
-		}
-
 		var obj = {};
 		obj[this.psites] = this.selsites;
 		obj[this.pcats]  = this.selcats;
 		obj[this.pkeys]  = this.keywords;
 
-		localStorage.setItem(this.lsname, JSON.stringify(obj));
-	}
+		storage.set(this.lsname, obj);
+	};
 
 	this.addSite = function(site) {
 		this.selsites.push(site);
-	}
+	};
 
 	this.addCat = function(cat) {
 		this.selcats.push(cat);
-	}
+	};
 
 	this.addKeyword = function(keyword) {
 		this.keywords.push(keyword);
-	}
-}
+	};
+};
+
+var settings = new Settings();
+settings.init();

@@ -1,80 +1,79 @@
-var is_ls = false;
-
-/** @type {Array} **/ var ls_items = [];
-
-function finit() {
-	is_ls = ('undefined' != typeof(localStorage));
-
 /* <debug> */
-	if (is_ls) {
-		console.info('local storage enabled');
-	} else {
-		console.warn('local storage not available');
-	}
+if ('undefined' != typeof(localStorage)) {
+	console.info('local storage enabled');
+} else {
+	console.warn('local storage not available');
+}
 /* </debug> */
-}
+
+var workbreeze = workbreeze || [];
 
 /**
- * Check leading zero in single char int
- * @param {!number} i Number
- * @return {string}
+ * Storage object
+ * @constructor
  */
-function checkTimeVal(i) {
-        if (i < 10) {
-                i = "0" + i;
-        }
-
-        return i;
-}
-
-/**
- * Get storage item version
- * @param {!string} itemName Name of localStorage object
- * @return {number}
- */
-function getLocalStorageItemVersion(itemName) {
-	var tmp = getLocalStorageItem(itemName);
-	
-	if (
-		!tmp
-		|| tmp.length != 2
-	)
-		return 0;
-	
-	ls_items[itemName] = tmp;
-	
-	return Math.floor(tmp[0]);
-}
+workbreeze.storage = function() {
+	/**
+	 * Is Local Storage enabled in this browser?
+	 * @type {Boolean}
+	 * @private
+	 */
+	this.enabled = ('localStorage' in window) && window['localStorage'] !== null;
+};
 
 /**
- * Get storage item
- * @param {!string} itemName Name of localStorage object
- * @return {Object|Boolean}
+ * Get object from storage
+ * @param {!string} itemName Storage item name
+ * @return {(Object|boolean)}
  */
-function getLocalStorageItem(itemName, skipcache) {
-	if (!is_ls)
+workbreeze.storage.prototype.get = function(itemName) {
+	if (!this.enabled)
 		return false;
 
-	if (!(itemName in ls_items)) {
-		try {
-			ls_items[itemName] = JSON.parse(localStorage.getItem(itemName));
-		} catch (err) {
-			ls_items[itemName] = false;
-		}
+	try {
+		return JSON.parse(localStorage.getItem(itemName));
+	} catch (err) {
+		return false;
 	}
-	
-	return ls_items[itemName];
-}
+};
 
 /**
- * Add item to localStorage
- * @param {!string} itemName Name of localStorage object
- * @param {!number} version Version of object
- * @param {!Object} object Object to store
+ * Store object
+ * @param {!string} itemName Storage item name
+ * @param {(Object|Array)} object Object to store
+ * @param {?number} version Version of object
  */
-function addLocalStorageItem(itemName, version, object) {
-	if (!is_ls)
+workbreeze.storage.prototype.set = function(itemName, object, version) {
+	if (!this.enabled)
 		return;
-		
-	localStorage.setItem(itemName, JSON.stringify([version, object]));
-}
+
+	var str = JSON.stringify((undefined === version ? object : [version, object]));
+
+	localStorage.setItem(itemName, str);	
+};
+
+/**
+ * Get version of storage item
+ * @param {!string} itemName Storage item name
+ * @return {number}
+ */
+workbreeze.storage.prototype.getVersion = function(itemName) {
+	if (!this.enabled)
+		return 0;
+	
+	var item = this.get(itemName);
+
+	if (
+		!item
+		|| item.length != 2
+	) {
+		return 0;
+	}
+
+	return Math.floor(item[0]);
+};
+
+/**
+ * @type {workbreeze.storage}
+ */
+var storage = new workbreeze.storage();

@@ -34,6 +34,61 @@ class Parser_freelancejob_ru extends Parser implements IParser {
 		return iconv('cp1251', 'utf-8', $data);
 	}
 	
+	public function parseJobTitle($content) {
+		if (
+			!preg_match('/<h1>(.*?)<\/h1>/', $content, $matches)
+			|| 2 != count($matches)
+		) {
+			return false;
+		}
+
+		return $matches[1];
+	}
+	
+	public function parseJobDescription($content) {
+		if (
+			!preg_match('/<h1>(.*?)<\/h1>/', $content, $matches)
+			|| 2 != count($matches)
+		) {
+			return false;
+		}
+		
+		$i = strpos($content, $matches[0]);
+		if (false === $i) {
+			// something is impossible wrong O.o
+			return false;
+		}
+		
+		$desc = mb_substr($content, $i, mb_strlen($content) - $i);
+		
+		$i = strpos($desc, '</table>');
+		if (false === $i) {
+			return false;
+		}
+		
+		$desc = mb_substr($desc, 0, $i);
+		
+		if (
+			!preg_match('/<td>(.*?)<\/td>/is', $desc, $matches)
+			|| 2 != count($matches)
+		) {
+			return false;
+		}
+
+		$desc = $matches[1];
+		$i = mb_strpos($desc, '<br/><br/><br/>', 0, 'UTF-8');
+		
+		if (false === $i) {
+			return false;
+		}
+		
+		$desc = mb_substr($desc, 1, $i - 1, 'UTF-8');
+		
+		$desc = str_replace(array("\r", "\n"), '', $desc);
+
+		return $desc;	
+	}
+	
 	public function processJobList() {
 		$res = $this->getRequest('http://freelancejob.ru/');
 
@@ -173,22 +228,3 @@ class Parser_freelancejob_ru extends Parser implements IParser {
 	}
 	
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

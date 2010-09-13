@@ -14,6 +14,9 @@ interface IParser {
 
 	public function processJobList();
 	public function processJob($id, $url);
+	
+//	public function parseJobTitle($text);
+//	public function parseJobDescription($text);
 }
 
 class Parser {
@@ -147,6 +150,10 @@ EOF;
 	
 	protected function afterRequest($data) {
 		return $data;
+	}
+	
+	public function publicAfterRequest($data) {
+		return $this->afterRequest($data);
 	}
 
 	protected function getRequest($url) {

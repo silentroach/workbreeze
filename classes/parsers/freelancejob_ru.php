@@ -15,7 +15,7 @@ class Parser_freelancejob_ru extends Parser implements IParser {
 	}
 	
 	public function getParserName() {
-		return 'Freelance Job parser 0.1';
+		return 'Freelance Job parser 1.0';
 	}
 	
 	public function getUrl() {

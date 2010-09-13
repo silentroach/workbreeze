@@ -75,6 +75,8 @@ class Job {
 	
 	private $description;
 	private $description_short = '';
+	
+	private $money = array();
 
 	public function __construct($db) {
 		$this->db = $db;
@@ -117,6 +119,10 @@ class Job {
 			$arr['short'] = $this->getShortDescription();
 		}
 		
+		if (count($this->money)) {
+			$arr['money'] = $this->getMoney();
+		}
+		
 		return $this->db->jobs->insert($arr);
 	}
 	
@@ -136,6 +142,14 @@ class Job {
 	public function setId($id) {
 		$this->id = $id;
 		return $this;
+	}
+	
+	public function setMoney($val) {
+		$this->money = $val;
+	}
+	
+	public function getMoney() {
+		return $this->money;
 	}
 	
 	public function setCategoriesByText($text) {

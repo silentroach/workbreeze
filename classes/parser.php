@@ -13,10 +13,11 @@ interface IParser {
 	public function isProxyfied();
 
 	public function processJobList();
-//	public function processJob($id, $url);
 	
-//	public function parseJobTitle($text);
-//	public function parseJobDescription($text);
+	public function parseJobTitle($content);
+	public function parseJobDescription($content);
+	public function parseJobCategories($content);
+	public function parseJobMoney($content);
 }
 
 class Parser {
@@ -39,6 +40,56 @@ class Parser {
 	
 	public function getQueuedCount() {
 		return $this->queuedCount;
+	}
+	
+	public function processJob($id, $url) {
+		$content = $this->getRequest($url);
+		
+		if (
+			!$content
+			|| 404 == $content
+		) {
+			return true;
+		}
+		
+		$job = $this->newJob();
+		
+		$job->setId($id);
+		$job->setUrl($url);
+		
+		$title = $this->parseJobTitle($content);
+		if (!$title) {
+			$this->log(array(
+				'url' => $url,
+				'info' => 'can\'t parse title'
+			));
+		
+			return true;
+		}
+			
+		$job->setTitle($title);
+		
+		$desc = $this->parseJobDescription($content);
+		if (!$desc) {
+			$this->log(array(
+				'url' => $url,
+				'info' => 'can\'t parse description'
+			));
+		
+			return true;
+		}
+			
+		$job->setDescription($desc);
+		
+		$cats = $this->parseJobCategories($content);
+		if (false !== $cats)
+			$job->setCategoriesByText($cats);
+			
+		$money = $this->parseJobMoney($content);
+		if (false !== $money)
+			$job->setMoney($money);
+			
+		return $this->addJob($job);
 	}
 	
 	protected function log($info) {
@@ -97,11 +148,33 @@ class Parser {
 		}
 	
 		$ga = file_get_contents(PATH_OTHER . 'ga.js');
+		
+		$title = $job->getTitle();
+		
+		$money = $job->getMoney();
+		
+		if (count($money)) {
+			switch ($money[1]) {
+				case Job::CUR_DOLLAR:
+					$currency = '$%d';
+					break;
+				case Job::CUR_EURO;
+					$currency = '&euro;%d';
+					break;
+				case Job::CUR_RUBLE:
+					$currency = '%d руб.';
+					break;
+			}
+			
+			if (isset($currency)) {
+				$title .= ' [ ' . sprintf($currency, $money[0]) . ' ]';
+			}
+		}
 	
 		$content = <<<EOF
 <!DOCTYPE html>
 <html>
-        <title>WorkBreeze - {$job->getTitle()}</title>
+        <title>WorkBreeze - {$title}</title>
 
         <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 
@@ -110,7 +183,7 @@ class Parser {
 
 <div id="logo"><a href="/">WorkBreeze</a></div>
 
-<p class="title">{$job->getTitle()}</p>
+<p class="title">{$title}</p>
 
 {$job->getHTMLDescription()}
 <br /><br />

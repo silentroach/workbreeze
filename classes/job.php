@@ -226,19 +226,6 @@ class Job {
 	public function setDescription($text = '') {
 		$text = trim($text);
 		
-		// free-lance.ru out script
-		if (preg_match_all('/a href="\/a.php\?href=(.*?)"/', $text, $matches)) {
-			array_shift($matches);
-			
-			$urls = array_shift($matches);
-			
-			foreach($urls as $url) {
-				$urlnew = urldecode($url);
-
-				$text = str_replace('/a.php?href=' . $url, $urlnew, $text);
-			}
-		}
-		
 		// all other links
 		if (preg_match_all('/<a(.*?)href="(.*?)"(.*?)>(.*?)<\/a>/', $text, $matches)) {
 			$urls = $matches[0];

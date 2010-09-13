@@ -15,7 +15,7 @@ class Parser_freelancer_com extends Parser implements IParser {
 	}
 	
 	public function getParserName() {
-		return 'Freelancer parser 0.1';
+		return 'Freelancer parser 1.0';
 	}
 	
 	public function getUrl() {
@@ -60,99 +60,56 @@ class Parser_freelancer_com extends Parser implements IParser {
 		}
 	}
 	
-	public function processJob($id, $url) {
-		$res = $this->getRequest($url);
-
-		if (!$res)
-			return false;
-			
-		if (404 === $res)
-			// drop queued jobs that are not found
-			return true;
-	
-/*
-<p>
-	<a href="../../projects/PHP-Website-Design/PHP-MYSQL-Database-Coder-Designer.html">
-		<strong>
-			PHP/MYSQL/Database Coder Designer Web Portal Project
-		</strong>
-	</a> 
-	is project number 774579 <br />
-	posted at <a href="../..">Freelancer.com</a>. 
-	<a href="http://www.freelancer.com/buyers/create.php">Click here</a> 
-	to post your own project.
-</p> 
-*/
+	public function parseJobTitle($content) {
 		if (
-			!preg_match('/<h2(.*?)>(.*?)<\/h2>/is', $res, $matches)
-			|| 3 != count($matches)
+			!preg_match('/<h2(.*?)>(.*?)<\/h2>/is', $content, $matches)
+			&& 3 != count($matches)
 		) {
-			$this->log(array(
-				'url'  => $url, 
-				'msg'  => 'can\'t extract title' 
-			));
-			return true;
+			return false;
 		}
 		
-		$title = trim(str_replace('&nbsp;', '', strip_tags(array_pop($matches))));
-
-		if ('' === $title) {
-			$this->log(array(
-				'url'  => $url, 
-				'msg'  => 'can\'t extract title' 
-			));
-			return true;
-		}
+		$title = array_pop($matches);
 		
-		$i = strpos($res, '<h3>Description</h3>');
+		$title = strip_tags($title);
+		
+		return str_replace('&nbsp;', '', $title);
+	}
+	
+	public function parseJobDescription($content) {
+		$i = mb_strpos($content, '<h3>Description</h3>', 0, 'UTF-8');
 		if (false === $i) {
-			$this->log(array(
-				'url'  => $url, 
-				'msg'  => 'can\'t found description (h3 begin)' 
-			));
-			return true;
+			return false;
 		}
 		
-		$desc = mb_substr($res, $i, mb_strlen($res) - $i);
+		$desc = mb_substr($content, $i, mb_strlen($content, 'UTF-8') - $i, 'UTF-8');
 
-		$i = strpos($desc, '<td');
+		$i = mb_strpos($desc, '<td', 0, 'UTF-8');
 		if (false === $i) {
-			$this->log(array(
-				'url'  => $url, 
-				'msg'  => 'can\'t found description (td after h3)' 
-			));
-			return true;
+			return false;
 		}
 		
-		$desc = mb_substr($desc, $i + 3, mb_strlen($desc) - $i - 3);
+		$desc = mb_substr($desc, $i + 3, mb_strlen($desc, 'UTF-8') - $i - 3, 'UTF-8');
 
-		$i = strpos($desc, '>');
+		$i = mb_strpos($desc, '>', 0, 'UTF-8');
 		if (false === $i) {
-			$this->log(array(
-				'url' => $url,
-				'msg' => 'can\'t found description (td end after h3)'
-			));
-			return true;
+			return false;
 		}
 
-		$desc = mb_substr($desc, $i + 1, mb_strlen($desc) - $i - 1);
+		$desc = mb_substr($desc, $i + 1, mb_strlen($desc, 'UTF-8') - $i - 1, 'UTF-8');
 		
-		$i = strpos($desc, '</td>');
+		$i = mb_strpos($desc, '</td>', 0, 'UTF-8');
 		if (false === $i) {
-			$this->log(array(
-				'url'  => $url, 
-				'msg'  => 'can\'t found description' 
-			));
-			return true;
+			return false;
 		}
 		
-		$desc = mb_substr($desc, 0, $i);
-		
-		// categories
+		return mb_substr($desc, 0, $i, 'UTF-8');
+	}
+	
+	public function parseJobCategories($content) {
 		$cats = '';
 		
 		if (
-			preg_match_all('/projects\/by-job\/(.*?).html/', $res, $matches)
+			preg_match_all('/projects\/by-job\/(.*?).html/siu', $content, $matches)
 			&& 2 == count($matches)
 		) {
 			array_shift($matches);
@@ -164,39 +121,42 @@ class Parser_freelancer_com extends Parser implements IParser {
 			}
 		}
 		
-		$job = $this->newJob();
-		$job->
-			setId($id)->
-			setUrl($url)->
-			setTitle($title)->
-			setDescription($desc);
-		
-		if ('' !== $cats) {
-			$job->setCategoriesByText($cats);
+		if ('' != $cats) {
+			return $cats;
+		} else {
+			return false;
 		}
-				
-		$this->addJob($job);
-
-		return true;
 	}
 	
+	public function parseJobMoney($content) {
+		if (
+			preg_match('/Budget: <\/strong>(.*?)<\/p>/siu', $content, $matches)
+			&& 2 == count($matches)
+		) {
+			$val = array_pop($matches);
+			
+			if (false !== mb_strpos($val, '$', 0, 'UTF-8')) {
+				$currency = Job::CUR_DOLLAR;
+				
+				$val = trim(preg_replace('/\$/siu', '', $val));
+				
+				$vals = explode('-', $val);
+				
+				$val = array_pop($vals);
+			}
+			
+			if (
+				isset($currency)
+				&& $val != '0'
+			) {
+				return array(
+					$val,
+					$currency
+				);
+			}
+		}
+		
+		return false;
+	}
+		
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

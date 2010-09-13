@@ -13,7 +13,7 @@ interface IParser {
 	public function isProxyfied();
 
 	public function processJobList();
-	public function processJob($id, $url);
+//	public function processJob($id, $url);
 	
 //	public function parseJobTitle($text);
 //	public function parseJobDescription($text);

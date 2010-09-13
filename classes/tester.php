@@ -7,6 +7,8 @@ class Tester {
 	private $db;
 	private $job;
 	
+	private $rowcnt;
+	
 	public function __construct($db) {
 		$this->job = new Job($db);
 		$this->db = $db;
@@ -34,7 +36,7 @@ class Tester {
 	private function printInfo($filename) {
 		$p = pathinfo($filename);
 
-		echo str_pad($p['filename'], 60, ' ');
+		echo str_pad($p['filename'], 25, ' ');
 	}
 	
 	private function testParserFile($parser, $filename) {
@@ -55,14 +57,49 @@ class Tester {
 			$this->error($desc);
 			return false;
 		}
-
+		
+		$cats_out = trim(file_get_contents(str_replace('.i', '.oc', $filename)));
+		$cats = trim($parser->parseJobCategories($content));
+		
+		if ($cats != $cats_out) {
+			$this->error($cats);
+			return false;
+		}
+		
+		$money = $parser->parseJobMoney($content);
+		
+		if ($money) {
+			switch ($money[1]) {
+				case Job::CUR_RUBLE:
+					$cur = 'руб.';
+					break;
+				case Job::CUR_DOLLAR:
+					$cur = '$';
+					break;
+				case Job::CUR_EURO:
+					$cur = 'euro';
+					break;
+			}
+			
+			$money = $money[0] . ' ' . $cur;
+			
+			$money_out = trim(file_get_contents(str_replace('.i', '.om', $filename)));
+			
+			if ($money != $money_out) {
+				$this->error($money);
+				return false;
+			}
+		} else {
+			if (file_exists(str_replace('.i', '.om', $filename))) {
+				$this->error('money exists in test file');
+			}
+		}
+		
 		$this->ok();
 		return true;
 	}
 
 	private function testParsers($folder) {
-		echo "\nTesting parsers...\n";
-
 		$s = $this->db->sites->find();
 
 		foreach($s as $site) {
@@ -77,8 +114,8 @@ class Tester {
 			
 			if (!file_exists($fld))
 				continue;
-			
-			echo $fld . "...\n";
+				
+			$this->begin('Testing parser [' . $parser->getParserName() . ']');
 			
 			$in = glob($fld . '*.i');
 			
@@ -92,16 +129,35 @@ class Tester {
 		}
 	}
 	
+	private function printSome($text) {	
+		$this->rowcnt++;
+		
+		echo $text;
+		
+		if ($this->rowcnt >= 3) {
+			echo "\n";
+			$this->rowcnt = 0;
+		} else {
+			echo '   ';
+		}
+	}
+
 	private function ok() {
-		echo "[ OK ]\n";
+		$this->printSome('[ OK ]');
 	}
 	
 	private function error($res) {
-		echo "[ ERROR ]\n" . $res . "\n";
+		$this->printSome("[ ERROR ]\n" . $res);
+	}
+
+	private function begin($text) {
+		echo "\n" . $text . "...\n";
+		
+		$this->rowcnt = 0;
 	}
 	
 	private function testCompact($folder) {
-		echo "\nHTML compacter test...\n";
+		$this->begin('HTML compacter test');
 
 		$in = glob($folder . '*.p');
 		
@@ -123,8 +179,11 @@ class Tester {
 	
 	public static function testFolder($db, $folder) {
 		$tester = new Tester($db);
+		
 		$tester->testParsers($folder);
 		$tester->testCompact($folder);
+		
+		echo "\n";
 	}
 
 }

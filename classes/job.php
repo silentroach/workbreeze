@@ -1,6 +1,10 @@
 <?php
 
 class Job {
+	
+	const CUR_RUBLE  = 0;
+	const CUR_DOLLAR = 1;
+	const CUR_EURO   = 2;
 
 	const CAT_OTHER  = 0;
 

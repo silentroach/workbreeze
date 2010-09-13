@@ -188,7 +188,7 @@ class Parser {
 {$job->getHTMLDescription()}
 <br /><br />
 
-<a href="{$job->getUrl()}">&gt; {$this->getSiteName()}</a>
+<a href="{$job->getUrl()}" class="sico sico_{$this->getSiteCode()}">{$this->getSiteName()}</a>
 
 {$ga}
 </body>

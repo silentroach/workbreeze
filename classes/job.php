@@ -283,6 +283,12 @@ class Job {
 
 		$text = str_replace("\r", "\n", $text);
 		$text = str_replace(array(' . ', ' , '), array('. ', ', '), $text);
+		
+		$text = str_replace(array(
+				'…',   '»',       '«'
+			), array(
+				'...', '&raquo;', '&laquo;'
+			), $text);
 	
 		while (false !== strpos($text, "\n\n\n")) {
 			$text = str_replace("\n\n\n", "\n\n", $text);

@@ -15,7 +15,7 @@ class Parser_getacoder_com extends Parser implements IParser {
 	}
 	
 	public function getParserName() {
-		return 'GetACoder parser 0.1';
+		return 'GetACoder parser 1.0';
 	}
 	
 	public function getUrl() {
@@ -56,97 +56,93 @@ class Parser_getacoder_com extends Parser implements IParser {
 		}
 	}
 	
-	public function processJob($id, $url) {
-		$res = $this->getRequest($url);
-		
-		if (!$res)
-			return false;
-			
-		if (404 === $res)
-			// drop queued jobs that are not found
-			return true;
-
-/*
-<b>Description</b></FONT> 
-<hr color="#000000" size="1">	
-	I am in need of a traffic generating script/program that will allow me to test all of my tracking
-	software solutions. I need the script to be able to provide clicks, impressions, unique ip, and 
-	different browsers.  
-</span> 
-*/
+	public function parseJobTitle($content) {
 		if (
-			!preg_match('/Description<\/b><\/FONT>(.*?)>(.*?)<\/span>/is', $res, $matches)
-			|| 3 != count($matches)
-		) {
-			$this->log(array(
-				'url'  => $url, 
-				'msg'  => 'can\'t extract description' 
-			));
-			return true;
-		}
-		
-		$desc = $matches[2];
-		
-		if (
-			!preg_match('/<title>(.*?)<\/title>/is', $res, $matches)
+			!preg_match('/<title>(.*?)<\/title>/siu', $content, $matches)
 			|| 2 != count($matches)
 		) {
-			$this->log(array(
-				'url' => $url,
-				'msg' => 'can\'t extract description'
-			));
-			return true;
+			return false;
 		}
 		
 		$title = $matches[1];
 		
 		if (
-			!preg_match('/\((.*?)\)/is', $title, $matches)
+			!preg_match('/\((.*?)\)/siu', $title, $matches)
 			|| 2 != count($matches)
 		) {
-			$this->log(array(
-				'url' => $url,
-				'msg' => 'can\'t extract categories'			
-			));
-			return true;
+			return false;
 		}
 		
 		$title = trim(str_replace($matches[0], '', $title));
-		$cats = $matches[1];		
 		
-		$job = $this->newJob();
-		$job->
-			setId($id)->
-			setUrl($url)->
-			setTitle($title)->
-			setDescription($desc);
-		
-		if ('' !== $cats) {
-			$job->setCategoriesByText($cats);
-		}
-				
-		$this->addJob($job);
-
-		return true;
+		return $title;
 	}
 	
+	public function parseJobDescription($content) {
+		if (
+			!preg_match('/Description<\/b><\/FONT>(.*?)>(.*?)<\/span>/siu', $content, $matches)
+			|| 3 != count($matches)
+		) {
+			return false;
+		}
+		
+		$desc = $matches[2];
+		
+		$i = mb_strpos($desc, '<b>Additional information:</b>', 0, 'UTF-8');
+		if (false !== $i) {
+			$desc = mb_substr($desc, 0, $i, 'UTF-8');
+		}
+		
+		return $desc;
+	}
+	
+	public function parseJobCategories($content) {
+		if (
+			!preg_match('/<title>(.*?)<\/title>/siu', $content, $matches)
+			|| 2 != count($matches)
+		) {
+			return false;
+		}
+		
+		$title = $matches[1];
+		
+		if (
+			!preg_match('/\((.*?)\)/siu', $title, $matches)
+			|| 2 != count($matches)
+		) {
+			return false;
+		}
+		
+		return $matches[1];	
+	}
+	
+	public function parseJobMoney($content) {
+		if (
+			preg_match('/Budget:<\/b>(.*?)<small>(.*?)<\/small>/siu', $content, $matches)
+			&& 3 == count($matches)
+		) {
+			$val = str_replace('&nbsp;', ' ', array_pop($matches));
+
+			if (false !== mb_strpos($val, '$', 0, 'UTF-8')) {
+				$currency = Job::CUR_DOLLAR;
+				
+				$val = trim(preg_replace('/\$/siu', '', $val));
+				
+				$vals = explode('-', $val);
+				
+				$val = floatval(array_pop($vals));
+			}
+			
+			if (
+				isset($currency)
+				&& $val != 0
+			) {
+				return array(
+					$val,
+					$currency
+				);
+			}
+		}
+	}
+		
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

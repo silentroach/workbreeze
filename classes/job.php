@@ -51,7 +51,7 @@ class Job {
 			array('текст', 'рерайтинг', 'text', 'writing', 'статьи', 'обзор', 'реферат', 'диплом', 'posting')
 		),
 		self::CAT_ADVERTISING => array(
-			array('реклам', 'advertising', 'seo', 'раскрутка', 'маркетинг', 'marketing')
+			array('реклам', 'advertising', 'seo', 'раскрутка', 'маркетинг', 'marketing', 'social')
 		),
 		self::CAT_SYSADM      => array(
 			array('admin', 'админ', 'windows', 'linux', 'freebsd', 'unix'),

@@ -28,19 +28,9 @@ function humanizedTime(stamp) {
 		stamp = new Date(stamp + tspan * 1000);
 	}
 	
-	var timestr = stamp.toLocaleTimeString();
-	var datestr = stamp.toLocaleDateString();
+	var timestr = checkTimeVal(stamp.getHours()) + ':' + checkTimeVal(stamp.getMinutes());
 	
-	var dtsp = Math.round(Math.abs(curdate.getTime() - stamp.getTime()) / one_day);
-	
-	if (dtsp == 1) {
-		datestr = langVal('y');
-	} else 
-	if (dtsp == 0) {
-		datestr = '';
-	}
-
-	return datestr + (datestr != '' ? ', ' : '') + timestr;
+	return timestr;
 }
 
 /**

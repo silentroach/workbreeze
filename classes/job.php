@@ -227,7 +227,7 @@ class Job {
 		$text = trim($text);
 		
 		// all other links
-		if (preg_match_all('/<a(.*?)href="(.*?)"(.*?)>(.*?)<\/a>/', $text, $matches)) {
+		if (preg_match_all('/<a(.*?)href="(.*?)"(.*?)>(.*?)<\/a>/siu', $text, $matches)) {
 			$urls = $matches[0];
 			
 			foreach($urls as $key => $url) {
@@ -240,20 +240,20 @@ class Job {
 
 		$text = str_replace('•', '- ', $text);
 		
-		$text = str_replace('&nbsp;', ' ', $text);
+		$text = str_ireplace('&nbsp;', ' ', $text);
 		$text = str_replace("\t", '', $text);
 		
 		while (false !== strpos($text, '  ')) {
 			$text = str_replace('  ', ' ', $text);
 		}
 
-		$text = str_replace(
+		$text = str_ireplace(
 			array('<br />', '<br>', '<br/>'),
 			"\n",
 			$text
 		);
 		
-		$text = str_replace(
+		$text = str_ireplace(
 			array('&nbsp;', '/>' , ' >', '> <', ' </'),
 			array(' '     , ' />', '>' , '><' ,  '</'),
 			$text

@@ -142,12 +142,12 @@ class Parser_freelancer_com extends Parser implements IParser {
 				
 				$vals = explode('-', $val);
 				
-				$val = array_pop($vals);
+				$val = floatval(array_pop($vals));
 			}
 			
 			if (
 				isset($currency)
-				&& $val != '0'
+				&& $val != 0
 			) {
 				return array(
 					$val,

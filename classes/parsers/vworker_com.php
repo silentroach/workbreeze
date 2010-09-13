@@ -15,7 +15,7 @@ class Parser_vworker_com extends Parser implements IParser {
 	}
 	
 	public function getParserName() {
-		return 'VWorker parser 0.1';
+		return 'VWorker parser 1.0';
 	}
 	
 	public function getUrl() {
@@ -60,106 +60,64 @@ class Parser_vworker_com extends Parser implements IParser {
 		}
 	}
 	
-	public function processJob($id, $url) {
-		$res = $this->getRequest($url);
-		
-		if (!$res)
+	public function parseJobTitle($content) {
+		if (
+			!preg_match('/<h1>(.*?)<br>/siu', $content, $matches)
+			|| 2 != count($matches)
+		) {
 			return false;
-			
-		if (404 === $res)
-			// drop queued jobs that are not found
-			return true;
-
-/*
-<div class="KonaBody">
-	The Chordosome is an app that runs in a browser.  JavaScript might be best for it, but you may use
-	the open-source technology of your choice.  (Please specify in your bid which one you choose.)<br /> 
-	<br /> 
-	The Chordosome is a music-themed web app.  It reads,  from a file or a URL, a description of a song, consisting 
-	of lyrics marked up with a description of the accompanying chords.  It counts off the beats, displaying the 
-	current chord and section of lyrics as it goes.  The user can pause and restart, and reposition within the
-	song.<br /> 
-	<br /> 
-	The output of the Chordosome is purely visual; it produces no audio output.   <br /> 
-	<br /> 
-	<br /> 
-</span><br></font> 
-*/
-		if (
-			!preg_match('/<div class="KonaBody">(.*?)<\/span>/is', $res, $matches)
-			|| 2 != count($matches)
-		) {
-			$this->log(array(
-				'url'  => $url, 
-				'msg'  => 'can\'t extract description' 
-			));
-			return true;
-		}
-		
-		$desc = $matches[1];
-		
-		
-		if (
-			!preg_match('/<h1>(.*?)<br>/is', $res, $matches)
-			|| 2 != count($matches)
-		) {
-			$this->log(array(
-				'url' => $url,
-				'msg' => 'can\'t extract title'
-			));
-			return true;
 		}
 				
-		$title = $matches[1];
-		
-		//
-		
-		if (
-			!preg_match('/Categories:(.*?)<font size=1>(.*?)<br>(.*?)<\/font>/is', $res, $matches)
-			|| 4 != count($matches)
-		) {
-			$this->log(array(
-				'url' => $url,
-				'msg' => 'can\'t extract categories'			
-			));
-			return true;
-		}
-		
-		$cats = array_pop($matches);
-		
-		$job = $this->newJob();
-		$job->
-			setId($id)->
-			setUrl($url)->
-			setTitle($title)->
-			setDescription($desc);
-		
-		if ('' !== $cats) {
-			$job->setCategoriesByText($cats);
-		}
-				
-		$this->addJob($job);
-
-		return true;
+		return $matches[1];
 	}
 	
+	public function parseJobDescription($content) {
+		if (
+			!preg_match('/<div class="KonaBody">(.*?)<\/span>/is', $content, $matches)
+			|| 2 != count($matches)
+		) {
+			return false;
+		}
+		
+		return str_replace(array("\r", "\n"), '', $matches[1]);
+	}
+	
+	public function parseJobCategories($content) {
+		if (
+			!preg_match('/Categories:(.*?)<font size=1>(.*?)<br>(.*?)<\/font>/is', $content, $matches)
+			|| 4 != count($matches)
+		) {
+			return false;
+		}
+		
+		return array_pop($matches);
+	}
+	
+	public function parseJobMoney($content) {
+		if (
+			preg_match('/Max Accepted Bid:(.*?)size="1">(.*?)\(<a/siu', $content, $matches)
+			&& 3 == count($matches)
+		) {
+			$val = trim(str_replace('&nbsp;', '', array_pop($matches)));
+			
+			if (false !== mb_strpos($val, '$', 0, 'UTF-8')) {
+				$currency = Job::CUR_DOLLAR;
+				
+				$val = floatval(trim(preg_replace('/\$/siu', '', $val)));
+			}
+			
+			if (
+				isset($currency)
+				&& $val != 0
+			) {
+				return array(
+					$val,
+					$currency
+				);
+			}
+		}
+		
+		return false;
+	}
+		
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -63,7 +63,7 @@ class Parser_freelancer_com extends Parser implements IParser {
 	public function parseJobTitle($content) {
 		if (
 			!preg_match('/<h2(.*?)>(.*?)<\/h2>/is', $content, $matches)
-			&& 3 != count($matches)
+			|| 3 != count($matches)
 		) {
 			return false;
 		}

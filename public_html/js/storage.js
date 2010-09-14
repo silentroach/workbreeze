@@ -19,58 +19,58 @@ workbreeze.storage = function() {
 	 * @private
 	 */
 	this.enabled = ('localStorage' in window) && window['localStorage'] !== null;
-};
-
-/**
- * Get object from storage
- * @param {!string} itemName Storage item name
- * @return {(Object|boolean)}
- */
-workbreeze.storage.prototype.get = function(itemName) {
-	if (!this.enabled)
-		return false;
-
-	try {
-		return JSON.parse(localStorage.getItem(itemName));
-	} catch (err) {
-		return false;
-	}
-};
-
-/**
- * Store object
- * @param {!string} itemName Storage item name
- * @param {(Object|Array)} object Object to store
- * @param {?number} version Version of object
- */
-workbreeze.storage.prototype.set = function(itemName, object, version) {
-	if (!this.enabled)
-		return;
-
-	var str = JSON.stringify((undefined === version ? object : [version, object]));
-
-	localStorage.setItem(itemName, str);	
-};
-
-/**
- * Get version of storage item
- * @param {!string} itemName Storage item name
- * @return {number}
- */
-workbreeze.storage.prototype.getVersion = function(itemName) {
-	if (!this.enabled)
-		return 0;
 	
-	var item = this.get(itemName);
+	/**
+	 * Get object from storage
+	 * @param {!string} itemName Storage item name
+	 * @return {(Object|boolean)}
+	 */
+	this.get = function(itemName) {
+		if (!this.enabled)
+			return false;
 
-	if (
-		!item
-		|| item.length != 2
-	) {
-		return 0;
-	}
+		try {
+			return JSON.parse(localStorage.getItem(itemName));
+		} catch (err) {
+			return false;
+		}
+	};	
+	
+	/**
+	 * Store object
+	 * @param {!string} itemName Storage item name
+	 * @param {(Object|Array)} object Object to store
+	 * @param {?number} version Version of object
+	 */
+	this.set = function(itemName, object, version) {
+		if (!this.enabled)
+			return;
 
-	return Math.floor(item[0]);
+		var str = JSON.stringify((undefined === version ? object : [version, object]));
+
+		localStorage.setItem(itemName, str);	
+	};
+
+	/**
+	 * Get version of storage item
+	 * @param {!string} itemName Storage item name
+	 * @return {number}
+	 */
+	this.getVersion = function(itemName) {
+		if (!this.enabled)
+			return 0;
+		
+		var item = this.get(itemName);
+
+		if (
+			!item
+			|| item.length != 2
+		) {
+			return 0;
+		}
+
+		return Math.floor(item[0]);
+	};	
 };
 
 /**

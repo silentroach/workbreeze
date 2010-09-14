@@ -1,8 +1,10 @@
+var workbreeze = workbreeze || [];
+
 /**
  * Settings
  * @constructor
  */
-function Settings() {
+workbreeze.settings = function() {
 	/**
 	 * Settings storage name
 	 * @type {string}
@@ -72,18 +74,33 @@ function Settings() {
 		storage.set(this.lsname, obj);
 	};
 
+	/**
+	 * Add site to selected
+	 * @param {!number} site Site id
+	 */
 	this.addSite = function(site) {
 		this.selsites.push(site);
 	};
 
+	/**
+	 * Add category to selected
+	 * @param {!number} cat Category id
+	 */	
 	this.addCat = function(cat) {
 		this.selcats.push(cat);
 	};
 
+	/**
+	 * Add keyword to selected
+	 * @param {!string} keyword Keyword
+	 */
 	this.addKeyword = function(keyword) {
 		this.keywords.push(keyword);
 	};
 };
 
-var settings = new Settings();
+/**
+ * @type {workbreeze.settings}
+ */
+var settings = new workbreeze.settings();
 settings.init();

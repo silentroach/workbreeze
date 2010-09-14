@@ -38,8 +38,10 @@ function handleFilter() {
 		0 == settings.selsites.length
 		|| 0 == settings.selcats.length
 	) {
-		streamAutoPause = true;
-		streamPause();
+		if (!paused) {
+			streamAutoPause = true;
+			streamPause();
+		}
 	} else if (streamAutoPause) {
 		streamAutoPause = false;
 		streamPlay();

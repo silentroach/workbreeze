@@ -8,6 +8,7 @@ var filterTimer;
 /** @type {Boolean} **/ var updatingBottom = false;
 /** @type {Boolean} **/ var helpVisible = false;
 /** @type {number} **/  var lastBottom = 0;
+/** @type {Boolean} **/ var paused = false;
 
 /** @type {Array} **/ var queue    = [];
 /** @type {Array} **/ var joblist  = [];
@@ -238,6 +239,8 @@ function streamPause() {
 
 	queue = [];
 	dropNewTimer();
+
+	paused = true;
 }
 
 function streamPlay() {
@@ -249,6 +252,7 @@ function streamPlay() {
 	}
 
 	streamAutoPause = false;
+	paused = false;
 
 /* <production>
 	if ('undefined' != typeof(_gaq)) {

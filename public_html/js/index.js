@@ -242,8 +242,8 @@ function streamPause() {
 
 function streamPlay() {
 	if (
-		0 == selsites.length
-		|| 0 == selcats.length
+		0 == settings.selsites.length
+		|| 0 == settings.selcats.length
 	) {
 		return;
 	}

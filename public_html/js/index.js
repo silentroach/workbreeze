@@ -9,8 +9,6 @@ var filterTimer;
 /** @type {Boolean} **/ var helpVisible = false;
 /** @type {number} **/  var lastBottom = 0;
 
-var streamAutoPause = false;
-
 /** @type {Array} **/ var queue    = [];
 /** @type {Array} **/ var joblist  = [];
 

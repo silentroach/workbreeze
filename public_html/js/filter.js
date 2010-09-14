@@ -1,3 +1,5 @@
+/** @type {Boolean} **/ var streamAutoPause = false;
+
 function handleFilter() {
 	var tmp = $('#keyword').val().trim();
 	settings.selsites = [];
@@ -39,6 +41,7 @@ function handleFilter() {
 		streamAutoPause = true;
 		streamPause();
 	} else if (streamAutoPause) {
+		streamAutoPause = false;
 		streamPlay();
 	}
 

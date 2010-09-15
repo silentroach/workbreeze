@@ -73,20 +73,14 @@ class Parser_vworker_com extends Parser implements IParser {
 	
 	public function parseJobDescription($content) {
 		if (
-			preg_match('/<div class="KonaBody">(.*?)<\/span>/is', $content, $matches)
-			&& 2 == count($matches)
-		) {
-			$found = $matches[1];
-		} else		
-		if (
-			preg_match('/<div class="KonaBody">(.*?)Requirements Interview Answers/is', $content, $matches)
+			preg_match('/<div class="KonaBody">(.*?)<\/font>/siu', $content, $matches)
 			&& 2 == count($matches)
 		) {
 			$found = $matches[1];
 		}
 
 		if (isset($found)) {
-			return str_replace(array("\r", "\n"), '', $found);
+			return trim(str_replace(array("\r", "\n"), '', $found));
 		} else
 			return false;
 	}

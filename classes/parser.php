@@ -181,6 +181,11 @@ class Parser {
         <link rel="stylesheet" href="/css/main.css" type="text/css" />
 <body>
 
+<div id="gads">
+<script type="text/javascript">google_ad_client = "pub-0168627540498115";google_ad_slot = "1958922984";google_ad_width = 120;google_ad_height = 240;</script>
+<script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></script>
+</div>
+
 <div id="logo"><a href="/">WorkBreeze</a></div>
 
 <p class="title">{$title}</p>

@@ -29,6 +29,12 @@ input {
 	padding: 4px;
 }
 
+#gads {
+        float: right;
+        padding-left: 2em;
+        padding-bottom: 2em;
+}
+
 #logo {
 	display: inline-block;
 	font-size: 18pt;

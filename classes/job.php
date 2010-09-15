@@ -35,14 +35,16 @@ class Job {
 			array('фото', 'photo ') // space to disallow photoshop
 		),
 		self::CAT_PROGRAMMING => array(
-			array('программир', 'programm', 'разраб', 'software', 'delphi', 'c++'),
+			array(
+				'программир', 'programm', 'разраб', 'software', 'delphi', 'c++', 'visual basic',
+				'development'),
 			array('веб', 'web')
 		),
 		self::CAT_WEBPROG     => array(
 			array(
 				'скрипт', 'веб-разр', 'верстк', 'веб-прило', 'разработка сайт', 'script', 'web-prog', 
 				'webprog', 'веб-программ', 'php', 'asp', 'wordpress', 'joomla', 'ajax', 'javascript', 
-				'ruby', 'ecommerce', 'создание сайт', 'системы админист', 'drupal'
+				'ruby', 'ecommerce', 'создание сайт', 'системы админист', 'drupal', 'framework'
 			)
 		),
 		self::CAT_TRANSLATE   => array(
@@ -55,7 +57,7 @@ class Job {
 			array('реклам', 'advertising', 'seo', 'раскрутка', 'маркетинг', 'marketing', 'social')
 		),
 		self::CAT_SYSADM      => array(
-			array('admin', 'админ', 'windows', 'linux', 'freebsd', 'unix'),
+			array('admin', 'админ', 'windows', 'linux', 'freebsd', 'unix', 'sql'),
 			array('системы админ')
 		)
 	);
@@ -205,7 +207,14 @@ class Job {
 	}
 	
 	public function setTitle($title) {
-		$this->title = trim(strip_tags($title));
+		$title = strip_tags($title);
+			
+		while (false !== strpos($title, '  ')) {
+			$title = str_replace('  ', ' ', $title);
+		}
+		
+		$this->title = trim($title);
+		
 		return $this;
 	}
 	

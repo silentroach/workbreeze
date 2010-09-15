@@ -43,7 +43,14 @@ class Tester {
 		$content = trim($parser->publicAfterRequest(file_get_contents($filename)));
 		
 		$title_out = trim(file_get_contents(str_replace('.i', '.ot', $filename)));
-		$title = trim($parser->parseJobTitle($content));
+		$title = $parser->parseJobTitle($content);
+		
+		if (!$title) {
+			$this->error('failed to parse title');
+			return false;
+		}
+		
+		$title = trim($title);
 		
 		if ($title != $title_out) {
 			$this->error($title);
@@ -51,7 +58,14 @@ class Tester {
 		};
 		
 		$desc_out = trim(file_get_contents(str_replace('.i', '.od', $filename)));
-		$desc  = trim($parser->parseJobDescription($content));
+		$desc  = $parser->parseJobDescription($content);
+		
+		if (!$desc) {
+			$this->error('failed to parse description');
+			return false;
+		}
+		
+		$desc = trim($desc);
 		
 		if ($desc != $desc_out) {
 			$this->error($desc);
@@ -147,7 +161,7 @@ class Tester {
 	}
 	
 	private function error($res) {
-		$this->printSome("[ ERROR ]\n" . $res);
+		$this->printSome("[ ERROR ]\n" . $res . "\n");
 	}
 
 	private function begin($text) {

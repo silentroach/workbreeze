@@ -30,6 +30,10 @@ class Parser_getacoder_com extends Parser implements IParser {
 		return false;
 	}
 	
+	protected function afterRequest($data) {
+		return iconv('iso-8859-1', 'utf-8', $data);
+	}
+	
 	public function processJobList() {
 		$res = $this->getRequest('http://www.getacoder.com/');
 
@@ -58,7 +62,7 @@ class Parser_getacoder_com extends Parser implements IParser {
 	
 	public function parseJobTitle($content) {
 		if (
-			!preg_match('/<title>(.*?)<\/title>/siu', $content, $matches)
+			!preg_match('/<title>(.*?)</siu', $content, $matches)
 			|| 2 != count($matches)
 		) {
 			return false;
@@ -66,16 +70,14 @@ class Parser_getacoder_com extends Parser implements IParser {
 		
 		$title = $matches[1];
 		
-		if (
-			!preg_match('/\((.*?)\)/siu', $title, $matches)
-			|| 2 != count($matches)
-		) {
+		$m = explode('(', $title);
+		
+		if (count($m) == 0)
 			return false;
-		}
+			
+		$title = array_shift($m);
 		
-		$title = trim(str_replace($matches[0], '', $title));
-		
-		return $title;
+		return trim($title);
 	}
 	
 	public function parseJobDescription($content) {
@@ -106,14 +108,17 @@ class Parser_getacoder_com extends Parser implements IParser {
 		
 		$title = $matches[1];
 		
-		if (
-			!preg_match('/\((.*?)\)/siu', $title, $matches)
-			|| 2 != count($matches)
-		) {
+		$m = explode('(', $title);
+		
+		if (count($m) == 0) {
 			return false;
 		}
 		
-		return $matches[1];	
+		array_shift($m);
+		
+		$tags = array_shift($m);
+		
+		return str_replace(array('(', ')'), ' ', $tags);	
 	}
 	
 	public function parseJobMoney($content) {

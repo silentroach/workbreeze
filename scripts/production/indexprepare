@@ -9,6 +9,8 @@ $res = str_replace('"js/jquery.js"', '"http://ajax.googleapis.com/ajax/libs/jque
 
 $dd = date('mdHi');
 
+$res = preg_replace('/main.css"/', '/main.css?' . $dd . '"', $res);
+
 $res = preg_replace('/<\!-- jsbeg(.*?)jsend \!-->/si', '
 <script language="javascript" src="/js/index.js?' . $dd . '"></script>
 ', $res);

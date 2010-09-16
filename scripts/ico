@@ -2,6 +2,11 @@
 <?php
 
 require('../defines.php');
+require('_replacer.php');
+
+$cssfile = PATH_PUBLIC . 'css' . DIRECTORY_SEPARATOR . 'main.css';
+
+$csscont = file_get_contents($cssfile);
 
 $icons = array();
 $dir = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'icons' . DIRECTORY_SEPARATOR;
@@ -45,6 +50,17 @@ imagedestroy($img);
 
 echo system('optipng /tmp/icons.png');
 
-rename('/tmp/icons.png', PATH_PUBLIC . 'img' . DIRECTORY_SEPARATOR . 'icons.png');
+$img = file_get_contents('/tmp/icons.png');
 
-echo $css . "\n";
+unlink('/tmp/icons.png');
+
+$coded = base64_encode($img);
+
+$codedtxt = <<<EOF
+background-image: url(data:image/png;base64,{$coded});
+EOF;
+
+$csscont = replaceTag($csscont, 'icons', $codedtxt);
+$csscont = replaceTag($csscont, 'ioffset', $css);
+
+file_put_contents($cssfile, $csscont);

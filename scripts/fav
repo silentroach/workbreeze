@@ -3,6 +3,11 @@
 
 require('../defines.php');
 require(PATH_CLASSES . 'parser.php');
+require('_replacer.php');
+
+$cssfile = PATH_PUBLIC . 'css' . DIRECTORY_SEPARATOR . 'main.css';
+
+$csscont = file_get_contents($cssfile);
 
 $mongo = new Mongo();
 
@@ -65,6 +70,17 @@ imagedestroy($img);
 
 echo system('optipng /tmp/fav.png');
 
-rename('/tmp/fav.png', PATH_PUBLIC . 'img' . DIRECTORY_SEPARATOR . 'favicons.png');
+$img = file_get_contents('/tmp/fav.png');
 
-echo $css . "\n";
+unlink('/tmp/fav.png');
+
+$coded = base64_encode($img);
+
+$codedtxt = <<<EOF
+background-image: url(data:image/png;base64,{$coded});
+EOF;
+
+$csscont = replaceTag($csscont, 'favs', $codedtxt);
+$csscont = replaceTag($csscont, 'foffset', $css);
+
+file_put_contents($cssfile, $csscont);

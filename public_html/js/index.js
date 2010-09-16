@@ -25,6 +25,7 @@ var places = {
 var options = {
 	/** @type {number} **/ defJobPageCount: 30,
 	/** @type {number} **/ maxJobPageCount: 30,
+	/** @const **/ maxTitleLength:          75,
 	/** @const **/ checkInterval:           30000,
 	/** @const **/ siteIconPrefix:          'sico',
 	/** @const **/ animationSpeed:          'slow',
@@ -173,6 +174,18 @@ function addJob(job) {
 		} )
 		.hide();
 
+	var htmltitle = job.title;
+
+	if (job.title.length > options.maxTitleLength) {
+		var tmpindex = job.title.substring(0, options.maxTitleLength).lastIndexOf(' ');
+
+		if (tmpindex < 0) {
+			tmpindex = options.maxTitleLength;
+		}
+
+		htmltitle = job.title.substring(0, tmpindex) + '...';
+	}
+
 	lnk = $("<a>")
 		.addClass(options.siteIconPrefix)
 		.addClass(options.siteIconPrefix + '_' + sites[job.site][0])
@@ -180,7 +193,7 @@ function addJob(job) {
 			'href': '/jobs/' + sites[job.site][1] + '/' + job.id + '.html',
 			'title': job.title + ' ' + langVal('on') + ' ' + sites[job.site][2]
 		})
-		.html(job.title)
+		.html(htmltitle)
 		.appendTo($('li.title', jobEl));
 
 	$('li.desc', jobEl).html(job.desc);

@@ -169,6 +169,10 @@ div.help {
 	white-space: nowrap;
 }
 
+p.title {
+	white-space: normal;
+}
+
 ul.job {
 	clear: both;
 	font-size: 10pt;

@@ -15,12 +15,15 @@ $res = preg_replace('/<\!-- jsbeg(.*?)jsend \!-->/si', '
 <script language="javascript" src="/js/index.js?' . $dd . '"></script>
 ', $res);
 
+$res = preg_replace('/<!--(.*?)!-->/siu', '', $res);
+
 $res = str_replace(array("\t", "\n"), '', $res);
 
 while (false !== strpos($res, '  ')) {
 	$res = str_replace('  ', ' ', $res);
 }
 
+$res = str_replace('> <', '><', $res);
 $res = str_replace(' = ', '=', $res);
 $res = str_replace(', ', ',', $res);
 $res = str_replace('; ', ';', $res);

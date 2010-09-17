@@ -26,7 +26,7 @@ var options = {
 	/** @type {number} **/ defJobPageCount: 30,
 	/** @type {number} **/ maxJobPageCount: 30,
 	/** @const **/ maxTitleLength:          75,
-	/** @const **/ checkInterval:           30000,
+	/** @const **/ checkInterval:           40000,
 	/** @const **/ siteIconPrefix:          'sico',
 	/** @const **/ animationSpeed:          'slow',
 	
@@ -150,7 +150,7 @@ function popFromQueue() {
 
 function checkQueue() {
 	if (queue.length > 0)
-		popFromQueue(false);
+		popFromQueue();
 }
 
 /**

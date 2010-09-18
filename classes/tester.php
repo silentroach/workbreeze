@@ -1,7 +1,6 @@
 <?php
 
 require(PATH_CLASSES . DIRECTORY_SEPARATOR . 'parser.php');
-require(PATH_CLASSES . DIRECTORY_SEPARATOR . 'stemmer.php');
 
 class Tester {
 
@@ -21,10 +20,30 @@ class Tester {
 		$text = trim(file_get_contents($file));
 		$out  = trim(file_get_contents($outname));
 		
-		$tmp = str_replace("\n", '<br />', wb_html_prepare($text));
+		$tmp = wb_html_prepare($text);
+		$tmpw = wb_words($tmp);
 	
-		if ($out != $tmp) {
-			return $tmp . 
+		$check1 = str_replace("\n", '<br />', $tmp);
+	
+		if ($out != $check1) {
+			return $check1 . 
+				"\n---------------------------------------------------\n" . 
+				$out . "\n";
+		}
+		
+		if (substr($i['filename'], 0, 4) !== 'real') {
+			return true;
+		}
+		
+		$outname = $i['dirname'] . DIRECTORY_SEPARATOR . $i['filename'] . '.st';
+		$out = trim(file_get_contents($outname));
+		
+		$check2 = wb_stem($tmpw);
+		
+		$text = implode($check2, ', ');
+		
+		if ($text != $out) {
+			return $text .
 				"\n---------------------------------------------------\n" . 
 				$out . "\n";
 		}

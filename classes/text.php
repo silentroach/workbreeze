@@ -66,8 +66,56 @@ function wb_html_prepare($text) {
 	return trim($text);
 }
 
-function wb_text_stemmer($text) {
+function wb_words($text) {
+	$text = strip_tags($text);
+	$text = html_entity_decode($text);
 
+	$text = mb_strtolower($text);
+
+	$ru = str_word_count($text, 1, 'йцукенгшщзхъфывапролджэячсмитьбюё');
+	$en = str_word_count($text, 1, 'qwertyuiopasdfghjklzxcvbnm');
+	
+	$result = array();
+	$ex = array();
+	
+	$i = 0;
+	foreach($ru as $word) {
+		if (mb_strlen($word) > 3)
+			continue;
+
+		// todo: refactor
+		// todo: cut first and last "-"
+			
+		if (!isset($ex[$word])) {
+			$result['ru_' . $i++] = $word;
+			$ex[$word] = 1;
+		}
+	}
+	
+	$i = 0;
+	foreach($en as $word) {
+		if (mb_strlen($word) < 4)
+			continue;
+			
+		if (!isset($ex[$word])) {
+			$result['en_' . $i++] = $word;
+			$ex[$word] = 1;
+		}
+	}
+	
+	return $result;
 }
 
+function wb_stem($words) {
+	$result = array();
 
+	foreach($words as $key => $word) {
+		if (substr($key, 0, 2) == 'ru') {
+			$result[] = stem_russian_unicode($word);
+		} else {
+			$result[] = stem_english($word);
+		}
+	}
+
+	return $result;
+}

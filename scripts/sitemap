@@ -1,0 +1,82 @@
+#!/usr/bin/php
+<?php
+
+require('../defines.php');
+
+$filename = PATH_PUBLIC . 'jobs/sitemap.xml';
+if (file_exists($filename)) {
+	echo "Old sitemap found. Deleting...\n";
+	unlink($filename);
+}
+
+$gzfilename = $filename . '.gz';
+if (file_exists($gzfilename)) {
+	unlink($gzfilename);
+}
+
+$mongo = new Mongo();
+
+$dbname = DB;
+
+$db = $mongo->$dbname;
+
+$jc = $db->jobs;
+$jccount = $jc->count();
+
+echo 'Global jobs count: ' . $jccount . "\n";
+
+$xml = new XMLWriter();
+$xml->openURI($filename);
+$xml->startDocument( '1.0' , 'utf-8', 'yes' );
+
+$xml->startElement('urlset');
+
+$xml->writeAttribute('xmlns', 'http://www.sitemaps.org/schemas/sitemap/0.9');
+
+$sites = array();
+
+$c = $jc->find();
+$c->sort(array('stamp' => 0));
+
+while ($item = $c->getNext()) {
+	if (!isset($sites[$item['site']])) {
+		$sites[$item['site']] = $db->sites->findOne(array('code' => $item['site']));
+	}
+
+	$site = $sites[$item['site']];
+
+	$xml->startElement('url');
+
+	$xml->writeElement('loc',
+		'http://workbreeze.com/jobs/' . $site['folder'] . '/' . $item['id'] . '.html'
+	);
+
+	$xml->writeElement('lastmod', date('c', $item['stamp']));
+	$xml->writeElement('changefreq', 'weekly');
+
+	$b = time() - $item['stamp'];
+
+	if ($b < 60 * 20) {  // 20 minutes
+		$p = 1;
+	} else
+	if ($b < 60 * 60) {   // 1 hour
+		$p = 0.8;
+	} else
+	if ($b < 60 * 60 * 3) {
+		$p = 0.5;
+	} else
+	if ($b < 60 * 60 * 24) {
+		$p = 0.4;
+	} else
+		$p = 0.2;
+
+	$xml->writeElement('priority', $p);
+
+	$xml->endElement(); // </url>
+}
+
+$xml->endElement(); // </urlset>
+
+$xml->flush();
+
+system('gzip -c -9 ' . $filename . ' > ' . $filename . '.gz');

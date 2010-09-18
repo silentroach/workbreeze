@@ -87,7 +87,7 @@ class MUp extends Module {
 		$cursor->limit(25);
 		
 		while ($job = $cursor->getNext()) {
-			$jobs[] = array(
+			$item = array(
 				's'  => $job['site'],
 				'i'  => $job['id'],
 				'st' => $job['stamp'] * $mod,
@@ -95,6 +95,12 @@ class MUp extends Module {
 				'c'  => $job['cats'],
 				'd'  => isset($job['short']) ? $job['short'] : $job['desc']
 			);
+
+			if (isset($job['money'])) {
+				$item['m'] = $job['money'];
+			}
+
+			$jobs[] = $item;
 		}
 		
 		if (0 == count($jobs))

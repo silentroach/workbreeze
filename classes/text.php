@@ -65,3 +65,9 @@ function wb_html_prepare($text) {
 
 	return trim($text);
 }
+
+function wb_text_stemmer($text) {
+
+}
+
+

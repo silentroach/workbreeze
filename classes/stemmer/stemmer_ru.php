@@ -23,7 +23,6 @@ class Stemmer_RU {
 	}
 
 	private function stem($word) {
-		$word = mb_strtolower($word, 'UTF-8');
 		$words = preg_replace('/ё/u', 'е', $word);
 
 		$stem = $word;

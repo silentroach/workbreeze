@@ -6,12 +6,10 @@ require(PATH_CLASSES . DIRECTORY_SEPARATOR . 'stemmer.php');
 class Tester {
 
 	private $db;
-	private $job;
 	
 	private $rowcnt;
 	
 	public function __construct($db) {
-		$this->job = new Job($db);
 		$this->db = $db;
 	}
 
@@ -23,10 +21,10 @@ class Tester {
 		$text = trim(file_get_contents($file));
 		$out  = trim(file_get_contents($outname));
 		
-		$this->job->setDescription($text);	
+		$tmp = str_replace("\n", '<br />', wb_html_prepare($text));
 	
-		if ($out != $this->job->getHTMLDescription()) {
-			return $this->job->getHTMLDescription() . 
+		if ($out != $tmp) {
+			return $tmp . 
 				"\n---------------------------------------------------\n" . 
 				$out . "\n";
 		}

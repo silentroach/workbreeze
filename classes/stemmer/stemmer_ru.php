@@ -2,38 +2,29 @@
 
 class Stemmer_RU {
 
-	var $VERSION = "0.02";
+	private $vovel = '/аеиоуыэюя/u';
+	private $perfectiveground = '/((ив|ивши|ившись|ыв|ывши|ывшись)|((?<=[ая])(в|вши|вшись)))$/u';
+	private $reflective = '/(с[яь])$/u';
+	private $adjective = '/(ее|ие|ые|ое|ими|ыми|ей|ий|ый|ой|ем|им|ым|ом|его|ого|ему|ому|их|ых|ую|юю|ая|яя|ою|ею)$/u';
+	private $participle = '/((ивш|ывш|ующ)|((?<=[ая])(ем|нн|вш|ющ|щ)))$/u';
+	private $verb = '/((ила|ыла|ена|ейте|уйте|ите|или|ыли|ей|уй|ил|ыл|им|ым|ен|ило|ыло|ено|ят|ует|уют|ит|ыт|ены|ить|ыть|ишь|ую|ю)|((?<=[ая])(ла|на|ете|йте|ли|й|л|ем|н|ло|но|ет|ют|ны|ть|ешь|нно)))$/u';
+	private $noun = '/(а|ев|ов|ие|ье|е|иями|ями|ами|еи|ии|и|ией|ей|ой|ий|й|иям|ям|ием|ем|ам|ом|о|у|ах|иях|ях|ы|ь|ию|ью|ю|ия|ья|я)$/u';
+	private $rvre = '/^(.*?[аеиоуыэюя])(.*)$/u';
+	private $derivational = '/[^аеиоуыэюя][аеиоуыэюя]+[^аеиоуыэюя]+[аеиоуыэюя].*(?<=о)сть?$/u';
 
-	var $Stem_Cache = array();
-
-	var $VOWEL = '/аеиоуыэюя/u';
-	var $PERFECTIVEGROUND = '/((ив|ивши|ившись|ыв|ывши|ывшись)|((?<=[ая])(в|вши|вшись)))$/u';
-	var $REFLEXIVE = '/(с[яь])$/u';
-	var $ADJECTIVE = '/(ее|ие|ые|ое|ими|ыми|ей|ий|ый|ой|ем|им|ым|ом|его|ого|ему|ому|их|ых|ую|юю|ая|яя|ою|ею)$/u';
-	var $PARTICIPLE = '/((ивш|ывш|ующ)|((?<=[ая])(ем|нн|вш|ющ|щ)))$/u';
-	var $VERB = '/((ила|ыла|ена|ейте|уйте|ите|или|ыли|ей|уй|ил|ыл|им|ым|ен|ило|ыло|ено|ят|ует|уют|ит|ыт|ены|ить|ыть|ишь|ую|ю)|((?<=[ая])(ла|на|ете|йте|ли|й|л|ем|н|ло|но|ет|ют|ны|ть|ешь|нно)))$/u';
-	var $NOUN = '/(а|ев|ов|ие|ье|е|иями|ями|ами|еи|ии|и|ией|ей|ой|ий|й|иям|ям|ием|ем|ам|ом|о|у|ах|иях|ях|ы|ь|ию|ью|ю|ия|ья|я)$/u';
-	var $RVRE = '/^(.*?[аеиоуыэюя])(.*)$/u';
-	var $DERIVATIONAL = '/[^аеиоуыэюя][аеиоуыэюя]+[^аеиоуыэюя]+[аеиоуыэюя].*(?<=о)сть?$/u';
-
-	function s(&$s, $re, $to) {
+	private function s(&$s, $re, $to) {
 		$orig = $s;
 		$s = preg_replace($re, $to, $s);
 		return $orig !== $s;
 	}
 
-	function m($s, $re) {
+	private function m($s, $re) {
 		return preg_match($re, $s);
 	}
 
-	function stem_word($word) {
+	private function stem($word) {
 		$word = mb_strtolower($word, 'UTF-8');
 		$words = preg_replace('/ё/u', 'е', $word);
-
-		// Check against cache of stemmed words
-		if (isset($this->Stem_Cache[$word])) {
-			return $this->Stem_Cache[$word];
-		}
 
 		$stem = $word;
 		do {
@@ -76,8 +67,6 @@ class Stemmer_RU {
 
 			$stem = $start.$RV;
 		} while(false);
-
-		$this->Stem_Cache[$word] = $stem;
 
 		return $stem;
 	}

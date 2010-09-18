@@ -1,6 +1,7 @@
 <?php
 
 require(PATH_CLASSES . DIRECTORY_SEPARATOR . 'parser.php');
+require(PATH_CLASSES . DIRECTORY_SEPARATOR . 'stemmer.php');
 
 class Tester {
 
@@ -14,7 +15,7 @@ class Tester {
 		$this->db = $db;
 	}
 
-	private function testCompacterFile($file) {
+	private function testTextFuncsFile($file) {
 		$i = pathinfo($file);
 
 		$outname = $i['dirname'] . DIRECTORY_SEPARATOR . $i['filename'] . '.po';
@@ -170,15 +171,15 @@ class Tester {
 		$this->rowcnt = 0;
 	}
 	
-	private function testCompact($folder) {
-		$this->begin('HTML compacter test');
+	private function testTextFuncs($folder) {
+		$this->begin('Text functions test');
 
 		$in = glob($folder . '*.p');
 		
 		foreach($in as $file) {
 			$this->printInfo($file);
 			
-			$res = $this->testCompacterFile($file);
+			$res = $this->testTextFuncsFile($file);
 			
 			if (true === $res) {			
 				$this->ok();
@@ -194,8 +195,8 @@ class Tester {
 	public static function testFolder($db, $folder) {
 		$tester = new Tester($db);
 		
-		$tester->testParsers($folder);
-		$tester->testCompact($folder);
+//		$tester->testParsers($folder);
+		$tester->testTextFuncs($folder);
 		
 		echo "\n";
 	}

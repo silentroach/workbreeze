@@ -120,6 +120,15 @@ li.checked:hover {
 	color: white;
 }
 
+#mode_f {
+	text-align: center;
+}
+
+#mode {
+	margin: 1em 0 0 0;
+	padding: 0px;
+}
+
 div.help {
 	clear: both;
 	display: none;
@@ -199,6 +208,11 @@ ul.job {
 	ul.job .k {
 		display: none;
 	}
+
+ul.filtered {
+	margin-top: 1em;
+	padding-top: 1em;
+}
 
 #filter {
 	clear: both;

@@ -19,7 +19,8 @@ var places = {
 	/** @type {jQuery} **/ buttonPlay:  null,
 	/** @type {jQuery} **/ buttonPause: null,
 	/** @type {jQuery} **/ logo:        null,
-	/** @type {jQuery} **/ keyword:     null
+	/** @type {jQuery} **/ keyword:     null,
+	/** @type {jQuery} **/ filterMode:  null
 }
 
 var options = {
@@ -36,7 +37,9 @@ var options = {
 	/** @const **/ elementSites:            'sites',
 	/** @const **/ elementLang:             'lang',
 	/** @const **/ elementCats:             'cats',
-	/** @const **/ elementJobStamp:         'jstamp'
+	/** @const **/ elementKeywords:         'keys',
+	/** @const **/ elementJobStamp:         'jstamp',
+	/** @const **/ elementFilter:           'filter'
 }
 
 function checkJobPlace() {
@@ -55,6 +58,12 @@ function checkJobPlace() {
 function checkNewJobs() {
 	var adata = {};	
 	adata[options.elementJobStamp] = lastStamp;
+
+	if (filterMode) {
+		adata[options.elementFilter + '_' + options.elementSites]    = settings.selsites.join(',');
+		adata[options.elementFilter + '_' + options.elementCats]     = settings.selcats.join(',');
+		adata[options.elementFilter + '_' + options.elementKeywords] = settings.keywords.join(',');
+	}
 
 	$.up({
 		data: adata,
@@ -395,6 +404,7 @@ function init() {
 		
 	$('#bfoot, .help, #menu').css({'opacity': 0.8});
 
+	places.filterMode  = $('#mode_f');
 	places.buttonPlay  = $('#play');
 	places.buttonPause = $('#pause');
 	
@@ -436,6 +446,8 @@ function init() {
 				filterTimer = setTimeout(handleFilter, 2000);
 			}
 		});
+		
+	places.filterMode.click(changeFilterMode);
 };
 
 $( function() {

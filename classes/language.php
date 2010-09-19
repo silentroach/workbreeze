@@ -29,6 +29,7 @@ class Language {
 			'hs'   => '<strong>Site list</strong>. Each element is a trigger.',
 			'hc'   => '<strong>Offers category list</strong>. Each element is a trigger.',
 			'hj'   => '<strong>Offers list</strong>. Click the title to have more information. You can scroll it down endlessly.',
+			'hf'   => '<strong>Filter mode</strong> allow you to receive offers only appropriate with filter settings.',
 			
 			'c' . Job::CAT_OTHER       => 'other',
 			'c' . Job::CAT_AUDIOVIDEO  => 'audio/video',
@@ -58,6 +59,7 @@ class Language {
 			'hs'   => '<strong>Список сайтов</strong>, где каждый элемент - переключатель.',
 			'hc'   => '<strong>Список категорий предложений</strong>, где каждый элемент - переключатель.',
 			'hj'   => '<strong>Список предложений</strong>. Для просмотра полной информации следует щелкнуть по заголовку. Можно прокручивать вниз до бесконечности.',
+			'hf'   => 'В <strong>режиме фильтра</strong> принимаются только предложения, подходящие под указанные выше критерии отбора',
 			
 			'c' . Job::CAT_OTHER       => 'прочее',
 			'c' . Job::CAT_AUDIOVIDEO  => 'аудио/видео',

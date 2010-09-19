@@ -1,4 +1,5 @@
 /** @type {Boolean} **/ var streamAutoPause = false;
+/** @type {Boolean} **/ var filterMode = false;
 
 function handleFilter() {
 	var tmp = $('#keyword').val().trim();
@@ -58,7 +59,34 @@ function handleFilter() {
 	console.groupEnd();
 /* </debug> */
 	
-	checkFeedForFilter();
+	if (!filterMode) {
+		checkFeedForFilter();
+	}
+}
+
+function jobSelectAll() {
+	for (var i in joblist) {
+		jobSelect(joblist[i]);
+	}
+}
+
+function changeFilterMode() {
+	places.filterMode.toggleClass('checked');
+
+	if (!filterMode) {
+		filterMode = true;
+		
+		jobSelectAll();
+	} else {
+		filterMode = false;
+		
+		checkFeedForFilter();
+	}
+	
+	var jl = joblist.length;
+	if (jl > 0) {
+		joblist[jl - 1].toggleClass('filtered');
+	}
 }
 
 /**

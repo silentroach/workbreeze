@@ -12,6 +12,7 @@ var filterTimer;
 
 /** @type {Array} **/ var queue    = [];
 /** @type {Array} **/ var joblist  = [];
+/** @type {Array} **/ var money = ['%d руб.', '$%d'];
 
 var places = {
 	/** @type {jQuery} **/ templateJob: null,
@@ -218,7 +219,9 @@ function addJob(job) {
 	$('li.time', jobEl).html(humanizedTime(stmp));
 
 	if (undefined != job.money) {
-		$('li.money', jobEl).html(job.money);
+		var fmt = money[job.currency];
+	
+		$('li.money', jobEl).html(fmt.replace('%d', job.money));
 	}
 
 	var tmpDesc = job.title + ' ' + job.desc;

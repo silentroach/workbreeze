@@ -211,6 +211,10 @@ function addJob(job) {
 	
 	$('li.time', jobEl).html(humanizedTime(stmp));
 
+	if (undefined != job.money) {
+		$('li.money', jobEl).html(job.money);
+	}
+
 	var tmpDesc = job.title + ' ' + job.desc;
 	tmpDesc = tmpDesc.replace(/&(lt|gt);/g, function(strMatch, p1) {
 		return (p1 == 'lt') ? '<' : '>';
@@ -244,6 +248,11 @@ function parseJobs(jobs) {
 			cats:  jobs[i]['c'],
 			desc:  jobs[i]['d']
 		};
+
+		if ('m' in jobs[i]) {
+			job.money = jobs[i]['m'][0];
+			job.currency = jobs[i]['m'][1];
+		}
 		
 		addJob(job);
 	}

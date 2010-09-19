@@ -191,23 +191,26 @@ ul.job {
 	margin-bottom: 1%;
 }
 
-	ul.job .title, ul.job .title a {
+	ul.job .title, ul.job .title a, ul.job .desc {
 		margin-bottom: 0.5em;
-		float: left;
 		border-bottom: 0px;
 	}
 
 	ul.job .time {
-		float: right;
+		float: left;
 	}
 
-	ul.job .desc {
-		clear: both;
+	ul.job .money {
+		float: right;
 	}
 
 	ul.job .k {
 		display: none;
 	}
+
+        ul.job .cl {
+                clear: both;
+        }
 
 ul.filtered {
 	margin-top: 1em;

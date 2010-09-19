@@ -55,15 +55,21 @@ function checkJobPlace() {
 	}
 }
 
-function checkNewJobs() {
+function prepareDataForJobs(stamp) {
 	var adata = {};	
-	adata[options.elementJobStamp] = lastStamp;
+	adata[options.elementJobStamp] = stamp;
 
 	if (filterMode) {
 		adata[options.elementFilter + '_' + options.elementSites]    = settings.selsites.join(',');
 		adata[options.elementFilter + '_' + options.elementCats]     = settings.selcats.join(',');
 		adata[options.elementFilter + '_' + options.elementKeywords] = settings.keywords.join(',');
 	}
+
+	return adata;
+}
+
+function checkNewJobs() {
+	var adata = prepareDataForJobs(lastStamp);
 
 	$.up({
 		data: adata,
@@ -315,8 +321,7 @@ function updateBottom() {
 	console.info('update less than ' + firstStamp);
 /* </debug> */
 
-	var adata = {};	
-	adata[options.elementJobStamp] = -firstStamp;
+	var adata = prepareDataForJobs(-firstStamp);
 
 	$.up({
 		data: adata,

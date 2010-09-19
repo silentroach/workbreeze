@@ -36,10 +36,19 @@ workbreeze.settings = function() {
 	 * @const
 	 */
 	this.pkeys  = 'keys';
+	
+	/**
+	 * Filter mode element name
+	 * @type {Boolean}
+	 * @private
+	 * @const
+	 */
+	this.pfiltermode = 'fmode';
 
-	/** @type {Array} **/ this.keywords = [];
-	/** @type {Array} **/ this.selsites = [];
-	/** @type {Array} **/ this.selcats  = [];
+	/** @type {Array} **/   this.keywords = [];
+	/** @type {Array} **/   this.selsites = [];
+	/** @type {Array} **/   this.selcats  = [];
+	/** @type {Boolean} **/ this.filterMode = false;
 
 	this.init = function() {
 		this.load();
@@ -63,13 +72,18 @@ workbreeze.settings = function() {
 		if (this.pkeys in obj) {
 			this.keywords = obj[this.pkeys];
 		}
+		
+		if (this.pfiltermode in obj) {
+			this.filterMode = obj[this.pfiltermode];
+		}
 	};
 
 	this.save = function() {
 		var obj = {};
-		obj[this.psites] = this.selsites;
-		obj[this.pcats]  = this.selcats;
-		obj[this.pkeys]  = this.keywords;
+		obj[this.psites]      = this.selsites;
+		obj[this.pcats]       = this.selcats;
+		obj[this.pkeys]       = this.keywords;
+		obj[this.pfiltermode] = this.filterMode;
 
 		storage.set(this.lsname, obj);
 	};
@@ -97,6 +111,13 @@ workbreeze.settings = function() {
 	this.addKeyword = function(keyword) {
 		this.keywords.push(keyword);
 	};
+	
+	/**
+	 * Toggle filter mode
+	 */
+	this.toggleFilterMode = function() {
+		this.filterMode = !this.filterMode;
+	}
 };
 
 /**

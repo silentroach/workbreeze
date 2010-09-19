@@ -1,5 +1,4 @@
 /** @type {Boolean} **/ var streamAutoPause = false;
-/** @type {Boolean} **/ var filterMode = false;
 
 function handleFilter() {
 	var tmp = $('#keyword').val().trim();
@@ -70,12 +69,21 @@ function jobSelectAll() {
 	}
 }
 
-function changeFilterMode() {
-	places.filterMode.toggleClass('checked');
+function applyFilterMode() {
+	if (
+		places.filterMode.hasClass('checked')
+		&& !settings.filterMode
+	) {
+		places.filterMode.removeClass('checked');
+	} else
+	if (
+		!places.filterMode.hasClass('checked')
+		&& settings.filterMode		
+	) {
+		places.filterMode.addClass('checked');
+	}
 
-	if (!filterMode) {
-		filterMode = true;
-		
+	if (!settings.filterMode) {		
 		jobSelectAll();
 		
 /* <production>
@@ -84,8 +92,6 @@ function changeFilterMode() {
 	}
 </production> */
 	} else {
-		filterMode = false;
-		
 		checkFeedForFilter();
 		
 /* <production>

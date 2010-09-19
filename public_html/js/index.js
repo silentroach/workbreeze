@@ -56,11 +56,16 @@ function checkJobPlace() {
 	}
 }
 
+/**
+ * Prepare a query for new jobs request
+ * @param {!number} stamp
+ * @return {Object} Params
+ */
 function prepareDataForJobs(stamp) {
 	var adata = {};	
 	adata[options.elementJobStamp] = stamp;
 
-	if (filterMode) {
+	if (settings.filterMode) {
 		adata[options.elementFilter + '_' + options.elementSites]    = settings.selsites.join(',');
 		adata[options.elementFilter + '_' + options.elementCats]     = settings.selcats.join(',');
 		adata[options.elementFilter + '_' + options.elementKeywords] = settings.keywords.join(',');
@@ -416,6 +421,10 @@ function init() {
 			localize();
 			initCats();
 			initSites();
+			
+			if (settings.filterMode) {
+				applyFilterMode();
+			}
 		}
 	});
 		
@@ -464,7 +473,11 @@ function init() {
 			}
 		});
 		
-	places.filterMode.click(changeFilterMode);
+	places.filterMode.click(function() {
+		settings.toggleFilterMode();
+		settings.save();
+		applyFilterMode();
+	});
 };
 
 $( function() {

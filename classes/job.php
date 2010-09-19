@@ -189,7 +189,7 @@ class Job {
 				$foundcat != -1
 				&& $non
 			) {
-				foreach($words as $word) {
+				foreach($non as $word) {
 					if (false !== mb_strpos($tmp, $word)) {
 						$foundcat = -1;
 						break;

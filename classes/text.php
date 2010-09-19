@@ -85,7 +85,7 @@ function wb_words($text) {
 	
 	$i = 0;
 	foreach($ru as $word) {
-		if (mb_strlen($word) < 4)
+		if (mb_strlen($word) < 3)
 			continue;
 			
 		$word = wb_stem_prepare_word($word);
@@ -100,7 +100,7 @@ function wb_words($text) {
 	
 	$i = 0;
 	foreach($en as $word) {
-		if (mb_strlen($word) < 4)
+		if (mb_strlen($word) < 3)
 			continue;
 
 		$word = wb_stem_prepare_word($word);

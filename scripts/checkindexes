@@ -16,29 +16,44 @@ function checkCI($db, $collection, $indexes = array()) {
 
 	foreach($indexes as $index) {
 		echo 'Creating index on ' . $collection . ":\n";
+
+		$params = array();
+
+		if (isset($index['_params'])) {
+			if ($index['_params'] == 'unique') {
+				$params['unique'] = true;
+			}
+
+			unset($index['_params']);
+		}
+
 		foreach($index as $key => $sort) {
 			echo '  ' . $key . ' => ' . $sort . "\n";
 		}
 
 		echo "\n";
 
-		$c->ensureIndex($index);
+		$c->ensureIndex($index, $params);
 	}
 }
 
 checkCI($db, 'sites', array(
 	array(
-		'code' => 1
+		'code' => 1,
+		'_params' => 'unique'
 	)
 ));
 
 checkCI($db, 'jobs', array(
 	array(
-		'stamp' => 1
+		'stamp' => 1,
+		'_params' => 'unique'
 	),
 	array(
-		'stamp' => 1,
-		'cats'  => 1
+		'cats' => 1
+	),
+	array(
+		'stem' => 1
 	)
 ));
 

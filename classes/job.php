@@ -39,7 +39,7 @@ class Job {
 		self::CAT_PROGRAMMING => array(
 			array(
 				'программир', 'programm', 'разраб', 'software', 'delphi', 'c++', 'visual basic',
-				'development'),
+				'development', 'cocoa', 'obj-c', 'objective-c'),
 			array('веб', 'web')
 		),
 		self::CAT_WEBPROG     => array(
@@ -259,10 +259,15 @@ class Job {
 	}
 
 	public function setDescription($text = '') {
-		$this->description = wb_html_prepare($text);
+		$tmp = wb_html_prepare($text);
+	
+		$this->description = $tmp;
 
-		$words = wb_words($this->description);
+		// stemmer
+		$tmp .= ' ' . $this->getTitle();
+		$words = wb_words($tmp);
 		$this->stem = wb_stem($words);
+		// /stemmer
 		
 		if (preg_match('/([^ \n\r]+[ \n\r]+){20}/s', $this->description, $match))
 			$this->description_short = trim(str_replace("\n\n", "\n", $match[0])) . '...';

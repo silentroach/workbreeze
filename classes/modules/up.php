@@ -82,7 +82,10 @@ class MUp extends Module {
 			$st = array('$gt' => $stamp);
 		}
 				
-		$cursor = $c->find(array('stamp' => $st));
+		$cursor = $c->find(
+			array('stamp' => $st),
+			array('site', 'id', 'stamp', 'title', 'cats', 'short', 'desc')
+		);
 		$cursor->sort(array('stamp' => -1));
 		$cursor->limit(25);
 		

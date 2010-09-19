@@ -12,7 +12,7 @@ var filterTimer;
 
 /** @type {Array} **/ var queue    = [];
 /** @type {Array} **/ var joblist  = [];
-/** @type {Array} **/ var money = ['%d руб.', '$%d'];
+/** @type {Array} **/ var money = ['%d р.', '$%d'];
 
 var places = {
 	/** @type {jQuery} **/ templateJob: null,

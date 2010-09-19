@@ -77,10 +77,22 @@ function changeFilterMode() {
 		filterMode = true;
 		
 		jobSelectAll();
+		
+/* <production>
+	if ('undefined' != typeof(_gaq)) {
+		_gaq.push(['_trackEvent', 'Filter Mode', 'On']);
+	}
+</production> */
 	} else {
 		filterMode = false;
 		
 		checkFeedForFilter();
+		
+/* <production>
+	if ('undefined' != typeof(_gaq)) {
+		_gaq.push(['_trackEvent', 'Filter Mode', 'Off']);
+	}
+</production> */
 	}
 	
 	var jl = joblist.length;

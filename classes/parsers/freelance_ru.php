@@ -102,14 +102,14 @@ class Parser_freelance_ru extends Parser implements IParser {
 	}
 	
 	public function parseJobCategories($content) {
-		$k = mb_strlen('Раздел:', 'UTF-8');
-		$i = mb_strpos($content, 'Раздел:', 0, 'UTF-8');
+		$k = mb_strlen('Раздел:');
+		$i = mb_strpos($content, 'Раздел:');
 		
 		if (false !== $i) {
-			$n = mb_strpos($content, '</div>', $i, 'UTF-8');
+			$n = mb_strpos($content, '</div>', $i);
 			
 			if (false !== $n) {
-				return mb_substr($content, $i + $k, $n - $i - $k, 'UTF-8');
+				return mb_substr($content, $i + $k, $n - $i - $k);
 			}
 		}	
 		

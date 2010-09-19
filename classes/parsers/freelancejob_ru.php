@@ -53,7 +53,7 @@ class Parser_freelancejob_ru extends Parser implements IParser {
 			return false;
 		}
 		
-		$i = strpos($content, $matches[0]);
+		$i = mb_strpos($content, $matches[0]);
 		if (false === $i) {
 			// something is impossible wrong O.o
 			return false;
@@ -61,7 +61,7 @@ class Parser_freelancejob_ru extends Parser implements IParser {
 		
 		$desc = mb_substr($content, $i, mb_strlen($content) - $i);
 		
-		$i = strpos($desc, '</table>');
+		$i = mb_strpos($desc, '</table>');
 		if (false === $i) {
 			return false;
 		}
@@ -76,13 +76,13 @@ class Parser_freelancejob_ru extends Parser implements IParser {
 		}
 
 		$desc = $matches[1];
-		$i = mb_strpos($desc, '<br/><br/><br/>', 0, 'UTF-8');
+		$i = mb_strpos($desc, '<br/><br/><br/>');
 		
 		if (false === $i) {
 			return false;
 		}
 		
-		$desc = mb_substr($desc, 1, $i - 1, 'UTF-8');
+		$desc = mb_substr($desc, 1, $i - 1);
 		
 		$desc = str_replace(array("\r", "\n"), '', $desc);
 

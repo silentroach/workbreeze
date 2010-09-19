@@ -212,7 +212,7 @@ class Tester {
 	public static function testFolder($db, $folder) {
 		$tester = new Tester($db);
 		
-//		$tester->testParsers($folder);
+		$tester->testParsers($folder);
 		$tester->testTextFuncs($folder);
 		
 		echo "\n";

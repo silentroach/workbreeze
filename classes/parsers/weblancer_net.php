@@ -54,10 +54,10 @@ class Parser_weblancer_net extends Parser implements IParser {
 		
 			$desc = array_shift($matches);
 		
-			$i = mb_strpos($desc, '[Приложения]', 0, 'UTF-8');
+			$i = mb_strpos($desc, '[Приложения]');
 		
 			if (false !== $i) {
-				$desc = mb_substr($desc, 0, $i, 'UTF-8');
+				$desc = mb_substr($desc, 0, $i);
 			}
 		
 			$desc = preg_replace('/<div class="disabled">(.*?)<\/div>/siu', '', $desc);
@@ -102,7 +102,7 @@ class Parser_weblancer_net extends Parser implements IParser {
 			
 			$val = trim(preg_replace('/до/siu', '', $val));
 			
-			if (mb_strpos($val, 'USD', 0, 'UTF-8')) {
+			if (mb_strpos($val, 'USD')) {
 				$currency = Job::CUR_DOLLAR;
 				$val = trim(preg_replace('/USD/', '', $val));
 			}

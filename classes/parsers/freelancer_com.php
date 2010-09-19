@@ -76,33 +76,33 @@ class Parser_freelancer_com extends Parser implements IParser {
 	}
 	
 	public function parseJobDescription($content) {
-		$i = mb_strpos($content, '<h3>Description</h3>', 0, 'UTF-8');
+		$i = mb_strpos($content, '<h3>Description</h3>');
 		if (false === $i) {
 			return false;
 		}
 		
-		$desc = mb_substr($content, $i, mb_strlen($content, 'UTF-8') - $i, 'UTF-8');
+		$desc = mb_substr($content, $i, mb_strlen($content) - $i);
 
-		$i = mb_strpos($desc, '<td', 0, 'UTF-8');
+		$i = mb_strpos($desc, '<td');
 		if (false === $i) {
 			return false;
 		}
 		
-		$desc = mb_substr($desc, $i + 3, mb_strlen($desc, 'UTF-8') - $i - 3, 'UTF-8');
+		$desc = mb_substr($desc, $i + 3, mb_strlen($desc) - $i - 3);
 
-		$i = mb_strpos($desc, '>', 0, 'UTF-8');
+		$i = mb_strpos($desc, '>');
 		if (false === $i) {
 			return false;
 		}
 
-		$desc = mb_substr($desc, $i + 1, mb_strlen($desc, 'UTF-8') - $i - 1, 'UTF-8');
+		$desc = mb_substr($desc, $i + 1, mb_strlen($desc) - $i - 1);
 		
-		$i = mb_strpos($desc, '</td>', 0, 'UTF-8');
+		$i = mb_strpos($desc, '</td>');
 		if (false === $i) {
 			return false;
 		}
 		
-		return mb_substr($desc, 0, $i, 'UTF-8');
+		return mb_substr($desc, 0, $i);
 	}
 	
 	public function parseJobCategories($content) {
@@ -135,7 +135,7 @@ class Parser_freelancer_com extends Parser implements IParser {
 		) {
 			$val = array_pop($matches);
 			
-			if (false !== mb_strpos($val, '$', 0, 'UTF-8')) {
+			if (false !== mb_strpos($val, '$')) {
 				$currency = Job::CUR_DOLLAR;
 				
 				$val = trim(preg_replace('/\$/siu', '', $val));

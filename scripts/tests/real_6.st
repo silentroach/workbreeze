@@ -1,0 +1,1 @@
+have, existing, business, intelligence, project, with, following, technologies, server, ssas, ssrs, ssis, using, bids, website, that, connects, uses, from, time, need, small, changes, this, would, comfortable, above, first, change, will, take, about, hours, know, interested, please, specify, your, experience

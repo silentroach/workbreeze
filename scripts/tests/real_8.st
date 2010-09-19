@@ -1,0 +1,1 @@
+hello, running, website, using, joomla, youtube, plugin, that, works, fine, having, problem, losing, viewers, because, they, click, clips, takes, them, don't, want, stay, view, mcdebate, used, http, joomlacode, project, youtubeplugin, would, like, coder, edit, this, existing

@@ -90,9 +90,9 @@ class Parser_getacoder_com extends Parser implements IParser {
 		
 		$desc = $matches[2];
 		
-		$i = mb_strpos($desc, '<b>Additional information:</b>', 0, 'UTF-8');
+		$i = mb_strpos($desc, '<b>Additional information:</b>');
 		if (false !== $i) {
-			$desc = mb_substr($desc, 0, $i, 'UTF-8');
+			$desc = mb_substr($desc, 0, $i);
 		}
 		
 		return $desc;
@@ -128,7 +128,7 @@ class Parser_getacoder_com extends Parser implements IParser {
 		) {
 			$val = str_replace('&nbsp;', ' ', array_pop($matches));
 
-			if (false !== mb_strpos($val, '$', 0, 'UTF-8')) {
+			if (false !== mb_strpos($val, '$')) {
 				$currency = Job::CUR_DOLLAR;
 				
 				$val = trim(preg_replace('/\$/siu', '', $val));

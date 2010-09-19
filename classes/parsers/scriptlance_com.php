@@ -125,7 +125,7 @@ http://www.scriptlance.com/projects/1284565862.shtml
 		
 		$val = trim(array_pop($matches));
 			
-		if (false !== mb_strpos($val, '$', 0, 'UTF-8')) {
+		if (false !== mb_strpos($val, '$')) {
 			$currency = Job::CUR_DOLLAR;
 			$val = str_replace('$', '', $val);
 		}

@@ -81,6 +81,8 @@ class Job {
 	private $description;
 	private $description_short = '';
 	
+	private $stem = array();
+	
 	private $money = array();
 
 	public function __construct($db) {
@@ -128,6 +130,10 @@ class Job {
 			$arr['money'] = $this->getMoney();
 		}
 		
+		if (count($this->stem)) {
+			$arr['stem'] = $this->stem;
+		}
+		
 		return $this->db->jobs->insert($arr);
 	}
 	
@@ -158,7 +164,10 @@ class Job {
 	}
 	
 	public function setCategoriesByText($text) {
-		$tmp = mb_strtolower($text, 'utf-8');
+		$tmp = mb_strtolower($text);
+		
+		$tmp = strip_tags($tmp);
+		$tmp = html_entity_decode($tmp);
 		
 		$cats = array();
 		
@@ -168,7 +177,7 @@ class Job {
 			$foundcat = -1;
 		
 			foreach($words as $word) {
-				if (false !== strpos($tmp, $word)) {
+				if (false !== mb_strpos($tmp, $word)) {
 					$foundcat = $cat;
 					break;
 				}
@@ -181,7 +190,7 @@ class Job {
 				&& $non
 			) {
 				foreach($words as $word) {
-					if (false !== strpos($tmp, $word)) {
+					if (false !== mb_strpos($tmp, $word)) {
 						$foundcat = -1;
 						break;
 					}
@@ -193,7 +202,7 @@ class Job {
 		}
 		
 		if (0 == count($cats))	{
-			echo 'Can\'t found category for: ' . $text . "\n";
+			echo 'Can\'t found category for: ' . $tmp . "\n";
 			$cats[] = self::CAT_OTHER;
 		}
 		
@@ -251,6 +260,9 @@ class Job {
 
 	public function setDescription($text = '') {
 		$this->description = wb_html_prepare($text);
+
+		$words = wb_words($this->description);
+		$this->stem = wb_stem($words);
 		
 		if (preg_match('/([^ \n\r]+[ \n\r]+){20}/s', $this->description, $match))
 			$this->description_short = trim(str_replace("\n\n", "\n", $match[0])) . '...';

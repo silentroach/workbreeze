@@ -81,9 +81,66 @@ class MUp extends Module {
 			$mod = 1;
 			$st = array('$gt' => $stamp);
 		}
+		
+		$filter = array(
+			'stamp' => $st
+		);
+		
+		if (isset($_POST['filter_sites'])) {
+			$sites = explode(',', $_POST['filter_sites']);
+			
+			foreach($sites as $key => &$val) {
+				$val = intval($val);
+				
+				if (
+					$val < 0
+					|| $val > 20
+				) {
+					unset($sites[$key]);
+				}
+			}
+			
+			if (count($sites)) {
+				$filter['site'] = array(
+					'$in' => $sites
+				);
+			}
+		}
+		
+		if (isset($_POST['filter_cats'])) {
+			$cats = explode(',', $_POST['filter_cats']);
+			
+			foreach($cats as $key => &$val) {
+				$val = intval($val);
+				
+				if (
+					$val < 0
+					|| $val > 30
+				) {
+					unset($cats[$key]);
+				}
+			}
+			
+			if (count($cats)) {
+				$filter['cats'] = array(
+					'$in' => $cats
+				);
+			}
+		}
+		
+		if (isset($_POST['filter_keys'])) {
+			$val = wb_words($_POST['filter_keys']);
+			$val = wb_stem($val);
+			
+			if (count($val)) {
+				$filter['stem'] = array(
+					'$in' => $val
+				);
+			}
+		}
 				
 		$cursor = $c->find(
-			array('stamp' => $st),
+			$filter,
 			array('site', 'id', 'stamp', 'title', 'cats', 'short', 'desc', 'money')
 		);
 		$cursor->sort(array('stamp' => -1));

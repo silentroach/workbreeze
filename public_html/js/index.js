@@ -28,7 +28,8 @@ var options = {
 	/** @type {number} **/ defJobPageCount: 30,
 	/** @type {number} **/ maxJobPageCount: 30,
 	/** @const **/ maxTitleLength:          75,
-	/** @const **/ checkInterval:           40000,
+	/** @const **/ checkInterval:           60000,
+	/** @const **/ checkIntervalFiltered:   90000,
 	/** @const **/ siteIconPrefix:          'sico',
 	/** @const **/ animationSpeed:          'slow',
 	
@@ -66,9 +67,17 @@ function prepareDataForJobs(stamp) {
 	adata[options.elementJobStamp] = stamp;
 
 	if (settings.filterMode) {
-		adata[options.elementFilter + '_' + options.elementSites]    = settings.selsites.join(',');
-		adata[options.elementFilter + '_' + options.elementCats]     = settings.selcats.join(',');
-		adata[options.elementFilter + '_' + options.elementKeywords] = settings.keywords.join(',');
+		if (sites.length != settings.selsites.length) {
+			adata[options.elementFilter + '_' + options.elementSites] = settings.selsites.join(',');
+		}
+		
+		if (cats.length != settings.selcats.length) {
+			adata[options.elementFilter + '_' + options.elementCats] = settings.selcats.join(',');
+		}
+		
+		if (settings.keywords.length > 0) {
+			adata[options.elementFilter + '_' + options.elementKeywords] = settings.keywords.join(',');
+		}
 	}
 
 	return adata;
@@ -90,7 +99,7 @@ function checkNewJobs() {
 				parseJobs(data['j']);
 			}
 		
-			setNewTimer(options.checkInterval);
+			setNewTimer(settings.filterMode ? options.checkIntervalFiltered : options.checkInterval);
 		},
 		error: function() {
 			setNewTimer(options.checkInterval * 2);
@@ -164,7 +173,10 @@ function popFromQueue() {
 	}
 		
 	tmpEl.show();
-	checkJobForFilter(tmpEl);
+	
+	if (!settings.filterMode) {
+		checkJobForFilter(tmpEl);
+	}
 
 	checkJobPlace();
 }
@@ -348,7 +360,7 @@ function updateBottom() {
 		ping: function() {
 			updatingBottom = false;
 
-			setNewTimer(options.checkInterval);
+			setNewTimer(settings.filterMode ? options.checkIntervalFiltered : options.checkInterval);
 		}
 	});
 }
@@ -358,17 +370,21 @@ function init() {
 	places.templateJob = $('ul.job:first');
 	places.placeJob    = $('#jobs');
 	places.keyword     = $('#keyword');
+	places.filterMode  = $('#mode_f');
 
 	if (settings.keywords.length != 0) {
 		places.keyword.val(settings.keywords.join(', '));
 	}
 	
-	var adata = {};
+	if (settings.filterMode) {
+		applyFilterMode();
+	}
+	
+	var adata = prepareDataForJobs(0);
 	
 	adata[options.elementLang]     = getLangVersion();
 	adata[options.elementSites]    = getSitesVersion();
 	adata[options.elementCats]     = getCatsVersion();
-	adata[options.elementJobStamp] = 0;
 	
 	$.up({
 		data: adata,
@@ -421,16 +437,11 @@ function init() {
 			localize();
 			initCats();
 			initSites();
-			
-			if (settings.filterMode) {
-				applyFilterMode();
-			}
 		}
 	});
 		
 	$('#bfoot, .help, #menu').css({'opacity': 0.8});
 
-	places.filterMode  = $('#mode_f');
 	places.buttonPlay  = $('#play');
 	places.buttonPause = $('#pause');
 	

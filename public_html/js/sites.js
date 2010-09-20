@@ -1,4 +1,4 @@
-/** @type {Array} **/ var sites = [];
+/** @type {Array} **/  var sites = [];
 
 /**
  * Get local storage sites version

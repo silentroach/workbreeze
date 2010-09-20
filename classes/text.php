@@ -76,9 +76,12 @@ function wb_words($text) {
 	$text = html_entity_decode($text);
 
 	$text = mb_strtolower($text);
+	
+	preg_match_all("/\p{L}[\p{L}\p{Mn}\p{Pd}'\x{2019}]*/u", $text, $matches);
+	$all = array_shift($matches);
 
-	$ru = str_word_count($text, 1, 'йцукенгшщзхъфывапролджэячсмитьбюё');
 	$en = str_word_count($text, 1, 'qwertyuiopasdfghjklzxcvbnm');
+	$ru = array_diff($all, $en);
 	
 	$result = array();
 	$ex     = array();

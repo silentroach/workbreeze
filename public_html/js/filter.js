@@ -58,7 +58,7 @@ function handleFilter() {
 	console.groupEnd();
 /* </debug> */
 	
-	if (!filterMode) {
+	if (!settings.filterMode) {
 		checkFeedForFilter();
 	}
 }
@@ -83,7 +83,7 @@ function applyFilterMode() {
 		places.filterMode.addClass('checked');
 	}
 
-	if (!settings.filterMode) {		
+	if (settings.filterMode) {		
 		jobSelectAll();
 		
 /* <production>

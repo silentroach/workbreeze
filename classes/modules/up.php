@@ -138,6 +138,14 @@ class MUp extends Module {
 				);
 			}
 		}
+
+		if (1 == count($filter)) { // only stamp
+			$res = Cache::get('j' . $stamp);
+
+			if ($res) {
+				return $res;
+			}
+		}
 				
 		$cursor = $c->find(
 			$filter,
@@ -167,7 +175,11 @@ class MUp extends Module {
 			return false;
 		
 		if ($stamp < 0) {
-			return array_reverse($jobs);
+			$jobs = array_reverse($jobs);
+		}
+
+		if (1 == count($filter)) {
+			Cache::set('j' . $stamp, $jobs, 30);
 		}
 		
 		return $jobs;

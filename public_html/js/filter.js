@@ -69,44 +69,6 @@ function jobSelectAll() {
 	}
 }
 
-function applyFilterMode() {
-	if (
-		places.filterMode.hasClass('checked')
-		&& !settings.filterMode
-	) {
-		places.filterMode.removeClass('checked');
-	} else
-	if (
-		!places.filterMode.hasClass('checked')
-		&& settings.filterMode		
-	) {
-		places.filterMode.addClass('checked');
-	}
-
-	if (settings.filterMode) {		
-		jobSelectAll();
-		
-/* <production>
-	if ('undefined' != typeof(_gaq)) {
-		_gaq.push(['_trackEvent', 'Filter Mode', 'On']);
-	}
-</production> */
-	} else {
-		checkFeedForFilter();
-		
-/* <production>
-	if ('undefined' != typeof(_gaq)) {
-		_gaq.push(['_trackEvent', 'Filter Mode', 'Off']);
-	}
-</production> */
-	}
-	
-	var jl = joblist.length;
-	if (jl > 0) {
-		joblist[jl - 1].toggleClass('filtered');
-	}
-}
-
 /**
  * @param {jQuery} element
  */

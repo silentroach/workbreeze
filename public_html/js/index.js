@@ -377,7 +377,7 @@ function init() {
 	}
 	
 	if (settings.filterMode) {
-		applyFilterMode();
+		places.filterMode.toggleClass('checked');
 	}
 	
 	var adata = prepareDataForJobs(0);
@@ -487,7 +487,7 @@ function init() {
 	places.filterMode.click(function() {
 		settings.toggleFilterMode();
 		settings.save();
-		applyFilterMode();
+		places.filterMode.toggleClass('checked');		
 	});
 };
 

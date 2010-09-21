@@ -25,23 +25,23 @@ var places = {
 }
 
 var options = {
-	/** @type {number} **/ defJobPageCount: 30,
-	/** @type {number} **/ maxJobPageCount: 30,
-	/** @const **/ maxTitleLength:          75,
-	/** @const **/ checkInterval:           60000,
-	/** @const **/ checkIntervalFiltered:   90000,
-	/** @const **/ siteIconPrefix:          'sico',
-	/** @const **/ animationSpeed:          'slow',
+	/** @type {number} **/  defJobPageCount: 30,
+	/** @type {number} **/  maxJobPageCount: 30,
+	/** @const **/ maxTitleLength:           75,
+	/** @const **/ checkInterval:            60000,
+	/** @const **/ checkIntervalFiltered:    90000,
+	/** @const **/ siteIconPrefix:           'sico',
+	/** @const **/ animationSpeed:           'slow',
 	
-	/** @const **/ classSelected:           'jsel',
-	/** @const **/ classNotSelected:        'jrem',
+	/** @const **/ classSelected:            'jsel',
+	/** @const **/ classNotSelected:         'jrem',
 	
-	/** @const **/ elementSites:            'sites',
-	/** @const **/ elementLang:             'lang',
-	/** @const **/ elementCats:             'cats',
-	/** @const **/ elementKeywords:         'keys',
-	/** @const **/ elementJobStamp:         'jstamp',
-	/** @const **/ elementFilter:           'filter'
+	/** @const **/ elementSites:             'sites',
+	/** @const **/ elementLang:              'lang',
+	/** @const **/ elementCats:              'cats',
+	/** @const **/ elementKeywords:          'keys',
+	/** @const **/ elementJobStamp:          'jstamp',
+	/** @const **/ elementFilter:            'filter'
 }
 
 function checkJobPlace() {
@@ -170,6 +170,13 @@ function popFromQueue() {
 		}
 	
 		tmpEl.prependTo(places.placeJob);
+
+		if (options.windowHidden) {
+			var tmptitle = $('.title', tmpEl).val();
+			var desc     = $('.desc', tmpEl).val();
+
+			notifications.notify(tmptitle, desc);
+		}
 	}
 		
 	tmpEl.show();

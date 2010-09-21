@@ -14,28 +14,19 @@ var workbreeze = workbreeze || [];
  */
 workbreeze.notifications = function() {
 
-	this.enabled = false;
-
-	this.checkEnabled = function() {
-		this.enabled = (
-			'webkitNotifications' in window
-			|| window.webkitNotifications.checkPermission() != 2
-		);
-	}
+	this.enabled = 'webkitNotifications' in window;
 
 	this.init = function() {
-		this.checkEnabled();
-
 		if (!this.enabled)
 			return;
 
 		if (window.webkitNotifications.checkPermission() === 1) {
 			/* <debug> */
-			console.info('requesting permissions for html5 notifications');
+			console.info('permissions are needed');
 			/* </debug> */
 
-			window.webkitNotifications.requestPermission(function() {
-				this.checkEnabled();
+			$(window).one('click', function() {
+				window.webkitNotifications.requestPermission();
 			});
 		}
 	}
@@ -45,12 +36,12 @@ workbreeze.notifications = function() {
 			this.enabled
 			&& window.webkitNotifications.checkPermission() === 0
 		) {
-			var popup = window.webkitNotifications.createNotification(0, title, body);
+			var popup = window.webkitNotifications.createNotification('/img/notification.png', title, body);
 			popup.show();
 
-			setTimeout(function() {
-				popup.cancel();
-			}, 5000);
+//			setTimeout(function() {
+//				popup.cancel();
+//			}, 5000);
 		}
 	}
 
@@ -60,4 +51,3 @@ workbreeze.notifications = function() {
  * @type {workbreeze.notifications}
  */
 var notifications = new workbreeze.notifications();
-notifications.init();

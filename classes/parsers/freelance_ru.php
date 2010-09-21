@@ -22,6 +22,10 @@ class Parser_freelance_ru extends Parser implements IParser {
 		return 'http://www.free-lance.ru';
 	}
 
+	public function getUpdatePeriod() {
+		return 60;  // 1 minute
+	}
+
 	public function getLang() {
 		return Language::RUSSIAN;
 	}

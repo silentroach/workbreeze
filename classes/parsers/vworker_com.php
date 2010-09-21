@@ -21,6 +21,10 @@ class Parser_vworker_com extends Parser implements IParser {
 	public function getUrl() {
 		return 'http://www.vworker.com';
 	}
+
+	public function getUpdatePeriod() {
+		return 60 * 3;   // 3 minutes
+	}
 	
 	public function getLang() {
 		return Language::ENGLISH;

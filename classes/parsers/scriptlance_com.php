@@ -22,6 +22,10 @@ class Parser_scriptlance_com extends Parser implements IParser {
 		return 'http://www.scriptlance.com';
 	}
 	
+	public function getUpdatePeriod() {
+		return 60 * 2; // 2 minutes
+	}
+
 	public function getLang() {
 		return Language::ENGLISH;
 	}

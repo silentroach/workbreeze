@@ -21,6 +21,10 @@ class Parser_freelancer_com extends Parser implements IParser {
 	public function getUrl() {
 		return 'http://www.freelancer.com';
 	}
+
+	public function getUpdatePeriod() {
+		return 60; // 1 minute
+	}
 	
 	public function getLang() {
 		return Language::ENGLISH;

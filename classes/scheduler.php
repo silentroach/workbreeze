@@ -91,9 +91,24 @@ EOF;
 
 		while ($site = $c->getNext()) {					
 			$parser = $this->initParser($site);
-			
+		
+			if (
+				(time() - (int) $site['stamp']) < $parser->getUpdatePeriod()
+			) {
+				continue;
+			}
+
 			echo '[' . date('H:m:s') . '] Process main pages for ' . $site['name'] . "\n";
 			
+			$this->db->sites->update(
+				array('code' => $site['code']),
+				array('$set' => 
+					array(
+						'stamp' => time()
+					)
+				)
+			);
+
 			$parser->processJobList();
 			
 			if ($parser->getQueuedCount() > 0) {

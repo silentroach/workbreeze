@@ -21,6 +21,10 @@ class Parser_weblancer_net extends Parser implements IParser {
 	public function getUrl() {
 		return 'http://www.weblancer.net';
 	}
+
+	public function getUpdatePeriod() {
+		return 60 * 3; // 3 minutes
+	}
 	
 	public function getLang() {
 		return Language::RUSSIAN;

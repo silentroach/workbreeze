@@ -21,6 +21,10 @@ class Parser_getacoder_com extends Parser implements IParser {
 	public function getUrl() {
 		return 'http://www.getacoder.com';
 	}
+
+	public function getUpdatePeriod() {
+		return 60 * 5;  // 5 minutes
+	}
 	
 	public function getLang() {
 		return Language::ENGLISH;

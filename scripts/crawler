@@ -43,6 +43,8 @@ if (file_exists($lockname)) {
 
 file_put_contents($lockname, getmypid());
 
+echo '[' . date('H:m:s') . "] =============================================\n";
+
 if ('joblist' === $action) {
 	$scheduler->processJobList();
 } else

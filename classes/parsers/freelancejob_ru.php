@@ -25,6 +25,10 @@ class Parser_freelancejob_ru extends Parser implements IParser {
 	public function getLang() {
 		return Language::RUSSIAN;
 	}
+
+	public function getUpdatePeriod() {
+		return 60 * 10;  // 10 minutes for update
+	}
 	
 	public function isProxyFied() {
 		return false;

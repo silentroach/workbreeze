@@ -220,7 +220,12 @@ EOF;
 		while (false !== strpos($content, '  ')) {
 			$content = str_replace('  ', ' ', $content);
 		}
-		
+
+		$content = str_replace(' = ', '=', $content);
+		$content = str_replace('; ', ';', $content);
+		$content = str_replace('> <', '><', $content);
+		$content = str_replace('> ', '>', $content);
+	
 		file_put_contents($fname, $content);
 		
 		$out = system('gzip -c9 ' . $fname . ' > ' . $fname . '.gz');

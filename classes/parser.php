@@ -93,15 +93,12 @@ class Parser {
 	}
 	
 	protected function log($info) {
-		$tmp = $this->db->log->findOne($info);
+		$info['stamp'] = time();
+		$this->db->log->insert($info);
 		
-		if (null === $tmp) {
-			$info['stamp'] = time();
-			$this->db->log->insert($info);
+		if (isset($info['msg'])) {
+			echo '[' . date('H:m:s') . '] ' . $info['msg'] . "\n";
 		}
-		
-		if (isset($info['msg']))
-			echo $info['msg'] . "\n";
 	}
 	
 	protected function queueJobLink($jobId, $link) {
@@ -122,7 +119,7 @@ class Parser {
 		if (null != $tmp)
 			return false;
 			
-		echo 'Queueing job [' . $link . "]\n";
+		echo '[' . date('H:m:s') . '] Queueing job [' . $link . "]\n";
 		
 		$info['url'] = $link;
 		$info['rnd'] = rand(1, 10000);
@@ -214,7 +211,7 @@ EOF;
 	protected function addJob($job) {
 		if ($job->insert()) {		
 			$this->generateJobPage($job);
-			echo 'Job ' . $job->getId() . " added\n";
+			echo '[' . date('H:m:s') . '] Job ' . $job->getId() . " added\n";
 			
 			return true;
 		}
@@ -237,7 +234,7 @@ EOF;
 	protected function getRequest($url) {
 		$c = curl_init();
 		
-		echo $url . '... ';
+		echo '[' . date('H:m:s') . '] ' . $url . '... ';
 		
 		$url = str_replace(' ', '%20', $url);
 		

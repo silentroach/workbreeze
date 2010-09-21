@@ -47,7 +47,7 @@ if ('joblist' === $action) {
 	$scheduler->processJobList();
 } else
 if ('queue' === $action) {
-	$scheduler->processQueue();
+       $scheduler->processQueue();
 } else
 if ('rss' === $action) {
 	$scheduler->updateGlobalRSS();

@@ -21,7 +21,7 @@ class Scheduler {
 	}
 
 	public function updateGlobalRSS() {
-		echo "Updating global RSS channel...\n";
+		echo '[' . date('H:m:s') . "] Updating global RSS channel...\n";
 		
 		$sites = $this->db->sites;
 		
@@ -88,11 +88,11 @@ EOF;
 
 	public function processJobList() {
 		$c = $this->db->sites->find();
-		
+
 		while ($site = $c->getNext()) {					
 			$parser = $this->initParser($site);
 			
-			echo 'Process main pages for ' . $site['name'] . "\n";
+			echo '[' . date('H:m:s') . '] Process main pages for ' . $site['name'] . "\n";
 			
 			$parser->processJobList();
 			

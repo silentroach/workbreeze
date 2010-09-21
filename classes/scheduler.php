@@ -93,7 +93,8 @@ EOF;
 			$parser = $this->initParser($site);
 		
 			if (
-				(time() - (int) $site['stamp']) < $parser->getUpdatePeriod()
+				isset($site['stamp'])
+				&& (time() - (int) $site['stamp']) < $parser->getUpdatePeriod() - 1
 			) {
 				continue;
 			}

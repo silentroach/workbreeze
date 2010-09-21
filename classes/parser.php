@@ -169,6 +169,18 @@ class Parser {
 				$title .= ' [ ' . sprintf($currency, $money[0]) . ' ]';
 			}
 		}
+
+		switch ($this->getLang()) {
+			case Language::RUSSIAN:
+				$cl = 'ru';
+				break;
+			case Language::ENGLISH:
+				$cl = 'en';
+				break;
+			default:
+				$cl = 'ru,en';
+				break;
+		}
 	
 		$content = <<<EOF
 <!DOCTYPE html>
@@ -177,6 +189,7 @@ class Parser {
 
         <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	<meta name="description" content="Workbreeze - {$job->getTitle()}, {$this->getSiteName()}" />
+	<meta http-equiv="Content-Language" Content="{$cl}" />
 
         <link rel="stylesheet" href="/css/main.css" type="text/css" />
 

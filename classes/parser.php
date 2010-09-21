@@ -174,8 +174,11 @@ class Parser {
         <title>WorkBreeze - {$title}</title>
 
         <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta name="description" content="Workbreeze - {$job->getTitle()}, {$this->getSiteName()}" />
 
         <link rel="stylesheet" href="/css/main.css" type="text/css" />
+
+	<link rel="home" href="/" /> 
 <body>
 
 <div id="gads">

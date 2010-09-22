@@ -11,11 +11,21 @@ desc "Lets begin (${dt})"
 desc 'Removing temp folder contents'
 rm -rf ./tmp/*
 
-desc 'Preparing'
+desc 'Syncing'
 echo 'rsync'
 rsync -rupEogtz --exclude-from=./excludes ../../ tmp/ > /dev/null
 
-echo 'making folders and links'
+desc 'PHP stripper'
+for File in `find tmp/ -name '*.php'`; do 
+	echo ${File}
+
+	php -w ${File} > ${File}.tmp
+
+	mv ${File}.tmp ${File}
+done
+
+desc 'Links and folders'
+
 mkdir tmp/public_html/js
 mkdir tmp/public_html/css
 ln -s /srv/bstorage/jobs tmp/public_html/jobs

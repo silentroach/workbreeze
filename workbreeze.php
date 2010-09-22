@@ -5,12 +5,16 @@ return new Workbreeze;
 class Workbreeze extends AppInstance {
 
 	private $modules = array();
+	private $database;
 
 	public function init() {
 		$root = dirname(__FILE__) . DIRECTORY_SEPARATOR;
 
 		require($root . 'defines.php');
 		require(PATH_CLASSES . 'module.php');
+
+		$connection = new Mongo();
+		$this->database = $connection->selectDB(DB);
 	}
 
 	public function onReady() {
@@ -23,6 +27,10 @@ class Workbreeze extends AppInstance {
 
 	public function beginRequest($req,$upstream) {
 		return new WorkbreezeRequest($this, $upstream, $req);
+	}
+
+	public function getDatabase() {
+                return $this->database;
 	}
 
 	public function getModule($module) {
@@ -38,7 +46,7 @@ class Workbreeze extends AppInstance {
 
 			require($mname);
 
-			$this->modules[$module] = new $className();
+			$this->modules[$module] = new $className($this);
 		}
 
 		return $this->modules[$module];

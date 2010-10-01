@@ -115,7 +115,7 @@ class Language {
 		}
 		
 		self::$lang = $lng;
-		setcookie('lang', $lng, time() + 60 * 60 * 24); // language cookie for 1 hour
+		//setcookie('lang', $lng, time() + 60 * 60 * 24); // language cookie for 1 hour
 		return $lng;	
 	}
 

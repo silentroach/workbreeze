@@ -259,14 +259,14 @@ class Job {
 	}
 
 	public function setDescription($text = '') {
-		$tmp = wb_html_prepare($text);
+		$tmp = Text::HTMLPrepare($text);
 	
 		$this->description = $tmp;
 
 		// stemmer
 		$tmp .= ' ' . $this->getTitle();
-		$words = wb_words($tmp);
-		$this->stem = wb_stem($words);
+		$words = Text::ExtractWords($tmp);
+		$this->stem = Text::Stem($words);
 		// /stemmer
 		
 		if (preg_match('/([^ \n\r]+[ \n\r]+){20}/s', $this->description, $match))

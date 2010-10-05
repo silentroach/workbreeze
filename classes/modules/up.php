@@ -67,11 +67,11 @@ class MUp extends Module {
 		);
 	}
 
-	private function getJobs($r, $stamp) {
+	private function getJobs($stamp) {
 		$db = $this->db();
-		
+	
 		$c = $db->jobs;
-		
+	
 		$jobs = array();
 		
 		if ($stamp < 0) {
@@ -86,8 +86,8 @@ class MUp extends Module {
 			'stamp' => $st
 		);
 		
-		if (isset($r->attrs->post['filter_sites'])) {
-			$sites = explode(',', $r->attrs->post['filter_sites']);
+		if (isset($_POST['filter_sites'])) {
+			$sites = explode(',', $_POST['filter_sites']);
 			
 			foreach($sites as $key => &$val) {
 				$val = intval($val);
@@ -107,8 +107,8 @@ class MUp extends Module {
 			}
 		}
 		
-		if (isset($r->attrs->post['filter_cats'])) {
-			$cats = explode(',', $r->attrs->post['filter_cats']);
+		if (isset($_POST['filter_cats'])) {
+			$cats = explode(',', $_POST['filter_cats']);
 			
 			foreach($cats as $key => &$val) {
 				$val = intval($val);
@@ -128,9 +128,9 @@ class MUp extends Module {
 			}
 		}
 		
-		if (isset($r->attrs->post['filter_keys'])) {
-			$val = wb_words($r->attrs->post['filter_keys']);
-			$val = wb_stem($val);
+		if (isset($_POST['filter_keys'])) {
+			$val = Text::ExtractWords($_POST['filter_keys']);
+			$val = Text::Stem($val);
 			
 			if (count($val)) {
 				$filter['stem'] = array(
@@ -185,14 +185,14 @@ class MUp extends Module {
 		return $jobs;
 	}
 	
-	private function getIntParam($request, $name) {
-		if (!isset($request->attrs->post[$name]))
+	private function getIntParam($name) {
+		if (!isset($_POST[$name]))
 			return false;
 			
-		return intval($request->attrs->post[$name]);
+		return intval($_POST[$name]);
 	}
 
-	protected function runModule($request, $query) {
+	protected function runModule($query) {
 		if (count($query) != 0) {
 			return false;
 		}
@@ -200,7 +200,7 @@ class MUp extends Module {
 		$r = array();
 
 		// check for outdated language pack
-		$vlang = $this->getIntParam($request, 'lang');
+		$vlang = $this->getIntParam('lang');
 		if (false !== $vlang) {
 			$lang = $this->getLang($vlang);
 			
@@ -208,9 +208,9 @@ class MUp extends Module {
 				$r['l'] = $lang;
 			}
 		}
-		
+	
 		// check for outdates sites
-		$vsites = $this->getIntParam($request, 'sites');
+		$vsites = $this->getIntParam('sites');
 		if (false !== $vsites) {
 			$sites = $this->getSites($vsites);
 			
@@ -220,7 +220,7 @@ class MUp extends Module {
 		}
 
 		// check for outdates categories
-		$vcats = $this->getIntParam($request, 'cats');
+		$vcats = $this->getIntParam('cats');
 		if (false !== $vcats) {
 			$cats = $this->getCats($vcats);
 			
@@ -230,9 +230,9 @@ class MUp extends Module {
 		}
 		
 		// check for jobs
-		$jstamp = $this->getIntParam($request, 'jstamp');
+		$jstamp = $this->getIntParam('jstamp');
 		if (false !== $jstamp) {
-			$jobs = $this->getJobs($request, $jstamp);
+			$jobs = $this->getJobs($jstamp);
 			
 			if ($jobs) {
 				$r['j'] = $jobs;

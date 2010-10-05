@@ -95,7 +95,7 @@ class Text {
 			if (mb_strlen($word) < 3)
 				continue;
 			
-			$word = wb_stem_prepare_word($word);
+			$word = self::PrepareWordForStemming($word);
 
 			// todo: refactor
 			
@@ -110,7 +110,7 @@ class Text {
 			if (mb_strlen($word) < 3)
 				continue;
 
-			$word = stem_prepare_word($word);
+			$word = self::PrepareWordForStemming($word);
 
 			if (!isset($ex[$word])) {
 				$result['en_' . $i++] = $word;

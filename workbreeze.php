@@ -1,6 +1,42 @@
 <?php
 
-return new Workbreeze;
+class WorkbreezeRequest extends HTTPRequest {
+	
+	public function run() {
+		if (
+			!isset($_SERVER['DOCUMENT_URI'])
+			|| !isset($_SERVER['REQUEST_URI'])
+		) {
+			$this->status(404);
+			return;
+		}
+
+		$uri = isset($_SERVER['DOCUMENT_URI']) ? $_SERVER['DOCUMENT_URI'] : $_SERVER['REQUEST_URI'];
+
+		$params = explode('?', $uri);
+
+		$query = explode('/', array_shift($params));
+
+		array_shift($query);
+
+		$module = array_shift($query);
+
+		if (null === $module) {
+			$this->status(404);
+			return;
+		}
+
+		$m = $this->appInstance->getModule($module);
+
+		if (!$m) {
+			$this->status(404);
+			return;
+		}
+
+		$m->run($query);
+	}
+
+}
 
 class Workbreeze extends AppInstance {
 
@@ -30,7 +66,7 @@ class Workbreeze extends AppInstance {
 	}
 
 	public function getDatabase() {
-                return $this->database;
+		return $this->database;
 	}
 
 	public function getModule($module) {
@@ -50,46 +86,5 @@ class Workbreeze extends AppInstance {
 		}
 
 		return $this->modules[$module];
-	}
-}
-
-class WorkbreezeRequest extends Request {
-	
-	public function run() {
-		$srv = $this->attrs->server;
-
-		if (
-			!isset($srv['DOCUMENT_URI'])
-			|| !isset($srv['REQUEST_URI'])
-		) {
-			$this->status(404);
-			return Request::DONE;
-		}
-
-		$uri = isset($srv['DOCUMENT_URI']) ? $srv['DOCUMENT_URI'] : $srv['REQUEST_URI'];
-
-		$params = explode('?', $uri);
-
-		$query = explode('/', array_shift($params));
-
-		array_shift($query);
-
-		$module = array_shift($query);
-
-		if (null === $module) {
-			$this->status(404);
-			return Request::DONE;
-		}
-
-		$m = $this->appInstance->getModule($module);
-
-		if (!$m) {
-			$this->status(404);
-			return Request::DONE;
-		}
-
-		$m->run($this, $query);
-
-		return Request::DONE;
 	}
 }

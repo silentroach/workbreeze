@@ -291,6 +291,14 @@ function parseJobs(jobs) {
 	}
 }
 
+function streamToggle() {
+	if (paused) {
+		streamPlay();
+	} else {
+		streamPause();
+	}
+}
+
 function streamPause() {
 /* <production>
 	if ('undefined' != typeof(_gaq)) {
@@ -452,8 +460,8 @@ function init() {
 	places.buttonPlay  = $('#play');
 	places.buttonPause = $('#pause');
 	
-	places.buttonPause.click(streamPause);
-	places.buttonPlay.click(streamPlay);
+	places.buttonPause.click(streamToggle);
+	places.buttonPlay.click(streamToggle);
 	
 	places.logo.ajaxStart(function() {
 		$(this).animate({'opacity': 0.7}, options.animationSpeed);

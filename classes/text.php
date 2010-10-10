@@ -126,8 +126,8 @@ class Text {
 		$ex = array();
 
 		foreach($words as $key => $word) {
-			if (isset(self::$stemCache[$key])) {
-				$tmp = self::$stemCache[$key];
+			if (isset(self::$stemCache[$word])) {
+				$tmp = self::$stemCache[$word];
 			} else {		
 				if (substr($key, 0, 2) == 'ru') {
 					$tmp = stem_russian_unicode($word);
@@ -135,7 +135,7 @@ class Text {
 					$tmp = stem_english($word);
 				}
 				
-				self::$stemCache[$key] = $tmp;
+				self::$stemCache[$word] = $tmp;
 			}
 		
 			if (!isset($ex[$tmp])) {

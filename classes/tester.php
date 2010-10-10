@@ -20,8 +20,8 @@ class Tester {
 		$text = trim(file_get_contents($file));
 		$out  = trim(file_get_contents($outname));
 		
-		$tmp = wb_html_prepare($text);
-		$tmpw = wb_words($tmp);
+		$tmp = Text::HTMLPrepare($text);
+		$tmpw = Text::ExtractWords($tmp);
 	
 		$check1 = str_replace("\n", '<br />', $tmp);
 	
@@ -37,9 +37,9 @@ class Tester {
 		
 		$outname = $i['dirname'] . DIRECTORY_SEPARATOR . $i['filename'] . '.st';
 		$out = trim(file_get_contents($outname));
-		
-		$check2 = wb_stem($tmpw);
-		
+
+		$check2 = Text::Stem($tmpw);
+
 		$text = implode($check2, ', ');
 		
 		if ($text != $out) {

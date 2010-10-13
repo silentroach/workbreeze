@@ -1,5 +1,10 @@
 <?php
 
+$root = dirname(__FILE__) . DIRECTORY_SEPARATOR;
+
+require($root . 'defines.php');
+require(PATH_CLASSES . 'module.php');
+
 class WorkbreezeRequest extends HTTPRequest {
 	
 	public function run() {
@@ -44,17 +49,8 @@ class Workbreeze extends AppInstance {
 	private $database;
 
 	public function init() {
-		$root = dirname(__FILE__) . DIRECTORY_SEPARATOR;
-
-		require($root . 'defines.php');
-		require(PATH_CLASSES . 'module.php');
-
 		$connection = new Mongo();
 		$this->database = $connection->selectDB(DB);
-	}
-
-	public function onReady() {
-	
 	}
 
 	public function onShutdown() {
@@ -70,6 +66,8 @@ class Workbreeze extends AppInstance {
 	}
 
 	public function getModule($module) {
+		$module = strtolower($module);
+
 		if (!isset($this->modules[$module])) {
 			$mname = PATH_CLASSES . 'modules' . DIRECTORY_SEPARATOR . $module . '.php';
 
@@ -80,7 +78,7 @@ class Workbreeze extends AppInstance {
 
 			$className = 'M' . ucfirst($module);
 
-			require($mname);
+			require_once($mname); // O.o
 
 			$this->modules[$module] = new $className($this);
 		}

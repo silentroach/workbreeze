@@ -42,7 +42,7 @@ echo 'preparing js...'
 ./jsprepare ../../public_html/js/index.js      > tmp/8.js
 
 echo 'javascript...'
-java -jar tmp/other/utils/compiler.jar --js tmp/1.js --js tmp/2.js --js tmp/3.js --js tmp/4.js --js tmp/5.js --js tmp/6.js --js tmp/7.js --js tmp/8.js --externs ../../public_html/js/jquery.js --compilation_level ADVANCED_OPTIMIZATIONS --warning_level QUIET > tmp/public_html/js/index.js
+java -jar tmp/other/utils/compiler.jar --js tmp/1.js --js tmp/2.js --js tmp/3.js --js tmp/4.js --js tmp/5.js --js tmp/6.js --js tmp/7.js --js tmp/8.js --externs ../../public_html/js/jquery.js --compilation_level WHITESPACE_ONLY --warning_level QUIET > tmp/public_html/js/index.js
 gzip -c9 tmp/public_html/js/index.js > tmp/public_html/js/index.js.gz
 
 rm tmp/{1,2,3,4,5,6,7,8}.js

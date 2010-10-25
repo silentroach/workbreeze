@@ -13,20 +13,22 @@ var workbreeze = workbreeze || [];
  * @constructor
  */
 workbreeze.storage = function() {
+	var self = this;
+
 	/**
 	 * Is Local Storage enabled in this browser?
 	 * @type {Boolean}
 	 * @private
 	 */
-	this.enabled = ('localStorage' in window) && window['localStorage'] !== null;
+	var enabled = ('localStorage' in window) && window['localStorage'] !== null;
 	
 	/**
 	 * Get object from storage
 	 * @param {!string} itemName Storage item name
 	 * @return {(Object|boolean)}
 	 */
-	this.get = function(itemName) {
-		if (!this.enabled)
+	self.get = function(itemName) {
+		if (!enabled)
 			return false;
 
 		try {
@@ -42,8 +44,8 @@ workbreeze.storage = function() {
 	 * @param {(Object|Array)} object Object to store
 	 * @param {?number} version Version of object
 	 */
-	this.set = function(itemName, object, version) {
-		if (!this.enabled)
+	self.set = function(itemName, object, version) {
+		if (!enabled)
 			return;
 
 		var str = JSON.stringify((undefined === version ? object : [version, object]));
@@ -56,11 +58,11 @@ workbreeze.storage = function() {
 	 * @param {!string} itemName Storage item name
 	 * @return {number}
 	 */
-	this.getVersion = function(itemName) {
-		if (!this.enabled)
+	self.getVersion = function(itemName) {
+		if (!enabled)
 			return 0;
 		
-		var item = this.get(itemName);
+		var item = self.get(itemName);
 
 		if (
 			!item

@@ -20,7 +20,7 @@ class Job {
 	const CAT_ADVERTISING = 8;
 	const CAT_SYSADM      = 9;
 	
-	private $catlinks = array(
+	private static $catlinks = array(
 		self::CAT_OTHER       => array(
 			array('other', 'другое', 'прочее')
 		),
@@ -171,7 +171,7 @@ class Job {
 		
 		$cats = array();
 		
-		foreach ($this->catlinks as $cat => $wa) {
+		foreach (self::$catlinks as $cat => $wa) {
 			$words = array_shift($wa);
 			
 			$foundcat = -1;

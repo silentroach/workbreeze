@@ -180,6 +180,13 @@ function popFromQueue() {
 	}
 		
 	tmpEl.show();
+
+	// make job normal
+	setTimeout( function() {
+		tmpEl.animate( {
+			'margin-left': '0px'
+		}, 'slow' );
+	}, 30000 );
 	
 	if (!settings.filterMode) {
 		checkJobForFilter(tmpEl);
@@ -211,6 +218,10 @@ function addJob(job) {
 			'stamp': abstemp,
 			'site': job.site,
 			'cats': job.cats.join(',')
+		} )
+		// set new jobs a little offset
+		.css( {
+			'margin-left': '-10px'
 		} )
 		.hide();
 

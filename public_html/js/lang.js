@@ -19,18 +19,7 @@ function checkTimeVal(i) {
  * @return {string}
  */
 function humanizedTime(stamp) {
-	/** @const **/ var one_day = 1000 * 60 * 60 * 24;
-
-	var curdate = new Date();
-	var tspan = curdate.getTimezoneOffset() + 240;
-
-	if (tspan != 0) {
-		stamp = new Date(stamp + tspan * 1000);
-	}
-	
-	var timestr = checkTimeVal(stamp.getHours()) + ':' + checkTimeVal(stamp.getMinutes());
-	
-	return timestr;
+	return checkTimeVal(stamp.getHours()) + ':' + checkTimeVal(stamp.getMinutes());
 }
 
 /**

@@ -5,7 +5,9 @@ var queueTimer;
 var newTimer;
 var filterTimer;
 
+/** @type {Boolean} **/ var updating = false;
 /** @type {Boolean} **/ var updatingBottom = false;
+
 /** @type {Boolean} **/ var helpVisible = false;
 /** @type {number} **/  var lastBottom = 0;
 /** @type {Boolean} **/ var paused = false;
@@ -49,6 +51,57 @@ var locale = new workbreeze.locale( {
 	storagePath: options.elementLang
 } );
 
+/**
+ * Ajax /up caller
+ * @param {Object} s Settings
+ */
+function up(s) {
+	if (updating) {
+		// see ya next time
+		setTimeout(function() {
+			up(s);
+		}, 30000)
+		
+		return;
+	}
+
+	updating = true;
+
+	$.ajax({
+		url: '/up',
+		type: 'POST',
+		data: s.data,
+		dataType: 'json',
+		cache: false,
+		success: function(data) {
+			updating = false;
+		
+			if (s.success) {
+				s.success(data);
+			}
+			
+			if (s.ping) {
+				s.ping();
+			}
+		},
+		error: function(request, status, error) {
+			updating = false;
+			
+/* <debug> */
+			console.error(request.statusText, error);
+/* </debug> */
+			
+			if (s.error) {
+				s.error();
+			}
+			
+			if (s.ping) {
+				s.ping();
+			}
+		}
+	});
+}
+
 function checkJobPlace() {
 	while (joblist.length > options.maxJobPageCount) {
 /* <debug> */
@@ -91,7 +144,7 @@ function prepareDataForJobs(stamp) {
 function checkNewJobs() {
 	var adata = prepareDataForJobs(lastStamp);
 
-	$.up({
+	up( {
 		data: adata,
 		success: function(data) {
 			if (null == data) 
@@ -109,7 +162,7 @@ function checkNewJobs() {
 		error: function() {
 			setNewTimer(options.checkInterval * 2);
 		}
-	});
+	} );
 }
 
 function dropQueueTimer() {
@@ -362,7 +415,7 @@ function updateBottom() {
 
 	var adata = prepareDataForJobs(-firstStamp);
 
-	$.up({
+	up({
 		data: adata,
 		success: function(data) {
 			if (null === data) {
@@ -405,7 +458,7 @@ function init() {
 	adata[options.elementSites]    = getSitesVersion();
 	adata[options.elementCats]     = getCatsVersion();
 	
-	$.up({
+	up({
 		data: adata,
 		success: function(data) {
 			$('html, body').css({scrollTop:0});

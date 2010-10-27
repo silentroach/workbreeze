@@ -243,7 +243,7 @@ function popFromQueue() {
 	setTimeout( function() {
 		tmpEl.animate( {
 			'margin-left': '0px'
-		}, 'slow' );
+		}, options.animationSpeed );
 	}, 30000 );
 	
 	if (!settings.filterMode) {
@@ -538,7 +538,7 @@ function init() {
 		$('.help').animate({'opacity': 'toggle', 'height': 'toggle'}, options.animationSpeed);
 		
 		if (!helpVisible) {
-			$('html, body').animate({'scrollTop':0}, 'slow');
+			$('html, body').animate({'scrollTop':0}, options.animationSpeed);
 		}
 		
 		helpVisible = !helpVisible;

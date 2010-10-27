@@ -7,7 +7,7 @@ body {
 }
 
 body, input {
-	font-family: "Trebuchet MS", "Lucida Sans", Tahoma, sans-serif;
+	font-family: Ubuntu, "Lucida Sans", "Trebuchet MS", Tahoma, sans-serif;
 	font-size: 12pt;
 }
 
@@ -30,9 +30,9 @@ input {
 }
 
 #gads {
-        float: right;
-        padding-left: 2em;
-        padding-bottom: 2em;
+	float: right;
+	padding-left: 2em;
+	padding-bottom: 2em;
 }
 
 #logo {

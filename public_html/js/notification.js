@@ -14,10 +14,12 @@ var workbreeze = workbreeze || [];
  */
 workbreeze.notifications = function() {
 
-	this.enabled = 'webkitNotifications' in window;
+	var self = this;
 
-	this.init = function() {
-		if (!this.enabled)
+	var enabled = 'webkitNotifications' in window;
+
+	self.init = function() {
+		if (!enabled)
 			return;
 
 		if (window.webkitNotifications.checkPermission() === 1) {
@@ -31,9 +33,9 @@ workbreeze.notifications = function() {
 		}
 	}
 
-	this.notify = function(title, body) {
+	self.notify = function(title, body) {
 		if (
-			this.enabled
+			enabled
 			&& window.webkitNotifications.checkPermission() === 0
 		) {
 			var popup = window.webkitNotifications.createNotification('/img/notification.png', title, body);

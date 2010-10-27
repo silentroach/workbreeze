@@ -56,6 +56,8 @@ echo 'index page'
 ./indexprepare > tmp/public_html/index.html
 gzip -c9 tmp/public_html/index.html > tmp/public_html/index.html.gz
 
+gzip -c9 tmp/public_html/favicon.ico > tmp/public_html/favicon.ico.gz
+
 echo 'debug in defines'
 sed 's/DEBUG/UNDEBUG/' ../../defines.php > tmp/defines.php
 echo 'nginx...'

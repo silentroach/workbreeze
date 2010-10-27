@@ -141,6 +141,10 @@ class Parser_freelance_ru extends Parser implements IParser {
 			} else {
 				return false;
 			}
+			
+			if ($val < 1) {
+				return false;
+			}
 
 			return array(
 				$val,

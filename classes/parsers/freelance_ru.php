@@ -87,8 +87,12 @@ class Parser_freelance_ru extends Parser implements IParser {
 		}	
 		
 		// free-lance.ru out script
-		if (preg_match_all('/<a href="\/a.php\?href=(.*?)"(.*?)>(.*?)<\/a>/sui', $desc, $matches)) {
+		if (preg_match_all('/<a href=(.*?)\/a.php\?href=(.*?)"(.*?)>(.*?)<\/a>/sui', $desc, $matches)) {
 			$targets = array_shift($matches);
+			
+			// offset before a.php
+			array_shift($matches);
+			
 			$urls = array_shift($matches);
 			
 			array_shift($matches);
@@ -125,21 +129,23 @@ class Parser_freelance_ru extends Parser implements IParser {
 			preg_match('/Бюджет: (.*?)&nbsp;(.*?)</siu', $content, $matches)
 			&& 3 == count($matches)
 		) {
-			switch ($matches[2]) {
-				case 'Р.':
-					$currency = Job::CUR_RUBLE;
-					break;
+			array_shift($matches);
+
+			if ('Р.' === $matches[1]) {
+				$currency = Job::CUR_RUBLE;
+				$val = $matches[0];
+			} else
+			if ('$' === $matches[0]) {
+				$currency = Job::CUR_DOLLAR;
+				$val = $matches[1];
+			} else {
+				return false;
 			}
-			
-			if (
-				isset($currency)
-				&& $matches[1] != '0'
-			) {
-				return array(
-					$matches[1],
-					$currency
-				);
-			}
+
+			return array(
+				$val,
+				$currency
+			);
 		}
 		
 		return false;

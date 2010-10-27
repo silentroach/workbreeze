@@ -2,8 +2,7 @@
 
 $root = dirname(__FILE__) . DIRECTORY_SEPARATOR;
 
-require($root . 'defines.php');
-require(PATH_CLASSES . 'module.php');
+require $root . 'bootstrap.php';
 
 class WorkbreezeRequest extends HTTPRequest {
 	
@@ -69,16 +68,12 @@ class Workbreeze extends AppInstance {
 		$module = strtolower($module);
 
 		if (!isset($this->modules[$module])) {
-			$mname = PATH_CLASSES . 'modules' . DIRECTORY_SEPARATOR . $module . '.php';
+			$className = 'M' . ucfirst($module);
 
-			if (!file_exists($mname)) {
+			if (!class_exists($className)) {
         			$this->modules[$module] = false;
 				return false;
 			}
-
-			$className = 'M' . ucfirst($module);
-
-			require_once($mname); // O.o
 
 			$this->modules[$module] = new $className($this);
 		}

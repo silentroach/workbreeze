@@ -1,8 +1,7 @@
 #!/usr/bin/php
 <?php
 
-require('../defines.php');
-require(PATH_CLASSES . 'parser.php');
+require dirname(__DIR__) . DIRECTORY_SEPARATOR . 'bootstrap.php';
 require('_replacer.php');
 
 $cssfile = PATH_PUBLIC . 'css' . DIRECTORY_SEPARATOR . 'main.css';
@@ -22,8 +21,6 @@ $parsers = glob(PATH_CLASSES . 'parsers' . DIRECTORY_SEPARATOR . '*.php');
 $icons = array();
 
 foreach($parsers as $parser) {
-        require($parser);
-
         $pinfo = pathinfo($parser);
 
         $className = 'Parser_' . $pinfo['filename'];

@@ -1,8 +1,5 @@
 <?php
 
-require(PATH_CLASSES . 'job.php');
-require_once(PATH_CLASSES . 'language.php');
-
 interface IParser {
 	public function getSiteCode();
 	public function getSiteName();

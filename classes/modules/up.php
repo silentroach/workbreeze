@@ -1,7 +1,5 @@
 <?php
 
-require dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'job.php';
-
 class MUp extends Module {
 
 	const VSITES = 5;

@@ -1,7 +1,5 @@
 <?php
 
-require_once PATH_CLASSES . 'text.php';
-
 class Job {
 	
 	const CUR_RUBLE  = 0;
@@ -39,7 +37,7 @@ class Job {
 		self::CAT_PROGRAMMING => array(
 			array(
 				'программир', 'programm', 'разраб', 'software', 'delphi', 'c++', 'visual basic',
-				'development', 'cocoa', 'obj-c', 'objective-c', 'java'),
+				'development', 'cocoa', 'obj-c', 'objective-c', 'java', 'ipad', 'iphone'),
 			array('веб', 'web')
 		),
 		self::CAT_WEBPROG     => array(
@@ -54,7 +52,7 @@ class Job {
 			array('перевод', 'translat')
 		),
 		self::CAT_TEXT        => array(
-			array('текст', 'рерайтинг', 'text', 'writing', 'статьи', 'обзор', 'реферат', 'диплом', 'posting')
+			array('текст', 'рерайтинг', 'text', 'writing', 'статьи', 'обзор', 'реферат', 'диплом', 'posting', 'data-process')
 		),
 		self::CAT_ADVERTISING => array(
 			array('реклам', 'advertising', 'seo', 'раскрутка', 'маркетинг', 'marketing', 'social')

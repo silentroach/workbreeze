@@ -1,7 +1,5 @@
 <?php
 
-require(PATH_CLASSES . DIRECTORY_SEPARATOR . 'parser.php');
-
 class Tester {
 
 	private $db;
@@ -137,8 +135,6 @@ class Tester {
 		foreach($s as $site) {
 			$file  = $site['script'];
 			$class = $site['class'];
-			
-			require(PATH_CLASSES . DIRECTORY_SEPARATOR . 'parsers' . DIRECTORY_SEPARATOR . $file);
 			
 			$parser = new $class($this->db);
 			

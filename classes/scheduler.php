@@ -1,7 +1,5 @@
 <?
 
-require(PATH_CLASSES . 'parser.php');
-
 class Scheduler {
 
 	private $db;
@@ -13,7 +11,6 @@ class Scheduler {
 	
 	private function initParser($info) {
 		if (!isset($this->parsers[$info['code']])) {	
-			require('parsers/' . $info['script']);	
 			$this->parsers[$info['code']] = new $info['class']($this->db);
 		}
 		

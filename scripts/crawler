@@ -1,11 +1,7 @@
 #!/usr/bin/php
 <?php
 
-// something like config
-require('../defines.php');
-
-// requiring helpers
-require(PATH_CLASSES . 'scheduler.php');
+require dirname(__DIR__) . DIRECTORY_SEPARATOR . 'bootstrap.php';
 
 // initialize mongo connection
 try {

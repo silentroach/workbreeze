@@ -32,18 +32,6 @@ $.up = function(s) {
 			if (s.ping) {
 				s.ping();
 			}
-			
-/* <production>
-			updateCount++;
-			
-			if (
-				updateCount >= 10
-				&& 'undefined' != typeof(_gaq)
-			) {
-				_gaq.push(['_trackEvent', 'Stream', '10 updates']);
-				updateCount = 0;
-			}
-</production> */			
 		},
 		error: function(request, status, error) {
 			updating = false;

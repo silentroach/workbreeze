@@ -311,12 +311,6 @@ function streamToggle() {
 }
 
 function streamPause() {
-/* <production>
-	if ('undefined' != typeof(_gaq)) {
-		_gaq.push(['_trackEvent', 'Stream', 'Pause']);
-	}
-</production> */
-
 	places.buttonPause.slideUp(options.animationSpeed);
 	places.buttonPlay.slideDown(options.animationSpeed);
 
@@ -336,12 +330,6 @@ function streamPlay() {
 
 	streamAutoPause = false;
 	paused = false;
-
-/* <production>
-	if ('undefined' != typeof(_gaq)) {
-		_gaq.push(['_trackEvent', 'Stream', 'Resume']);
-	}
-</production> */
 
 	places.buttonPlay.slideUp(options.animationSpeed);
 	places.buttonPause.slideDown(options.animationSpeed);

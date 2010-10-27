@@ -254,7 +254,7 @@ EOF;
 		return $this->afterRequest($data);
 	}
 
-	protected function getRequest($url) {
+	protected function getRequest($url, $headers = array()) {
 		$c = curl_init();
 		
 		echo '[' . date('H:m:s') . '] ' . $url . '... ';
@@ -265,6 +265,10 @@ EOF;
 		curl_setopt($c, CURLOPT_USERAGENT, Parser::Agent);
 		curl_setopt($c, CURLOPT_ENCODING, 'gzip');
 		curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
+		
+		if (0 !== sizeof($headers)) {
+			curl_setopt($c, CURLOPT_HTTPHEADER, $headers);
+		}
 		
 		if (
 			$this->isProxyfied()

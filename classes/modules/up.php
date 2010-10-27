@@ -4,7 +4,7 @@ require dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'job.php';
 
 class MUp extends Module {
 
-	const VSITES = 4;
+	const VSITES = 5;
 	const VCATS  = 1;
 	
 	private function getLang($ver = 0) {

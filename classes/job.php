@@ -22,7 +22,7 @@ class Job {
 	
 	private static $catlinks = array(
 		self::CAT_OTHER       => array(
-			array('other', 'другое', 'прочее')
+			array('other', 'другое', 'прочее', 'менеджмент')
 		),
 		self::CAT_AUDIOVIDEO  => array(
 			array('аудио', 'звук', 'audio', 'sound', 'видео', 'клип', 'video', 'clip', 'анимация')
@@ -46,7 +46,8 @@ class Job {
 			array(
 				'скрипт', 'веб-разр', 'верстк', 'веб-прило', 'разработка сайт', 'script', 'web-prog', 
 				'webprog', 'веб-программ', 'php', 'asp', 'wordpress', 'joomla', 'ajax', 'javascript', 
-				'ruby', 'ecommerce', 'создание сайт', 'системы админист', 'drupal', 'framework'
+				'ruby', 'ecommerce', 'создание сайт', 'системы админист', 'drupal', 'framework', 'web prog',
+				'web devel'
 			)
 		),
 		self::CAT_TRANSLATE   => array(

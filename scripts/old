@@ -11,8 +11,8 @@ $db = $mongo->$dbname;
 
 $jobs = $db->jobs;
 
-// one week for jobs
-$t = time() - 60 * 60 * 24 * 7;
+// half a year for job offers
+$t = time() - 60 * 60 * 24 * 30 * 6;
 
 $jc = $jobs->find(
 	array('stamp' => array(

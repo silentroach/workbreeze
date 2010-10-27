@@ -38,8 +38,9 @@ function loadCats(val) {
 
 /**
  * Init cats info
+ * @param {!workbreeze.locale} locale Temporary (!) locale item
  */
-function initCats() {
+function initCats(locale) {
 	var cplace = $('#categories');
 	var cempty = settings.selcats.length == 0;
 	
@@ -47,7 +48,7 @@ function initCats() {
 		var cat = cats[i];
 
 		var sp = $('<span></span>')
-			.html(langVal(cat[1]));
+			.html(locale.translate(cat[1]));
 
 		var li = $('<li></li>')
 			.addClass('checkable')

@@ -48,8 +48,3 @@ workbreeze.notifications = function() {
 	}
 
 }
-
-/**
- * @type {workbreeze.notifications}
- */
-var notifications = new workbreeze.notifications();

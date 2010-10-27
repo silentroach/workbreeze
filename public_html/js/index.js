@@ -44,6 +44,11 @@ var options = {
 	/** @const **/ elementFilter:            'filter'
 }
 
+var locale = new workbreeze.locale( {
+	storage: storage,
+	storagePath: options.elementLang
+} );
+
 function checkJobPlace() {
 	while (joblist.length > options.maxJobPageCount) {
 /* <debug> */
@@ -242,7 +247,7 @@ function addJob(job) {
 		.addClass(options.siteIconPrefix + '_' + sites[job.site][0])
 		.attr({
 			'href': '/jobs/' + sites[job.site][1] + '/' + job.id + '.html',
-			'title': job.title + ' ' + langVal('on') + ' ' + sites[job.site][2]
+			'title': job.title + ' ' + locale.translate('on') + ' ' + sites[job.site][2]
 		})
 		.html(htmltitle)
 		.appendTo($('li.title', jobEl));
@@ -251,7 +256,7 @@ function addJob(job) {
 	
 	var stmp = new Date(abstemp * 1000);
 	
-	$('li.time', jobEl).html(humanizedTime(stmp));
+	$('li.time', jobEl).html(locale.timeString(stmp));
 
 	if (undefined != job.money) {
 		var fmt = money[job.currency];
@@ -396,7 +401,7 @@ function init() {
 	
 	var adata = prepareDataForJobs(0);
 	
-	adata[options.elementLang]     = getLangVersion();
+	adata[options.elementLang]     = locale.getLocalVersion();
 	adata[options.elementSites]    = getSitesVersion();
 	adata[options.elementCats]     = getCatsVersion();
 	
@@ -414,7 +419,7 @@ function init() {
 /* <debug> */
 				console.info('New lang pack');
 /* </debug> */
-				loadLang(data['l']);
+				locale.load(data['l']);
 			}
 			
 			if ('c' in data) {
@@ -448,8 +453,9 @@ function init() {
 				}
 			} );
 			
-			localize();
-			initCats();
+			// @todo localize just needed parts
+			locale.localize();
+			initCats(locale);
 			initSites();
 		}
 	});

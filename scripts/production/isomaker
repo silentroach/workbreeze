@@ -58,8 +58,8 @@ gzip -c9 tmp/public_html/index.html > tmp/public_html/index.html.gz
 
 gzip -c9 tmp/public_html/favicon.ico > tmp/public_html/favicon.ico.gz
 
-echo 'debug in defines'
-sed 's/DEBUG/UNDEBUG/' ../../defines.php > tmp/defines.php
+echo 'debug in bootstrap'
+sed 's/DEBUG/UNDEBUG/' ../../bootstrap.php > tmp/bootstrap.php
 echo 'nginx...'
 sed "s/workbreeze.dev/workbreeze.com/;s/\/home\/silent\/Projects\/work/\/srv\//" ../../other/configs/nginx.conf > tmp/other/configs/nginx.conf
 

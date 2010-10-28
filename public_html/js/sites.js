@@ -15,7 +15,8 @@ workbreeze.sites = function(storage, s) {
 	 */
 	var options = $.extend( {
 		storagePath: 'sites',
-		iconPrefix: 'sico'
+		iconPrefix: 'sico',
+		place: '#sites'
 	}, s);
 
 	/**
@@ -83,7 +84,7 @@ workbreeze.sites = function(storage, s) {
 	 * Init sites info
 	 */
 	self.init = function() {
-		var splace = $('#sites');
+		var splace = $(options.place);
 		var sempty = settings.selsites.length == 0;
 
 		$(sites).each( function() {

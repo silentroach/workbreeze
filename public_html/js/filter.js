@@ -2,12 +2,13 @@
 
 function handleFilter() {
 	var tmp = $.trim($('#keyword').val());
+
 	settings.selsites = [];
 	settings.selcats  = [];
-	
+
 	$('li', '#sites').each( function() {
 		var el = $(this);
-	
+
 		if (el.hasClass('checked')) {
 			settings.addSite(el.attr('site'));
 		}
@@ -20,7 +21,7 @@ function handleFilter() {
 			settings.addCat(el.attr('cat'));
 		}
 	} );
-	
+
 	settings.keywords = [];
 
 	if ('' != tmp) {
@@ -34,7 +35,7 @@ function handleFilter() {
 			}
 		}
 	}
-	
+
 	if (
 		0 == settings.selsites.length
 		|| 0 == settings.selcats.length
@@ -58,7 +59,7 @@ function handleFilter() {
 		console.log('keys', settings.keywords);
 	console.groupEnd();
 /* </debug> */
-	
+
 	if (!settings.filterMode) {
 		checkFeedForFilter();
 	}

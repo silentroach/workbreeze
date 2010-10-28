@@ -61,16 +61,16 @@ function initCats(locale) {
 				handleFilter();
 			} );
 
-                if (
-                        cempty
+		if (
+			cempty
 			|| $.inArray(i, settings.selcats) >= 0
-                ) {
-                        li.addClass('checked');
-                }
+		) {
+			li.addClass('checked');
+		}
 
-                if (cempty) {
-                        settings.addCat(i);
-                }
+		if (cempty) {
+			settings.addCat(i);
+		}
 
 		li.appendTo(cplace);
 		sp.appendTo(li);

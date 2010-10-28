@@ -7,7 +7,7 @@ body {
 }
 
 body, input {
-	font-family: Ubuntu, "Lucida Sans", "Trebuchet MS", Tahoma, sans-serif;
+	font-family: "Trebuchet MS", Ubuntu, "Lucida Sans", Tahoma, sans-serif;
 	font-size: 12pt;
 }
 

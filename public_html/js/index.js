@@ -32,6 +32,7 @@ var options = {
 	/** @const **/ maxTitleLength:           75,
 	/** @const **/ checkInterval:            60000,
 	/** @const **/ checkIntervalFiltered:    90000,
+	
 	/** @const **/ siteIconPrefix:           'sico',
 	/** @const **/ animationSpeed:           'slow',
 	
@@ -52,6 +53,11 @@ var locale = new workbreeze.locale(storage, {
 
 var categories = new workbreeze.categories(storage, locale, {
 	storagePath: options.elementCats
+} );
+
+var sites = new workbreeze.sites(storage, {
+	storagePath: options.elementSites,
+	iconPrefix: options.siteIconPrefix
 } );
 
 /**
@@ -128,7 +134,7 @@ function prepareDataForJobs(stamp) {
 	adata[options.elementJobStamp] = stamp;
 
 	if (settings.filterMode) {
-		if (sites.length != settings.selsites.length) {
+		if (sites.count() != settings.selsites.length) {
 			adata[options.elementFilter + '_' + options.elementSites] = settings.selsites.join(',');
 		}
 		
@@ -297,13 +303,15 @@ function addJob(job) {
 
 		htmltitle = job.title.substring(0, tmpindex) + '...';
 	}
+	
+	var site = sites.get(job.site);
 
 	lnk = $("<a>")
 		.addClass(options.siteIconPrefix)
-		.addClass(options.siteIconPrefix + '_' + sites[job.site][0])
+		.addClass(options.siteIconPrefix + '_' + site[0])
 		.attr({
-			'href': '/jobs/' + sites[job.site][1] + '/' + job.id + '.html',
-			'title': job.title + ' ' + locale.translate('on') + ' ' + sites[job.site][2]
+			'href': '/jobs/' + site[1] + '/' + job.id + '.html',
+			'title': job.title + ' ' + locale.translate('on') + ' ' + site[2]
 		})
 		.html(htmltitle)
 		.appendTo($('li.title', jobEl));
@@ -457,9 +465,9 @@ function init() {
 	
 	var adata = prepareDataForJobs(0);
 	
-	adata[options.elementLang]     = locale.getLocalVersion();
-	adata[options.elementSites]    = getSitesVersion();
-	adata[options.elementCats]     = categories.getLocalVersion();
+	adata[options.elementLang]  = locale.getLocalVersion();
+	adata[options.elementSites] = sites.getLocalVersion();
+	adata[options.elementCats]  = categories.getLocalVersion();
 	
 	up({
 		data: adata,
@@ -489,7 +497,7 @@ function init() {
 /* <debug> */
 				console.info('New sites pack');
 /* </debug> */
-				loadSites(data['s']);
+				sites.load(data['s']);
 			}
 			
 			if ('j' in data) {
@@ -512,7 +520,7 @@ function init() {
 			// @todo localize just needed parts
 			locale.localize();
 			categories.init();
-			initSites();
+			sites.init();
 		}
 	});
 		

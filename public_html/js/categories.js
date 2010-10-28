@@ -1,7 +1,7 @@
 var workbreeze = workbreeze || [];
 
 /**
- * Storage object
+ * Categories object
  * @constructor
  * @param {workbreeze.storage} storage Storage
  * @param {workbreeze.locale} locale Locale

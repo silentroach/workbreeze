@@ -22,9 +22,9 @@ function getSitesVersion() {
  */
 function loadSites(val) {
 	var tmp = val['vl'];
-	
-	for (var i in tmp) {
-		var site = tmp[i];
+
+	$(tmp).each( function() {	
+		var site = this;
 		
 		var item = [];
 		item[0] = site['i'];  // id
@@ -33,7 +33,7 @@ function loadSites(val) {
 		item[3] = site['u'];  // url
 		
 		sites[item[0]] = item;
-	}
+	} );
 	
 	storage.set(options.elementSites, sites, val['v']);
 }

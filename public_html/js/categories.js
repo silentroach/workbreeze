@@ -23,15 +23,15 @@ function getCatsVersion() {
 function loadCats(val) {
 	var tmp = val['vl'];
 	
-	for (var i in tmp) {
-		var cat = tmp[i];
+	$(tmp).each( function() {
+		var cat = this;
 
-		item = [];
+		var item = [];
 		item[0] = cat['i'];  // id
 		item[1] = cat['l'];  // lang val
 		
 		cats[item[0]] = item; 
-	}
+	} );
 	
 	storage.set(options.elementCats, cats, val['v']);
 }

@@ -1,15 +1,24 @@
 var workbreeze = workbreeze || [];
 
-workbreeze.locale = function(s) {
+/**
+ * Locale object
+ * @constructor
+ * @param {workbreeze.storage} storage Storage
+ * @param {Object} s options
+ */
+workbreeze.locale = function(storage, s) {
 	var self = this;
 	
-	var settings = $.extend( {
-		storage: undefined,
+	/**
+	 * Options
+	 * @type {Object}
+	 */
+	var options = $.extend( {
 		storagePath: 'lang'
 	}, s);
 
 	/**
-	 * Language array
+	 * Language arrays
 	 * @type {Array} 
 	 */ 
 	var lang = [];
@@ -68,10 +77,10 @@ workbreeze.locale = function(s) {
 	 * @return {number} Language object version
 	 */
 	self.getLocalVersion = function() {
-		var lver = settings.storage.getVersion(settings.storagePath);
+		var lver = storage.getVersion(options.storagePath);
 	
 		if (lver > 0) {
-			var tmp = settings.storage.get(settings.storagePath);
+			var tmp = storage.get(options.storagePath);
 		
 			lang = tmp[1];
 		}
@@ -99,6 +108,6 @@ workbreeze.locale = function(s) {
 	self.load = function(val) {
 		lang = val['vl'];
 	
-		settings.storage.set(settings.storagePath, lang, val['v']);
+		storage.set(options.storagePath, lang, val['v']);
 	}
 }

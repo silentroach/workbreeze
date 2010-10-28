@@ -1,78 +1,110 @@
-/** @type {Array} **/ var cats = [];
+var workbreeze = workbreeze || [];
 
 /**
- * Get local storage categories version
- * @return {number} Categories object version
+ * Storage object
+ * @constructor
+ * @param {workbreeze.storage} storage Storage
+ * @param {workbreeze.locale} locale Locale
+ * @param {Object} s Options
  */
-function getCatsVersion() {
-	var cver = storage.getVersion(options.elementCats);
+workbreeze.categories = function(storage, locale, s) {
+	var self = this;
 	
-	if (cver > 0) {
-		var tmp = storage.get(options.elementCats);
+	/**
+	 * Options
+	 * @type {Object}
+	 */
+	var options = $.extend( {
+		storagePath: 'cats'
+	}, s);
 
-		cats = tmp[1];
+	/**
+	 * Categories list
+	 * @type {Array} 
+	 */ 
+	var cats = [];
+
+	/**
+	 * Get local storage categories version
+	 * @return {number} Categories object version
+	 */
+	self.getLocalVersion = function() {
+		var cver = storage.getVersion(options.storagePath);
+	
+		if (cver > 0) {
+			var tmp = storage.get(options.storagePath);
+
+			cats = tmp[1];
+		}
+
+		return cver;
+	}
+	
+	/**
+	 * Categories count
+	 * @return {number} Categories count
+	 */
+	self.count = function() {
+		return cats.length;
 	}
 
-	return cver;
-}
-
-/**
- * Load categories
- * @param {!Object} val Load category objects from ajax request
- */
-function loadCats(val) {
-	var tmp = val['vl'];
+	/**
+	 * Load categories
+	 * @param {!Object} val Load category objects from ajax request
+	 */
+	self.load = function(val) {
+		var tmp = val['vl'];
 	
-	$(tmp).each( function() {
-		var cat = this;
+		$(tmp).each( function() {
+			var cat = this;
 
-		var item = [];
-		item[0] = cat['i'];  // id
-		item[1] = cat['l'];  // lang val
+			var item = [];
+			item[0] = cat['i'];  // id
+			item[1] = cat['l'];  // lang val
 		
-		cats[item[0]] = item; 
-	} );
+			cats[item[0]] = item; 
+		} );
 	
-	storage.set(options.elementCats, cats, val['v']);
-}
+		storage.set(options.storagePath, cats, val['v']);
+	}
 
-/**
- * Init cats info
- * @param {!workbreeze.locale} locale Temporary (!) locale item
- */
-function initCats(locale) {
-	var cplace = $('#categories');
-	var cempty = settings.selcats.length == 0;
+	/**
+	 * Init cats info
+	 */
+	self.init = function() {
+		var cplace = $('#categories');
+		var cempty = settings.selcats.length == 0;
 	
-	for (var i in cats) {
-		var cat = cats[i];
+		for (var i in cats) {
+			var cat = cats[i];
 
-		var sp = $('<span></span>')
-			.html(locale.translate(cat[1]));
+			var sp = $('<span></span>')
+				.html(locale.translate(cat[1]));
 
-		var li = $('<li></li>')
-			.addClass('checkable')
-			.attr( {
-				'id'   : 'c' + i,
-				'cat' : i
-			} )
-			.click(function() {
-				$(this).toggleClass('checked');
-				handleFilter();
-			} );
+			var li = $('<li></li>')
+				.addClass('checkable')
+				.attr( {
+					'id'   : 'c' + i,
+					'cat' : i
+				} )
+				.click(function() {
+					$(this).toggleClass('checked');
+					handleFilter();
+				} );
 
-		if (
-			cempty
-			|| $.inArray(i, settings.selcats) >= 0
-		) {
-			li.addClass('checked');
+			if (
+				cempty
+				|| $.inArray(i, settings.selcats) >= 0
+			) {
+				li.addClass('checked');
+			}
+
+			if (cempty) {
+				settings.addCat(i);
+			}
+
+			li.appendTo(cplace);
+			sp.appendTo(li);
 		}
-
-		if (cempty) {
-			settings.addCat(i);
-		}
-
-		li.appendTo(cplace);
-		sp.appendTo(li);
 	}
 }

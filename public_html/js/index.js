@@ -46,9 +46,12 @@ var options = {
 	/** @const **/ elementFilter:            'filter'
 }
 
-var locale = new workbreeze.locale( {
-	storage: storage,
+var locale = new workbreeze.locale(storage, {
 	storagePath: options.elementLang
+} );
+
+var categories = new workbreeze.categories(storage, locale, {
+	storagePath: options.elementCats
 } );
 
 /**
@@ -129,7 +132,7 @@ function prepareDataForJobs(stamp) {
 			adata[options.elementFilter + '_' + options.elementSites] = settings.selsites.join(',');
 		}
 		
-		if (cats.length != settings.selcats.length) {
+		if (categories.count() != settings.selcats.length) {
 			adata[options.elementFilter + '_' + options.elementCats] = settings.selcats.join(',');
 		}
 		
@@ -456,7 +459,7 @@ function init() {
 	
 	adata[options.elementLang]     = locale.getLocalVersion();
 	adata[options.elementSites]    = getSitesVersion();
-	adata[options.elementCats]     = getCatsVersion();
+	adata[options.elementCats]     = categories.getLocalVersion();
 	
 	up({
 		data: adata,
@@ -479,7 +482,7 @@ function init() {
 /* <debug> */
 				console.info('New categories pack');
 /* </debug> */
-				loadCats(data['c']);
+				categories.load(data['c']);
 			}
 			
 			if ('s' in data) {
@@ -508,7 +511,7 @@ function init() {
 			
 			// @todo localize just needed parts
 			locale.localize();
-			initCats(locale);
+			categories.init();
 			initSites();
 		}
 	});

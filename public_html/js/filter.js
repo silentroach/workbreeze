@@ -1,7 +1,7 @@
 /** @type {Boolean} **/ var streamAutoPause = false;
 
 function handleFilter() {
-	var tmp = $('#keyword').val().trim();
+	var tmp = $.trim($('#keyword').val());
 	settings.selsites = [];
 	settings.selcats  = [];
 	
@@ -27,7 +27,7 @@ function handleFilter() {
 		keys = tmp.split(',');
 
 		for (var i = 0; i < keys.length; i++) {
-			var tmpk = keys[i].trim();
+			var tmpk = $.trim(keys[i]);
 
 			if ('' != tmpk) {
 				settings.addKeyword(tmpk);
@@ -120,7 +120,7 @@ function checkJobForFilter(element) {
 
 	var str = $('li.k', element).html();
 	
-	var wrong = settings.selsites.indexOf(element.attr('site')) < 0;
+	var wrong = $.inArray(element.attr('site'), settings.selsites) < 0;
 	
 	if (!wrong) {
 		var cts = element.attr('cats').split(',');
@@ -128,7 +128,7 @@ function checkJobForFilter(element) {
 		var cwrong = true;
 	
 		for (var i = 0; i < cts.length; i++) {
-			if (settings.selcats.indexOf(cts[i]) >= 0) {
+			if ($.inArray(cts[i], settings.selcats) >= 0) {
 				cwrong = false;
 				break;
 			}

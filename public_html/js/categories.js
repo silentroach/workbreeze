@@ -63,7 +63,7 @@ function initCats(locale) {
 
                 if (
                         cempty
-                        || settings.selcats.indexOf(i) >= 0
+			|| $.inArray(i, settings.selcats) >= 0
                 ) {
                         li.addClass('checked');
                 }

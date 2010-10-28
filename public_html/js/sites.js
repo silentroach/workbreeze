@@ -66,7 +66,7 @@ function initSites() {
 
 		if (
 			sempty
-			|| settings.selsites.indexOf(site[0]) >= 0
+			|| $.inArray(site[0], settings.selsites) >= 0
 		) {
 			li.addClass('checked');
 		}

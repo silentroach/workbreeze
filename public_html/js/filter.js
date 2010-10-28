@@ -26,8 +26,9 @@ function handleFilter() {
 	if ('' != tmp) {
 		keys = tmp.split(',');
 
-		for (var i in keys) {
+		for (var i = 0; i < keys.length; i++) {
 			var tmpk = keys[i].trim();
+
 			if ('' != tmpk) {
 				settings.addKeyword(tmpk);
 			}
@@ -144,7 +145,7 @@ function checkJobForFilter(element) {
 	) {
 		wrong = true;
 	
-		for (var i in settings.keywords) {
+		for (var i = 0; i < settings.keywords.length; i++) {
 			if (str.indexOf(settings.keywords[i].toLowerCase()) >= 0) {
 				wrong = false;
 				break;
@@ -160,7 +161,7 @@ function checkJobForFilter(element) {
 }
 
 function checkFeedForFilter() {	
-	for (var i in joblist) {
+	for (var i = 0; i < joblist.length; i++) {
 		checkJobForFilter(joblist[i]);
 	}
 }

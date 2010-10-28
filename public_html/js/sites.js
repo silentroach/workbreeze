@@ -45,8 +45,8 @@ function initSites() {
 	var splace = $('#sites');
 	var sempty = settings.selsites.length == 0;
 
-	for (var i in sites) {
-		var site = sites[i];
+	$(sites).each( function() {
+		var site = this;
 
 		var sp  = $('<span></span>')
 			.addClass(options.siteIconPrefix)
@@ -77,5 +77,5 @@ function initSites() {
 		
 		li.appendTo(splace);
 		sp.appendTo(li);
-	}
+	} );
 }

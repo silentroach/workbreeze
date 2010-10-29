@@ -5,7 +5,7 @@ class Language {
 	const ENGLISH = 'en';
 	const RUSSIAN = 'ru';
 	
-	const VERSION = 9;
+	const VERSION = 10;
 	
 	private static $lang = null;
 	

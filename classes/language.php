@@ -28,7 +28,7 @@ class Language {
 			'hk'   => 'Example: <span class="ex">word1, word2</span><br />The offers containing [word1] <strong>or</strong> [word2] will be found.',
 			'hs'   => '<strong>Site list</strong>. Each element is a trigger.',
 			'hc'   => '<strong>Offers category list</strong>. Each element is a trigger.',
-			'hj'   => '<strong>Offers list</strong>. Click the title to have more information. You can scroll it down endlessly.',
+			'hj'   => '<strong>Offers list</strong>. Fresh offers are wider than other for half a minute. Click the title to have more information. You can scroll it down endlessly.',
 			'hf'   => '<strong>Filter mode</strong> allow you to receive offers only appropriate with filter settings.',
 			
 			'c' . Job::CAT_OTHER       => 'other',
@@ -58,8 +58,8 @@ class Language {
 			'hk'   => 'Пример: <span class="ex">слово1, слово2</span><br />Найдутся предложения, в содержимом которого упоминается [слово1] <strong>или</strong> [слово2].',
 			'hs'   => '<strong>Список сайтов</strong>, где каждый элемент - переключатель.',
 			'hc'   => '<strong>Список категорий предложений</strong>, где каждый элемент - переключатель.',
-			'hj'   => '<strong>Список предложений</strong>. Для просмотра полной информации следует щелкнуть по заголовку. Можно прокручивать вниз до бесконечности.',
-			'hf'   => 'В <strong>режиме фильтра</strong> принимаются только предложения, подходящие под указанные выше критерии отбора',
+			'hj'   => '<strong>Список предложений</strong>. Свежие предложения на 30 секунд выделяются шириной. Для просмотра полной информации следует щелкнуть по заголовку. Прокручивать список вниз до бесконечности.',
+			'hf'   => 'В <strong>режиме фильтра</strong> предложения, не подходящие под указанные выше критерии отбора не отображаются на экране.',
 			
 			'c' . Job::CAT_OTHER       => 'прочее',
 			'c' . Job::CAT_AUDIOVIDEO  => 'аудио/видео',

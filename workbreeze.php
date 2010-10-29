@@ -50,6 +50,8 @@ class Workbreeze extends AppInstance {
 	public function init() {
 		$connection = new Mongo();
 		$this->database = $connection->selectDB(DB);
+
+		Daemon::log('Workbreeze up');
 	}
 
 	public function onShutdown() {

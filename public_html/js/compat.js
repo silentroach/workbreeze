@@ -1,8 +1,8 @@
-// scripts for IE
+var workbreeze = [];
 
 /* <debug> */
 if (!('console' in window)) {
-	console = {
+	var console = {
 		log: function(e) { },
 		info: function(e) { },
 		warn: function(e) { },

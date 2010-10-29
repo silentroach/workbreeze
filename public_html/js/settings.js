@@ -1,5 +1,3 @@
-var workbreeze = workbreeze || [];
-
 /**
  * Settings
  * @constructor

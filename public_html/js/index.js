@@ -117,7 +117,7 @@ function checkJobPlace() {
 		console.info('Removing last job');
 /* </debug> */
 	
-		tmpEl = joblist.shift();
+		var tmpEl = joblist.shift();
 		tmpEl.fadeOut(options.animationSpeed, function() { 
 			$(this).remove();
 		});
@@ -237,13 +237,6 @@ function popFromQueue() {
 		}
 	
 		tmpEl.prependTo(places.placeJob);
-
-		if (options.windowHidden) {
-			var tmptitle = $('.title', tmpEl).val();
-			var desc     = $('.desc', tmpEl).val();
-
-			notifications.notify(tmptitle, desc);
-		}
 	}
 		
 	tmpEl.show();
@@ -306,7 +299,7 @@ function addJob(job) {
 	
 	var site = sites.get(job.site);
 
-	lnk = $("<a>")
+	var lnk = $("<a>")
 		.addClass(options.siteIconPrefix)
 		.addClass(options.siteIconPrefix + '_' + site[0])
 		.attr({

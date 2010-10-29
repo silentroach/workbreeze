@@ -1,12 +1,10 @@
 /* <debug> */
-if ('undefined' != typeof(localStorage)) {
+if ('localStorage' in window) {
 	console.info('local storage enabled');
 } else {
 	console.warn('local storage not available');
 }
 /* </debug> */
-
-var workbreeze = workbreeze || [];
 
 /**
  * Storage object
@@ -20,7 +18,7 @@ workbreeze.storage = function() {
 	 * @type {Boolean}
 	 * @private
 	 */
-	var enabled = ('localStorage' in window) && window['localStorage'] !== null;
+	var enabled = ('localStorage' in window);
 	
 	/**
 	 * Get object from storage

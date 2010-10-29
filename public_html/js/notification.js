@@ -6,8 +6,6 @@ if ('webkitNotifications' in window) {
 }
 /* </debug> */
 
-var workbreeze = workbreeze || [];
-
 /**
  * Notifications in HTML5
  * @constructor

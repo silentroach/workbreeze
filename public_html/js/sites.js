@@ -1,5 +1,3 @@
-var workbreeze = workbreeze || [];
-
 /**
  * Sites object
  * @constructor

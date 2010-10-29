@@ -25,7 +25,7 @@ function handleFilter() {
 	settings.keywords = [];
 
 	if ('' != tmp) {
-		keys = tmp.split(',');
+		/** @type {Array} **/ var keys = tmp.split(',');
 
 		for (var i = 0; i < keys.length; i++) {
 			var tmpk = $.trim(keys[i]);

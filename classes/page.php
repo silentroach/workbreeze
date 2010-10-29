@@ -50,7 +50,7 @@ class Page {
 	}
 	
 	public function out() {
-		$title = $this->title !== '' ? ' &mdash; ' . $this->title : '';
+		$title = $this->title !== '' ? '&mdash; ' . $this->title : '';
 		$description = $this->description === '' ? '' : <<<EOF
 <meta name="description" content="{$this->description}" />
 EOF;
@@ -75,7 +75,7 @@ EOF;
 		return <<<EOF
 <!DOCTYPE html>
 <html>
-	<title>WorkBreeze - {$title}</title>
+	<title>WorkBreeze {$title}</title>
 
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	{$description}	

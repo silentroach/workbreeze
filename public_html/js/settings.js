@@ -107,7 +107,9 @@ workbreeze.settings = function() {
 	 * @param {!string} keyword Keyword
 	 */
 	self.addKeyword = function(keyword) {
-		self.keywords.push(keyword);
+		if ($.inArray(keyword, self.keywords) < 0) {
+			self.keywords.push(keyword);
+		}
 	};
 	
 	/**

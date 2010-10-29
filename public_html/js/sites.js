@@ -1,6 +1,7 @@
 /**
  * Sites object
  * @constructor
+ * @this {workbreeze.sites}
  * @param {workbreeze.storage} storage Storage
  * @param {Object} s Options
  */

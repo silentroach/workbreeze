@@ -14,7 +14,7 @@ workbreeze.storage = function() {
 	var self = this;
 
 	/**
-	 * Is Local Storage enabled in this browser?
+	 * Is localStorage enabled in this browser?
 	 * @type {Boolean}
 	 * @private
 	 */
@@ -34,7 +34,7 @@ workbreeze.storage = function() {
 		} catch (err) {
 			return false;
 		}
-	};	
+	};
 	
 	/**
 	 * Store object
@@ -72,8 +72,3 @@ workbreeze.storage = function() {
 		return Math.floor(item[0]);
 	};	
 };
-
-/**
- * @type {workbreeze.storage}
- */
-var storage = new workbreeze.storage();

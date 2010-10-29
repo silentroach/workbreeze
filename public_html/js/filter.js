@@ -3,8 +3,9 @@
 function handleFilter() {
 	var tmp = $.trim($('#keyword').val());
 
-	settings.sites = [];
-	settings.categories  = [];
+	settings.clearSites();
+	settings.clearCategories();
+	settings.clearKeywords();
 
 	$('li', '#sites').each( function() {
 		var el = $(this);
@@ -21,8 +22,6 @@ function handleFilter() {
 			settings.addCat(el.attr('cat'));
 		}
 	} );
-
-	settings.keywords = [];
 
 	if ('' != tmp) {
 		/** @type {Array} **/ var keys = tmp.split(',');

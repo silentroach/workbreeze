@@ -50,14 +50,34 @@ var options = {
 // ---------------------------------------------------
 // Base objects
 // ---------------------------------------------------
+
+/**
+ * @type {workbreeze.storage}
+ */
+var storage = new workbreeze.storage();
+
+/**
+ * @type {workbreeze.settings}
+ */
+var settings = new workbreeze.settings();
+
+/**
+ * @type {workbreeze.locale}
+ */
 var locale = new workbreeze.locale(storage, {
 	storagePath: options.elementLang
 } );
 
+/**
+ * @type {workbreeze.categories}
+ */
 var categories = new workbreeze.categories(storage, locale, {
 	storagePath: options.elementCats
 } );
 
+/**
+ * @type {workbreeze.sites}
+ */
 var sites = new workbreeze.sites(storage, {
 	storagePath: options.elementSites,
 	iconPrefix: options.siteIconPrefix

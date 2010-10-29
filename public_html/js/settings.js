@@ -83,6 +83,27 @@ workbreeze.settings = function() {
 
 		storage.set(lsname, obj);
 	};
+	
+	/**
+	 * Clear sites list
+	 */
+	self.clearSites = function() {
+		self.sites = [];
+	}
+	
+	/**
+	 * Clear categories list
+	 */
+	self.clearCategories = function() {
+		self.categories = [];
+	}
+	
+	/**
+	 * Clear keywords list
+	 */
+	self.clearKeywords = function() {
+		self.keywords = [];
+	}
 
 	/**
 	 * Add site to selected
@@ -119,8 +140,3 @@ workbreeze.settings = function() {
 
 	self.load();
 };
-
-/**
- * @type {workbreeze.settings}
- */
-var settings = new workbreeze.settings();

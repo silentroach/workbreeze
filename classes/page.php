@@ -40,7 +40,6 @@ class Page {
 		}
 
 		$content = str_replace(' = ', '=', $content);
-		$content = str_replace('; ', ';', $content);
 		$content = str_replace('> <', '><', $content);
 		$content = str_replace('> ', '>', $content);
 	

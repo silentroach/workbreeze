@@ -32,7 +32,7 @@ workbreeze.storage = function() {
 			return false;
 
 		try {
-			return JSON.parse(localStorage.getItem(itemName));
+			return $.parseJSON(localStorage.getItem(itemName));
 		} catch (err) {
 			return false;
 		}

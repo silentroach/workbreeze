@@ -182,13 +182,13 @@ class Parser {
 		$content = <<<EOF
 <!DOCTYPE html>
 <html>
-        <title>WorkBreeze - {$title}</title>
+	<title>WorkBreeze - {$title}</title>
 
-        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	<meta name="description" content="Workbreeze - {$job->getTitle()}, {$this->getSiteName()}" />
 	<meta http-equiv="Content-Language" Content="{$cl}" />
 
-        <link rel="stylesheet" href="/css/main.css" type="text/css" />
+	<link rel="stylesheet" href="/css/main.css" type="text/css" />
 
 	<link rel="home" href="/" /> 
 <body>

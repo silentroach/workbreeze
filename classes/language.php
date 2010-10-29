@@ -6,9 +6,7 @@ class Language {
 	const RUSSIAN = 'ru';
 	
 	const VERSION = 10;
-	
-	private static $lang = null;
-	
+		
 	private static $list = array(
 		self::ENGLISH => 'english',
 		self::RUSSIAN => 'русский'
@@ -85,11 +83,7 @@ class Language {
 			return self::_english();
 	}
 	
-	public static function getUserLanguage() {
-		if (!is_null(self::$lang)) {
-			return self::$lang;
-		}
-	
+	public static function getUserLanguage() {	
 		if (
 			isset($_COOKIE)
 			&& isset($_COOKIE['lang'])
@@ -114,8 +108,6 @@ class Language {
 			}
 		}
 		
-		self::$lang = $lng;
-		//setcookie('lang', $lng, time() + 60 * 60 * 24); // language cookie for 1 hour
 		return $lng;	
 	}
 

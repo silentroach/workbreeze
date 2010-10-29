@@ -83,7 +83,7 @@ workbreeze.categories = function(storage, locale, s) {
 			var li = $('<li></li>')
 				.addClass('checkable')
 				.attr( {
-					'id'   : 'c' + i,
+					'id'  : 'c' + i,
 					'cat' : i
 				} )
 				.click(function() {

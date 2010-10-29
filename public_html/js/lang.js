@@ -28,11 +28,7 @@ workbreeze.locale = function(storage, s) {
 	 * @return {string}
 	 */
 	var checkTimeVal = function(i) {
-		if (i < 10) {
-			return "0" + i;
-		} else {
-			return i.toString();
-		}
+		return (i < 10) ? '0' + i : i.toString();
 	}
 
 	/**

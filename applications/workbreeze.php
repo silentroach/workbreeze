@@ -1,6 +1,6 @@
 <?php
 
-$root = dirname(__FILE__) . DIRECTORY_SEPARATOR;
+$root = dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR;
 
 require $root . 'bootstrap.php';
 

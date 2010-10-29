@@ -1,31 +1,37 @@
 <?
 
-$basepath = dirname(__FILE__);
-$ds = DIRECTORY_SEPARATOR;
+if (!defined('BOOTSTRAPPED')) {
 
-define('PATH_CLASSES', $basepath . $ds . 'classes' . $ds);
-define('PATH_PUBLIC',  $basepath . $ds . 'public_html' . $ds);
-define('PATH_OTHER',   $basepath . $ds . 'other' . $ds);
+	define('BOOTSTRAPPED', 1);
 
-define('DB', 'breeze');
+	$basepath = dirname(__FILE__);
+	$ds = DIRECTORY_SEPARATOR;
 
-define('DEBUG', 1);
+	define('PATH_CLASSES', $basepath . $ds . 'classes' . $ds);
+	define('PATH_PUBLIC',  $basepath . $ds . 'public_html' . $ds);
+	define('PATH_OTHER',   $basepath . $ds . 'other' . $ds);
+	
+	define('DB', 'breeze');
 
-/* config */
+	define('DEBUG', 1);
 
-mb_regex_encoding( 'UTF-8' );
-mb_internal_encoding( 'UTF-8' );
+	/* config */
 
-/* require all */
+	mb_regex_encoding( 'UTF-8' );
+	mb_internal_encoding( 'UTF-8' );
 
-$dirs = array(
-	'classes',
-	'classes/modules',
-	'classes/parsers'
-);
+	/* require all */
 
-foreach($dirs as $dir) {
-	foreach(glob(__DIR__ . DIRECTORY_SEPARATOR . $dir . DIRECTORY_SEPARATOR . '*.php') as $file) {
-		require $file;
+	$dirs = array(
+		'classes',
+		'classes/modules',
+		'classes/parsers'
+	);
+
+	foreach($dirs as $dir) {
+		foreach(glob(__DIR__ . DIRECTORY_SEPARATOR . $dir . DIRECTORY_SEPARATOR . '*.php') as $file) {
+			require $file;
+		}
 	}
+
 }

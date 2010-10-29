@@ -13,6 +13,12 @@ if ('localStorage' in window) {
  */
 workbreeze.storage = function() {
 	var self = this;
+	
+	/**
+	 * Cached items
+	 * @type {Array}
+	 */
+	var cache = [];
 
 	/**
 	 * Is localStorage enabled in this browser?
@@ -29,12 +35,12 @@ workbreeze.storage = function() {
 	self.get = function(itemName) {
 		if (!enabled)
 			return false;
-
-		try {
-			return $.parseJSON(localStorage.getItem(itemName));
-		} catch (err) {
-			return false;
+			
+		if (!(itemName in cache)) {
+			cache[itemName] = $.parseJSON(localStorage.getItem(itemName)) || false;
 		}
+			
+		return cache[itemName];
 	};
 	
 	/**

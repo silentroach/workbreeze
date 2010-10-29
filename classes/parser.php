@@ -142,8 +142,6 @@ class Parser {
 		if (!file_exists(dirname($fname))) {
 			mkdir(dirname($fname), 0777, true);
 		}
-	
-		$ga = file_get_contents(PATH_OTHER . 'ga.js');
 		
 		$title = $job->getTitle();
 		
@@ -178,54 +176,23 @@ class Parser {
 				$cl = 'ru,en';
 				break;
 		}
-	
-		$content = <<<EOF
-<!DOCTYPE html>
-<html>
-	<title>WorkBreeze - {$title}</title>
-
-	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-	<meta name="description" content="Workbreeze - {$job->getTitle()}, {$this->getSiteName()}" />
-	<meta http-equiv="Content-Language" Content="{$cl}" />
-
-	<link rel="stylesheet" href="/css/main.css" type="text/css" />
-
-	<link rel="home" href="/" /> 
-<body>
-
-<div id="gads">
-<script type="text/javascript">google_ad_client = "pub-0168627540498115";google_ad_slot = "1958922984";google_ad_width = 120;google_ad_height = 240;</script>
-<script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></script>
-</div>
-
-<div id="logo"><a href="/">WorkBreeze</a></div>
-
+		
+		$pageContent = <<<EOF
 <p class="title">{$title}</p>
 
 {$job->getHTMLDescription()}
 <br /><br />
 
 <a href="{$job->getUrl()}" class="sico sico_{$this->getSiteCode()}">{$this->getSiteName()}</a>
-
-{$ga}
-</body>
-</html>
 EOF;
-
-		$content = str_replace(array("\t", "\r", "\n"), '', $content);
 		
-		while (false !== strpos($content, '  ')) {
-			$content = str_replace('  ', ' ', $content);
-		}
+		$page = new Page();
+		$page->setTitle($title);
+		$page->setDescription($job->getTitle() . ', ' . $this->getSiteName());
+		$page->setLang($cl);
+		$page->setContent($pageContent);
 
-		$content = str_replace(' = ', '=', $content);
-		$content = str_replace('; ', ';', $content);
-		$content = str_replace('> <', '><', $content);
-		$content = str_replace('> ', '>', $content);
-	
-		file_put_contents($fname, $content);
-		
-		$out = system('gzip -c9 ' . $fname . ' > ' . $fname . '.gz');
+		$page->save($fname);
 	}
 	
 	protected function addJob($job) {

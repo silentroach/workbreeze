@@ -1,6 +1,7 @@
 /**
  * Categories object
  * @constructor
+ * @this {workbreeze.categories}
  * @param {workbreeze.storage} storage Storage
  * @param {workbreeze.locale} locale Locale
  * @param {Object} s Options

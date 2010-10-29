@@ -1,5 +1,6 @@
 /**
  * Settings
+ * @this {workbreeze.settings}
  * @constructor
  */
 workbreeze.settings = function() {

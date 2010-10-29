@@ -47,6 +47,9 @@ var options = {
 	/** @const **/ elementFilter:            'filter'
 }
 
+// ---------------------------------------------------
+// Base objects
+// ---------------------------------------------------
 var locale = new workbreeze.locale(storage, {
 	storagePath: options.elementLang
 } );
@@ -96,10 +99,6 @@ function up(s) {
 		error: function(request, status, error) {
 			updating = false;
 			
-/* <debug> */
-			console.error(request.statusText, error);
-/* </debug> */
-			
 			if (s.error) {
 				s.error();
 			}
@@ -134,12 +133,12 @@ function prepareDataForJobs(stamp) {
 	adata[options.elementJobStamp] = stamp;
 
 	if (settings.filterMode) {
-		if (sites.count() != settings.selsites.length) {
-			adata[options.elementFilter + '_' + options.elementSites] = settings.selsites.join(',');
+		if (sites.count() != settings.sites.length) {
+			adata[options.elementFilter + '_' + options.elementSites] = settings.sites.join(',');
 		}
 		
-		if (categories.count() != settings.selcats.length) {
-			adata[options.elementFilter + '_' + options.elementCats] = settings.selcats.join(',');
+		if (categories.count() != settings.categories.length) {
+			adata[options.elementFilter + '_' + options.elementCats] = settings.categories.join(',');
 		}
 		
 		if (settings.keywords.length > 0) {
@@ -219,20 +218,12 @@ function popFromQueue() {
 	if (tmpJob.stamp < 0) {
 		tmpEl.appendTo(places.placeJob);
 		
-/* <debug> */
-		console.info('increment maxJobPageCount');
-/* </debug> */
-		
 		options.maxJobPageCount++;
 	} else {
 		if (
 			$(window).scrollTop() == 0
 			&& options.maxJobPageCount - 2 >= options.defJobPageCount
-		) {
-/* <debug> */
-			console.info('decrement maxJobPageCount');
-/* </debug> */
-		
+		) {		
 			options.maxJobPageCount = options.maxJobPageCount - 2;
 		}
 	
@@ -384,8 +375,8 @@ function streamPause() {
 
 function streamPlay() {
 	if (
-		0 == settings.selsites.length
-		|| 0 == settings.selcats.length
+		0 == settings.sites.length
+		|| 0 == settings.categories.length
 	) {
 		return;
 	}
@@ -427,9 +418,6 @@ function updateBottom() {
 			}
 			
 			if ('j' in data) {
-/* <debug> */
-				console.info('New jobs bottom pack: ' + data['j'].length);
-/* </debug> */
 				parseJobs(data['j']);
 			}	
 		},
@@ -442,111 +430,11 @@ function updateBottom() {
 }
 
 function init() {
-	places.logo        = $('#logo');
-	places.templateJob = $('ul.job:first');
-	places.placeJob    = $('#jobs');
-	places.keyword     = $('#keyword');
-	places.filterMode  = $('#mode_f');
-
-	if (settings.keywords.length != 0) {
-		places.keyword.val(settings.keywords.join(', '));
-	}
-	
-	if (settings.filterMode) {
-		places.filterMode.toggleClass('checked');
-	}
-	
-	var adata = prepareDataForJobs(0);
-	
-	adata[options.elementLang]  = locale.getLocalVersion();
-	adata[options.elementSites] = sites.getLocalVersion();
-	adata[options.elementCats]  = categories.getLocalVersion();
-	
-	up({
-		data: adata,
-		success: function(data) {
-			$('html, body').css({scrollTop:0});
-			
-			setNewTimer(options.checkInterval);
-	
-			if (null == data) 
-				return;
-
-			if ('l' in data) {
-/* <debug> */
-				console.info('New lang pack');
-/* </debug> */
-				locale.load(data['l']);
-			}
-			
-			if ('c' in data) {
-/* <debug> */
-				console.info('New categories pack');
-/* </debug> */
-				categories.load(data['c']);
-			}
-			
-			if ('s' in data) {
-/* <debug> */
-				console.info('New sites pack');
-/* </debug> */
-				sites.load(data['s']);
-			}
-			
-			if ('j' in data) {
-/* <debug> */
-				console.info('New jobs pack: ' + data['j'].length);
-/* </debug> */
-				parseJobs(data['j']);
-			}
-		},
-		ping: function() {
-			$(window).scroll(function() {
-				if (
-					$(window).scrollTop() >= $(document).height() - $(window).height()
-					&& !updatingBottom
-				) {
-					updateBottom();
-				}
-			} );
-			
-			// @todo localize just needed parts
-			locale.localize();
-			categories.init();
-			sites.init();
-		}
-	});
-		
-	$('#bfoot, .help, #menu').css({'opacity': 0.8});
-
 	places.buttonPlay  = $('#play');
 	places.buttonPause = $('#pause');
 	
 	places.buttonPause.click(streamToggle);
 	places.buttonPlay.click(streamToggle);
-	
-	places.logo.ajaxStart(function() {
-		$(this).animate({'opacity': 0.7}, options.animationSpeed);
-	});
-	
-	places.logo.ajaxStop(function() {
-		$(this).animate({'opacity': 1});
-	});
-
-	setQueueTimer(5000);
-	
-	// removing right content
-	$('#right ul').remove();
-	
-	$('#help').click(function() {
-		$('.help').animate({'opacity': 'toggle', 'height': 'toggle'}, options.animationSpeed);
-		
-		if (!helpVisible) {
-			$('html, body').animate({'scrollTop':0}, options.animationSpeed);
-		}
-		
-		helpVisible = !helpVisible;
-	});
 	
 	places.keyword
 		.keyup(function(e) {
@@ -566,8 +454,104 @@ function init() {
 		settings.save();
 		places.filterMode.toggleClass('checked');		
 	});
-};
+	
+	setQueueTimer(5000);
+}
 
-$( function() {
-	init();
-} );
+// ---------------------------------------------------
+// Preparements
+// ---------------------------------------------------
+places.logo        = $('#logo');
+places.templateJob = $('ul.job:first');
+places.placeJob    = $('#jobs');
+places.keyword     = $('#keyword');
+places.filterMode  = $('#mode_f');
+
+if (settings.keywords.length != 0) {
+	places.keyword.val(settings.keywords.join(', '));
+}
+
+if (settings.filterMode) {
+	places.filterMode.toggleClass('checked');
+}
+	
+places.logo.ajaxStart(function() {
+	$(this).animate({'opacity': 0.7}, options.animationSpeed);
+});
+
+places.logo.ajaxStop(function() {
+	$(this).animate({'opacity': 1});
+});
+
+$('#bfoot, .help, #menu').css({'opacity': 0.8});
+$('#right ul').remove();
+
+// ---------------------------------------------------
+// Initial data request
+// ---------------------------------------------------	
+
+var adata = prepareDataForJobs(0);
+
+adata[options.elementLang]  = locale.getLocalVersion();
+adata[options.elementSites] = sites.getLocalVersion();
+adata[options.elementCats]  = categories.getLocalVersion();
+
+up({
+	data: adata,
+	success: function(data) {
+		// settings the next check timer
+		setNewTimer(options.checkInterval);
+	
+		// scrolling to the top
+		$('html, body').css({scrollTop:0});
+
+		if (null == data) 
+			return;
+
+		if ('l' in data) {
+			locale.load(data['l']);
+		}
+		
+		if ('c' in data) {
+			categories.load(data['c']);
+		}
+		
+		if ('s' in data) {
+			sites.load(data['s']);
+		}
+		
+		if ('j' in data) {
+			parseJobs(data['j']);
+		}
+	},
+	ping: function() {	
+		$(window).scroll(function() {
+			if (
+				$(window).scrollTop() >= $(document).height() - $(window).height()
+				&& !updatingBottom
+			) {
+				updateBottom();
+			}
+		} );
+		
+		// @todo localize just needed parts
+		locale.localize();
+		categories.init();
+		sites.init();
+		
+		init();
+	}
+});
+		
+// ---------------------------------------------------
+// Secondary things to do
+// ---------------------------------------------------
+$('#help').click(function() {
+	$('.help').animate({'opacity': 'toggle', 'height': 'toggle'}, options.animationSpeed);
+	
+	if (!helpVisible) {
+		$('html, body').animate({'scrollTop':0}, options.animationSpeed);
+	}
+	
+	helpVisible = !helpVisible;
+});

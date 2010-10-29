@@ -71,7 +71,7 @@ workbreeze.categories = function(storage, locale, s) {
 	 */
 	self.init = function() {
 		var cplace = $('#categories');
-		var cempty = settings.selcats.length == 0;
+		var cempty = settings.categories.length == 0;
 	
 		for (var i in cats) {
 			var cat = cats[i];
@@ -92,7 +92,7 @@ workbreeze.categories = function(storage, locale, s) {
 
 			if (
 				cempty
-				|| $.inArray(i, settings.selcats) >= 0
+				|| $.inArray(i, settings.categories) >= 0
 			) {
 				li.addClass('checked');
 			}

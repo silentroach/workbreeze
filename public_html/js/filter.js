@@ -3,8 +3,8 @@
 function handleFilter() {
 	var tmp = $.trim($('#keyword').val());
 
-	settings.selsites = [];
-	settings.selcats  = [];
+	settings.sites = [];
+	settings.categories  = [];
 
 	$('li', '#sites').each( function() {
 		var el = $(this);
@@ -37,8 +37,8 @@ function handleFilter() {
 	}
 
 	if (
-		0 == settings.selsites.length
-		|| 0 == settings.selcats.length
+		0 == settings.sites.length
+		|| 0 == settings.categories.length
 	) {
 		if (!paused) {
 			streamAutoPause = true;
@@ -53,8 +53,8 @@ function handleFilter() {
 
 /* <debug> */
 	console.group('new filter');
-	console.log('sites', settings.selsites);
-	console.log('cats', settings.selcats);
+	console.log('sites', settings.sites);
+	console.log('cats', settings.categories);
 	if (0 < settings.keywords.length) 
 		console.log('keys', settings.keywords);
 	console.groupEnd();
@@ -112,8 +112,8 @@ function jobUnselect(element) {
  */
 function checkJobForFilter(element) {
 	if (
-		0 == settings.selsites.length
-		|| 0 == settings.selcats.length
+		0 == settings.sites.length
+		|| 0 == settings.categories.length
 	) {
 		jobSelect(element);
 		return;
@@ -121,7 +121,7 @@ function checkJobForFilter(element) {
 
 	var str = $('li.k', element).html();
 	
-	var wrong = $.inArray(element.attr('site'), settings.selsites) < 0;
+	var wrong = $.inArray(element.attr('site'), settings.sites) < 0;
 	
 	if (!wrong) {
 		var cts = element.attr('cats').split(',');
@@ -129,7 +129,7 @@ function checkJobForFilter(element) {
 		var cwrong = true;
 	
 		for (var i = 0; i < cts.length; i++) {
-			if ($.inArray(cts[i], settings.selcats) >= 0) {
+			if ($.inArray(cts[i], settings.categories) >= 0) {
 				cwrong = false;
 				break;
 			}

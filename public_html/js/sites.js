@@ -83,7 +83,7 @@ workbreeze.sites = function(storage, s) {
 	 */
 	self.init = function() {
 		var splace = $(options.place);
-		var sempty = settings.selsites.length == 0;
+		var sempty = settings.sites.length == 0;
 
 		$(sites).each( function() {
 			var site = this;
@@ -106,7 +106,7 @@ workbreeze.sites = function(storage, s) {
 
 			if (
 				sempty
-				|| $.inArray(site[0], settings.selsites) >= 0
+				|| $.inArray(site[0], settings.sites) >= 0
 			) {
 				li.addClass('checked');
 			}

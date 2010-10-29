@@ -45,9 +45,9 @@ workbreeze.settings = function() {
 	 */
 	var pfiltermode = 'fmode';
 
-	/** @type {Array} **/   self.keywords = [];
-	/** @type {Array} **/   self.selsites = [];
-	/** @type {Array} **/   self.selcats  = [];
+	/** @type {Array} **/   self.keywords   = [];
+	/** @type {Array} **/   self.sites      = [];
+	/** @type {Array} **/   self.categories = [];
 	/** @type {Boolean} **/ self.filterMode = false;
 
 	self.load = function() {
@@ -58,11 +58,11 @@ workbreeze.settings = function() {
 		}
 
 		if (psites in obj) {
-			self.selsites = obj[psites];
+			self.sites = obj[psites];
 		}
 
 		if (pcats in obj) {
-			self.selcats = obj[pcats];
+			self.categories = obj[pcats];
 		}
 
 		if (pkeys in obj) {
@@ -76,8 +76,8 @@ workbreeze.settings = function() {
 
 	self.save = function() {
 		var obj = {};
-		obj[psites]      = self.selsites;
-		obj[pcats]       = self.selcats;
+		obj[psites]      = self.sites;
+		obj[pcats]       = self.categories;
 		obj[pkeys]       = self.keywords;
 		obj[pfiltermode] = self.filterMode;
 
@@ -89,7 +89,7 @@ workbreeze.settings = function() {
 	 * @param {!number} site Site id
 	 */
 	self.addSite = function(site) {
-		self.selsites.push(site);
+		self.sites.push(site);
 	};
 
 	/**
@@ -97,7 +97,7 @@ workbreeze.settings = function() {
 	 * @param {!number} cat Category id
 	 */	
 	self.addCat = function(cat) {
-		self.selcats.push(cat);
+		self.categories.push(cat);
 	};
 
 	/**

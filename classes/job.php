@@ -28,7 +28,7 @@ class Job {
 		self::CAT_DESIGN      => array(
 			array(
 				'дизайн', 'design', 'баннер', 'banner', 'графика', 'graphic', 'flash',
-				'логотип', 'logo', 'арт', 'худож', 'art', 'иллюстра'
+				'логотип', 'logo', 'арт', 'худож', 'art', 'иллюстра', 'photoshop'
 			)
 		),
 		self::CAT_PHOTO       => array(

@@ -58,15 +58,17 @@ class Text {
 
 		$text = "\n" . $text;
 
-		// replace each different list
+		// replace each differen list
 		foreach(array('-', '*', '+') as $splitter) {
 			$text = preg_replace_callback(
 				"/\n((\s?(([" . $splitter . "]) (.*?))\n)+)/siu", 
-				function($match) {
+				function($match) use (&$lireplaced) {
 					return '<ul>' . preg_replace("/^\s?(([" . $match[4] . "]) (.*?))\n/m", "<li>\\3</li>", $match[0]) . '</ul>';
 				},
 				$text);
 		}
+
+		$text = str_replace("<ul>\n", '<ul>', $text);
 
 		while ("\n" === mb_substr($text, strlen($text) - 1, 1)) {
 			$text = mb_substr($text, 0, strlen($text) - 1);
@@ -87,7 +89,11 @@ class Text {
 		if (mb_substr($word, -1, 1) == '-') {
 			$word = mb_substr($word, 0, mb_strlen($word) - 1);
 		}
-		
+
+		if (mb_strlen($word) < 3) {
+			return false;
+		}
+
 		return $word;
 	}
 
@@ -114,14 +120,14 @@ class Text {
 	
 		$i = 0;
 		foreach($ru as $word) {
-			if (mb_strlen($word) < 3)
-				continue;
-			
 			$word = self::PrepareWordForStemming($word);
 
 			// todo: refactor
 			
-			if (!isset($ex[$word])) {
+			if (
+				$word
+				&& !isset($ex[$word])
+			) {
 				$result['ru_' . $i++] = $word;
 				$ex[$word] = 1;
 			}
@@ -129,17 +135,17 @@ class Text {
 	
 		$i = 0;
 		foreach($en as $word) {
-			if (mb_strlen($word) < 3)
-				continue;
-
 			$word = self::PrepareWordForStemming($word);
 
-			if (!isset($ex[$word])) {
+			if (
+				$word
+				&& !isset($ex[$word])
+			) {
 				$result['en_' . $i++] = $word;
 				$ex[$word] = 1;
 			}
 		}
-	
+
 		return $result;
 	}
 

@@ -18,7 +18,6 @@ a {
 }
 
 ul {
-	list-style: none;
 	margin: 0px;
 }
 
@@ -149,6 +148,7 @@ div.help {
 
 #pp {
 	float: right;
+	list-style: none;
 }
 
 #play {
@@ -184,6 +184,7 @@ p.title {
 
 ul.job {
 	clear: both;
+	list-style: none;
 	font-size: 10pt;
 	border: 1px solid grey;
 	border-radius: 5px;

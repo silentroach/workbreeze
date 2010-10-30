@@ -117,7 +117,7 @@ class Parser_freelance_ru extends Parser implements IParser {
 			$n = mb_strpos($content, '</div>', $i);
 			
 			if (false !== $n) {
-				return mb_substr($content, $i + $k, $n - $i - $k);
+				return str_replace('&nbsp;', ' ', mb_substr($content, $i + $k, $n - $i - $k));
 			}
 		}	
 		

@@ -1,6 +1,6 @@
 <?php
 
-if ($argc > 1 && in_array('br', $argv)) {
+if (isset($argc) && $argc > 1 && in_array('br', $argv)) {
 	define('BRCONVERT', 1);
 }
 

@@ -280,7 +280,7 @@ function addJob(job) {
 		element: jobEl
 	};
 
-	joblist.push(tmpJob);
+	joblist.push(jobEl);
 		
 	if (job.stamp < 0) {
 		jobEl.appendTo(places.placeJob);

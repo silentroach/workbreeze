@@ -193,6 +193,10 @@ ul.job {
 	margin-bottom: 1%;
 }
 
+	ul.job:hover {
+		background-color: #272c2d;
+	}
+
 	ul.job .title, ul.job .title a, ul.job .desc {
 		margin-bottom: 0.5em;
 		border-bottom: 0px;

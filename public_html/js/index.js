@@ -1,7 +1,6 @@
 /** @type {number} **/ var lastStamp = 0;
 /** @type {number} **/ var updateCount = 0;
 
-var queueTimer;
 var newTimer;
 var filterTimer;
 
@@ -12,7 +11,6 @@ var filterTimer;
 /** @type {number} **/  var lastBottom = 0;
 /** @type {Boolean} **/ var paused = false;
 
-/** @type {Array} **/ var queue    = [];
 /** @type {Array} **/ var joblist  = [];
 /** @type {Array} **/ var money = ['%d р.', '$%d'];
 
@@ -30,8 +28,8 @@ var options = {
 	/** @type {number} **/  defJobPageCount: 30,
 	/** @type {number} **/  maxJobPageCount: 30,
 	/** @const **/ maxTitleLength:           75,
-	/** @const **/ checkInterval:            60000,
-	/** @const **/ checkIntervalFiltered:    90000,
+	/** @const **/ checkInterval:            40000,
+	/** @const **/ checkIntervalFiltered:    60000,
 	
 	/** @const **/ siteIconPrefix:           'sico',
 	/** @const **/ animationSpeed:           'slow',
@@ -193,25 +191,10 @@ function checkNewJobs() {
 	} );
 }
 
-function dropQueueTimer() {
-	if (null != queueTimer) {
-		clearTimeout(queueTimer);
-	}
-}
-
 function dropNewTimer() {
 	if (null != newTimer) {
 		clearTimeout(newTimer);
 	}
-}
-
-/**
- * Sets the queue checker timer
- * @param {!number} interval Interval
- */
-function setQueueTimer(interval) {
-	dropQueueTimer();
-	queueTimer = setInterval(checkQueue, interval);
 }
 
 /**
@@ -224,55 +207,7 @@ function setNewTimer(interval) {
 }
 
 /**
- * Pop the job from queue
- */
-function popFromQueue() {
-	var tmpJob = queue.pop();
-	var tmpEl = tmpJob.element;
-
-	joblist.push(tmpEl);
-	
-	tmpEl
-		.hide();
-		
-	if (tmpJob.stamp < 0) {
-		tmpEl.appendTo(places.placeJob);
-		
-		options.maxJobPageCount++;
-	} else {
-		if (
-			$(window).scrollTop() == 0
-			&& options.maxJobPageCount - 2 >= options.defJobPageCount
-		) {		
-			options.maxJobPageCount = options.maxJobPageCount - 2;
-		}
-	
-		tmpEl.prependTo(places.placeJob);
-	}
-		
-	tmpEl.show();
-
-	// make job normal
-	setTimeout( function() {
-		tmpEl.animate( {
-			'margin-left': '0px'
-		}, options.animationSpeed );
-	}, 30000 );
-	
-	if (!settings.filterMode) {
-		checkJobForFilter(tmpEl);
-	}
-
-	checkJobPlace();
-}
-
-function checkQueue() {
-	if (queue.length > 0)
-		popFromQueue();
-}
-
-/**
- * Add job to queue
+ * Add job to feed
  * @param {!Object} job Job object
  */
 function addJob(job) {
@@ -293,8 +228,7 @@ function addJob(job) {
 		// set new jobs a little offset
 		.css( {
 			'margin-left': '-10px'
-		} )
-		.hide();
+		} );
 
 	var htmltitle = job.title;
 
@@ -341,14 +275,40 @@ function addJob(job) {
 
 	$('li.k', jobEl).html(tmpDesc);
 	
-	var jEl = {
+	var tmpJob = {
 		stamp: job.stamp,
 		element: jobEl
 	};
+
+	joblist.push(tmpJob);
+		
+	if (job.stamp < 0) {
+		jobEl.appendTo(places.placeJob);
+		
+		options.maxJobPageCount++;
+	} else {
+		if (
+			$(window).scrollTop() == 0
+			&& options.maxJobPageCount - 2 >= options.defJobPageCount
+		) {		
+			options.maxJobPageCount = options.maxJobPageCount - 2;
+		}
 	
-	queue.push(jEl);
+		jobEl.prependTo(places.placeJob);
+	}
+
+	// make job normal
+	setTimeout( function() {
+		jobEl.animate( {
+			'margin-left': '0px'
+		}, options.animationSpeed );
+	}, 30000 );
 	
-	popFromQueue();
+	if (!settings.filterMode) {
+		checkJobForFilter(jobEl);
+	}
+
+	checkJobPlace();	
 }
 
 /**
@@ -387,7 +347,6 @@ function streamPause() {
 	places.buttonPause.slideUp(options.animationSpeed);
 	places.buttonPlay.slideDown(options.animationSpeed);
 
-	queue = [];
 	dropNewTimer();
 
 	paused = true;
@@ -474,8 +433,6 @@ function init() {
 		settings.save();
 		places.filterMode.toggleClass('checked');		
 	});
-	
-	setQueueTimer(5000);
 }
 
 // ---------------------------------------------------

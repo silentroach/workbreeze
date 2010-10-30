@@ -17,9 +17,12 @@ class Scheduler {
 		return $this->parsers[$info['code']];
 	}
 
+	// @todo refactor
 	public function updateGlobalRSS() {
 		echo '[' . date('H:m:s') . "] Updating global RSS channel...\n";
-		
+
+		$filename = PATH_PUBLIC . 'jobs/rss-global.xml';		
+
 		$sites = $this->db->sites;
 		
 		$st = array();
@@ -31,7 +34,7 @@ class Scheduler {
 		date_default_timezone_set('GMT');
 		
 		$writer = new XMLWriter();
-		$writer->openURI(PATH_PUBLIC . 'jobs/rss-global.xml');
+		$writer->openURI($filename);
 		if (defined('DEBUG')) {
 			$writer->setIndent(4);
 		}
@@ -81,6 +84,9 @@ EOF;
 		$writer->endDocument();
 		
 		$writer->flush();
+
+		// compressing for nginx static gzip
+		$out = system('gzip -c9 ' . escapeshellarg($filename) . ' > ' . escapeshellarg($filename . '.gz'));
 	}
 
 	public function processJobList() {

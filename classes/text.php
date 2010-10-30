@@ -56,10 +56,23 @@ class Text {
 		// convert links to html
 		$text = preg_replace('@([^">=])(https?://([-\w\.]+[-\w])+(:\d+)?(/([\w/_\.#-]*(\?\S+)?[^\.\s])?)?)@', '$1<a href="$2" rel="noindex,nofollow">$2</a>', $text);
 
+		// converting lists to html
 		$text = "\n" . $text;
 
-		// replace each differen list
+		// @todo make it static
+		$splitters = array();
+
 		foreach(array('-', '*', '+') as $splitter) {
+			$i = strpos($text, "\n" . $splitter);
+
+			if (false !== $i) {
+				$splitters[$splitter] = $i;
+			}
+		}
+
+		arsort($splitters);
+
+		foreach($splitters as $splitter => $pos) {
 			$text = preg_replace_callback(
 				"/\n((\s?(([" . $splitter . "]) (.*?))\n)+)/siu", 
 				function($match) use (&$lireplaced) {

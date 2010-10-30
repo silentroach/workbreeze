@@ -41,7 +41,6 @@ class Page {
 
 		$content = str_replace(' = ', '=', $content);
 		$content = str_replace('> <', '><', $content);
-		$content = str_replace('> ', '>', $content);
 	
 		file_put_contents($filename, $content);
 		

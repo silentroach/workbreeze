@@ -45,14 +45,14 @@ class Job {
 				'скрипт', 'веб-разр', 'верстк', 'веб-прило', 'разработка сайт', 'script', 'web-prog', 
 				'webprog', 'веб-программ', 'php', 'asp', 'wordpress', 'joomla', 'ajax', 'javascript', 
 				'ruby', 'ecommerce', 'создание сайт', 'системы админист', 'drupal', 'framework', 'web prog',
-				'web devel'
+				'web devel', 'css'
 			)
 		),
 		self::CAT_TRANSLATE   => array(
 			array('перевод', 'translat')
 		),
 		self::CAT_TEXT        => array(
-			array('текст', 'рерайтинг', 'text', 'writing', 'статьи', 'обзор', 'реферат', 'диплом', 'posting', 'data-process')
+			array('текст', 'рерайтинг', 'text', 'writing', 'статьи', 'обзор', 'реферат', 'диплом', 'posting', 'data-process', 'корректировка')
 		),
 		self::CAT_ADVERTISING => array(
 			array('реклам', 'advertising', 'seo', 'раскрутка', 'маркетинг', 'marketing', 'social')

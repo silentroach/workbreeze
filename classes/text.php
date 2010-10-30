@@ -59,10 +59,10 @@ class Text {
 		// converting lists to html
 		$text = "\n" . $text;
 
-		// @todo make it static
 		$splitters = array();
 
-		foreach(array('-', '*', '+') as $splitter) {
+		// @todo make this array static
+		foreach(array('-', '*', '+', '°') as $splitter) {
 			$i = strpos($text, "\n" . $splitter);
 
 			if (false !== $i) {

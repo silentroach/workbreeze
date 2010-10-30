@@ -84,7 +84,7 @@ class Parser_odesk_com extends Parser implements IParser {
 		) {
 			return false;
 		}
-				
+
 		return $matches[2];
 	}
 	
@@ -133,8 +133,10 @@ class Parser_odesk_com extends Parser implements IParser {
 		
 		// skills
 		if (
-			preg_match_all('/<a href="\/jobs\/\?qs=(.*?)>(.*?)<\/a>/siu', $content, $matches)
-			&& 3 == count($matches)
+			(
+				preg_match_all('/<a href="\/jobs\/\?qs=(.*?)>(.*?)<\/a>/siu', $content, $matches)
+				|| preg_match_all('/<a href="\/jobs\/skill\/(.*?)>(.*?)<\/a>/siu', $content, $matches)
+			) && 3 === sizeof($matches)
 		) {	
 			$cats .= ' ' . implode(' ', array_pop($matches));
 		}

@@ -12,8 +12,8 @@ class Text {
 			foreach($urls as $key => $url) {
 				$href = $matches[2][$key];
 				$val  = $matches[4][$key];
-			
-				$text = str_replace($url, '<a href="' . $href . '">' . $val . '</a>', $text);
+
+				$text = str_replace($url, '<a href="' . $href . '" rel="noindex,nofollow">' . $val . '</a>', $text);
 			}
 		}
 	
@@ -51,6 +51,9 @@ class Text {
 		$text = strip_tags($text, '<a>');
 
 		$text = str_replace(array(' . ', ' , '), array('. ', ', '), $text);
+
+		// convert links to html
+		$text = preg_replace('@([^">=])(https?://([-\w\.]+[-\w])+(:\d+)?(/([\w/_\.#-]*(\?\S+)?[^\.\s])?)?)@', '$1<a href="$2" rel="noindex,nofollow">$2</a>', $text);
 
 		while ("\n" === mb_substr($text, strlen($text) - 1, 1)) {
 			$text = mb_substr($text, 0, strlen($text) - 1);

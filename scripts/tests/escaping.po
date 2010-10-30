@@ -1,1 +1,1 @@
-testme preved <a href="test">gogogo</a>
+testme preved <a href="test" rel="noindex,nofollow">gogogo</a>

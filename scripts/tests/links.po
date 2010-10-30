@@ -1,0 +1,1 @@
+Testing links<br /><br /><a href="test.ru" rel="noindex,nofollow">test</a><br /><a href="http://www.test.ru" rel="noindex,nofollow">test</a><br /><a href="http://test.ru" rel="noindex,nofollow">test2</a><br /><a href="http://privet.ru" rel="noindex,nofollow">http://privet.ru</a> <a href="https://google.com" rel="noindex,nofollow">https://google.com</a>

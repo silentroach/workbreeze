@@ -113,23 +113,15 @@ class Parser_freelancer_com extends Parser implements IParser {
 		$cats = '';
 		
 		if (
-			preg_match_all('/projects\/by-job\/(.*?).html/siu', $content, $matches)
-			&& 2 == count($matches)
+			preg_match_all('/projects\/by-job\/(.*?)>(.*?)</siu', $content, $matches)
+			&& 3 == count($matches)
 		) {
-			array_shift($matches);
-			
-			$cc = array_shift($matches);
-			
-			foreach($cc as $wd) {
-				$cats .= $wd;
-			}
-		}
+			$cc = array_pop($matches);
 		
-		if ('' != $cats) {
-			return $cats;
-		} else {
-			return false;
+			return implode(' ', $cc);
 		}
+
+		return false;
 	}
 	
 	public function parseJobMoney($content) {
@@ -138,8 +130,13 @@ class Parser_freelancer_com extends Parser implements IParser {
 			&& 2 == count($matches)
 		) {
 			$val = array_pop($matches);
+
+			$val = str_replace('&#36;', '$', $val);
 			
-			if (false !== mb_strpos($val, '$')) {
+			if (
+				false !== mb_strpos($val, '$')
+				|| false !== mb_strpos($val, 'USD')
+			) {
 				$currency = Job::CUR_DOLLAR;
 				
 				$val = trim(preg_replace('/\$/siu', '', $val));
@@ -158,7 +155,7 @@ class Parser_freelancer_com extends Parser implements IParser {
 					$currency
 				);
 			}
-		}
+		} 
 		
 		return false;
 	}

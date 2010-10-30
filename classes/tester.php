@@ -1,5 +1,9 @@
 <?php
 
+if ($argc > 1 && in_array('br', $argv)) {
+	define('BRCONVERT', 1);
+}
+
 class Tester {
 
 	private $db;
@@ -24,9 +28,15 @@ class Tester {
 		$check1 = str_replace("\n", '<br />', $tmp);
 	
 		if ($out != $check1) {
-			return $check1 . 
+			$out = $check1 . 
 				"\n---------------------------------------------------\n" . 
 				$out . "\n";
+
+			if (defined('BRCONVERT')) {
+				$out = str_replace('<br />', "\n", $out);
+			}
+
+			return $out;
 		}
 		
 		if (substr($i['filename'], 0, 4) !== 'real') {

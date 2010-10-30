@@ -28,7 +28,8 @@ class Job {
 		self::CAT_DESIGN      => array(
 			array(
 				'дизайн', 'design', 'баннер', 'banner', 'графика', 'graphic', 'flash',
-				'логотип', 'logo', 'арт', 'худож', 'art', 'иллюстра', 'photoshop'
+				'логотип', 'logo', 'арт', 'худож', 'art', 'иллюстра', 'photoshop', 'illustrat',
+				'флеш'
 			)
 		),
 		self::CAT_PHOTO       => array(
@@ -45,7 +46,7 @@ class Job {
 				'скрипт', 'веб-разр', 'верстк', 'веб-прило', 'разработка сайт', 'script', 'web-prog', 
 				'webprog', 'веб-программ', 'php', 'asp', 'wordpress', 'joomla', 'ajax', 'javascript', 
 				'ruby', 'ecommerce', 'создание сайт', 'системы админист', 'drupal', 'framework', 'web prog',
-				'web devel', 'css'
+				'web devel', 'css', 'dreamveawer', 'oscommerce'
 			)
 		),
 		self::CAT_TRANSLATE   => array(
@@ -58,7 +59,10 @@ class Job {
 			array('реклам', 'advertising', 'seo', 'раскрутка', 'маркетинг', 'marketing', 'social')
 		),
 		self::CAT_SYSADM      => array(
-			array('admin', 'админ', 'windows', 'linux', 'freebsd', 'unix', 'sql'),
+			array(
+				'admin', 'админ', 'windows', 'linux', 'freebsd', 'unix', 'sql', 'plesk',
+				'настройка сервер'
+			),
 			array('системы админ')
 		)
 	);

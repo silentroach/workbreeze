@@ -20,17 +20,18 @@ class Text {
 		$text = str_ireplace('&nbsp;', ' ', $text);
 		$text = str_replace("\t", '', $text);
 	
-		$text = str_replace(array(
-				'…',   '»',       '«',       '•'
-			), array(
-				'...', '&raquo;', '&laquo;', '- '
-			), $text);
-	
 		$text = str_ireplace(
 			array('&nbsp;', '/>' , ' >', '> <', ' </'),
 			array(' '     , ' />', '>' , '><' ,  '</'),
 			$text
 		);
+
+                // replace some strange symbols
+                $text = str_replace(array(
+                                '…',   '»',       '«',       '•'
+                        ), array(
+                                '...', '&raquo;', '&laquo;', '+ ' 
+                        ), $text);
 
 		while (false !== strpos($text, '  ')) {
 			$text = str_replace('  ', ' ', $text);
@@ -54,6 +55,18 @@ class Text {
 
 		// convert links to html
 		$text = preg_replace('@([^">=])(https?://([-\w\.]+[-\w])+(:\d+)?(/([\w/_\.#-]*(\?\S+)?[^\.\s])?)?)@', '$1<a href="$2" rel="noindex,nofollow">$2</a>', $text);
+
+		$text = "\n" . $text;
+
+		// replace each different list
+		foreach(array('-', '*', '+') as $splitter) {
+			$text = preg_replace_callback(
+				"/\n((\s?(([" . $splitter . "]) (.*?))\n)+)/siu", 
+				function($match) {
+					return '<ul>' . preg_replace("/^\s?(([" . $match[4] . "]) (.*?))\n/m", "<li>\\3</li>", $match[0]) . '</ul>';
+				},
+				$text);
+		}
 
 		while ("\n" === mb_substr($text, strlen($text) - 1, 1)) {
 			$text = mb_substr($text, 0, strlen($text) - 1);
@@ -79,6 +92,12 @@ class Text {
 	}
 
 	public static function ExtractWords($text) {
+		// to strip tags more accurate for words
+		$text = str_replace(
+			array('<', '>'),
+			array(' <', '> '),
+			$text);
+
 		$text = strip_tags($text);
 		$text = html_entity_decode($text);
 

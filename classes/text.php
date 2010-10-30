@@ -28,9 +28,9 @@ class Text {
 
                 // replace some strange symbols
                 $text = str_replace(array(
-                                '…',   '»',       '«',       '•'
+                                '…',   '»',       '«',       '•',  '—',  'ё'
                         ), array(
-                                '...', '&raquo;', '&laquo;', '+ ' 
+                                '...', '&raquo;', '&laquo;', '+ ', '- ', 'е'
                         ), $text);
 
 		while (false !== strpos($text, '  ')) {
@@ -75,7 +75,7 @@ class Text {
 		foreach($splitters as $splitter => $pos) {
 			$text = preg_replace_callback(
 				"/\n((\s?(([" . $splitter . "]) (.*?))\n)+)/siu", 
-				function($match) use (&$lireplaced) {
+				function($match) {
 					return '<ul>' . preg_replace("/^\s?(([" . $match[4] . "]) (.*?))\n/m", "<li>\\3</li>", $match[0]) . '</ul>';
 				},
 				$text);

@@ -23,7 +23,10 @@ class Job {
 			array('other', 'другое', 'прочее', 'менеджмент')
 		),
 		self::CAT_AUDIOVIDEO  => array(
-			array('аудио', 'звук', 'audio', 'sound', 'видео', 'клип', 'video', 'clip', 'анимация')
+			array(
+				'аудио', 'звук', 'audio', 'sound', 'видео', 'клип', 'video', 'clip', 'анимация',
+				'fruity loops'
+			)
 		),
 		self::CAT_DESIGN      => array(
 			array(
@@ -53,7 +56,8 @@ class Job {
 			array('перевод', 'translat')
 		),
 		self::CAT_TEXT        => array(
-			array('текст', 'рерайтинг', 'text', 'writing', 'статьи', 'обзор', 'реферат', 'диплом', 'posting', 'data-process', 'корректировка')
+			array('текст', 'рерайтинг', 'text', 'writing', 'статьи', 'обзор', 'реферат', 'диплом', 'posting', 
+			'data-process', 'корректировка', 'data process')
 		),
 		self::CAT_ADVERTISING => array(
 			array('реклам', 'advertising', 'seo', 'раскрутка', 'маркетинг', 'marketing', 'social')
@@ -61,7 +65,7 @@ class Job {
 		self::CAT_SYSADM      => array(
 			array(
 				'admin', 'админ', 'windows', 'linux', 'freebsd', 'unix', 'sql', 'plesk',
-				'настройка сервер'
+				'настройка сервер', 'asterisk', 'voip'
 			),
 			array('системы админ')
 		)

@@ -1,8 +1,74 @@
+/**
+ * Filter
+ * @constructor
+ * @this {workbreeze.filter}
+ * @param {Object} s Options
+ */
+workbreeze.filter = function(storage, s) {
+	var self = this;
+	
+	/**
+	 * Options
+	 * @type {Object}
+	 */
+	var options = $.extend( {
+
+	}, s);
+	
+	/**
+	 * Array of filter items
+	 * @type {Array}
+	 */
+	var filterItems = [];
+	
+	/**
+	 * Filter criteria
+	 * @type {Array}
+	 */
+	var criteria = {};
+	
+	/**
+	 * Item changed filter
+	 * @param {Object} item Filter item
+	 */
+	var handleItemChanged = function(item) {
+		criteria[item.identifier] = item.getValue();
+
+		storage.set('opts', criteria);
+	}
+	
+	/**
+	 * Add item to filter by
+	 * @param {Object} item Filter item
+	 */
+	self.add = function(item) {
+		item.onChanged = function() {
+			handleItemChanged(item);
+		}
+	
+		filterItems.push(item);
+	}
+	
+	/**
+	 * Initialization
+	 */
+	self.init = function() {
+		criteria = storage.get('opts') || {};
+		
+		$(filterItems).each( function() {
+			if (this.identifier in criteria) {
+				this.setValue(criteria[this.identifier]);
+			}
+		} );
+	}
+	
+}
+
+
+
 /** @type {Boolean} **/ var streamAutoPause = false;
 
 function handleFilter() {
-	var tmp = $.trim($('#keyword').val());
-
 	settings.clearSites();
 	settings.clearCategories();
 	settings.clearKeywords();
@@ -23,18 +89,6 @@ function handleFilter() {
 		}
 	} );
 
-	if ('' != tmp) {
-		/** @type {Array} **/ var keys = tmp.split(',');
-
-		for (var i = 0; i < keys.length; i++) {
-			var tmpk = $.trim(keys[i]);
-
-			if ('' != tmpk) {
-				settings.addKeyword(tmpk);
-			}
-		}
-	}
-
 	if (
 		0 == settings.sites.length
 		|| 0 == settings.categories.length
@@ -49,15 +103,6 @@ function handleFilter() {
 	}
 
 	settings.save();
-
-/* <debug> */
-	console.group('new filter');
-	console.log('sites', settings.sites);
-	console.log('cats', settings.categories);
-	if (0 < settings.keywords.length) 
-		console.log('keys', settings.keywords);
-	console.groupEnd();
-/* </debug> */
 
 	if (!settings.filterMode) {
 		checkFeedForFilter();

@@ -2,7 +2,6 @@
 /** @type {number} **/ var updateCount = 0;
 
 var newTimer;
-var filterTimer;
 
 /** @type {Boolean} **/ var updating = false;
 /** @type {Boolean} **/ var updatingBottom = false;
@@ -20,7 +19,6 @@ var places = {
 	/** @type {jQuery} **/ buttonPlay:  null,
 	/** @type {jQuery} **/ buttonPause: null,
 	/** @type {jQuery} **/ logo:        null,
-	/** @type {jQuery} **/ keyword:     null,
 	/** @type {jQuery} **/ filterMode:  null
 }
 
@@ -40,7 +38,6 @@ var options = {
 	/** @const **/ elementSites:             'sites',
 	/** @const **/ elementLang:              'lang',
 	/** @const **/ elementCats:              'cats',
-	/** @const **/ elementKeywords:          'keys',
 	/** @const **/ elementJobStamp:          'jstamp',
 	/** @const **/ elementFilter:            'filter'
 }
@@ -70,16 +67,31 @@ var locale = new workbreeze.locale(storage, {
  * @type {workbreeze.categories}
  */
 var categories = new workbreeze.categories(storage, locale, {
-	storagePath: options.elementCats
+	place: '#categories'
 } );
 
 /**
  * @type {workbreeze.sites}
  */
 var sites = new workbreeze.sites(storage, {
-	storagePath: options.elementSites,
 	iconPrefix: options.siteIconPrefix
 } );
+
+/**
+ * @type {workbreeze.keywords}
+ */
+var keywords = new workbreeze.keywords( {
+	place: '#keywords'
+} );
+
+/**
+ * @type {workbreeze.filter}
+ */
+var filter = new workbreeze.filter(storage);
+
+filter.add(sites);
+filter.add(categories);
+filter.add(keywords);
 
 /**
  * Ajax /up caller
@@ -415,18 +427,7 @@ function init() {
 	places.buttonPause.click(streamToggle);
 	places.buttonPlay.click(streamToggle);
 	
-	places.keyword
-		.keyup(function(e) {
-			if (null != filterTimer) {
-				clearTimeout(filterTimer);
-			}
-	
-			if (e.keyCode == 13) {
-				handleFilter();
-			} else {
-				filterTimer = setTimeout(handleFilter, 2000);
-			}
-		});
+	filter.init();
 		
 	places.filterMode.click(function() {
 		settings.toggleFilterMode();
@@ -441,7 +442,6 @@ function init() {
 places.logo        = $('#logo');
 places.templateJob = $('ul.job:first');
 places.placeJob    = $('#jobs');
-places.keyword     = $('#keyword');
 places.filterMode  = $('#mode_f');
 
 if (settings.keywords.length != 0) {
@@ -519,7 +519,7 @@ up({
 		init();
 	}
 });
-		
+
 // ---------------------------------------------------
 // Secondary things to do
 // ---------------------------------------------------

@@ -2,6 +2,7 @@
  * Categories object
  * @constructor
  * @this {workbreeze.categories}
+ * @implement {workbreeze.filterItem}
  * @param {workbreeze.storage} storage Storage
  * @param {workbreeze.locale} locale Locale
  * @param {Object} s Options
@@ -14,24 +15,92 @@ workbreeze.categories = function(storage, locale, s) {
 	 * @type {Object}
 	 */
 	var options = $.extend( {
-		storagePath: 'cats'
+		place: '#categories'
 	}, s);
+
+	var place = $(options.place);
 
 	/**
 	 * Categories list
-	 * @type {Array} 
+	 * @type {Array}
 	 */ 
 	var cats = [];
+	
+	/**
+	 * Selected categories list
+	 * @type {Array}
+	 */
+	var selected = [];
+	
+	/**
+	 * Toggle selected item
+	 * @todo refactor and group
+	 * @param {number} item
+	 */
+	var toggleSelected = function(item) {
+		$('#c' + item, options.place).toggleClass('checked');
+	
+		var index = $.inArray(item, selected);
+			
+		if (index >= 0) {
+			selected.splice(index, 1);
+		} else {
+			selected.push(item);
+		}
+	}
+	
+	/**
+	 * Filter item identifier
+	 * @const
+	 * @type {string}
+	 */
+	self.identifier = 'cats';
+	
+	/**
+	 * Filter item value
+	 * @return {Array}
+	 */
+	self.getValue = function() {
+		return selected;
+	}
+	
+	/**
+	 * Set the filter item value
+	 * @param {Object|string} value
+	 */
+	self.setValue = function(value) {
+		selected = value || [];
+		
+		$('li', place).each( function() {
+			var self = $(this);
+		
+			var tmp = self.attr('cat');
+			
+			if (tmp) {
+				var tmpch  = self.hasClass('checked');
+			
+				if (tmp in selected) {
+					if (!tmpch) {
+						self.addClass('checked');
+					}
+				} else {
+					if (tmpch) {
+						self.removeClass('checked');
+					}
+				}
+			}
+		} );
+	}
 
 	/**
 	 * Get local storage categories version
 	 * @return {number} Categories object version
 	 */
 	self.getLocalVersion = function() {
-		var cver = storage.getVersion(options.storagePath);
+		var cver = storage.getVersion(self.identifier);
 	
 		if (cver > 0) {
-			var tmp = storage.get(options.storagePath);
+			var tmp = storage.get(self.identifier);
 
 			cats = tmp[1];
 		}
@@ -64,16 +133,18 @@ workbreeze.categories = function(storage, locale, s) {
 			cats[item[0]] = item; 
 		} );
 	
-		storage.set(options.storagePath, cats, val['v']);
+		storage.set(self.identifier, cats, val['v']);
 	}
+	
+	/**
+	 * onChanged handler
+	 */
+	self.onChanged = function() { };
 
 	/**
 	 * Init cats info
 	 */
-	self.init = function() {
-		var cplace = $('#categories');
-		var cempty = settings.categories.length == 0;
-	
+	self.init = function() {	
 		for (var i in cats) {
 			var cat = cats[i];
 
@@ -86,23 +157,13 @@ workbreeze.categories = function(storage, locale, s) {
 					'id'  : 'c' + i,
 					'cat' : i
 				} )
-				.click(function() {
-					$(this).toggleClass('checked');
-					handleFilter();
+				.click(i, function(e) {
+					toggleSelected(e.data);
+					
+					self.onChanged();
 				} );
 
-			if (
-				cempty
-				|| $.inArray(i, settings.categories) >= 0
-			) {
-				li.addClass('checked');
-			}
-
-			if (cempty) {
-				settings.addCat(i);
-			}
-
-			li.appendTo(cplace);
+			li.appendTo(place);
 			sp.appendTo(li);
 		}
 	}

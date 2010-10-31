@@ -19,6 +19,10 @@ workbreeze.keywords = function(s) {
 	var keywordTimer = null;
 	var place = $(options.place);
 	
+	/**
+	 * Array of used keywords
+	 * @type {Array} 
+	 */
 	var keys = [];
 	
 	/**

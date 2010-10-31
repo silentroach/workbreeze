@@ -24,7 +24,11 @@ workbreeze.sites = function(storage, s) {
 	 * @type {Array} 
 	 */
 	var sites = [];
-	
+
+	/**
+	 * Array of selected sites
+	 * @type {Array} 
+	 */	
 	var selected = [];
 	
 	/**

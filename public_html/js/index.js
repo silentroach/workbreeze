@@ -9,6 +9,7 @@ var newTimer;
 /** @type {Boolean} **/ var helpVisible = false;
 /** @type {number} **/  var lastBottom = 0;
 /** @type {Boolean} **/ var paused = false;
+/** @type {Boolean} **/ var streamAutoPaused = false;
 
 /** @type {Array} **/ var joblist  = [];
 /** @type {Array} **/ var money = ['%d р.', '$%d'];
@@ -18,8 +19,7 @@ var places = {
 	/** @type {jQuery} **/ placeJob:    null,
 	/** @type {jQuery} **/ buttonPlay:  null,
 	/** @type {jQuery} **/ buttonPause: null,
-	/** @type {jQuery} **/ logo:        null,
-	/** @type {jQuery} **/ filterMode:  null
+	/** @type {jQuery} **/ logo:        null
 }
 
 var options = {
@@ -88,7 +88,19 @@ var keywords = new workbreeze.keywords( {
  * @type {workbreeze.filter}
  */
 var filter = new workbreeze.filter(storage, {
-	onChanged: function() {
+	onChanged: function(isEmpty) {
+		if (isEmpty) {
+			if (!paused) {
+				streamAutoPaused = true;
+			}
+
+			streamPause();
+		} else {
+			if (streamAutoPaused) {
+				streamPlay();
+			}
+		}
+		
 		checkJobs();
 	}
 } );
@@ -164,21 +176,12 @@ function checkJobPlace() {
  */
 function prepareDataForJobs(stamp) {
 	var adata = {};	
-	adata[options.elementJobStamp] = stamp;
 
-	if (settings.filterMode) {
-		if (sites.count() != settings.sites.length) {
-			adata[options.elementFilter + '_' + options.elementSites] = settings.sites.join(',');
-		}
-		
-		if (categories.count() != settings.categories.length) {
-			adata[options.elementFilter + '_' + options.elementCats] = settings.categories.join(',');
-		}
-		
-		if (settings.keywords.length > 0) {
-			adata[options.elementFilter + '_' + options.elementKeywords] = settings.keywords.join(',');
-		}
+	if (filter.getFilterMode) {
+		adata = filter.getCriteriaData();
 	}
+
+	adata[options.elementJobStamp] = stamp;
 
 	return adata;
 }
@@ -199,7 +202,7 @@ function checkNewJobs() {
 				parseJobs(data['j']);
 			}
 		
-			setNewTimer(settings.filterMode ? options.checkIntervalFiltered : options.checkInterval);
+			setNewTimer(filter.getFilterMode() ? options.checkIntervalFiltered : options.checkInterval);
 		},
 		error: function() {
 			setNewTimer(options.checkInterval * 2);
@@ -315,7 +318,7 @@ function addJob(job) {
 		}, options.animationSpeed );
 	}, 30000 );
 	
-	if (!settings.filterMode) {
+	if (!filter.getFilterMode()) {
 		checkJob(jobEl);
 	}
 
@@ -407,14 +410,7 @@ function streamPause() {
 }
 
 function streamPlay() {
-	if (
-		0 == settings.sites.length
-		|| 0 == settings.categories.length
-	) {
-		return;
-	}
-
-	streamAutoPause = false;
+	streamAutoPaused = false;
 	paused = false;
 
 	places.buttonPlay.slideUp(options.animationSpeed);
@@ -457,7 +453,7 @@ function updateBottom() {
 		ping: function() {
 			updatingBottom = false;
 
-			setNewTimer(settings.filterMode ? options.checkIntervalFiltered : options.checkInterval);
+			setNewTimer(filter.getFilterMode() ? options.checkIntervalFiltered : options.checkInterval);
 		}
 	});
 }
@@ -470,11 +466,17 @@ function init() {
 	places.buttonPlay.click(streamToggle);
 	
 	filter.init();
+
+	var filterModePlace = $('#mode_f');
+
+	if (filter.getFilterMode()) {
+		filterModePlace.addClass('checked');
+	}
 		
-	places.filterMode.click(function() {
-		settings.toggleFilterMode();
-		settings.save();
-		places.filterMode.toggleClass('checked');		
+	filterModePlace.click(function() {
+		filter.setFilterMode(!filter.getFilterMode());
+
+		filterModePlace.toggleClass('checked');		
 	});
 
 	checkNewJobs();
@@ -486,16 +488,7 @@ function init() {
 places.logo        = $('#logo');
 places.templateJob = $('ul.job:first');
 places.placeJob    = $('#jobs');
-places.filterMode  = $('#mode_f');
 
-if (settings.keywords.length != 0) {
-	places.keyword.val(settings.keywords.join(', '));
-}
-
-if (settings.filterMode) {
-	places.filterMode.toggleClass('checked');
-}
-	
 places.logo.ajaxStart(function() {
 	$(this).animate({'opacity': 0.7}, options.animationSpeed);
 });
@@ -520,7 +513,7 @@ adata[options.elementCats]  = categories.getLocalVersion();
 up({
 	data: adata,
 	success: function(data) {
-		// settings the next check timer
+		// setting the next check timer
 		setNewTimer(options.checkInterval);
 	
 		// scrolling to the top

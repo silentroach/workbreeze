@@ -31,7 +31,7 @@ workbreeze.keywords = function(s) {
 	 * @type {string}
 	 */
 	self.identifier = 'keys';
-	
+
 	/**
 	 * Filter item value
 	 * @return {Array}

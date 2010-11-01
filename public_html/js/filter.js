@@ -12,7 +12,7 @@ workbreeze.filter = function(storage, s) {
 	 * @type {Object}
 	 */
 	var options = $.extend( {
-		onChanged: function() { }
+		onChanged: function(criteriaIsEmpty) { }
 	}, s);
 	
 	/**
@@ -20,7 +20,7 @@ workbreeze.filter = function(storage, s) {
 	 * @type {Array}
 	 */
 	var filterItems = [];
-	
+
 	/**
 	 * Filter criteria
 	 * @type {Array}
@@ -28,17 +28,60 @@ workbreeze.filter = function(storage, s) {
 	var criteria = {};
 	
 	/**
+	 * Filter mode
+	 * @param {boolean}
+	 */
+	var filterMode = false;
+
+	var postItemChanged = function() {
+		storage.set('opts', criteria);
+
+		var isEmpty = false;
+
+		for (var key in criteria) {
+			if (
+				key != 'keys'     // @todo fix this shit
+				&& $.isArray(criteria[key])
+				&& criteria[key].length === 0
+			) {
+				isEmpty = true;
+				break;
+			}
+		}
+
+		options.onChanged(isEmpty);
+	}
+
+	/**
 	 * Item changed filter
 	 * @param {Object} item Filter item
 	 */
 	var handleItemChanged = function(item) {
 		criteria[item.identifier] = item.getValue();
 
-		storage.set('opts', criteria);
-
-		options.onChanged();
+		postItemChanged();
 	}
-	
+
+	/**
+	 * Set filter mode
+	 * @param {boolean} fm Filter mode
+	 */
+	self.setFilterMode = function(fm) {
+		filterMode = fm;
+
+		criteria['fm'] = fm;
+
+		postItemChanged();
+	}
+
+	/**
+	 * Get filter mode
+	 * @return {boolean} Filter mode
+	 */
+	self.getFilterMode = function() {
+		return filterMode;
+	}
+
 	/**
 	 * Add item to filter by
 	 * @param {Object} item Filter item
@@ -50,14 +93,43 @@ workbreeze.filter = function(storage, s) {
 
 		filterItems.push(item);
 	}
-	
+
+	/**
+	 * Get the criteria for /up
+	 * @return {Object}
+	 */
+	self.getCriteriaData = function() {
+		var out = {};
+
+		for (var key in criteria) {
+			if (
+				'fm' != key        // skipping filter mode
+				&& criteria[key].length > 0
+			) {
+				out['filter_' + key] = criteria[key].join(',');
+			}
+		}
+
+		return out;
+	}
+
 	/**
 	 * Initialization
 	 */
 	self.init = function() {
 		criteria = storage.get('opts') || {};
-		
+
+		if (
+			'fm' in criteria
+			&& criteria['fm']
+		) {
+			filterMode = true;
+		}
+
 		$(filterItems).each( function() {
+			if (criteria.length === 0) {
+				this.selectAll();
+			} else
 			if (this.identifier in criteria) {
 				this.setValue(criteria[this.identifier]);
 			}
@@ -81,77 +153,4 @@ workbreeze.filter = function(storage, s) {
 		return result;
 	}
 
-}
-
-
-
-/** @type {Boolean} **/ var streamAutoPause = false;
-
-function handleFilter() {
-	if (
-		0 == settings.sites.length
-		|| 0 == settings.categories.length
-	) {
-		if (!paused) {
-			streamAutoPause = true;
-			streamPause();
-		}
-	} else if (streamAutoPause) {
-		streamAutoPause = false;
-		streamPlay();
-	}
-
-	settings.save();
-
-	if (!settings.filterMode) {
-		checkFeedForFilter();
-	}
-}
-
-function jobSelectAll() {
-	for (var i in joblist) {
-		jobSelect(joblist[i]);
-	}
-}
-
-/**
- * @param {jQuery} element
- */
-function jobSelect(element) {
-	if (
-		!element.hasClass(options.classSelected)
-		|| element.hasClass(options.classNotSelected)
-	) {
-		element
-			.removeClass(options.classNotSelected)
-			.addClass(options.classSelected);
-		
-		element.animate( {
-			'opacity': 1
-		} );
-	}
-}
-
-/**
- * @param {jQuery} element
- */
-function jobUnselect(element) {
-	if (
-		!element.hasClass(options.classNotSelected)
-		|| element.hasClass(options.classSelected)
-	) {
-		element
-			.removeClass(options.classSelected)
-			.addClass(options.classNotSelected);
-		
-		element.animate( {
-			'opacity': 0.2
-		} );
-	}
-}
-
-function checkFeedForFilter() {	
-	for (var i = 0; i < joblist.length; i++) {
-		checkJobForFilter(joblist[i]);
-	}
 }

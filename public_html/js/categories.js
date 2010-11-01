@@ -70,7 +70,7 @@ workbreeze.categories = function(storage, locale, s) {
 	 */
 	self.setValue = function(value) {
 		selected = value || [];
-		
+	
 		$('li', place).each( function() {
 			var self = $(this);
 		
@@ -79,7 +79,7 @@ workbreeze.categories = function(storage, locale, s) {
 			if (tmp) {
 				var tmpch  = self.hasClass('checked');
 			
-				if (tmp in selected) {
+				if ($.inArray(tmp, selected) >= 0) {
 					if (!tmpch) {
 						self.addClass('checked');
 					}
@@ -135,7 +135,32 @@ workbreeze.categories = function(storage, locale, s) {
 	
 		storage.set(self.identifier, cats, val['v']);
 	}
-	
+
+	/**
+	 * Check the job element
+	 * @param {jQuery} jobElement Job element
+	 * @return {boolean}
+	 */
+	self.checkJob = function(jobElement) {
+		if (0 === selected.length) {
+			return true;
+		}
+
+		var jobCats = jobElement.attr('cats');
+
+		if (!jobCats) {
+			jobCats = [];
+		}
+
+		for (var i = 0; i < jobCats.length; i++) {
+			if ($.inArray(jobCats[i], selected) >= 0) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	/**
 	 * onChanged handler
 	 */

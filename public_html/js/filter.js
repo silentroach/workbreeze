@@ -12,7 +12,7 @@ workbreeze.filter = function(storage, s) {
 	 * @type {Object}
 	 */
 	var options = $.extend( {
-
+		onChanged: function() { }
 	}, s);
 	
 	/**
@@ -35,6 +35,8 @@ workbreeze.filter = function(storage, s) {
 		criteria[item.identifier] = item.getValue();
 
 		storage.set('opts', criteria);
+
+		options.onChanged();
 	}
 	
 	/**
@@ -45,7 +47,7 @@ workbreeze.filter = function(storage, s) {
 		item.onChanged = function() {
 			handleItemChanged(item);
 		}
-	
+
 		filterItems.push(item);
 	}
 	
@@ -61,7 +63,24 @@ workbreeze.filter = function(storage, s) {
 			}
 		} );
 	}
-	
+
+	/**
+	 * Check job element for criteria by filter items
+	 * @param {jQuery} jobElement Job element
+	 */
+	self.checkJob = function(jobElement) {
+		var result = true;
+
+		for (var i = 0; i < filterItems.length; i++) {
+			if (!filterItems[i].checkJob(jobElement)) {
+				result = false;
+				break;
+			}
+		}
+
+		return result;
+	}
+
 }
 
 
@@ -69,26 +88,6 @@ workbreeze.filter = function(storage, s) {
 /** @type {Boolean} **/ var streamAutoPause = false;
 
 function handleFilter() {
-	settings.clearSites();
-	settings.clearCategories();
-	settings.clearKeywords();
-
-	$('li', '#sites').each( function() {
-		var el = $(this);
-
-		if (el.hasClass('checked')) {
-			settings.addSite(el.attr('site'));
-		}
-	} );
-
-	$('li', '#categories').each( function() {
-		var el = $(this);
-	
-		if (el.hasClass('checked')) {
-			settings.addCat(el.attr('cat'));
-		}
-	} );
-
 	if (
 		0 == settings.sites.length
 		|| 0 == settings.categories.length
@@ -148,60 +147,6 @@ function jobUnselect(element) {
 		element.animate( {
 			'opacity': 0.2
 		} );
-	}
-}
-
-/**
- * @param {jQuery} element
- */
-function checkJobForFilter(element) {
-	if (
-		0 == settings.sites.length
-		|| 0 == settings.categories.length
-	) {
-		jobSelect(element);
-		return;
-	}
-
-	var str = $('li.k', element).html();
-	
-	var wrong = $.inArray(element.attr('site'), settings.sites) < 0;
-	
-	if (!wrong) {
-		var cts = element.attr('cats').split(',');
-
-		var cwrong = true;
-	
-		for (var i = 0; i < cts.length; i++) {
-			if ($.inArray(cts[i], settings.categories) >= 0) {
-				cwrong = false;
-				break;
-			}
-		}
-		
-		if (cwrong) {
-			wrong = true;
-		}
-	}
-
-	if (
-		!wrong
-		&& 0 != settings.keywords.length
-	) {
-		wrong = true;
-	
-		for (var i = 0; i < settings.keywords.length; i++) {
-			if (str.indexOf(settings.keywords[i].toLowerCase()) >= 0) {
-				wrong = false;
-				break;
-			}
-		}
-	}
-	
-	if (!wrong) {
-		jobSelect(element);
-	} else {
-		jobUnselect(element);
 	}
 }
 

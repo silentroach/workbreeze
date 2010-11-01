@@ -78,7 +78,7 @@ workbreeze.sites = function(storage, s) {
 			if (tmp) {
 				var tmpch  = self.hasClass('checked');
 			
-				if (tmp in selected) {
+				if ($.inArray(tmp, selected) >= 0) {
 					if (!tmpch) {
 						self.addClass('checked');
 					}
@@ -144,6 +144,21 @@ workbreeze.sites = function(storage, s) {
 		} );
 	
 		storage.set(self.identifier, sites, val['v']);
+	}
+
+	/**
+	 * Check job element
+	 * @param {jQuery} jobElement Job Element
+	 * @return {boolean}
+	 */
+	self.checkJob = function(jobElement) {
+		var site = jobElement.attr('site');
+
+		if (!site) {
+			return false;
+		}
+
+		return $.inArray(site, selected) >= 0;
 	}
 
 	/**

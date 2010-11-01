@@ -49,7 +49,28 @@ workbreeze.keywords = function(s) {
 		
 		place.val(keys.join(', '));
 	}
-	
+
+	/**
+	 * Check the job element
+	 * @param {jQuery} jobElement Job Element
+	 * @return {boolean}
+	 */
+	self.checkJob = function(jobElement) {
+		if (0 === keys.length) {
+			return true;
+		}
+
+		var str = $('li.k', jobElement).html() || '';		
+
+		for (var i = 0; i < keys.length; i++) {
+			if (str.indexOf(keys[i].toLowerCase()) >= 0) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	/**
 	 * onChanged handler
 	 */
@@ -71,7 +92,7 @@ workbreeze.keywords = function(s) {
 			}
 		} );
 	
-		self.onChanged();	
+		self.onChanged();
 	}
 	
 // ------------------------------------------------------

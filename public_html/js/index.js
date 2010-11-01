@@ -87,7 +87,11 @@ var keywords = new workbreeze.keywords( {
 /**
  * @type {workbreeze.filter}
  */
-var filter = new workbreeze.filter(storage);
+var filter = new workbreeze.filter(storage, {
+	onChanged: function() {
+		checkJobs();
+	}
+} );
 
 filter.add(sites);
 filter.add(categories);
@@ -287,11 +291,6 @@ function addJob(job) {
 
 	$('li.k', jobEl).html(tmpDesc);
 	
-	var tmpJob = {
-		stamp: job.stamp,
-		element: jobEl
-	};
-
 	joblist.push(jobEl);
 		
 	if (job.stamp < 0) {
@@ -317,10 +316,53 @@ function addJob(job) {
 	}, 30000 );
 	
 	if (!settings.filterMode) {
-		checkJobForFilter(jobEl);
+		checkJob(jobEl);
 	}
 
 	checkJobPlace();	
+}
+
+/**
+ * Function to check all jobs
+ */
+function checkJobs() {
+	for (var i = 0; i < joblist.length; i++) {
+		checkJob(joblist[i]);
+	}
+}
+
+/**
+ * Check job element
+ * @param {jQuery} jobElement Job Element
+ */
+function checkJob(jobElement) {
+	if (filter.checkJob(jobElement)) {
+		if (
+			!jobElement.hasClass(options.classSelected)
+			|| jobElement.hasClass(options.classNotSelected)
+		) {
+			jobElement
+				.removeClass(options.classNotSelected)
+				.addClass(options.classSelected);
+		
+			jobElement.animate( {
+				'opacity': 1
+			} );
+		}
+	} else {
+		if (
+			!jobElement.hasClass(options.classNotSelected)
+			|| jobElement.hasClass(options.classSelected)
+		) {
+			jobElement
+				.removeClass(options.classSelected)
+				.addClass(options.classNotSelected);
+		
+			jobElement.animate( {
+				'opacity': 0.2
+			} );
+		}
+	}
 }
 
 /**
@@ -434,6 +476,8 @@ function init() {
 		settings.save();
 		places.filterMode.toggleClass('checked');		
 	});
+
+	checkNewJobs();
 }
 
 // ---------------------------------------------------
@@ -464,10 +508,10 @@ $('#bfoot, .help, #menu').css({'opacity': 0.8});
 $('#right ul').remove();
 
 // ---------------------------------------------------
-// Initial data request
+// Initial data request for accessorial data
 // ---------------------------------------------------	
 
-var adata = prepareDataForJobs(0);
+var adata = {};
 
 adata[options.elementLang]  = locale.getLocalVersion();
 adata[options.elementSites] = sites.getLocalVersion();
@@ -495,10 +539,6 @@ up({
 		
 		if ('s' in data) {
 			sites.load(data['s']);
-		}
-		
-		if ('j' in data) {
-			parseJobs(data['j']);
 		}
 	},
 	ping: function() {	

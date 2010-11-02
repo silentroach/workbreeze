@@ -1,4 +1,0 @@
-/**
- * @interface
- */
-workbreeze.filterItem = function();

@@ -42,7 +42,7 @@ class Job {
 			array(
 				'программир', 'programm', 'разраб', 'software', 'delphi', 'c++', 'visual basic',
 				'development', 'cocoa', 'obj-c', 'objective-c', 'java', 'ipad', 'iphone'),
-			array('веб', 'web')
+			array('веб', 'web', 'сайт')
 		),
 		self::CAT_WEBPROG     => array(
 			array(

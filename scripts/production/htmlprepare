@@ -1,0 +1,172 @@
+#!/usr/bin/php
+<?php
+
+require dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'bootstrap.php';
+
+$tmpdir = '/tmp/tmpjs/';
+
+if (
+	!isset($argc)
+	|| $argc < 2
+) {
+	die("HTML file in parameter is required\n");
+}
+
+if ($argc < 3) {
+	die("Path to output file is required\n");
+}
+
+$filename = $argv[1];
+
+if (!file_exists($filename)) {
+	die($filename . " - file not found\n");
+}
+
+echo "\n== " . $filename . "\n";
+
+$outdir = $argv[2];
+
+if (substr($outdir, -1) !== '/') {
+	$outdir .= '/';
+}
+
+// paths for compilers
+$path_gcc = trim(`find -name 'gcc.jar'`);
+$path_yui = trim(`find -name 'yui.jar'`);
+
+$content = file_get_contents($filename);
+$analytics = file_get_contents(PATH_OTHER . 'ga.js');
+
+// date mark, we use it as a javascript/css version postfix
+$dd = date('mdHi');
+
+// replacing the "ga" comment with real Google Analytics Code
+$content = str_replace('<!-- ga !-->', $analytics, $content);
+
+// replacing developer jquery with one on GoogleAPI
+$content = str_replace(
+	'"js/jquery.js"', 
+	'"http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"', 
+	$content
+); 
+
+if (false !== strpos($content, '#githash')) {
+	$hash = trim(`git show --pretty=format:%H --quiet`);
+
+	$content = str_replace('#githash', $hash, $content);
+}
+
+// adding version to all css files
+if (
+	preg_match_all('@"(css/(.*?)\.css)"@iu', $content, $matches)
+	&& 3 === sizeof($matches)
+) {
+	$files = $matches[1];
+
+	foreach($files as $file) {
+		$content = str_replace($file, $file . '?' . $dd, $content);
+
+		echo str_pad($file, 40);
+
+		$fileout = $outdir . $file;
+
+		if (file_exists($fileout)) {
+			echo "[exists]\n";
+			continue;
+		}
+
+		if (!file_exists(dirname($fileout))) {
+			mkdir(dirname($fileout));
+		}
+
+		echo "[compressing]\n";
+
+		$filepath = PATH_PUBLIC . $file;
+		
+		$output = system('java -jar ' . escapeshellarg($path_yui) . 
+				' --type css -o ' .	escapeshellarg($fileout) . ' ' .
+			escapeshellarg($filepath));
+
+		echo $output;
+	}
+
+	echo "\n";
+}
+
+if (
+	preg_match_all('@<\!-- gcc(.*?)\/gcc \!-->@siu', $content, $matches)
+	&& 2 === sizeof($matches)
+) {
+	$blocks = $matches[1];
+
+	$inc = -1;
+
+	foreach($blocks as $block) {
+		if (
+			preg_match_all('@"(js/(.*?)\.js)"@iu', $block, $matches)
+			&& 3 === sizeof($matches)
+		) {
+			++$inc;
+
+			$files = $matches[1];
+
+			mkdir($tmpdir);
+
+			$cmd = '';
+
+			foreach($files as &$file) {
+				echo str_pad($file, 40) . "[prepare]\n";
+
+				$cmd .= '--js ' . escapeshellarg(PATH_PUBLIC . $file) . ' ';
+
+				$output = system(dirname(__FILE__) . DIRECTORY_SEPARATOR . 
+					'jsprepare ' . escapeshellarg($file) . ' > ' . 
+					escapeshellarg($tmpdir . pathinfo($file, PATHINFO_BASENAME)));
+			}
+
+			$fileout = $outdir . 'js' . DIRECTORY_SEPARATOR .
+				pathinfo($filename, PATHINFO_FILENAME) . '.js';
+
+			if (!file_exists(dirname($fileout))) {
+				mkdir(dirname($fileout));
+			}
+
+			$cmd = 'java -jar ' . escapeshellarg($path_gcc) . ' ' . $cmd .
+				'--externs ' . 
+				escapeshellarg(
+					dirname(__FILE__) . DIRECTORY_SEPARATOR . 
+					'externs' . DIRECTORY_SEPARATOR . 'jquery.js'
+				) . ' --compilation_level ADVANCED_OPTIMIZATIONS ' .
+			   '--warning_level VERBOSE > ' .
+				escapeshellarg($fileout);
+
+			$output = system($cmd);
+
+			// cleanup
+			foreach(glob($tmpdir . '/*') as $file) {
+				unlink($file);
+			}
+
+			rmdir($tmpdir);
+
+			if ('' !== $output) {
+				echo "!!! Error compiling javascript !!!\n";
+				dir($output . "\n");
+			}
+		}
+
+		echo "\n";
+	}
+}
+
+//$res = preg_replace('/main.css"/', '/main.css?' . $dd . '"', $res);
+
+//$res = preg_replace('/<\!-- jsbeg(.*?)jsend \!-->/si', '
+//<script language="javascript" src="/js/index.js?' . $dd . '"></script>
+//', $res);
+
+//$res = preg_replace('/<!--(.*?)!-->/siu', '', $res);
+
+//$res = Page::compress($res);
+
+//echo $content;

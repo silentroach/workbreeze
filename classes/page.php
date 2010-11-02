@@ -9,6 +9,19 @@ class Page {
 	private $lang        = 'ru,en';
 	private $description = '';
 	private $showads     = true;
+	
+	public static function compress($content) {
+		$content = str_replace(array("\t", "\r", "\n"), '', $content);
+		
+		while (false !== strpos($content, '  ')) {
+			$content = str_replace('  ', ' ', $content);
+		}
+
+		$content = str_replace(' = ', '=', $content);
+		$content = str_replace('> <', '><', $content);
+		
+		return $content;
+	}
 
 	public function setTitle($title) {
 		$this->title = $title;
@@ -33,15 +46,8 @@ class Page {
 	public function save($filename, $gzip = true) {
 		$content = $this->out();
 		
-		$content = str_replace(array("\t", "\r", "\n"), '', $content);
-		
-		while (false !== strpos($content, '  ')) {
-			$content = str_replace('  ', ' ', $content);
-		}
-
-		$content = str_replace(' = ', '=', $content);
-		$content = str_replace('> <', '><', $content);
-	
+		$content = self::compress($content);		
+			
 		file_put_contents($filename, $content);
 		
 		$out = system('gzip -c9 ' . escapeshellarg($filename) . ' > ' . escapeshellarg($filename . '.gz'));

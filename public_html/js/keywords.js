@@ -38,7 +38,7 @@ workbreeze.keywords = function(s) {
    */
   self.getValue = function() {
     return keys;
-  }
+  };
 
   /**
    * Set the filter item value
@@ -48,7 +48,7 @@ workbreeze.keywords = function(s) {
     keys = value || [];
 
     place.val(keys.join(', '));
-  }
+  };
 
   /**
    * Check the job element
@@ -69,7 +69,7 @@ workbreeze.keywords = function(s) {
     }
 
     return false;
-  }
+  };
 
   /**
    * onChanged handler
@@ -90,14 +90,14 @@ workbreeze.keywords = function(s) {
     });
 
     self.onChanged();
-  }
+  };
 
   // ------------------------------------------------------
   // initialization
   // ------------------------------------------------------
 
   place.keyup(function(e) {
-    if (null != keywordTimer) {
+    if (null !== keywordTimer) {
       clearTimeout(keywordTimer);
     }
 

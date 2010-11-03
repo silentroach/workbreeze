@@ -27,7 +27,7 @@ workbreeze.feed = function(s) {
 		/** @type {jQuery} **/ buttonPlay:  null,
 		/** @type {jQuery} **/ buttonPause: null,
 		/** @type {jQuery} **/ logo:        null
-	}
+	};
 
 	var options = $.extend( {
 		/** @type {number} **/  defJobPageCount: 30,
@@ -120,7 +120,7 @@ workbreeze.feed = function(s) {
 			// see ya next time
 			setTimeout(function() {
 				up(s);
-			}, 30000)
+			}, 30000);
 		
 			return;
 		}
@@ -200,8 +200,9 @@ workbreeze.feed = function(s) {
 		up( {
 			data: adata,
 			success: function(data) {
-				if (null == data) 
+				if (null === data) {
 					return;
+				}
 		
 				if ('j' in data) {
 					/* <debug> */

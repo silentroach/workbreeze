@@ -40,9 +40,9 @@ workbreeze.filter = function(storage, s) {
 
 		for (var key in criteria) {
 			if (
-				key != 'keys'     // @todo fix this shit
-				&& $.isArray(criteria[key])
-				&& criteria[key].length === 0
+				'keys' != key && 
+				$.isArray(criteria[key]) && 
+				0 === criteria[key].length
 			) {
 				isEmpty = true;
 				break;
@@ -50,7 +50,7 @@ workbreeze.filter = function(storage, s) {
 		}
 
 		options.onChanged(isEmpty);
-	}
+	};
 
 	/**
 	 * Item changed filter
@@ -60,7 +60,7 @@ workbreeze.filter = function(storage, s) {
 		criteria[item.identifier] = item.getValue();
 
 		postItemChanged();
-	}
+	};
 
 	/**
 	 * Set filter mode
@@ -72,7 +72,7 @@ workbreeze.filter = function(storage, s) {
 		criteria['fm'] = fm;
 
 		postItemChanged();
-	}
+	};
 
 	/**
 	 * Get filter mode
@@ -80,7 +80,7 @@ workbreeze.filter = function(storage, s) {
 	 */
 	self.getFilterMode = function() {
 		return filterMode;
-	}
+	};
 
 	/**
 	 * Add item to filter by
@@ -89,10 +89,10 @@ workbreeze.filter = function(storage, s) {
 	self.add = function(item) {
 		item.onChanged = function() {
 			handleItemChanged(item);
-		}
+		};
 
 		filterItems.push(item);
-	}
+	};
 
 	/**
 	 * Get the criteria for /up
@@ -103,15 +103,15 @@ workbreeze.filter = function(storage, s) {
 
 		for (var key in criteria) {
 			if (
-				'fm' != key        // skipping filter mode
-				&& criteria[key].length > 0
+				'fm' != key &&     // skipping filter mode
+				criteria[key].length > 0
 			) {
 				out['filter_' + key] = criteria[key].join(',');
 			}
 		}
 
 		return out;
-	}
+	};
 
 	/**
 	 * Initialization
@@ -120,8 +120,8 @@ workbreeze.filter = function(storage, s) {
 		criteria = storage.get('opts') || {};
 
 		if (
-			'fm' in criteria
-			&& criteria['fm']
+			'fm' in criteria &&
+			criteria['fm']
 		) {
 			filterMode = true;
 		}
@@ -134,7 +134,7 @@ workbreeze.filter = function(storage, s) {
 				this.setValue(criteria[this.identifier]);
 			}
 		} );
-	}
+	};
 
 	/**
 	 * Check job element for criteria by filter items
@@ -151,6 +151,6 @@ workbreeze.filter = function(storage, s) {
 		}
 
 		return result;
-	}
+	};
 
-}
+};

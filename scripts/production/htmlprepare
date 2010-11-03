@@ -34,7 +34,7 @@ if (substr($outdir, -1) !== '/') {
 $path_gcc    = trim(`find -name 'gcc.jar'`);
 $path_yui    = trim(`find -name 'yui.jar'`);
 
-$content = file_get_contents($filename);
+$content   = file_get_contents($filename);
 $analytics = file_get_contents(PATH_OTHER . 'ga.js');
 
 // date mark, we use it as a javascript/css version postfix
@@ -97,11 +97,12 @@ if (
 	preg_match_all('@<\!-- gcc(.*?)\/gcc \!-->@siu', $content, $matches)
 	&& 2 === sizeof($matches)
 ) {
+	$src = $matches[0];
 	$blocks = $matches[1];
 
 	$inc = -1;
 
-	foreach($blocks as $block) {
+	foreach($blocks as $bkey => $block) {
 		if (
 			preg_match_all('@"(js/(.*?)\.js)"@iu', $block, $matches)
 			&& 3 === sizeof($matches)
@@ -128,8 +129,8 @@ if (
 					escapeshellarg($tmpfile));
 			}
 
-			$fileout = $outdir . 'js' . DIRECTORY_SEPARATOR .
-				pathinfo($filename, PATHINFO_FILENAME) . '.js';
+			$filecut = pathinfo($filename, PATHINFO_FILENAME) . ($inc < 1 ? '' : ($inc + 1)) . '.js';
+			$fileout = $outdir . 'js' . DIRECTORY_SEPARATOR . $filecut;
 
 			if (!file_exists(dirname($fileout))) {
 				mkdir(dirname($fileout));
@@ -147,6 +148,8 @@ if (
 
 			$output = system($cmd);
 
+			system('gzip -c9 ' . escapeshellarg($fileout) . ' > ' . escapeshellarg($fileout . '.gz'));
+
 			// cleanup
 			foreach(glob($tmpdir . '/*') as $file) {
 				unlink($file);
@@ -161,17 +164,15 @@ if (
 		}
 
 		echo "\n";
+
+		$content = str_replace($src[$bkey], '<script language="javascript" src="/js/' . $filecut . '?' . $dd . '"</script>', $content);
 	}
 }
 
-//$res = preg_replace('/main.css"/', '/main.css?' . $dd . '"', $res);
+// compressing content
 
-//$res = preg_replace('/<\!-- jsbeg(.*?)jsend \!-->/si', '
-//<script language="javascript" src="/js/index.js?' . $dd . '"></script>
-//', $res);
+$content = preg_replace('/<!--(.*?)!-->/siu', '', $content);
+$content = Page::compress($content);
 
-//$res = preg_replace('/<!--(.*?)!-->/siu', '', $res);
-
-//$res = Page::compress($res);
-
-//echo $content;
+// and save
+file_put_contents($outdir . pathinfo($filename, PATHINFO_BASENAME), $content);

@@ -46,7 +46,7 @@ workbreeze.sites = function(storage, s) {
 		} else {
 			selected.push(item);
 		}
-	}
+	};
 	
 	/**
 	 * Filter item identifier
@@ -61,7 +61,7 @@ workbreeze.sites = function(storage, s) {
 	 */
 	self.getValue = function() {
 		return selected;
-	}
+	};
 
 	/**
 	 * Set the filter item value
@@ -89,7 +89,7 @@ workbreeze.sites = function(storage, s) {
 				}
 			}
 		} );
-	}
+	};
 
 	/**
 	 * Get local storage sites version
@@ -105,7 +105,7 @@ workbreeze.sites = function(storage, s) {
 		}
 
 		return sver;
-	}
+	};
 	
 	/**
 	 * Getter
@@ -114,7 +114,7 @@ workbreeze.sites = function(storage, s) {
 	 */
 	self.get = function(index) {
 		return sites[index];
-	}
+	};
 
 	/**
 	 * Sites count
@@ -122,7 +122,7 @@ workbreeze.sites = function(storage, s) {
 	 */
 	self.count = function() {
 		return sites.length;
-	}
+	};
 
 	/**
 	 * Load sites
@@ -144,7 +144,7 @@ workbreeze.sites = function(storage, s) {
 		} );
 	
 		storage.set(self.identifier, sites, val['v']);
-	}
+	};
 
 	/**
 	 * Check job element
@@ -159,7 +159,7 @@ workbreeze.sites = function(storage, s) {
 		}
 
 		return $.inArray(site, selected) >= 0;
-	}
+	};
 
 	/**
 	 * onChanged handler
@@ -193,5 +193,5 @@ workbreeze.sites = function(storage, s) {
 			li.appendTo(place);
 			sp.appendTo(li);
 		} );
-	}
-}
+	};
+};

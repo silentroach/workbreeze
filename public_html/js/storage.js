@@ -33,8 +33,9 @@ workbreeze.storage = function() {
 	 * @return {(Object|boolean)} Storage item value.
 	 */
 	self.get = function(itemName) {
-		if (!enabled)
+		if (!enabled) {
 			return false;
+		}
 
 		if (!(itemName in cache)) {
 			cache[itemName] = $.parseJSON(localStorage.getItem(itemName)) || false;
@@ -50,8 +51,9 @@ workbreeze.storage = function() {
 	 * @param {?number} version Version of object.
 	 */
 	self.set = function(itemName, object, version) {
-		if (!enabled)
+		if (!enabled) {
 			return;
+		}
 
 		var str = JSON.stringify((undefined === version ?
 															object : [version, object]));
@@ -65,8 +67,9 @@ workbreeze.storage = function() {
 	 * @return {number} Storage item version.
 	 */
 	self.getVersion = function(itemName) {
-		if (!enabled)
+		if (!enabled) {
 			return 0;
+		}
 
 		var item = self.get(itemName);
 

@@ -33,7 +33,7 @@ workbreeze.categories = function(storage, locale, s) {
 	
 	/**
 	 * Toggle selected item
-	 * @todo refactor and group
+	 * TODO refactor and group
 	 * @param {number} item
 	 */
 	var toggleSelected = function(item) {
@@ -65,7 +65,7 @@ workbreeze.categories = function(storage, locale, s) {
 	
 	/**
 	 * Set the filter item value
-	 * @param {Object|string} value
+	 * @param {Array} value Categories array.
 	 */
 	self.setValue = function(value) {
 		selected = value || [];
@@ -137,7 +137,7 @@ workbreeze.categories = function(storage, locale, s) {
 
 	/**
 	 * Check the job element
-	 * @param {jQuery} jobElement Job element
+	 * @param {jQueryObject} jobElement Job element
 	 * @return {boolean}
 	 */
 	self.checkJob = function(jobElement) {

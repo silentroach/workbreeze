@@ -135,14 +135,15 @@ if (
 				mkdir(dirname($fileout));
 			}
 
-			$cmd = 'java -jar ' . escapeshellarg($path_gcc) . ' ' . $cmd .
-				'--externs ' . 
-				escapeshellarg(
-					dirname(__FILE__) . DIRECTORY_SEPARATOR . 
-					'externs' . DIRECTORY_SEPARATOR . 'jquery.js'
-				) . ' --compilation_level ADVANCED_OPTIMIZATIONS ' .
-			   '--warning_level VERBOSE > ' .
-				escapeshellarg($fileout);
+			$cmd = 'java -jar ' . escapeshellarg($path_gcc) . ' ' . $cmd;
+
+			foreach(array('jquery', 'json', 'localStorage') as $ext) {
+				$cmd .= ' --externs ' . escapeshellarg(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'externs' . DIRECTORY_SEPARATOR . $ext . '.js');
+			}
+
+			$cmd .= ' --compilation_level ADVANCED_OPTIMIZATIONS --warning_level VERBOSE > ' . escapeshellarg($fileout);
+
+			echo "\n" . str_pad('js block #' . ($inc + 1), 40) . "[compiling]\n";
 
 			$output = system($cmd);
 

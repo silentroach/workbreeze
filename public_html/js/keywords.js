@@ -42,7 +42,7 @@ workbreeze.keywords = function(s) {
 
   /**
    * Set the filter item value
-   * @param {Object|string} value Item value.
+   * @param {Array} value Keys.
    */
   self.setValue = function(value) {
     keys = value || [];

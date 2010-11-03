@@ -45,23 +45,23 @@ workbreeze.locale = function(storage, s) {
 	 * @param {JQuery} place Place to localize
 	 */
 	self.localize = function(place) {
-		var tmp = (undefined !== place) ? place : $('body');
+		/** @type {jQueryObject} **/ var realPlace = (undefined !== place) ? place : $('body');
 
-		$('.l', place).each(function() {
+		$('.l', realPlace).each(function() {
 			var el = $(this);
 		
-			var tmp = el.attr('lp');
-			if (tmp !== undefined) {
+			/** @type {string} **/ var tmp = el.attr('lp') || '';
+			if (tmp !== '') {
 				el.attr('placeholder', self.translate(tmp));
 			}
 	
-			tmp = el.attr('lv');
-			if (tmp !== undefined) {
+			tmp = el.attr('lv') || '';
+			if (tmp !== '') {
 				el.html(self.translate(tmp));
 			}
 		
-			tmp = el.attr('lt');
-			if (tmp !== undefined) {
+			tmp = el.attr('lt') || '';
+			if (tmp !== '') {
 				el.attr('title', self.translate(tmp));
 			}
 		});

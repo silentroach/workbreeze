@@ -22,10 +22,10 @@ workbreeze.storage = function() {
 
 	/**
 	 * Is localStorage enabled in this browser?
-	 * @type {Boolean}
+	 * @type {boolean}
 	 * @private
 	 */
-	var enabled = ('localStorage' in window);
+	var enabled = ('localStorage' in window) || false;
 
 	/**
 	 * Get object from storage

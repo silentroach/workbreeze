@@ -33,7 +33,7 @@ workbreeze.sites = function(storage, s) {
 	
 	/**
 	 * Toggle selected item
-	 * @todo refactor and group
+	 * TODO refactor and group
 	 * @param {number} item
 	 */
 	var toggleSelected = function(item) {
@@ -65,7 +65,7 @@ workbreeze.sites = function(storage, s) {
 
 	/**
 	 * Set the filter item value
-	 * @param {Object|string} value
+	 * @param {Array} value
 	 */
 	self.setValue = function(value) {
 		selected = value || [];
@@ -148,7 +148,7 @@ workbreeze.sites = function(storage, s) {
 
 	/**
 	 * Check job element
-	 * @param {jQuery} jobElement Job Element
+	 * @param {jQueryObject} jobElement Job Element
 	 * @return {boolean}
 	 */
 	self.checkJob = function(jobElement) {

@@ -23,13 +23,13 @@ workbreeze.filter = function(storage, s) {
 
 	/**
 	 * Filter criteria
-	 * @type {Array}
+	 * @type {Object}
 	 */
 	var criteria = {};
 	
 	/**
 	 * Filter mode
-	 * @param {boolean}
+	 * @type {boolean}
 	 */
 	var filterMode = false;
 

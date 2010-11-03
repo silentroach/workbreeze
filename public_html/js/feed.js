@@ -10,23 +10,23 @@ workbreeze.feed = function(s) {
 
 	var newTimer;
 
-	/** @type {Boolean} **/ var updating = false;
-	/** @type {Boolean} **/ var updatingBottom = false;
+	/** @type {boolean} **/ var updating = false;
+	/** @type {boolean} **/ var updatingBottom = false;
 
-	/** @type {Boolean} **/ var helpVisible = false;
+	/** @type {boolean} **/ var helpVisible = false;
 	/** @type {number} **/  var lastBottom = 0;
-	/** @type {Boolean} **/ var paused = false;
-	/** @type {Boolean} **/ var streamAutoPaused = false;
+	/** @type {boolean} **/ var paused = false;
+	/** @type {boolean} **/ var streamAutoPaused = false;
 
 	/** @type {Array} **/ var joblist  = [];
 	/** @type {Array} **/ var money = ['%d р.', '$%d'];
 
 	var places = {
-		/** @type {jQuery} **/ templateJob: null,
-		/** @type {jQuery} **/ placeJob:    null,
-		/** @type {jQuery} **/ buttonPlay:  null,
-		/** @type {jQuery} **/ buttonPause: null,
-		/** @type {jQuery} **/ logo:        null
+		/** @type {jQueryObject} **/ templateJob: null,
+		/** @type {jQueryObject} **/ placeJob:    null,
+		/** @type {jQueryObject} **/ buttonPlay:  null,
+		/** @type {jQueryObject} **/ buttonPause: null,
+		/** @type {jQueryObject} **/ logo:        null
 	};
 
 	var options = $.extend( {
@@ -222,7 +222,7 @@ workbreeze.feed = function(s) {
 
 	/**
 	 * Drop the new job checker timer
-	 * @todo do something with it
+	 * TODO do something with it
 	 */
 	function dropNewTimer() {
 		if (null != newTimer) {
@@ -350,7 +350,7 @@ workbreeze.feed = function(s) {
 
 	/**
 	 * Check job element
-	 * @param {jQuery} jobElement Job Element
+	 * @param {jQueryObject} jobElement Job Element
 	 */
 	function checkJob(jobElement) {
 		if (filter.checkJob(jobElement)) {

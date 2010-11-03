@@ -31,8 +31,13 @@ if (substr($outdir, -1) !== '/') {
 }
 
 // paths for compilers
-$path_gcc = trim(`find -name 'gcc.jar'`);
-$path_yui = trim(`find -name 'yui.jar'`);
+$path_gcc    = trim(`find -name 'gcc.jar'`);
+$path_yui    = trim(`find -name 'yui.jar'`);
+$path_jslint = trim(`which gjslint`);
+
+if ('' === $path_jslint) {
+	echo "WARNING: Google Closure Linter not found, will not be checked\n";
+}
 
 $content = file_get_contents($filename);
 $analytics = file_get_contents(PATH_OTHER . 'ga.js');
@@ -118,10 +123,18 @@ if (
 				echo str_pad($file, 40) . "[prepare]\n";
 
 				$cmd .= '--js ' . escapeshellarg(PATH_PUBLIC . $file) . ' ';
+				
+				$tmpfile = $tmpdir . pathinfo($file, PATHINFO_BASENAME);
 
 				$output = system(dirname(__FILE__) . DIRECTORY_SEPARATOR . 
-					'jsprepare ' . escapeshellarg($file) . ' > ' . 
-					escapeshellarg($tmpdir . pathinfo($file, PATHINFO_BASENAME)));
+					'jsprepare ' . escapeshellarg(PATH_PUBLIC . $file) . ' > ' . 
+					escapeshellarg($tmpfile));
+
+				if ('' !== $path_jslint) {
+					$output = system($path_jslint . ' --strict --nobeep ' . escapeshellarg($tmpfile));
+
+					echo $output;
+				}
 			}
 
 			$fileout = $outdir . 'js' . DIRECTORY_SEPARATOR .
@@ -151,7 +164,7 @@ if (
 
 			if ('' !== $output) {
 				echo "!!! Error compiling javascript !!!\n";
-				dir($output . "\n");
+				die($output . "\n");
 			}
 		}
 

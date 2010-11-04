@@ -92,7 +92,14 @@ EOF;
 	public function processJobList() {
 		$c = $this->db->sites->find();
 
-		while ($site = $c->getNext()) {					
+		while ($site = $c->getNext()) {
+			if (
+				isset($site['disabled']) && 
+				1 == $site['disabled']
+			) {
+				continue;
+			}
+
 			$parser = $this->initParser($site);
 		
 			if (

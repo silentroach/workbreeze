@@ -434,7 +434,7 @@ jQueryObject.prototype.appendTo = function(target) {};
 /**
  * @param {(string|Object.<string,*>)} arg1
  * @param {(Object|function(number,string))=} arg2
- * @return {(string|jQueryObject)}
+ * @return {string}
  */
 jQueryObject.prototype.attr = function(arg1, arg2) {};
 

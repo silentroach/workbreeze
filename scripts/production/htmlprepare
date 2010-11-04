@@ -120,7 +120,7 @@ if (
 			foreach($files as &$file) {
 				echo str_pad($file, 40) . "[prepare]\n";
 
-				$cmd .= '--js ' . escapeshellarg(PATH_PUBLIC . $file) . ' ';
+				$cmd .= '--js ' . escapeshellarg($tmpfile) . ' ';
 				
 				$tmpfile = $tmpdir . pathinfo($file, PATHINFO_BASENAME);
 
@@ -138,7 +138,7 @@ if (
 
 			$cmd = 'java -jar ' . escapeshellarg($path_gcc) . ' ' . $cmd;
 
-			foreach(array('jquery', 'json', 'localStorage') as $ext) {
+			foreach(array('jquery', 'json', 'localStorage', 'console') as $ext) {
 				$cmd .= ' --externs ' . escapeshellarg(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'externs' . DIRECTORY_SEPARATOR . $ext . '.js');
 			}
 

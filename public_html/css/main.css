@@ -119,6 +119,10 @@ li.checked:hover {
 	color: white;
 }
 
+#mode {
+	list-style: none;
+}
+
 #mode_f {
 	text-align: center;
 }

@@ -90,6 +90,9 @@ class Tester {
 			$this->error('failed to parse description');
 			return false;
 		}
+
+		// replace local links with real links to parser site (like in parser.php)
+		$desc = str_replace('href="/', 'href="' . $parser->getUrl() . '/', $desc);
 		
 		$desc = trim($desc);
 		

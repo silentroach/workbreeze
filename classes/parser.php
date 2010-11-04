@@ -77,7 +77,10 @@ class Parser {
 		
 			return true;
 		}
-			
+
+		// replace local links with real links to parser site
+		$desc = str_replace('href="/', 'href="' . $this->getUrl() . '/', $desc);
+
 		$job->setDescription($desc);
 		
 		$cats = $this->parseJobCategories($content);

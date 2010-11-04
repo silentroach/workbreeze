@@ -1,12 +1,12 @@
 /**
  * Categories object
  * @constructor
- * @this {workbreeze.categories}
- * @param {workbreeze.storage} storage Storage
- * @param {workbreeze.locale} locale Locale
+ * @this {Workbreeze.Categories}
+ * @param {Workbreeze.Storage} storage Storage
+ * @param {Workbreeze.Locale} locale Locale
  * @param {Object} s Options
  */
-workbreeze.categories = function(storage, locale, s) {
+Workbreeze.Categories = function(storage, locale, s) {
 	var self = this;
 	
 	/**

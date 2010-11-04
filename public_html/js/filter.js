@@ -1,10 +1,11 @@
 /**
  * Filter
  * @constructor
- * @this {workbreeze.filter}
- * @param {Object} s Options
+ * @this {Workbreeze.Filter}
+ * @param {Workbreeze.Storage} storage Storage object.
+ * @param {Object} s Options.
  */
-workbreeze.filter = function(storage, s) {
+Workbreeze.Filter = function(storage, s) {
 	var self = this;
 	
 	/**
@@ -140,7 +141,7 @@ workbreeze.filter = function(storage, s) {
 
 	/**
 	 * Check job element for criteria by filter items
-	 * @param {jQuery} jobElement Job element
+	 * @param {jQueryObject} jobElement Job element
 	 */
 	self.checkJob = function(jobElement) {
 		var result = true;

@@ -1,11 +1,11 @@
 /**
  * Locale object
  * @constructor
- * @this {workbreeze.locale}
- * @param {workbreeze.storage} storage Storage
+ * @this {Workbreeze.Locale}
+ * @param {Workbreeze.Storage} storage Storage
  * @param {Object} s options
  */
-workbreeze.locale = function(storage, s) {
+Workbreeze.Locale = function(storage, s) {
 	var self = this;
 	
 	/**
@@ -42,7 +42,7 @@ workbreeze.locale = function(storage, s) {
 
 	/**
 	 * Localize items on the page
-	 * @param {JQuery} place Place to localize
+	 * @param {jQueryObject} place Place to localize
 	 */
 	self.localize = function(place) {
 		/** @type {jQueryObject} **/ var realPlace = (undefined !== place) ? place : $('body');

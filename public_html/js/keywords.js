@@ -1,10 +1,10 @@
 /**
  * Keywords filter object
  * @constructor
- * @this {workbreeze.keywords}
+ * @this {Workbreeze.Keywords}
  * @param {Object} s Options.
  */
-workbreeze.keywords = function(s) {
+Workbreeze.Keywords = function(s) {
   var self = this;
 
   /**
@@ -52,7 +52,7 @@ workbreeze.keywords = function(s) {
 
   /**
    * Check the job element
-   * @param {jQuery} jobElement Job Element.
+   * @param {jQueryObject} jobElement Job Element.
    * @return {boolean} Job is correct.
    */
   self.checkJob = function(jobElement) {

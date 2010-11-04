@@ -1,11 +1,11 @@
 /**
  * Sites object
  * @constructor
- * @this {workbreeze.sites}
- * @param {workbreeze.storage} storage Storage
+ * @this {Workbreeze.Sites}
+ * @param {Workbreeze.Storage} storage Storage
  * @param {Object} s Options
  */
-workbreeze.sites = function(storage, s) {
+Workbreeze.Sites = function(storage, s) {
 	var self = this;
 	
 	/**

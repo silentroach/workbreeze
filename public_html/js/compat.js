@@ -1,4 +1,4 @@
-var workbreeze = [];
+var Workbreeze = [];
 
 /* <debug> */
 if (!('console' in window)) {

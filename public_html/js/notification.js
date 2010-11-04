@@ -9,9 +9,9 @@ if ('webkitNotifications' in window) {
 /**
  * Notifications in HTML5
  * @constructor
- * @this {workbreeze.notifications}
+ * @this {Workbreeze.Notifications}
  */
-workbreeze.notifications = function() {
+Workbreeze.Notifications = function() {
 	var self = this;
 
 	var enabled = 'webkitNotifications' in window;

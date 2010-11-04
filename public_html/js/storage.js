@@ -9,9 +9,9 @@ if ('localStorage' in window) {
 /**
  * Storage object
  * @constructor
- * @this {workbreeze.storage}
+ * @this {Workbreeze.Storage}
  */
-workbreeze.storage = function() {
+Workbreeze.Storage = function() {
 	var self = this;
 
 	/**

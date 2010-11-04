@@ -1,8 +1,9 @@
 /**
  * @constructor
- * @this {workbreeze.feed}
+ * @this {Workbreeze.Feed}
+ * @param {Object} s Options.
  */
-workbreeze.feed = function(s) {
+Workbreeze.Feed = function(s) {
 	var self = this;
 
 	/** @type {number} **/ var lastStamp = 0;
@@ -54,42 +55,42 @@ workbreeze.feed = function(s) {
 	// ---------------------------------------------------
 
 	/**
-	 * @type {workbreeze.storage}
+	 * @type {Workbreeze.Storage}
 	 */
-	var storage = new workbreeze.storage();
+	var storage = new Workbreeze.Storage();
 
 	/**
-	 * @type {workbreeze.locale}
+	 * @type {Workbreeze.Locale}
 	 */
-	var locale = new workbreeze.locale(storage, {
+	var locale = new Workbreeze.Locale(storage, {
 		storagePath: options.elementLang
 	} );
 
 	/**
-	 * @type {workbreeze.categories}
+	 * @type {Workbreeze.Categories}
 	 */
-	var categories = new workbreeze.categories(storage, locale, {
+	var categories = new Workbreeze.Categories(storage, locale, {
 		place: '#categories'
 	} );
 
 	/**
-	 * @type {workbreeze.sites}
+	 * @type {Workbreeze.Sites}
 	 */
-	var sites = new workbreeze.sites(storage, {
+	var sites = new Workbreeze.Sites(storage, {
 		iconPrefix: options.siteIconPrefix
 	} );
 
 	/**
-	 * @type {workbreeze.keywords}
+	 * @type {Workbreeze.Keywords}
 	 */
-	var keywords = new workbreeze.keywords( {
+	var keywords = new Workbreeze.Keywords( {
 		place: '#keywords'
 	} );
 
 	/**
-	 * @type {workbreeze.filter}
+	 * @type {Workbreeze.Filter}
 	 */
-	var filter = new workbreeze.filter(storage, {
+	var filter = new Workbreeze.Filter(storage, {
 		onChanged: function(isEmpty) {
 			if (isEmpty) {
 				if (!paused) {
@@ -384,7 +385,7 @@ workbreeze.feed = function(s) {
 
 	/**
 	 * Parse job info
-	 * @param {!Array} job Job info array.
+	 * @param {!Array} jobs Job info array.
 	 */
 	var parseJobs = function(jobs) {
 		for (var i = jobs.length - 1; i >= 0; i--) {
@@ -447,7 +448,7 @@ workbreeze.feed = function(s) {
 	 * Update feed from the bottom
 	 */
 	var updateBottom = function() {
-		var firstStamp = $('ul:last', places.placeJob).attr('stamp');
+		var firstStamp = parseInt($('ul:last', places.placeJob).attr('stamp'), 10);
 	
 		if (lastBottom == firstStamp) {
 			return;
@@ -597,6 +598,6 @@ workbreeze.feed = function(s) {
 }
 
 /**
- * @type {workbreeze.feed}
+ * @type {Workbreeze.Feed}
  */
-var feed = new workbreeze.feed();
+var feed = new Workbreeze.Feed({});

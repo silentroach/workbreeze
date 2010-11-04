@@ -129,14 +129,14 @@ Workbreeze.Feed = function(s) {
 		updating = true;
 
 		$.ajax({
-			url: '/up',
-			type: 'POST',
-			data: s.data,
-			dataType: 'json',
-			cache: false,
-			success: function(data) {
+			'url': '/up',
+			'type': 'POST',
+			'data': s.data,
+			'dataType': 'json',
+			'cache': false,
+			'success': function(data) {
 				updating = false;
-		
+	
 				if (s.success) {
 					s.success(data);
 				}
@@ -145,7 +145,7 @@ Workbreeze.Feed = function(s) {
 					s.ping();
 				}
 			},
-			error: function(request, status, error) {
+			'error': function(request, status, error) {
 				updating = false;
 			
 				if (s.error) {

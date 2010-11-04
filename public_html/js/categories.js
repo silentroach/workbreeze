@@ -46,7 +46,7 @@ workbreeze.categories = function(storage, locale, s) {
 		} else {
 			selected.push(item);
 		}
-	}
+	};
 	
 	/**
 	 * Filter item identifier
@@ -61,7 +61,7 @@ workbreeze.categories = function(storage, locale, s) {
 	 */
 	self.getValue = function() {
 		return selected;
-	}
+	};
 	
 	/**
 	 * Set the filter item value
@@ -89,7 +89,20 @@ workbreeze.categories = function(storage, locale, s) {
 				}
 			}
 		} );
-	}
+	};
+
+	/**
+	 * Select all the elements
+	 */
+	self.selectAll = function() {
+		var items = [];
+
+		for (var i = 0; i < cats.length; i++) {
+			items.push(cats[i][0]);
+		}
+
+		self.setValue(items);
+	};
 
 	/**
 	 * Get local storage categories version
@@ -105,7 +118,7 @@ workbreeze.categories = function(storage, locale, s) {
 		}
 
 		return cver;
-	}
+	};
 	
 	/**
 	 * Categories count
@@ -113,7 +126,7 @@ workbreeze.categories = function(storage, locale, s) {
 	 */
 	self.count = function() {
 		return cats.length;
-	}
+	};
 
 	/**
 	 * Load categories
@@ -133,7 +146,7 @@ workbreeze.categories = function(storage, locale, s) {
 		} );
 	
 		storage.set(self.identifier, cats, val['v']);
-	}
+	};
 
 	/**
 	 * Check the job element
@@ -142,7 +155,7 @@ workbreeze.categories = function(storage, locale, s) {
 	 */
 	self.checkJob = function(jobElement) {
 		if (0 === selected.length) {
-			return true;
+			return false;
 		}
 
 		var jobCats = jobElement.attr('cats');
@@ -158,7 +171,7 @@ workbreeze.categories = function(storage, locale, s) {
 		}
 
 		return false;
-	}
+	};
 
 	/**
 	 * onChanged handler
@@ -190,5 +203,5 @@ workbreeze.categories = function(storage, locale, s) {
 			li.appendTo(place);
 			sp.appendTo(li);
 		}
-	}
-}
+	};
+};

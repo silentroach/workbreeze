@@ -29,7 +29,7 @@ workbreeze.locale = function(storage, s) {
 	 */
 	var checkTimeVal = function(i) {
 		return (i < 10) ? '0' + i : i.toString();
-	}
+	};
 
 	/**
 	 * Get a humanized label for time
@@ -38,7 +38,7 @@ workbreeze.locale = function(storage, s) {
 	 */
 	self.timeString = function(stamp) {
 		return checkTimeVal(stamp.getHours()) + ':' + checkTimeVal(stamp.getMinutes());
-	}
+	};
 
 	/**
 	 * Localize items on the page
@@ -65,7 +65,7 @@ workbreeze.locale = function(storage, s) {
 				el.attr('title', self.translate(tmp));
 			}
 		});
-	}
+	};
 
 	/**
 	 * Get local storage lang version
@@ -81,7 +81,7 @@ workbreeze.locale = function(storage, s) {
 		}
 
 		return lver;
-	}
+	};
 
 	/**
 	 * Get language value by index
@@ -94,7 +94,7 @@ workbreeze.locale = function(storage, s) {
 		} else {
 			return '';
 		}
-	}
+	};
 
 	/**
 	 * Load language
@@ -104,5 +104,5 @@ workbreeze.locale = function(storage, s) {
 		lang = val['vl'];
 	
 		storage.set(options.storagePath, lang, val['v']);
-	}
-}
+	};
+};

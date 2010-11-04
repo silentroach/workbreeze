@@ -127,11 +127,13 @@ workbreeze.filter = function(storage, s) {
 		}
 
 		$(filterItems).each( function() {
-			if (criteria.length === 0) {
-				this.selectAll();
-			} else
-			if (this.identifier in criteria) {
-				this.setValue(criteria[this.identifier]);
+			var item = this;
+
+			if (item.identifier in criteria) {
+				item.setValue(criteria[item.identifier]);
+			} else 
+			if (item.selectAll) {
+				item.selectAll();
 			}
 		} );
 	};

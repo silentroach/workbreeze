@@ -113,9 +113,9 @@ workbreeze.feed = function(s) {
 
 	/**
 	 * Ajax /up caller
-	 * @param {Object} s Settings
+	 * @param {Object} s Settings.
 	 */
-	function up(s) {
+	var up = function(s) {
 		if (updating) {
 			// see ya next time
 			setTimeout(function() {
@@ -156,12 +156,12 @@ workbreeze.feed = function(s) {
 				}
 			}
 		});
-	}
+	};
 
 	/**
 	 * Check the job place
 	 */
-	function checkJobPlace() {
+	var checkJobPlace = function() {
 		while (joblist.length > options.maxJobPageCount) {
 			/* <debug> */
 			console.info('Removing last job');
@@ -172,14 +172,14 @@ workbreeze.feed = function(s) {
 				$(this).remove();
 			});
 		}
-	}
+	};
 
 	/**
 	 * Prepare a query for new jobs request
-	 * @param {!number} stamp
-	 * @return {Object} Params
+	 * @param {!number} stamp Unix timestamp.
+	 * @return {Object} Params.
 	 */
-	function prepareDataForJobs(stamp) {
+	var prepareDataForJobs = function(stamp) {
 		var adata = {};	
 
 		if (filter.getFilterMode()) {
@@ -189,12 +189,12 @@ workbreeze.feed = function(s) {
 		adata[options.elementJobStamp] = stamp;
 
 		return adata;
-	}
+	};
 
 	/**
 	 * Check for new jobs
 	 */
-	function checkNewJobs() {
+	var checkNewJobs = function() {
 		var adata = prepareDataForJobs(lastStamp);
 
 		up( {
@@ -218,32 +218,32 @@ workbreeze.feed = function(s) {
 				setNewTimer(options.checkInterval * 2);
 			}
 		} );
-	}
+	};
 
 	/**
 	 * Drop the new job checker timer
 	 * TODO do something with it
 	 */
-	function dropNewTimer() {
+	var dropNewTimer = function() {
 		if (null != newTimer) {
 			clearTimeout(newTimer);
 		}
-	}
+	};
 
 	/**
 	 * Sets the new jobs checker timer
-	 * @param {!number} interval Interval
+	 * @param {!number} interval Interval.
 	 */
-	function setNewTimer(interval) {
+	var setNewTimer = function(interval) {
 		dropNewTimer();
 		newTimer = setInterval(checkNewJobs, interval);
-	}
+	};
 
 	/**
 	 * Add job to feed
-	 * @param {!Object} job Job object
+	 * @param {!Object} job Job object.
 	 */
-	function addJob(job) {
+	var addJob = function(job) {
 		var abstemp = Math.abs(job.stamp);
 
 		if (abstemp > lastStamp) {
@@ -337,22 +337,22 @@ workbreeze.feed = function(s) {
 		}
 
 		checkJobPlace();	
-	}
+	};
 
 	/**
 	 * Function to check all jobs in the feed
 	 */
-	function checkJobs() {
+	var checkJobs = function() {
 		for (var i = 0; i < joblist.length; i++) {
 			checkJob(joblist[i]);
 		}
-	}
+	};
 
 	/**
 	 * Check job element
-	 * @param {jQueryObject} jobElement Job Element
+	 * @param {jQueryObject} jobElement Job element.
 	 */
-	function checkJob(jobElement) {
+	var checkJob = function(jobElement) {
 		if (filter.checkJob(jobElement)) {
 			if (
 				!jobElement.hasClass(options.classSelected)
@@ -384,9 +384,9 @@ workbreeze.feed = function(s) {
 
 	/**
 	 * Parse job info
-	 * @param {!Array} job Job info array
+	 * @param {!Array} job Job info array.
 	 */
-	function parseJobs(jobs) {
+	var parseJobs = function(jobs) {
 		for (var i = jobs.length - 1; i >= 0; i--) {
 			var job = {
 				id:    jobs[i]['i'],
@@ -406,7 +406,10 @@ workbreeze.feed = function(s) {
 		}
 	}
 
-	function streamToggle() {
+	/**
+	 * Toggle the stream state
+	 */
+	var streamToggle = function() {
 		if (paused) {
 			streamPlay();
 		} else {
@@ -414,7 +417,10 @@ workbreeze.feed = function(s) {
 		}
 	}
 
-	function streamPause() {
+	/**
+	 * Pause the stream
+	 */
+	var streamPause = function() {
 		places.buttonPause.slideUp(options.animationSpeed);
 		places.buttonPlay.slideDown(options.animationSpeed);
 
@@ -423,7 +429,10 @@ workbreeze.feed = function(s) {
 		paused = true;
 	}
 
-	function streamPlay() {
+	/**
+	 * Play the stream
+	 */
+	var streamPlay = function() {
 		streamAutoPaused = false;
 		paused = false;
 
@@ -434,7 +443,10 @@ workbreeze.feed = function(s) {
 		setNewTimer(5000);
 	}
 
-	function updateBottom() {
+	/**
+	 * Update feed from the bottom
+	 */
+	var updateBottom = function() {
 		var firstStamp = $('ul:last', places.placeJob).attr('stamp');
 	
 		if (lastBottom == firstStamp) {
@@ -447,9 +459,9 @@ workbreeze.feed = function(s) {
 
 		dropNewTimer();
 
-	/* <debug> */
+		/* <debug> */
 		console.info('update less than ' + firstStamp);
-	/* </debug> */
+		/* </debug> */
 
 		var adata = prepareDataForJobs(-firstStamp);
 
@@ -472,7 +484,10 @@ workbreeze.feed = function(s) {
 		});
 	}
 
-	function init() {
+	/**
+	 * Initialization
+	 */
+	var init = function() {
 		places.buttonPlay  = $('#play');
 		places.buttonPause = $('#pause');
 	
@@ -581,4 +596,7 @@ workbreeze.feed = function(s) {
 	});
 }
 
+/**
+ * @type {workbreeze.feed}
+ */
 var feed = new workbreeze.feed();

@@ -47,7 +47,7 @@ workbreeze.sites = function(storage, s) {
 			selected.push(item);
 		}
 	};
-	
+
 	/**
 	 * Filter item identifier
 	 * @const
@@ -89,6 +89,19 @@ workbreeze.sites = function(storage, s) {
 				}
 			}
 		} );
+	};
+
+	/**
+	 * Select all items
+	 */
+	self.selectAll = function() {
+		var items = [];
+
+		for (var i = 0; i < sites.length; i++) {
+			items.push(sites[i][0]);
+		}
+
+		self.setValue(items);
 	};
 
 	/**
@@ -152,6 +165,10 @@ workbreeze.sites = function(storage, s) {
 	 * @return {boolean}
 	 */
 	self.checkJob = function(jobElement) {
+		if (0 === selected.length) {
+			return false;
+		}
+
 		var site = jobElement.attr('site');
 
 		if (!site) {

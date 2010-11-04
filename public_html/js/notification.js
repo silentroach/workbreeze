@@ -29,8 +29,11 @@ workbreeze.notifications = function() {
 				window.webkitNotifications.requestPermission();
 			});
 		}
-	}
+	};
 
+	/**
+	 * Notifier
+	 */
 	self.notify = function(title, body) {
 		if (
 			enabled
@@ -43,6 +46,6 @@ workbreeze.notifications = function() {
 //				popup.cancel();
 //			}, 5000);
 		}
-	}
+	};
 
-}
+};

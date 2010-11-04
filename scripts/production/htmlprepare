@@ -120,9 +120,9 @@ if (
 			foreach($files as &$file) {
 				echo str_pad($file, 40) . "[prepare]\n";
 
-				$cmd .= '--js ' . escapeshellarg($tmpfile) . ' ';
-				
 				$tmpfile = $tmpdir . pathinfo($file, PATHINFO_BASENAME);
+
+				$cmd .= '--js ' . escapeshellarg($tmpfile) . ' ';
 
 				$output = system(dirname(__FILE__) . DIRECTORY_SEPARATOR . 
 					'jsprepare ' . escapeshellarg(PATH_PUBLIC . $file) . ' > ' . 

@@ -4,6 +4,9 @@ class Text {
 
 	private static $stemCache = array();
 
+	/**
+	 * TODO shitcode overhead, need to be optimized
+	 */
 	public static function HTMLPrepare($text) {
 		// all links
 		if (preg_match_all('/<a(.*?)href="(.*?)"(.*?)>(.*?)<\/a>/siu', $text, $matches)) {
@@ -26,12 +29,12 @@ class Text {
 			$text
 		);
 
-                // replace some strange symbols
-                $text = str_replace(array(
-                                '…',   '»',       '«',       '•',  '—',  'ё'
-                        ), array(
-                                '...', '&raquo;', '&laquo;', '+ ', '- ', 'е'
-                        ), $text);
+		// replace some strange symbols
+		$text = str_replace(array(
+			'…',   '»',       '«',       '•',  '—',  'ё'
+		), array(
+			'...', '&raquo;', '&laquo;', '+ ', '- ', 'е'
+		), $text);
 
 		while (false !== strpos($text, '  ')) {
 			$text = str_replace('  ', ' ', $text);
@@ -61,6 +64,9 @@ class Text {
 
 		// converting lists to html
 		$text = "\n" . $text;
+
+		// replace non indented simple list
+		$text = preg_replace("@\n-([^- ])@", "\n- $1", $text);
 
 		$splitters = array();
 

@@ -56,6 +56,9 @@ class Text {
 		// convert links to html
 		$text = preg_replace('@([^">=])(https?://([-\w\.]+[-\w])+(:\d+)?(/([\w/_\.#-]*(\?\S+)?[^\.\s])?)?)@', '$1<a href="$2" rel="noindex,nofollow">$2</a>', $text);
 
+		// strip last slash from all the links
+		$text = preg_replace("@/</a>@", '</a>', $text);
+
 		// converting lists to html
 		$text = "\n" . $text;
 

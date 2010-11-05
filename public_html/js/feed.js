@@ -7,7 +7,6 @@ Workbreeze.Feed = function(s) {
 	var self = this;
 
 	/** @type {number} **/ var lastStamp = 0;
-	/** @type {number} **/ var updateCount = 0;
 
 	var newTimer;
 
@@ -485,16 +484,29 @@ Workbreeze.Feed = function(s) {
 		});
 	}
 
+	/** @type {boolean} **/ var initialized = false;
+
 	/**
 	 * Initialization
 	 */
 	var init = function() {
+		if (initialized) {
+			return;
+		} else {
+			initialized = true;
+		}
+
 		places.buttonPlay  = $('#play');
 		places.buttonPause = $('#pause');
 	
 		places.buttonPause.click(streamToggle);
 		places.buttonPlay.click(streamToggle);
-	
+
+		// @todo localize just needed parts
+		locale.localize();
+		categories.init();
+		sites.init();
+
 		filter.init();
 
 		var filterModePlace = $('#mode_f');
@@ -509,7 +521,7 @@ Workbreeze.Feed = function(s) {
 			filterModePlace.toggleClass('checked');		
 		});
 
-		checkNewJobs();
+		setNewTimer(options.checkInterval);
 	}
 
 	// ---------------------------------------------------
@@ -534,7 +546,7 @@ Workbreeze.Feed = function(s) {
 	// Initial data request for accessorial data
 	// ---------------------------------------------------	
 
-	var adata = {};
+	var adata = prepareDataForJobs(0);
 
 	adata[options.elementLang]  = locale.getLocalVersion();
 	adata[options.elementSites] = sites.getLocalVersion();
@@ -563,6 +575,12 @@ Workbreeze.Feed = function(s) {
 			if ('s' in data) {
 				sites.load(data['s']);
 			}
+
+			init();
+
+			if ('j' in data) {
+				parseJobs(data['j']);
+			}
 		},
 		ping: function() {	
 			$(window).scroll(function() {
@@ -574,11 +592,7 @@ Workbreeze.Feed = function(s) {
 				}
 			} );
 		
-			// @todo localize just needed parts
-			locale.localize();
-			categories.init();
-			sites.init();
-		
+			// init anyway
 			init();
 		}
 	});

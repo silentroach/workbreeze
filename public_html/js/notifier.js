@@ -114,7 +114,7 @@ Workbreeze.Notifier = function(s) {
 					/* </debug> */
 				
 					options.onData(obj);
-				} catch (e) { }
+				} catch (error) { }
 			}
 
 			ws.onclose = function() {

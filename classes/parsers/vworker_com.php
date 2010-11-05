@@ -84,6 +84,19 @@ class Parser_vworker_com extends Parser implements IParser {
 		}
 
 		if (isset($found)) {
+			// search for the outer warning links
+			if (
+				preg_match_all('@"/RentACoder/DotNet/WarningPage.aspx(.*?)ExternalUrl=(.*?)"@iu', $found, $matches) &&
+				3 === sizeof($matches)
+			) {
+				$links = $matches[0];
+				$urls  = $matches[2];
+
+				foreach($links as $key => $link) {
+					$found = str_replace($link, '"' . urldecode($urls[$key]) . '"', $found);
+				}
+			}
+
 			return trim(str_replace(array("\r", "\n"), '', $found));
 		} else
 			return false;

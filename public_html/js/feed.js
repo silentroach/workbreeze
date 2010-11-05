@@ -380,7 +380,7 @@ Workbreeze.Feed = function(s) {
 				} );
 			}
 		}
-	}
+	};
 
 	/**
 	 * Parse job info
@@ -404,7 +404,7 @@ Workbreeze.Feed = function(s) {
 		
 			addJob(job);
 		}
-	}
+	};
 
 	/**
 	 * Toggle the stream state
@@ -415,7 +415,7 @@ Workbreeze.Feed = function(s) {
 		} else {
 			streamPause();
 		}
-	}
+	};
 
 	/**
 	 * Pause the stream
@@ -427,7 +427,7 @@ Workbreeze.Feed = function(s) {
 		dropNewTimer();
 
 		paused = true;
-	}
+	};
 
 	/**
 	 * Play the stream
@@ -441,7 +441,7 @@ Workbreeze.Feed = function(s) {
 
 		lastStamp = Math.round(new Date().getTime() / 1000);
 		setNewTimer(5000);
-	}
+	};
 
 	/**
 	 * Update feed from the bottom
@@ -482,7 +482,7 @@ Workbreeze.Feed = function(s) {
 				setNewTimer(filter.getFilterMode() ? options.checkIntervalFiltered : options.checkInterval);
 			}
 		});
-	}
+	};
 
 	/** @type {boolean} **/ var initialized = false;
 
@@ -522,7 +522,7 @@ Workbreeze.Feed = function(s) {
 		});
 
 		setNewTimer(options.checkInterval);
-	}
+	};
 
 	// ---------------------------------------------------
 	// Preparements
@@ -609,7 +609,7 @@ Workbreeze.Feed = function(s) {
 	
 		helpVisible = !helpVisible;
 	});
-}
+};
 
 /**
  * @type {Workbreeze.Feed}

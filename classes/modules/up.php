@@ -153,28 +153,7 @@ class MUp extends Module {
 		$cursor->limit(25);
 		
 		while ($job = $cursor->getNext()) {
-			$description = isset($job['short']) ? $job['short'] : $job['desc'];
-
-			// for accurate strip_tags
-	                $description = str_replace(
-        	                array('<', '>'),
-                	        array(' <', '> '),
-                        	$description);
-
-			$description = strip_tags($description, '<a>');
-
-			$item = array(
-				's'  => $job['site'],
-				'i'  => $job['id'],
-				'st' => $job['stamp'] * $mod,
-				't'  => $job['title'],
-				'c'  => $job['cats'],
-				'd'  => $description
-			);
-
-			if (isset($job['money'])) {
-				$item['m'] = $job['money'];
-			}
+			$item = Job::prepareJSON($job, $mod);
 
 			$jobs[] = $item;
 		}

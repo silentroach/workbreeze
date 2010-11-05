@@ -87,10 +87,27 @@ Workbreeze.Feed = function(s) {
 	} );
 
 	/**
+	 * @type {Workbreeze.Notifier}
+	 * !!!!! JUST FOR TEST !!!!!
+	 */
+	var notifier = new Workbreeze.Notifier( {
+		onData: function(data) {
+			if ('j' in data) {
+				parseJobs(data['j']);
+			}
+			
+			// start the notifier			
+			notifier.setParams(prepareDataForJobs(lastStamp));
+		}
+	} );
+
+	/**
 	 * @type {Workbreeze.Filter}
 	 */
 	var filter = new Workbreeze.Filter(storage, {
 		onChanged: function(isEmpty) {
+			notifier.setParams(prepareDataForJobs(lastStamp));
+		
 			if (isEmpty) {
 				if (!paused) {
 					streamAutoPaused = true;
@@ -110,53 +127,6 @@ Workbreeze.Feed = function(s) {
 	filter.add(sites);
 	filter.add(categories);
 	filter.add(keywords);
-
-	/**
-	 * Ajax /up caller
-	 * @param {Object} s Settings.
-	 */
-	var up = function(s) {
-		if (updating) {
-			// see ya next time
-			setTimeout(function() {
-				up(s);
-			}, 30000);
-		
-			return;
-		}
-
-		updating = true;
-
-		$.ajax({
-			'url': '/up',
-			'type': 'POST',
-			'data': s.data,
-			'dataType': 'json',
-			'cache': false,
-			'success': function(data) {
-				updating = false;
-	
-				if (s.success) {
-					s.success(data);
-				}
-			
-				if (s.ping) {
-					s.ping();
-				}
-			},
-			'error': function(request, status, error) {
-				updating = false;
-			
-				if (s.error) {
-					s.error();
-				}
-				
-				if (s.ping) {
-					s.ping();
-				}
-			}
-		});
-	};
 
 	/**
 	 * Check the job place
@@ -180,63 +150,15 @@ Workbreeze.Feed = function(s) {
 	 * @return {Object} Params.
 	 */
 	var prepareDataForJobs = function(stamp) {
-		var adata = {};	
+		var adata = new Workbreeze.NotifierParams();
 
 		if (filter.getFilterMode()) {
-			adata = filter.getCriteriaData();
+			adata.params = filter.getCriteriaData();
 		}
 
-		adata[options.elementJobStamp] = stamp;
+		adata.ajaxOnly[options.elementJobStamp] = stamp;
 
 		return adata;
-	};
-
-	/**
-	 * Check for new jobs
-	 */
-	var checkNewJobs = function() {
-		var adata = prepareDataForJobs(lastStamp);
-
-		up( {
-			data: adata,
-			success: function(data) {
-				if (null === data) {
-					return;
-				}
-		
-				if ('j' in data) {
-					/* <debug> */
-					console.info('New jobs pack: ' + data['j'].length);
-					/* </debug> */
-
-					parseJobs(data['j']);
-				}
-		
-				setNewTimer(filter.getFilterMode() ? options.checkIntervalFiltered : options.checkInterval);
-			},
-			error: function() {
-				setNewTimer(options.checkInterval * 2);
-			}
-		} );
-	};
-
-	/**
-	 * Drop the new job checker timer
-	 * TODO do something with it
-	 */
-	var dropNewTimer = function() {
-		if (null != newTimer) {
-			clearTimeout(newTimer);
-		}
-	};
-
-	/**
-	 * Sets the new jobs checker timer
-	 * @param {!number} interval Interval.
-	 */
-	var setNewTimer = function(interval) {
-		dropNewTimer();
-		newTimer = setInterval(checkNewJobs, interval);
 	};
 
 	/**
@@ -424,7 +346,7 @@ Workbreeze.Feed = function(s) {
 		places.buttonPause.slideUp(options.animationSpeed);
 		places.buttonPlay.slideDown(options.animationSpeed);
 
-		dropNewTimer();
+		notifier.stop();
 
 		paused = true;
 	};
@@ -440,7 +362,8 @@ Workbreeze.Feed = function(s) {
 		places.buttonPause.slideDown(options.animationSpeed);
 
 		lastStamp = Math.round(new Date().getTime() / 1000);
-		setNewTimer(5000);
+
+		notifier.start();
 	};
 
 	/**
@@ -457,16 +380,14 @@ Workbreeze.Feed = function(s) {
 
 		updatingBottom = true;
 
-		dropNewTimer();
-
 		/* <debug> */
 		console.info('update less than ' + firstStamp);
 		/* </debug> */
 
 		var adata = prepareDataForJobs(-firstStamp);
 
-		up({
-			data: adata,
+		Workbreeze.Ajax( {
+			data: $.extend(adata.params, adata.ajaxOnly),
 			success: function(data) {
 				if (null === data) {
 					return;
@@ -478,10 +399,8 @@ Workbreeze.Feed = function(s) {
 			},
 			ping: function() {
 				updatingBottom = false;
-
-				setNewTimer(filter.getFilterMode() ? options.checkIntervalFiltered : options.checkInterval);
 			}
-		});
+		} );
 	};
 
 	/** @type {boolean} **/ var initialized = false;
@@ -520,8 +439,24 @@ Workbreeze.Feed = function(s) {
 
 			filterModePlace.toggleClass('checked');		
 		});
-
-		setNewTimer(options.checkInterval);
+		
+		var adata = prepareDataForJobs(0);
+		
+		Workbreeze.Ajax( {
+			data: $.extend(adata.params, adata.ajaxOnly),
+			success: function(data) {
+				if (
+					null !== data
+					&& 'j' in data
+				) {
+					parseJobs(data['j']);
+				}
+			},
+			ping: function() {
+				// start the notifier			
+				notifier.setParams(prepareDataForJobs(lastStamp));
+			}		
+		} );		
 	};
 
 	// ---------------------------------------------------
@@ -545,19 +480,15 @@ Workbreeze.Feed = function(s) {
 	// ---------------------------------------------------
 	// Initial data request for accessorial data
 	// ---------------------------------------------------	
-
-	var adata = prepareDataForJobs(0);
+	var adata = {};
 
 	adata[options.elementLang]  = locale.getLocalVersion();
 	adata[options.elementSites] = sites.getLocalVersion();
 	adata[options.elementCats]  = categories.getLocalVersion();
 
-	up({
+	Workbreeze.Ajax( {
 		data: adata,
 		success: function(data) {
-			// setting the next check timer
-			setNewTimer(options.checkInterval);
-	
 			// scrolling to the top
 			$('html, body').css({scrollTop:0});
 
@@ -575,12 +506,6 @@ Workbreeze.Feed = function(s) {
 			if ('s' in data) {
 				sites.load(data['s']);
 			}
-
-			init();
-
-			if ('j' in data) {
-				parseJobs(data['j']);
-			}
 		},
 		ping: function() {	
 			$(window).scroll(function() {
@@ -592,7 +517,6 @@ Workbreeze.Feed = function(s) {
 				}
 			} );
 		
-			// init anyway
 			init();
 		}
 	});

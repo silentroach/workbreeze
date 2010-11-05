@@ -1,8 +1,8 @@
 /* <debug> */
 if ('localStorage' in window) {
-	console.info('local storage enabled');
+	console.info('localStorage enabled');
 } else {
-	console.warn('local storage not available');
+	console.warn('localStorage is not available');
 }
 /* </debug> */
 

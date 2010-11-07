@@ -40,7 +40,7 @@ gzip -c9 tmp/public_html/favicon.ico > tmp/public_html/favicon.ico.gz
 echo 'debug in bootstrap'
 sed 's/DEBUG/UNDEBUG/' ../../bootstrap.php > tmp/bootstrap.php
 echo 'nginx...'
-sed "s/workbreeze.dev/workbreeze.com/;s/\/home\/silent\/Projects\/work/\/srv\//" ../../other/configs/nginx.conf > tmp/other/configs/nginx.conf
+sed "s/workbreeze.dev/workbreeze.com/;s/\/home\/Projects\/work/\/srv\//" ../../other/configs/nginx.conf > tmp/other/configs/nginx.conf
 
 desc 'Making iso'
 mkisofs -r -J -l -d -o breeze.iso tmp/

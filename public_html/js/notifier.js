@@ -99,10 +99,6 @@ Workbreeze.Notifier = function(s) {
 		/* </debug> */
 
 		var createWebSocket = function() {
-			if (null !== ws) {
-				ws.close();
-			}
-		
 			ws = new WebSocket('ws://' + document.location.host + ':8047/WorkbreezeNotifier');
 
 			ws.onmessage = function(e) {				
@@ -208,6 +204,7 @@ Workbreeze.Notifier = function(s) {
 		}
 		
 		if (null !== ws) {
+			ws.onclose = null;
 			ws.close();
 		}
 	}

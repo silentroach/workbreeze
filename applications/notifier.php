@@ -35,8 +35,6 @@ class WorkbreezeWebSocketSession extends WebSocketRoute {
 	 * @return void
 	 */
 	public function onFrame($data, $type) {
-		//Daemon::log($data);
-	
 		$o = json_decode($data, true);
 
 		if (
@@ -76,6 +74,13 @@ class WorkbreezeNotifierRequest extends Request {
 	private $database;	
 	private $laststamp;
 
+	// -----------------------------
+	// Filter arrays
+	// -----------------------------
+	private $fcats  = false;
+	private $fsites = false;
+	private $fkeys  = false;
+
 	public function init() {
 		$connection = new Mongo();
 		$this->database = $connection->selectDB(DB);
@@ -86,9 +91,58 @@ class WorkbreezeNotifierRequest extends Request {
 		while ($item = $cursor->getNext()) {
 			$this->laststamp = $item['stamp'];
 		}
+
+		// TODO refactor
+
+		if (isset($this->attrs['filter_cats'])) {
+			$this->fcats = explode(',', $this->attrs['filter_cats']);
+
+			if (0 === sizeof($this->fcats)) {
+				$this->fcats = false;
+			}
+		}
+
+		if (isset($this->attrs['filter_sites'])) {
+			$this->fsites = explode(',', $this->attrs['filter_sites']);
+
+			if (0 === sizeof($this->fsites)) {
+				$this->fsites = false;
+			}
+		}
+
+		if (isset($this->attrs['filter_keys'])) {
+			$this->fkeys = Text::Stem(Text::ExtractWords($this->attrs['filter_keys']));
+
+			if (0 === sizeof($this->fkeys)) {
+				$this->fkeys = false;
+			}
+		}
 	}
 
 	private function checkOffer($offer) {
+		if (
+			$this->fsites
+			&& !in_array($offer['site'], $this->fsites)
+		) {
+			return false;
+		}
+
+		if (
+			$this->fcats
+			&& isset($offer['cats'])
+			&& 0 === sizeof(array_intersect($this->fcats, $offer['cats']))
+		) {
+			return false;
+		}
+
+		if (
+			$this->fkeys
+			&& isset($offer['stem'])
+			&& 0 === sizeof(array_intersect($this->fkeys, $offer['stem']))
+		) {
+			return false;
+		}
+
 		return true;
 	}
 

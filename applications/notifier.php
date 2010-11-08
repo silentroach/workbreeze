@@ -103,7 +103,7 @@ class WorkbreezeNotifierRequest extends Request {
 			'stamp' => array(
 				'$gt' => $this->laststamp
 			)
-		))->sort(array('stamp' => -1));
+		))->sort(array('stamp' => 1));
 		
 		while ($item = $cursor->getNext()) {
 			$this->laststamp = $item['stamp'];
@@ -115,7 +115,7 @@ class WorkbreezeNotifierRequest extends Request {
 		
 		if (sizeof($offers) > 0) {
 			$joffers = JSON::encode(array(
-				'j' => $offers
+				'j' => array_reverse($offers)
 			));
 		
 			foreach ($this->sessions as $sessId => $v) {

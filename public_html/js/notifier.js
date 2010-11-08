@@ -58,8 +58,6 @@ Workbreeze.Notifier = function(s) {
 	var ws = null;
 
 	var handleParamsChanged = function() {
-		console.info('params changed');
-	
 		self.stop();
 		self.start();
 	};

@@ -2,6 +2,27 @@
 
 if (!defined('BOOTSTRAPPED')) {
 
+	function critlog($message) {
+		if (class_exists('Daemon')) {
+			Daemon::log($message);
+			return false;
+		} else {
+			echo $message . "\n";
+			die();
+		}
+	}
+
+	if (
+		!function_exists('stem_russian_unicode')
+		|| !function_exists('stem_english')
+	) {
+		critlog('pecl-stem is not installed or installed not correctly (you need english and russian languages support)');
+	}
+
+	if (!function_exists('curl_init')) {
+		critlog('curl support is not enabled');
+	}
+
 	define('BOOTSTRAPPED', 1);
 
 	$basepath = dirname(__FILE__);

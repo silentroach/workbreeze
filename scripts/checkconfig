@@ -1,0 +1,13 @@
+#!/usr/bin/php
+<?php
+
+if (
+	!function_exists('stem_russian_unicode')
+	|| !function_exists('stem_english')
+) {
+	echo "pecl-stem is not installed or installed not correctly (you need english and russian languages support)\n";
+}
+
+if (!function_exists('curl_init')) {
+	echo "curl support is not enabled\n";
+}

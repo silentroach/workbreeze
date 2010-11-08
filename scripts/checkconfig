@@ -1,13 +1,56 @@
 #!/usr/bin/php
 <?php
 
-if (
-	!function_exists('stem_russian_unicode')
-	|| !function_exists('stem_english')
-) {
-	echo "pecl-stem is not installed or installed not correctly (you need english and russian languages support)\n";
+function highlighted($msg) {
+	echo "\033[1m" . $msg . "\033[0m\n";
 }
 
-if (!function_exists('curl_init')) {
-	echo "curl support is not enabled\n";
+function appExists($app) {
+	exec('which ' . escapeshellarg($app) . ' 2>&1', $out, $code);
+
+	return 0 === $code;
 }
+
+function printCheck($message, $callback) {
+	echo str_pad($message, 50);
+
+	if ($callback()) {
+		echo '[PASS]';
+	} else {
+		echo '[FAIL]';
+	}
+
+	echo "\n";
+}
+
+highlighted('Required:');
+
+printCheck('curl module', function() {
+	return function_exists('curl_init');
+} );
+
+printCheck('english stemmer', function() {
+	return function_exists('stem_english');
+} );
+
+printCheck('russian stemmer', function() {
+	return function_exists('stem_russian_unicode');
+} );
+
+echo "\n";
+highlighted('Required for production image maker:');
+
+printCheck('java', function() {
+	return appExists('java');
+} );
+
+printCheck('mkisofs', function() {
+	return appExists('mkisofs');
+} );
+
+echo "\n";
+highlighted('Optional:');
+
+printCheck('tor proxy', function() {
+	return appExists('tor');
+} );

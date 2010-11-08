@@ -88,7 +88,6 @@ Workbreeze.Feed = function(s) {
 
 	/**
 	 * @type {Workbreeze.Notifier}
-	 * !!!!! JUST FOR TEST !!!!!
 	 */
 	var notifier = new Workbreeze.Notifier( {
 		onData: function(data) {

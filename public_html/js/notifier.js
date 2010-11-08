@@ -71,7 +71,7 @@ Workbreeze.Notifier = function(s) {
 	self.setParams = function(params) {	
 		var changed = false;
 
-		if (JSON.stringify(options.params.params) != JSON.stringify(params.param)) {
+		if (JSON.stringify(options.params.params) != JSON.stringify(params.params)) {
 			options.params.params = params.params;
 			changed = true;
 		}
@@ -94,10 +94,6 @@ Workbreeze.Notifier = function(s) {
 	 * Initialize the WebSocket notification
 	 */
 	var initWebSocket = function() {
-		/* <debug> */
-		console.info('initializing WebSocket notifier');
-		/* </debug> */
-
 		var createWebSocket = function() {
 			ws = new WebSocket('ws://' + document.location.host + ':8047/WorkbreezeNotifier');
 
@@ -105,19 +101,11 @@ Workbreeze.Notifier = function(s) {
 				try {
 					var obj = $.parseJSON(e.data);
 					
-					/* <debug> */
-					console.dir(obj);
-					/* </debug> */
-				
 					options.onData(obj);
 				} catch (error) { }
 			}
 
 			ws.onclose = function() {
-				/* <debug> */
-				console.info('websocket connection is closed')
-				/* </debug> */
-
 				setTimeout(createWebSocket, 5000);
 			}
 
@@ -126,11 +114,6 @@ Workbreeze.Notifier = function(s) {
 					'cmd'   : 'subscribe',
 					'attrs' : options.params.params
 				};
-
-				/* <debug> */
-				console.info('websocket connection is opened');
-				console.dir(cmd);
-				/* </debug> */
 
 				ws.send(JSON.stringify(cmd));
 			}
@@ -145,9 +128,6 @@ Workbreeze.Notifier = function(s) {
 	 * Initialize notifications by ajax
 	 */
 	var initAjax = function() {
-		/* <debug> */
-		console.info('initializing ajax notifier');
-		/* </debug> */
 
 		var setupAjax = function(updateTime) {
 			if (null !== ajaxTimer) {

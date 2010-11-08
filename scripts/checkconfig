@@ -25,6 +25,16 @@ function printCheck($message, $callback) {
 
 highlighted('Required:');
 
+printCheck('apc', function() {
+	return function_exists('apc_store');
+} );
+
+printCheck('runkit', function() {
+	return
+		function_exists('runkit_function_add')
+		&& ini_get('runkit.internal_override');
+} );
+
 printCheck('curl module', function() {
 	return function_exists('curl_init');
 } );

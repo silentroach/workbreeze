@@ -58,6 +58,10 @@ printCheck('mkisofs', function() {
 	return appExists('mkisofs');
 } );
 
+printCheck('pngcrush', function() {
+	return appExists('pngcrush');
+} );
+
 echo "\n";
 highlighted('Optional:');
 

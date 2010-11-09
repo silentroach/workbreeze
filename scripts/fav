@@ -65,11 +65,13 @@ EOF;
 imagepng($img, '/tmp/fav.png');
 imagedestroy($img);
 
-echo system('optipng /tmp/fav.png');
+exec('pngcrush -rem alla -brute -reduce /tmp/fav.png /tmp/fav.opt.png', $output);
+echo implode("\n", $output);
 
-$img = file_get_contents('/tmp/fav.png');
+$img = file_get_contents('/tmp/fav.opt.png');
 
 unlink('/tmp/fav.png');
+unlink('/tmp/fav.opt.png');
 
 $coded = base64_encode($img);
 

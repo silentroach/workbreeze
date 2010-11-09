@@ -48,11 +48,13 @@ EOF;
 imagepng($img, '/tmp/icons.png');
 imagedestroy($img);
 
-echo system('optipng /tmp/icons.png');
+exec('pngcrush -rem alla -brute -reduce /tmp/icons.png /tmp/icons.opt.png', $output);
+echo implode("\n", $output);
 
-$img = file_get_contents('/tmp/icons.png');
+$img = file_get_contents('/tmp/icons.opt.png');
 
 unlink('/tmp/icons.png');
+unlink('/tmp/icons.opt.png');
 
 $coded = base64_encode($img);
 

@@ -6,7 +6,28 @@ require $root . 'bootstrap.php';
 
 class WorkbreezeNotifier extends AppInstance {
 
+	private $lastcheck;
+	private $laststamp;
+	private $db;
+	private $cache;
+
 	public function init() {
+		// connectingt to database
+		$connection = new Mongo();
+		$this->db = $connection->selectDB(DB);
+
+		// fetching the last offer stamp
+		$cursor = $this->db->jobs->find();
+		$cursor->sort(array('stamp' => -1))->limit(1);
+		
+		while ($item = $cursor->getNext()) {
+			$this->laststamp = $item['stamp'];
+		}
+
+		// initial time of last check is now
+		$this->lastcheck = time();
+
+		// initialized. let's say about it
 		Daemon::log('Workbreeze notifier up');		
 	}
 
@@ -20,6 +41,65 @@ class WorkbreezeNotifier extends AppInstance {
 				}
 			);
 		}
+	}
+
+	public function getLastStamp() {
+		return $this->laststamp;
+	}
+
+	// -----------------------------------------------------
+	// main part
+	// -----------------------------------------------------
+
+	private function checkOffers() {
+		$now = time();
+
+		// have to wait at least 5 seconds after previous check
+		if ($now - $this->lastcheck < 5) {
+			return;
+		}
+
+		$this->lastcheck = time();
+
+		if (0 !== sizeof($this->cache)) {
+			// lets clean a cache
+			foreach($this->cache as $stamp => $item) {
+				// 30 seconds for spare
+				if ($now - $stamp > 30) {
+					unset($this->cache[$stamp]);
+				}
+			}
+		}
+
+		// checking new offers
+		$cursor = $this->db->jobs->find(array(
+			'stamp' => array(
+				'$gt' => $this->laststamp
+			)
+		))->sort(array('stamp' => 1));
+		
+		while ($item = $cursor->getNext()) {
+			$this->laststamp = $item['stamp'];
+			$this->cache[$this->laststamp] = $item;
+		}
+	}
+
+	public function newOffers($stamp) {
+		$this->checkOffers();
+
+		if ($this->laststamp === $stamp) {
+			return false;
+		}
+
+		$result = array();
+
+		foreach($this->cache as $cstamp => $citem) {
+			if ($cstamp > $stamp) {
+				$result[] = $citem;
+			}
+		}
+
+		return $result;
 	}
 
 }
@@ -71,7 +151,6 @@ class WorkbreezeNotifierRequest extends Request {
 	public $buf = '';
 	public $sessions = array();
 
-	private $database;	
 	private $laststamp;
 
 	// -----------------------------
@@ -82,15 +161,8 @@ class WorkbreezeNotifierRequest extends Request {
 	private $fkeys  = false;
 
 	public function init() {
-		$connection = new Mongo();
-		$this->database = $connection->selectDB(DB);
-
-		$cursor = $this->database->jobs->find();
-		$cursor->sort(array('stamp' => -1))->limit(1);
-		
-		while ($item = $cursor->getNext()) {
-			$this->laststamp = $item['stamp'];
-		}
+		// getting last stamp from application instance
+		$this->laststamp = $this->appInstance->getLastStamp();
 
 		// TODO refactor
 
@@ -150,30 +222,28 @@ class WorkbreezeNotifierRequest extends Request {
 	 * Called when request iterated.
 	 * @return integer Status.
 	 */
-	public function run() {	
-		$offers = array();
-		
-		$cursor = $this->database->jobs->find(array(
-			'stamp' => array(
-				'$gt' => $this->laststamp
-			)
-		))->sort(array('stamp' => 1));
-		
-		while ($item = $cursor->getNext()) {
-			$this->laststamp = $item['stamp'];
-			
-			if ($this->checkOffer($item)) {
-				$offers[] = Job::prepareJSON($item);
+	public function run() {
+		$items = $this->appInstance->newOffers($this->laststamp);
+
+		if ($items) {
+			$offers = array();
+
+			while ($item = array_shift($items)) {
+				$this->laststamp = $item['stamp'];
+
+				if ($this->checkOffer($item)) {	
+					$offers[] = Job::prepareJSON($item);
+				}
 			}
-		}
 		
-		if (sizeof($offers) > 0) {
-			$joffers = JSON::encode(array(
-				'j' => array_reverse($offers)
-			));
+			if (sizeof($offers) > 0) {
+				$joffers = JSON::encode(array(
+					'j' => array_reverse($offers)
+				));
 		
-			foreach ($this->sessions as $sessId => $v) {
-				$this->appInstance->WS->sessions[$sessId]->sendFrame($joffers);
+				foreach ($this->sessions as $sessId => $v) {
+					$this->appInstance->WS->sessions[$sessId]->sendFrame($joffers);
+				}
 			}
 		}
 

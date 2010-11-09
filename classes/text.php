@@ -29,11 +29,20 @@ class Text {
 			$text
 		);
 
+		// replace quotes
+		$text = str_replace(array(
+			'»', '”'
+		), '&raquo;', $text);
+
+		$text = str_replace(array(
+			'«', '“'
+		), '&laquo;', $text);
+
 		// replace some strange symbols
 		$text = str_replace(array(
-			'…',   '»',       '«',       '•',  '—',  'ё'
+			'…',   '•',  '—',  'ё'
 		), array(
-			'...', '&raquo;', '&laquo;', '+ ', '- ', 'е'
+			'...', '+ ', '- ', 'е'
 		), $text);
 
 		while (false !== strpos($text, '  ')) {

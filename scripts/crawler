@@ -30,7 +30,7 @@ if (file_exists($lockname)) {
 		if ($pid) {
 			echo 'Dropping old process ' . $pid . "\n";
 			$cmd = 'kill ' . $pid;
-			$tmp = system($cmd);
+			exec($cmd);
 		}
 	} else {
 		die();

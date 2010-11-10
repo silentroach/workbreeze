@@ -1,16 +1,16 @@
 <?php
 
 function replaceTag($content, $tag, $replacement) {
-	$l = mb_strlen($tag, 'UTF-8') + 6;
+	$l = mb_strlen($tag) + 6;
 
-	$i = mb_strpos($content, '/* <' . $tag . '> */', 0, 'UTF-8');
+	$i = mb_strpos($content, '/* <' . $tag . '> */');
 	if (false === $i) {
 		break;
 	}
 
 	$i += $l + 2;
 
-	$n = mb_strpos($content, '/* </' . $tag . '> */', 0, 'UTF-8');
+	$n = mb_strpos($content, '/* </' . $tag . '> */');
 	if (false === $n) {
 		echo 'Final tag not found\n';
 		die();

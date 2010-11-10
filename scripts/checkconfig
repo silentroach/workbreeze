@@ -25,6 +25,10 @@ function printCheck($message, $callback) {
 
 highlighted('Required:');
 
+printCheck('mongodb driver', function() {
+	return class_exists('Mongo');
+} );
+
 printCheck('apc', function() {
 	return function_exists('apc_store');
 } );

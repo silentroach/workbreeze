@@ -15,6 +15,11 @@ if (!defined('BOOTSTRAPPED')) {
 
 	define('DEBUG', 1);
 
+	/* some ini settings */
+
+	// turning off mongo warnings about non-utf8 values
+	ini_set('mongo.utf8', 0);
+
 	/* config */
 
 	mb_regex_encoding( 'UTF-8' );

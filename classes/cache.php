@@ -2,6 +2,8 @@
 
 class Cache {
 
+	// TODO maybe there is a reason to make it work via private static array, not via apc
+
 	public static function set($key, $value, $ttl = 60) {
 		apc_store($key, $value, $ttl);
 	}

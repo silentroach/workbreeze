@@ -1,5 +1,7 @@
 <?php
 
+// TODO rename to free_lance_ru
+
 class Parser_freelance_ru extends Parser implements IParser {
 
 	public function getSiteCode() {

@@ -1,5 +1,7 @@
 <?php
 
+// TODO refactor it anywhere
+
 function replaceTag($content, $tag, $replacement) {
 	$l = mb_strlen($tag) + 6;
 

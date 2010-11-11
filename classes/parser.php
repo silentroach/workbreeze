@@ -152,6 +152,8 @@ class Parser {
 		
 		if (count($money)) {
 			switch ($money[1]) {
+				// TODO refactor currency names
+
 				case Job::CUR_DOLLAR:
 					$currency = '$%d';
 					break;

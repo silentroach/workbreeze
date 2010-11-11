@@ -6,7 +6,9 @@ class Language {
 	const RUSSIAN = 'ru';
 	
 	const VERSION = 10;
-		
+
+	// TODO make translations as a separate project as non-php files
+
 	private static $list = array(
 		self::ENGLISH => 'english',
 		self::RUSSIAN => 'русский'

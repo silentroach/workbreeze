@@ -27,7 +27,7 @@ Workbreeze.Locale = function(storage, s) {
 	 * @param {!number} i Number to check
 	 * @return {string}
 	 */
-	var checkTimeVal = function(i) {
+	var checkLeadZero = function(i) {
 		return (i < 10) ? '0' + i : i.toString();
 	};
 
@@ -37,7 +37,20 @@ Workbreeze.Locale = function(storage, s) {
 	 * @return {string}
 	 */
 	self.timeString = function(stamp) {
-		return checkTimeVal(stamp.getHours()) + ':' + checkTimeVal(stamp.getMinutes());
+		var current = new Date();
+
+		var datesDiff = current.getDate() - stamp.getDate();
+		var datestr = '';
+
+		// TODO need to really localize to local format
+		if (datesDiff == 1) {
+			// yesterday
+			datestr = self.translate('y') + ', ';
+		} else if (datesDiff > 1) {
+			datestr = checkLeadZero(stamp.getDate()) + '.' + checkLeadZero(stamp.getMonth()) + '.' + stamp.getFullYear() + ', ';
+		}
+
+		return datestr + checkLeadZero(stamp.getHours()) + ':' + checkLeadZero(stamp.getMinutes());
 	};
 
 	/**

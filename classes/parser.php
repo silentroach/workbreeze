@@ -7,7 +7,9 @@ interface IParser {
 	public function getParserName();
 	public function getUrl();
 	public function getLang();
+
 	public function isProxyfied();
+	public function isAuth();
 
 	public function processJobList();
 
@@ -21,7 +23,8 @@ interface IParser {
 
 class Parser {
 
-	const Agent = 'Mozilla/5.0 (compatible; WorkbreezeCrawler/1.0; +http://workbreeze.com)';
+	const Agent     = 'Mozilla/5.0 (compatible; WorkbreezeCrawler/1.0; +http://workbreeze.com)';
+	const UserAgent = 'Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US) AppleWebKit/534.7 (KHTML, like Gecko) Chrome/7.0.517.41 Safari/534.7';
 	
 	private $db;
 
@@ -223,26 +226,50 @@ EOF;
 		return $this->afterRequest($data);
 	}
 
-	protected function getRequest($url, $headers = array()) {
+	protected function getRequest($url, $headers = array(), $post = array()) {
 		$c = curl_init();
 		
 		echo '[' . date('H:m:s') . '] ' . $url . '... ';
 		
 		$url = str_replace(' ', '%20', $url);
 		
-		curl_setopt($c, CURLOPT_URL, $url);
-		curl_setopt($c, CURLOPT_USERAGENT, Parser::Agent);
-		curl_setopt($c, CURLOPT_ENCODING, 'gzip');
-		curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($c, CURLOPT_URL, $url);                 // url to get
+		curl_setopt($c, CURLOPT_ENCODING, 'gzip');          // try to get into gzip
+		curl_setopt($c, CURLOPT_RETURNTRANSFER, true);      // return output back into script
+		curl_setopt($c, CURLOPT_TIMEOUT, 30);               // 30 seconds for timeout
+		curl_setopt($c, CURLOPT_VERIFYPEER, true);          // not to check ssl certificates
 		
 		if (0 !== sizeof($headers)) {
-			curl_setopt($c, CURLOPT_HTTPHEADER, $headers);
+			// setting headers
+			curl_setopt($c, CURLOPT_HTTPHEADER, $headers);   
 		}
-		
+
+		if (0 !== sizeof($post)) {
+			// sending the post data
+			curl_setopt($c, CURLOPT_POST, true);
+			curl_setopt($c, CURLOPT_POSTFIELDS, $post);
+		}
+
+		if ($this->isAuth()) {
+			// setting the real useragent
+			curl_setopt($c, CURLOPT_USERAGENT, Parser::UserAgent);
+
+			// setting the cookie storage
+			curl_setopt($c, CURLOPT_COOKIEJAR,  '/tmp/authcookies');
+			curl_setopt($c, CURLOPT_COOKIEFILE, '/tmp/authcookies');
+
+			// follow the location if redirect is returned
+			curl_setopt($c, CURLOPT_FOLLOWLOCATION, true);
+		} else {
+			// setting the default crawler useragent
+			curl_setopt($c, CURLOPT_USERAGENT, Parser::Agent);
+		}
+
 		if (
 			$this->isProxyfied()
 			&& file_exists('/var/run/tor')
 		) {
+			// try to work via tor proxy if it is needed
 			curl_setopt($c, CURLOPT_HTTPPROXYTUNNEL, true);
 			curl_setopt($c, CURLOPT_PROXY, 'localhost');
 			curl_setopt($c, CURLOPT_PROXYPORT, 9050);

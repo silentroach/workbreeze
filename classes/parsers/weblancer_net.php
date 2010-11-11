@@ -33,7 +33,11 @@ class Parser_weblancer_net extends Parser implements IParser {
 	public function isProxyfied() {
 		return false;
 	}
-	
+
+	public function isAuth() {
+		return false;
+	}
+
 	protected function afterRequest($data) {
 		return iconv('cp1251', 'utf-8', $data);
 	}

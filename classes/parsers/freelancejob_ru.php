@@ -30,10 +30,14 @@ class Parser_freelancejob_ru extends Parser implements IParser {
 		return 60 * 10;  // 10 minutes for update
 	}
 	
-	public function isProxyFied() {
+	public function isProxyfied() {
 		return false;
 	}
-	
+
+	public function isAuth() {
+		return false;
+	}
+
 	protected function afterRequest($data) {
 		return iconv('cp1251', 'utf-8', $data);
 	}

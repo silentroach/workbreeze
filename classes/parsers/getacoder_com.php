@@ -30,10 +30,14 @@ class Parser_getacoder_com extends Parser implements IParser {
 		return Language::ENGLISH;
 	}
 	
-	public function isProxyFied() {
+	public function isProxyfied() {
 		return false;
 	}
-	
+
+	public function isAuth() {
+		return false;
+	}
+
 	protected function afterRequest($data) {
 		return iconv('iso-8859-1', 'utf-8', $data);
 	}

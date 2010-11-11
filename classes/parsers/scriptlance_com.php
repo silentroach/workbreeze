@@ -30,7 +30,11 @@ class Parser_scriptlance_com extends Parser implements IParser {
 		return Language::ENGLISH;
 	}
 	
-	public function isProxyFied() {
+	public function isProxyfied() {
+		return false;
+	}
+
+	public function isAuth() {
 		return false;
 	}
 	

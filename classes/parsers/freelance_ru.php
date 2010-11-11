@@ -36,6 +36,10 @@ class Parser_freelance_ru extends Parser implements IParser {
 		return true;
 	}
 
+	public function isAuth() {
+		return false;
+	}
+
 	protected function afterRequest($data) {
 		return iconv('cp1251', 'utf-8', $data);
 	}

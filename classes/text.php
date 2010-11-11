@@ -9,12 +9,17 @@ class Text {
 	 */
 	public static function HTMLPrepare($text) {
 		// all links
+		// TODO refactor it (look a little below)
 		if (preg_match_all('/<a(.*?)href="(.*?)"(.*?)>(.*?)<\/a>/siu', $text, $matches)) {
 			$urls = $matches[0];
 		
 			foreach($urls as $key => $url) {
 				$href = $matches[2][$key];
 				$val  = $matches[4][$key];
+
+				if (strlen($val) > 50) {
+					$val = substr($val, 0, 47) . '...';
+				}
 
 				$text = str_replace($url, '<a href="' . $href . '" rel="noindex,nofollow">' . $val . '</a>', $text);
 			}
@@ -66,7 +71,17 @@ class Text {
 		$text = str_replace(array(' . ', ' , '), array('. ', ', '), $text);
 
 		// convert links to html
-		$text = preg_replace('@([^">=])(https?://([-\w\.]+[-\w])+(:\d+)?(/([\w/_\.#-]*(\?\S+)?[^\.\s])?)?)@', '$1<a href="$2" rel="noindex,nofollow">$2</a>', $text);
+		if (preg_match_all('@([^">=])(https?://([-\w\.]+[-\w])+(:\d+)?(/([\w/_\.#-]*(\?\S+)?[^\.\s])?)?)@', $text, $matches)) {
+			foreach($matches[2] as $id => $link) {
+				if (strlen($link) > 50) {
+					$link = substr($link, 0, 47) . '...';
+				}
+
+				$text = str_replace($matches[0][$id], $matches[1][$id] . 
+					'<a href="' . $matches[2][$id] . '" rel="noindex,nofollow">' . $link . '</a>',
+					$text);
+			}
+		}
 
 		// strip last slash from all the links
 		$text = preg_replace("@/</a>@", '</a>', $text);

@@ -44,7 +44,7 @@ class WorkbreezeRequest extends HTTPRequest {
 
 class Workbreeze extends AppInstance {
 
-	private $modules = array();
+	private static $modules = array();
 	private $database;
 
 	public function init() {
@@ -69,17 +69,17 @@ class Workbreeze extends AppInstance {
 	public function getModule($module) {
 		$module = strtolower($module);
 
-		if (!isset($this->modules[$module])) {
+		if (!isset(self::$modules[$module])) {
 			$className = 'M' . ucfirst($module);
 
 			if (!class_exists($className)) {
-        			$this->modules[$module] = false;
+        			self::$modules[$module] = false;
 				return false;
 			}
 
-			$this->modules[$module] = new $className($this);
+			self::$modules[$module] = new $className($this);
 		}
 
-		return $this->modules[$module];
+		return self::$modules[$module];
 	}
 }

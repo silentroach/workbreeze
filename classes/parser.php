@@ -237,7 +237,7 @@ EOF;
 		curl_setopt($c, CURLOPT_ENCODING, 'gzip');          // try to get into gzip
 		curl_setopt($c, CURLOPT_RETURNTRANSFER, true);      // return output back into script
 		curl_setopt($c, CURLOPT_TIMEOUT, 30);               // 30 seconds for timeout
-		curl_setopt($c, CURLOPT_VERIFYPEER, true);          // not to check ssl certificates
+		curl_setopt($c, CURLOPT_SSL_VERIFYPEER, true);      // not to check ssl certificates
 		
 		if (0 !== sizeof($headers)) {
 			// setting headers

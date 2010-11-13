@@ -54,6 +54,10 @@ printCheck('russian stemmer', function() {
 echo "\n";
 highlighted('Required for production image maker:');
 
+printCheck('rsync', function() {
+	return appExists('rsync');
+} );
+
 printCheck('java', function() {
 	return appExists('java');
 } );
@@ -68,6 +72,10 @@ printCheck('pngcrush', function() {
 
 echo "\n";
 highlighted('Optional:');
+
+printCheck('gd library', function() {
+	return function_exists('imagecreatetruecolor');
+} );
 
 printCheck('tor proxy', function() {
 	return appExists('tor');

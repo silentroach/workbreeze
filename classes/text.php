@@ -50,9 +50,8 @@ class Text {
 			'...', '+ ', '- ', 'е'
 		), $text);
 
-		while (false !== strpos($text, '  ')) {
-			$text = str_replace('  ', ' ', $text);
-		}
+		// replace double and more spaces
+		$text = preg_replace('/[ ]+/', ' ', $text);
 
 		$text = str_ireplace(
 			array('<br />', '<br>', "\r"),

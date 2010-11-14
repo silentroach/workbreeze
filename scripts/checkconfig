@@ -29,6 +29,10 @@ printCheck('mongodb driver', function() {
 	return class_exists('Mongo');
 } );
 
+printCheck('iconv', function() {
+	return function_exists('iconv');
+} );
+
 printCheck('apc', function() {
 	return function_exists('apc_store');
 } );

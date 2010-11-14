@@ -158,10 +158,14 @@ Workbreeze.Categories = function(storage, locale, s) {
 			return false;
 		}
 
-		var jobCats = jobElement.attr('cats');
+		var jobCats = [];
+
+		var tmpCats = jobElement.attr('cats');
 
 		if (!jobCats) {
 			jobCats = [];
+		} else {
+			jobCats = tmpCats.split(',');
 		}
 
 		for (var i = 0; i < jobCats.length; i++) {

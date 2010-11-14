@@ -55,6 +55,10 @@ printCheck('russian stemmer', function() {
 	return function_exists('stem_russian_unicode');
 } );
 
+printCheck('open_basedir is empty', function() {
+	return ini_get('open_basedir') === '';
+} );
+
 echo "\n";
 highlighted('Required for production image maker:');
 

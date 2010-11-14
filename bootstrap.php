@@ -7,9 +7,9 @@ if (!defined('BOOTSTRAPPED')) {
 	$basepath = dirname(__FILE__);
 	define('DS', DIRECTORY_SEPARATOR);
 
-	define('PATH_CLASSES', $basepath . DS . 'classes' . $ds);
-	define('PATH_PUBLIC',  $basepath . DS . 'public_html' . $ds);
-	define('PATH_OTHER',   $basepath . DS . 'other' . $ds);
+	define('PATH_CLASSES', $basepath . DS . 'classes' . DS);
+	define('PATH_PUBLIC',  $basepath . DS . 'public_html' . DS);
+	define('PATH_OTHER',   $basepath . DS . 'other' . DS);
 	
 	define('DB', 'breeze');
 
@@ -34,7 +34,7 @@ if (!defined('BOOTSTRAPPED')) {
 	);
 
 	foreach($dirs as $dir) {
-		foreach(glob(__DIR__ . $ds . $dir . DS . '*.php') as $file) {
+		foreach(glob(__DIR__ . DS . $dir . DS . '*.php') as $file) {
 			require $file;
 		}
 	}

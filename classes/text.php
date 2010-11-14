@@ -25,7 +25,6 @@ class Text {
 			}
 		}
 	
-		$text = str_ireplace('&nbsp;', ' ', $text);
 		$text = str_replace("\t", '', $text);
 	
 		$text = str_ireplace(

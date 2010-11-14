@@ -160,6 +160,15 @@ Workbreeze.Sites = function(storage, s) {
 	};
 
 	/**
+	 * Get site identifier by offer element
+	 * @param {jQueryObject} $offerElement Offer element.
+	 * @return {number}
+	 */
+	var getOfferElementSite = function($offerElement) {
+		return $offerElement.attr('site');
+	}
+
+	/**
 	 * Check job element
 	 * @param {jQueryObject} jobElement Job Element
 	 * @return {boolean}
@@ -169,7 +178,7 @@ Workbreeze.Sites = function(storage, s) {
 			return false;
 		}
 
-		var site = jobElement.attr('site');
+		var site = getOfferElementSite(jobElement);
 
 		if (!site) {
 			return false;

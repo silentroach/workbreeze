@@ -160,6 +160,14 @@ Workbreeze.Feed = function(s) {
 		return adata;
 	};
 
+	var highlightOffer = function(element) {
+		categories.highlightOffer(element);
+	};
+
+	var clearHighlight = function() {
+		categories.clearHighlight();
+	};
+
 	/**
 	 * Add job to feed
 	 * @param {!Object} job Job object.
@@ -257,6 +265,14 @@ Workbreeze.Feed = function(s) {
 			checkJob(jobEl);
 		}
 
+		jobEl
+			.mouseenter( function(e) {
+				highlightOffer(jobEl);
+			} )
+			.mouseleave( function(e) {
+				clearHighlight();
+			} );
+
 		checkJobPlace();	
 	};
 
@@ -282,7 +298,7 @@ Workbreeze.Feed = function(s) {
 				jobElement
 					.removeClass(options.classNotSelected)
 					.addClass(options.classSelected);
-		
+	
 				jobElement.animate( {
 					'opacity': 1
 				} );

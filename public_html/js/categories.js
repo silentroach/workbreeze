@@ -149,6 +149,23 @@ Workbreeze.Categories = function(storage, locale, s) {
 	};
 
 	/**
+	 * Get offer element categories
+	 * @param {jQueryObject} $offer Offer element.
+	 * @return {Array}
+	 */
+	var getOfferElementValue = function($offer) {
+		var result = [];
+
+		var tmpCats = $offer.attr('cats');
+
+		if (tmpCats) {
+			result = tmpCats.split(',');
+		}
+
+		return result;
+	}
+
+	/**
 	 * Check the job element
 	 * @param {jQueryObject} jobElement Job element
 	 * @return {boolean}
@@ -157,16 +174,8 @@ Workbreeze.Categories = function(storage, locale, s) {
 		if (0 === selected.length) {
 			return false;
 		}
-
-		var jobCats = [];
-
-		var tmpCats = jobElement.attr('cats');
-
-		if (!jobCats) {
-			jobCats = [];
-		} else {
-			jobCats = tmpCats.split(',');
-		}
+	
+		var jobCats = getOfferElementValue(jobElement);
 
 		for (var i = 0; i < jobCats.length; i++) {
 			if ($.inArray(jobCats[i], selected) >= 0) {
@@ -176,6 +185,44 @@ Workbreeze.Categories = function(storage, locale, s) {
 
 		return false;
 	};
+
+	/**
+	 * Highlight offer categories
+	 * @param {jQueryObject} $offer Offer element.
+	 */
+	self.highlightOffer = function($offer) {
+		var offerCats = getOfferElementValue($offer);
+
+		if (!offerCats) {
+			return false;
+		}
+
+		$('li', place).each( function() {
+			var $self = $(this);
+		
+			var tmp = $self.attr('cat');
+
+			if (
+				$.inArray(tmp, offerCats) >= 0
+				&& !$self.hasClass('selected')
+			) {
+				$self.addClass('selected');
+			}
+		} );
+	}
+
+	/**
+	 * Clear highlighted elements
+	 */
+	self.clearHighlight = function() {
+		$('li', place).each( function() {
+			var $self = $(this);
+
+			if ($self.hasClass('selected')) {
+				$self.removeClass('selected');
+			}
+		} );
+	}
 
 	/**
 	 * onChanged handler

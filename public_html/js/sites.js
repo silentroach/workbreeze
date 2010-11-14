@@ -162,7 +162,7 @@ Workbreeze.Sites = function(storage, s) {
 	/**
 	 * Get site identifier by offer element
 	 * @param {jQueryObject} $offerElement Offer element.
-	 * @return {number}
+	 * @return {string}
 	 */
 	var getOfferElementSite = function($offerElement) {
 		return $offerElement.attr('site');

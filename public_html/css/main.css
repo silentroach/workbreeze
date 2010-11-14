@@ -101,7 +101,7 @@ input {
 }
 
 li.selected span {
-	background-color: black;
+	color: white;
 
 	-webkit-transition: all 0.2s ease-in-out;
 	-ms-transition: all 0.2s ease-in-out;

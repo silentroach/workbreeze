@@ -17,7 +17,7 @@ class Tester {
 	private function testTextFuncsFile($file) {
 		$i = pathinfo($file);
 
-		$outname = $i['dirname'] . DIRECTORY_SEPARATOR . $i['filename'] . '.po';
+		$outname = $i['dirname'] . DS . $i['filename'] . '.po';
 		
 		$text = trim(file_get_contents($file));
 		$out  = trim(file_get_contents($outname));
@@ -43,7 +43,7 @@ class Tester {
 			return true;
 		}
 		
-		$outname = $i['dirname'] . DIRECTORY_SEPARATOR . $i['filename'] . '.st';
+		$outname = $i['dirname'] . DS . $i['filename'] . '.st';
 		$out = trim(file_get_contents($outname));
 
 		$check2 = Text::Stem($tmpw);
@@ -151,7 +151,7 @@ class Tester {
 			
 			$parser = new $class($this->db);
 			
-			$fld = $folder . $parser->getSiteFolder() . DIRECTORY_SEPARATOR;
+			$fld = $folder . $parser->getSiteFolder() . DS;
 			
 			if (!file_exists($fld))
 				continue;

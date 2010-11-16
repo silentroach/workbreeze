@@ -468,6 +468,8 @@ Workbreeze.Feed = function(s) {
 
 		// @todo localize just needed parts
 		locale.localize();
+		locale.setTrigger('#lang');
+
 		categories.init();
 		sites.init();
 

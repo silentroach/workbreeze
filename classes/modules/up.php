@@ -11,6 +11,7 @@ class MUp extends Module {
 			
 		return array(
 			'v'  => Language::VERSION,
+			'a'  => Language::$list, 
 			'vl' => Language::getLang()
 		);
 	}	

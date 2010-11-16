@@ -45,6 +45,26 @@ input {
 		border-bottom: 0px;
 	}
 
+#lang {
+	position: relative;
+	top: -1em;
+	display: inline-block;
+	font-size: 10pt;
+	list-style: none;
+	padding: 0px;
+	margin-top: -20px;
+}
+
+	#lang li {
+		display: none;
+		margin-left: 0.5em;
+	}
+
+	#lang li.selected {
+		display: inline-block;
+		color: silver;
+	}
+
 #menu {
 	display: inline-block;
 	margin-left: 1em;

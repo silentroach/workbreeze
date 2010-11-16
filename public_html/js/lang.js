@@ -13,8 +13,15 @@ Workbreeze.Locale = function(storage, s) {
 	 * @type {Object}
 	 */
 	var options = $.extend( {
-		storagePath: 'lang'
+		storagePath: 'lang',
+		onChange: function(lang) { }
 	}, s);
+
+	/**
+	 * Languages list
+	 * @type {Array}
+	 */
+	var langs = [];
 
 	/**
 	 * Language arrays
@@ -86,11 +93,14 @@ Workbreeze.Locale = function(storage, s) {
 	 */
 	self.getLocalVersion = function() {
 		var lver = storage.getVersion(options.storagePath);
-	
+
 		if (lver > 0) {
 			var tmp = storage.get(options.storagePath);
-		
-			lang = tmp[1];
+
+			var sobj = tmp[1];
+
+			langs = sobj['a'];
+			lang  = sobj['v'];
 		}
 
 		return lver;
@@ -114,8 +124,40 @@ Workbreeze.Locale = function(storage, s) {
 	 * @param {!Object} val Load language object from ajax request
 	 */
 	self.load = function(val) {
-		lang = val['vl'];
-	
-		storage.set(options.storagePath, lang, val['v']);
+		lang  = val['vl'];
+		langs = val['a'];
+
+		var sobj = {
+			'a': langs,
+			'v': lang
+		}
+
+		storage.set(options.storagePath, sobj, val['v']);
 	};
+
+	/**
+	 * Visualize language changer
+	 * @param {string} selector Selector for the tag to place selector.
+	 */
+	self.setTrigger = function(selector) {
+		var $place = $(selector);
+
+		$place.contents().remove();
+
+		var current = lang['_'];
+
+		for (var lname in langs) {
+			var lfname = langs[lname];
+
+			var $li = $('<li></li>')
+				.attr('title', lfname)
+				.html(lname)
+				.appendTo( $place );
+
+			if (lname === current) {
+				$li.addClass('selected');
+			}
+		}
+	}
+
 };

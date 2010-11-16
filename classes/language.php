@@ -5,17 +5,19 @@ class Language {
 	const ENGLISH = 'en';
 	const RUSSIAN = 'ru';
 	
-	const VERSION = 10;
+	const VERSION = 11;
 
 	// TODO make translations as a separate project as non-php files
 
-	private static $list = array(
+	public static $list = array(
 		self::ENGLISH => 'english',
 		self::RUSSIAN => 'русский'
 	);
-	
+
 	private static function _english() {
 		return array(
+			'_'    => self::ENGLISH,
+
 			'kwds' => 'keywords separated by comma',
 			'on'   => 'at',
 			'pl'   => 'start',
@@ -46,6 +48,8 @@ class Language {
 	
 	private static function _russian() {
 		return array(
+			'_'    => self::RUSSIAN,
+
 			'kwds' => 'ключевые слова через запятую',
 			'on'   => 'на',
 			'pl'   => 'запуск',
@@ -108,6 +112,8 @@ class Language {
 			} else {
 				$lng = self::ENGLISH;
 			}
+
+			setcookie('lang', $lng, 60 * 60 * 24 * 7, '/up');
 		}
 		
 		return $lng;	

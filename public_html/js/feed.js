@@ -519,7 +519,7 @@ Workbreeze.Feed = function(s) {
 		$(this).animate({'opacity': 1});
 	});
 
-	$('#bfoot, .help, #menu').css({'opacity': 0.8});
+	$('#bfoot, .help, #menu li').css({'opacity': 0.7});
 	$('#right ul').remove();
 
 	// ---------------------------------------------------
@@ -569,7 +569,9 @@ Workbreeze.Feed = function(s) {
 	// ---------------------------------------------------
 	// Secondary things to do
 	// ---------------------------------------------------
-	$('#help').click(function() {
+	$('#help').click( function() {
+		var $self = $(this);
+
 		$('.help').animate( {
 			'opacity' : 'toggle', 
 			'height'  : 'toggle'
@@ -579,10 +581,14 @@ Workbreeze.Feed = function(s) {
 			$('html, body').animate( {
 				'scrollTop' : 0
 			}, options.animationSpeed);
+
+			$self.css('opacity', 1);
+		} else {
+			$self.css('opacity', .7);
 		}
 	
 		helpVisible = !helpVisible;
-	});
+	} );
 };
 
 /**

@@ -16,8 +16,12 @@ Workbreeze.Sites = function(storage, s) {
 		iconPrefix: 'sico',
 		place: '#sites'
 	}, s);
-	
-	var place = $(options.place);
+
+	/**
+	 * Place to visualize
+	 * @type {jQueryObject}
+	 */
+	var $place = $(options.place);
 
 	/**
 	 * Array of sites
@@ -37,7 +41,7 @@ Workbreeze.Sites = function(storage, s) {
 	 * @param {number} item
 	 */
 	var toggleSelected = function(item) {
-		$('#s' + item, options.place).toggleClass('checked');
+		$('#s' + item, $place).toggleClass('checked');
 	
 		var index = $.inArray(item, selected);
 			
@@ -70,7 +74,7 @@ Workbreeze.Sites = function(storage, s) {
 	self.setValue = function(value) {
 		selected = value || [];
 		
-		$('li', place).each( function() {
+		$('li', $place).each( function() {
 			var self = $(this);
 		
 			var tmp = self.attr('site');
@@ -160,25 +164,25 @@ Workbreeze.Sites = function(storage, s) {
 	};
 
 	/**
-	 * Get site identifier by offer element
-	 * @param {jQueryObject} $offerElement Offer element.
+	 * Get site identifier by the job element
+	 * @param {jQueryObject} $jobElement Job element.
 	 * @return {string}
 	 */
-	var getOfferElementSite = function($offerElement) {
-		return $offerElement.attr('site');
+	var getJobElementSite = function($jobElement) {
+		return $jobElement.attr('site');
 	}
 
 	/**
 	 * Check job element
-	 * @param {jQueryObject} jobElement Job Element
+	 * @param {jQueryObject} $jobElement Job element.
 	 * @return {boolean}
 	 */
-	self.checkJob = function(jobElement) {
+	self.checkJob = function( $jobElement ) {
 		if (0 === selected.length) {
 			return false;
 		}
 
-		var site = getOfferElementSite(jobElement);
+		var site = getJobElementSite( $jobElement );
 
 		if (!site) {
 			return false;
@@ -216,7 +220,7 @@ Workbreeze.Sites = function(storage, s) {
 					self.onChanged();
 				} );
 		
-			li.appendTo(place);
+			li.appendTo($place);
 			sp.appendTo(li);
 		} );
 	};

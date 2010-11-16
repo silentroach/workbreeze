@@ -25,7 +25,7 @@ Workbreeze.NotifierParams = function() {
 }
 
 /**
- * Object to notify script with new offers
+ * Object to notify script with new jobs
  * @constructor
  * @this {Workbreeze.Notifier}
  */

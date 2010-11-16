@@ -17,7 +17,11 @@ Workbreeze.Categories = function(storage, locale, s) {
 		place: '#categories'
 	}, s);
 
-	var place = $(options.place);
+	/**
+	 * Place to visualize
+	 * @type {jQueryObject}
+	 */
+	var $place = $(options.place);
 
 	/**
 	 * Categories list
@@ -37,7 +41,7 @@ Workbreeze.Categories = function(storage, locale, s) {
 	 * @param {number} item
 	 */
 	var toggleSelected = function(item) {
-		$('#c' + item, options.place).toggleClass('checked');
+		$('#c' + item, $place).toggleClass('checked');
 	
 		var index = $.inArray(item, selected);
 			
@@ -70,21 +74,21 @@ Workbreeze.Categories = function(storage, locale, s) {
 	self.setValue = function(value) {
 		selected = value || [];
 	
-		$('li', place).each( function() {
-			var self = $(this);
+		$('li', $place).each( function() {
+			var $self = $(this);
 		
-			var tmp = self.attr('cat');
+			var tmp = $self.attr('cat');
 			
 			if (tmp) {
-				var tmpch  = self.hasClass('checked');
+				var tmpch = $self.hasClass('checked');
 			
 				if ($.inArray(tmp, selected) >= 0) {
 					if (!tmpch) {
-						self.addClass('checked');
+						$self.addClass('checked');
 					}
 				} else {
 					if (tmpch) {
-						self.removeClass('checked');
+						$self.removeClass('checked');
 					}
 				}
 			}
@@ -106,7 +110,7 @@ Workbreeze.Categories = function(storage, locale, s) {
 
 	/**
 	 * Get local storage categories version
-	 * @return {number} Categories object version
+	 * @return {number} Categories object version.
 	 */
 	self.getLocalVersion = function() {
 		var cver = storage.getVersion(self.identifier);
@@ -122,7 +126,7 @@ Workbreeze.Categories = function(storage, locale, s) {
 	
 	/**
 	 * Categories count
-	 * @return {number} Categories count
+	 * @return {number} Categories count.
 	 */
 	self.count = function() {
 		return cats.length;
@@ -130,7 +134,7 @@ Workbreeze.Categories = function(storage, locale, s) {
 
 	/**
 	 * Load categories
-	 * @param {!Object} val Load category objects from ajax request
+	 * @param {!Object} val Load category objects from ajax request.
 	 */
 	self.load = function(val) {
 		var tmp = val['vl'];
@@ -149,14 +153,14 @@ Workbreeze.Categories = function(storage, locale, s) {
 	};
 
 	/**
-	 * Get offer element categories
-	 * @param {jQueryObject} $offer Offer element.
+	 * Get job element categories
+	 * @param {jQueryObject} $job Job element.
 	 * @return {Array}
 	 */
-	var getOfferElementValue = function($offer) {
+	var getJobElementValue = function($job) {
 		var result = [];
 
-		var tmpCats = $offer.attr('cats');
+		var tmpCats = $job.attr('cats');
 
 		if (tmpCats) {
 			result = tmpCats.split(',');
@@ -167,15 +171,15 @@ Workbreeze.Categories = function(storage, locale, s) {
 
 	/**
 	 * Check the job element
-	 * @param {jQueryObject} jobElement Job element
+	 * @param {jQueryObject} $jobElement Job element.
 	 * @return {boolean}
 	 */
-	self.checkJob = function(jobElement) {
+	self.checkJob = function($jobElement) {
 		if (0 === selected.length) {
 			return false;
 		}
 	
-		var jobCats = getOfferElementValue(jobElement);
+		var jobCats = getJobElementValue($jobElement);
 
 		for (var i = 0; i < jobCats.length; i++) {
 			if ($.inArray(jobCats[i], selected) >= 0) {
@@ -187,26 +191,27 @@ Workbreeze.Categories = function(storage, locale, s) {
 	};
 
 	/**
-	 * Highlight offer categories
-	 * @param {jQueryObject} $offer Offer element.
+	 * Highlight job categories
+	 * @param {jQueryObject} $job Job element.
 	 */
-	self.highlightOffer = function($offer) {
-		var offerCats = getOfferElementValue($offer);
+	self.highlightJob = function($job) {
+		var jobCats = getJobElementValue($job);
 
-		if (!offerCats) {
+		if (!jobCats) {
 			return false;
 		}
 
-		$('li', place).each( function() {
-			var $self = $(this);
-		
-			var tmp = $self.attr('cat');
+		$('li', $place).each( function() {
+			var $self = $(this),
+					tmp = $self.attr('cat'),
+					sel = $self.hasClass('selected'),
+					ind = $.inArray(tmp, jobCats);
 
-			if (
-				$.inArray(tmp, offerCats) >= 0
-				&& !$self.hasClass('selected')
-			) {
+			if (!sel && ind >= 0) {
 				$self.addClass('selected');
+			} else
+			if (sel && ind < 0) {
+				$self.removeClass('selected');
 			}
 		} );
 	}
@@ -215,7 +220,7 @@ Workbreeze.Categories = function(storage, locale, s) {
 	 * Clear highlighted elements
 	 */
 	self.clearHighlight = function() {
-		$('li', place).each( function() {
+		$('li', $place).each( function() {
 			var $self = $(this);
 
 			if ($self.hasClass('selected')) {
@@ -251,7 +256,7 @@ Workbreeze.Categories = function(storage, locale, s) {
 					self.onChanged();
 				} );
 
-			li.appendTo(place);
+			li.appendTo($place);
 			sp.appendTo(li);
 		}
 	};

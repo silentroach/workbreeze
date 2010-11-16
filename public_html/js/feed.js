@@ -8,8 +8,6 @@ Workbreeze.Feed = function(s) {
 
 	/** @type {number} **/ var lastStamp = 0;
 
-	var newTimer;
-
 	/** @type {boolean} **/ var updating = false;
 	/** @type {boolean} **/ var updatingBottom = false;
 
@@ -136,10 +134,10 @@ Workbreeze.Feed = function(s) {
 			console.info('Removing last job');
 			/* </debug> */
 	
-			var tmpEl = joblist.shift();
-			tmpEl.fadeOut(options.animationSpeed, function() { 
+			/** @type {jQueryObject} */ var $tmpEl = joblist.shift();
+			$tmpEl.fadeOut(options.animationSpeed, function() { 
 				$(this).remove();
-			});
+			} );
 		}
 	};
 
@@ -159,14 +157,34 @@ Workbreeze.Feed = function(s) {
 
 		return adata;
 	};
+	// -- highlights
+	
+	/**
+	 * Timer for highlights
+	 */
+	var highlightTimer;
 
-	var highlightOffer = function(element) {
-		categories.highlightOffer(element);
+	/**
+	 * Hightlight job sites and categories
+	 * @param {jQueryObject} $job Job element.
+	 */
+	var highlightJob = function($job) {
+		if (null !== highlightTimer) {
+			clearTimeout(highlightTimer);
+		}
+
+		categories.highlightJob($job);
 	};
 
+	/**
+	 * Clear highlights
+	 */
 	var clearHighlight = function() {
-		categories.clearHighlight();
+		highlightTimer = setTimeout( function() {
+			categories.clearHighlight();
+		}, 300);
 	};
+	// -- /highlights
 
 	/**
 	 * Add job to feed
@@ -179,9 +197,10 @@ Workbreeze.Feed = function(s) {
 			lastStamp = abstemp;
 		}
 
-		var jobEl = places.templateJob.clone();
+		// new html element for job
+		var $jobEl = places.templateJob.clone();
 
-		jobEl
+		$jobEl
 			.attr( {
 				'stamp': abstemp,
 				'site': job.site,
@@ -192,6 +211,7 @@ Workbreeze.Feed = function(s) {
 				'margin-left': '-10px'
 			} );
 
+		// cut the title if it is too big
 		var htmltitle = job.title;
 
 		if (job.title.length > options.maxTitleLength) {
@@ -204,6 +224,7 @@ Workbreeze.Feed = function(s) {
 			htmltitle = job.title.substring(0, tmpindex) + '...';
 		}
 	
+		// getting the site information for job
 		var site = sites.get(job.site);
 
 		var lnk = $("<a>")
@@ -214,20 +235,23 @@ Workbreeze.Feed = function(s) {
 				'title': job.title + ' ' + locale.translate('on') + ' ' + site[2]
 			})
 			.html(htmltitle)
-			.appendTo($('li.title', jobEl));
+			.appendTo( $('li.title', $jobEl) );
 
-		$('li.desc', jobEl).html(job.desc);
+		$('li.desc', $jobEl).html(job.desc);
 	
+		// adding humanized timestamp
 		var stmp = new Date(abstemp * 1000);
 	
-		$('li.time', jobEl).html(locale.timeString(stmp));
+		$('li.time', $jobEl).html(locale.timeString(stmp));
 
+		// and budget value if it is exists
 		if (undefined != job.money) {
 			var fmt = money[job.currency];
 	
-			$('li.money', jobEl).html(fmt.replace('%d', job.money));
+			$('li.money', $jobEl).html(fmt.replace('%d', job.money));
 		}
 
+		// preparing the description to search by keywords
 		var tmpDesc = job.title + ' ' + job.desc;
 		tmpDesc = tmpDesc.replace(/&(lt|gt);/g, function(strMatch, p1) {
 			return (p1 == 'lt') ? '<' : '>';
@@ -235,15 +259,19 @@ Workbreeze.Feed = function(s) {
 		tmpDesc = tmpDesc.replace(/<\/?[^>]+(>|$)/g, '');
 		tmpDesc = tmpDesc.toLowerCase();
 
-		$('li.k', jobEl).html(tmpDesc);
+		$('li.k', $jobEl).html(tmpDesc);
 	
-		joblist.push(jobEl);
+		// adding element to global job array
+		joblist.push( $jobEl );
 		
 		if (job.stamp < 0) {
-			jobEl.appendTo(places.placeJob);
+			// add job to the bottom (stamp is below zero)
+			$jobEl.appendTo(places.placeJob);
 		
 			options.maxJobPageCount++;
 		} else {
+			// decreasing job count on a page if we are on top
+			// and limit overhead is detected
 			if (
 				$(window).scrollTop() == 0
 				&& options.maxJobPageCount - 2 >= options.defJobPageCount
@@ -251,28 +279,30 @@ Workbreeze.Feed = function(s) {
 				options.maxJobPageCount = options.maxJobPageCount - 2;
 			}
 	
-			jobEl.prependTo(places.placeJob);
+			// append to the top
+			$jobEl.prependTo(places.placeJob);
 		}
 
-		// make job normal
+		// make job normal width after 30 seconds
 		setTimeout( function() {
-			jobEl.animate( {
+			$jobEl.animate( {
 				'margin-left': '0px'
 			}, options.animationSpeed );
 		}, 30000 );
 	
+		// checking the job if filter mode is turned off
 		if (!filter.getFilterMode()) {
-			checkJob(jobEl);
+			checkJob( $jobEl );
 		}
 
-		jobEl
+		// setup highlights on mouseover
+		$jobEl
 			.mouseenter( function(e) {
-				highlightOffer(jobEl);
+				highlightJob(jobEl);
 			} )
-			.mouseleave( function(e) {
-				clearHighlight();
-			} );
+			.mouseleave(clearHighlight);
 
+		// check all the job feed on the screen
 		checkJobPlace();	
 	};
 
@@ -324,23 +354,23 @@ Workbreeze.Feed = function(s) {
 	 * @param {!Array} jobs Job info array.
 	 */
 	var parseJobs = function(jobs) {
-		for (var i = jobs.length - 1; i >= 0; i--) {
+		$(jobs).each( function() {
 			var job = {
-				id:    jobs[i]['i'],
-				site:  jobs[i]['s'],
-				stamp: jobs[i]['st'],
-				title: jobs[i]['t'],
-				cats:  jobs[i]['c'],
-				desc:  jobs[i]['d']
+				id:    this['i'],
+				site:  this['s'],
+				stamp: this['st'],
+				title: this['t'],
+				cats:  this['c'],
+				desc:  this['d']
 			};
 
-			if ('m' in jobs[i]) {
-				job.money = jobs[i]['m'][0];
-				job.currency = jobs[i]['m'][1];
+			if ('m' in this) {
+				job.money = this['m'][0];
+				job.currency = this['m'][1];
 			}
 		
 			addJob(job);
-		}
+		} );
 	};
 
 	/**
@@ -540,10 +570,15 @@ Workbreeze.Feed = function(s) {
 	// Secondary things to do
 	// ---------------------------------------------------
 	$('#help').click(function() {
-		$('.help').animate({'opacity': 'toggle', 'height': 'toggle'}, options.animationSpeed);
+		$('.help').animate( {
+			'opacity' : 'toggle', 
+			'height'  : 'toggle'
+		}, options.animationSpeed);
 	
 		if (!helpVisible) {
-			$('html, body').animate({'scrollTop':0}, options.animationSpeed);
+			$('html, body').animate( {
+				'scrollTop' : 0
+			}, options.animationSpeed);
 		}
 	
 		helpVisible = !helpVisible;

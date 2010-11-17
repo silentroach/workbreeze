@@ -11,7 +11,6 @@ Workbreeze.Feed = function(s) {
 	/** @type {boolean} **/ var updating = false;
 	/** @type {boolean} **/ var updatingBottom = false;
 
-	/** @type {boolean} **/ var helpVisible = false;
 	/** @type {number} **/  var lastBottom = 0;
 	/** @type {boolean} **/ var paused = false;
 	/** @type {boolean} **/ var streamAutoPaused = false;
@@ -19,12 +18,13 @@ Workbreeze.Feed = function(s) {
 	/** @type {Array} **/ var joblist  = [];
 	/** @type {Array} **/ var money = ['%d р.', '$%d'];
 
+	/** @type {jQueryObject} **/ var jobsContainer = $('#jobs');
+	/** @type {jQueryObject} **/ var jobTemplate   = $('ul.job:first');
+
+	// TODO remove this object
 	var places = {
-		/** @type {jQueryObject} **/ templateJob: null,
-		/** @type {jQueryObject} **/ placeJob:    null,
 		/** @type {jQueryObject} **/ buttonPlay:  null,
-		/** @type {jQueryObject} **/ buttonPause: null,
-		/** @type {jQueryObject} **/ logo:        null
+		/** @type {jQueryObject} **/ buttonPause: null
 	};
 
 	var options = $.extend( {
@@ -198,7 +198,7 @@ Workbreeze.Feed = function(s) {
 		}
 
 		// new html element for job
-		var $jobEl = places.templateJob.clone();
+		var $jobEl = jobTemplate.clone();
 
 		$jobEl
 			.attr( {
@@ -266,7 +266,7 @@ Workbreeze.Feed = function(s) {
 		
 		if (job.stamp < 0) {
 			// add job to the bottom (stamp is below zero)
-			$jobEl.appendTo(places.placeJob);
+			$jobEl.appendTo(jobsContainer);
 		
 			options.maxJobPageCount++;
 		} else {
@@ -280,7 +280,7 @@ Workbreeze.Feed = function(s) {
 			}
 	
 			// append to the top
-			$jobEl.prependTo(places.placeJob);
+			$jobEl.prependTo(jobsContainer);
 		}
 
 		// make job normal width after 30 seconds
@@ -415,7 +415,7 @@ Workbreeze.Feed = function(s) {
 	 * Update feed from the bottom
 	 */
 	var updateBottom = function() {
-		var firstStamp = parseInt($('ul:last', places.placeJob).attr('stamp'), 10);
+		var firstStamp = parseInt($('ul:last', jobsContainer).attr('stamp'), 10);
 	
 		if (lastBottom == firstStamp) {
 			return;
@@ -506,27 +506,27 @@ Workbreeze.Feed = function(s) {
 		} );		
 	};
 
-	// ---------------------------------------------------
-	// Preparements
-	// ---------------------------------------------------
-	places.logo        = $('#logo');
-	places.templateJob = $('ul.job:first');
-	places.placeJob    = $('#jobs');
-
-	places.logo.ajaxStart(function() {
-		$(this).animate({'opacity': 0.7}, options.animationSpeed);
-	});
-
-	places.logo.ajaxStop(function() {
-		$(this).animate({'opacity': 1});
-	});
-
-	$('#bfoot, .help, #menu li').css({'opacity': 0.7});
+	// some visual preparements
+	//
 	$('#right ul').remove();
+	$('#bfoot, .help, #menu li').css({'opacity': 0.7});
 
-	// ---------------------------------------------------
+	// animation for logo when ajax is used
+
+	$('#logo')
+		.ajaxStart(function() {
+			$(this).animate( {
+				'opacity': 0.7
+			}, options.animationSpeed);
+		})
+		.ajaxStop(function() {
+			$(this).animate( {
+				'opacity': 1
+			}, options.animationSpeed);
+		});
+
 	// Initial data request for accessorial data
-	// ---------------------------------------------------	
+
 	var adata = {};
 
 	adata[options.elementLang]  = locale.getLocalVersion();
@@ -536,11 +536,11 @@ Workbreeze.Feed = function(s) {
 	Workbreeze.Ajax( {
 		data: adata,
 		success: function(data) {
-			// scrolling to the top
-			$('html, body').css({scrollTop:0});
-
 			if (null == data) 
 				return;
+
+			// scroll to the top if any
+			$('html, body').css('scrollTop', 0);
 
 			if ('l' in data) {
 				locale.load(data['l']);
@@ -564,13 +564,18 @@ Workbreeze.Feed = function(s) {
 				}
 			} );
 		
+			// initialize even if it is failed
 			init();
 		}
 	});
 
-	// ---------------------------------------------------
-	// Secondary things to do
-	// ---------------------------------------------------
+	// Initialize help marks
+
+	/** 
+	 * @type {boolean} 
+	 */
+	var helpVisible = false;
+
 	$('#help').click( function() {
 		var $self = $(this);
 

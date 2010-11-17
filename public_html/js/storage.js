@@ -17,6 +17,7 @@ Workbreeze.Storage = function() {
 	/**
 	 * Cached items
 	 * @type {Array}
+	 * @private
 	 */
 	var cache = [];
 
@@ -55,8 +56,7 @@ Workbreeze.Storage = function() {
 			return;
 		}
 
-		var str = JSON.stringify((undefined === version ?
-															object : [version, object]));
+		var str = JSON.stringify((undefined === version ? object : [version, object]));
 
 		localStorage.setItem(itemName, str);
 	};

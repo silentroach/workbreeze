@@ -142,15 +142,43 @@ Workbreeze.Locale = function(storage, s) {
 	self.setTrigger = function(selector) {
 		var $place = $(selector);
 
+		$place
+			.mouseenter( function() {
+				$(this).addClass('show');
+			} )
+			.mouseleave( function() {
+				$(this).removeClass('show');
+			} );
+
 		$place.contents().remove();
 
 		var current = lang['_'];
+
+		var onLangClick = function(e) {
+			if (e.data === current) {
+				return;
+			}
+
+			$('li', $place).each( function() {
+				var $langItem = $(this);
+
+				if ($langItem.hasClass('selected')) {
+					$langItem.removeClass('selected');
+				}
+			} );
+
+			$(this).addClass('selected');
+			current = e.data;
+
+			options.onChange(e.data);
+		}
 
 		for (var lname in langs) {
 			var lfname = langs[lname];
 
 			var $li = $('<li></li>')
 				.attr('title', lfname)
+				.click(lname, onLangClick)
 				.html(lname)
 				.appendTo( $place );
 

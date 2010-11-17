@@ -30,7 +30,7 @@ Workbreeze.Feed = function(s) {
 	var options = $.extend( {
 		/** @type {number} **/  defJobPageCount: 30,
 		/** @type {number} **/  maxJobPageCount: 30,
-		/** @const **/ maxTitleLength:           75,
+		/** @const **/ maxTitleLength:           55,    // TODO try to do with text-overflow: ellipsis
 		/** @const **/ checkInterval:            40000,
 		/** @const **/ checkIntervalFiltered:    60000,
 		

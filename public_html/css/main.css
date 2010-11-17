@@ -38,7 +38,7 @@ input {
 	display: inline-block;
 	font-size: 18pt;
 	font-weight: bold;
-	text-shadow: black 1px 1px 1px;
+	text-shadow: black 1px 1px 2px;
 }
 
 	#logo a {
@@ -53,6 +53,7 @@ input {
 	list-style: none;
 	padding: 0px;
 	margin-top: -20px;
+	padding-bottom: 5px;
 }
 
 	#lang li {
@@ -60,9 +61,17 @@ input {
 		margin-left: 0.5em;
 	}
 
-	#lang li.selected {
+	#lang.show li, #lang li.selected {
 		display: inline-block;
-		color: silver;
+	}
+
+	#lang.show li {
+		cursor: pointer;
+	}
+
+	#lang.show li.selected {
+		color: white;
+		cursor: default;
 	}
 
 #menu {
@@ -273,7 +282,7 @@ ul.filtered {
 
 #filter {
 	clear: both;
-	padding-top: 1em;
+	padding-top: 0.5em;
 }
 
 .fw {

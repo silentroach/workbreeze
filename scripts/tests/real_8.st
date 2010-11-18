@@ -1,1 +1,0 @@
-hello, all, i'm, run, websit, use, joomla, and, youtub, plugin, that, work, fine, but, have, problem, lose, viewer, becaus, they, click, the, clip, take, them, com, don't, want, stay, view, www, mcdebat, http, joomlacod, org, project, youtubeplugin, would, like, coder, edit, fix, this, exist

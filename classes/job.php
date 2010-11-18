@@ -88,8 +88,6 @@ class Job {
 	private $description;
 	private $description_short = '';
 	
-	private $stem = array();
-	
 	private $money = array();
 
 	public function __construct($db) {
@@ -135,10 +133,6 @@ class Job {
 		
 		if (count($this->money)) {
 			$arr['money'] = $this->getMoney();
-		}
-		
-		if (count($this->stem)) {
-			$arr['stem'] = $this->stem;
 		}
 		
 		return $this->db->jobs->insert($arr);
@@ -270,12 +264,6 @@ class Job {
 	
 		$this->description = $tmp;
 
-		// stemmer
-		$tmp .= ' ' . $this->getTitle();
-		$words = Text::ExtractWords($tmp);
-		$this->stem = Text::Stem($words);
-		// /stemmer
-		
 		if (preg_match('/([^ \n\r]+[ \n\r]+){20}/s', $this->description, $match))
 			$this->description_short = trim(str_replace("\n\n", "\n", $match[0])) . '...';
 		

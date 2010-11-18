@@ -7,18 +7,27 @@ if (!defined('BOOTSTRAPPED')) {
 	$basepath = dirname(__FILE__);
 	define('DS', DIRECTORY_SEPARATOR);
 
+	// some useful paths
 	define('PATH_CLASSES', $basepath . DS . 'classes' . DS);
 	define('PATH_PUBLIC',  $basepath . DS . 'public_html' . DS);
 	define('PATH_OTHER',   $basepath . DS . 'other' . DS);
-	
+
+	// for MongoDB
 	define('DB', 'breeze');
 
+	// for Sphinx
+	define('SPHINX', '127.0.0.1:9306');
+	define('IDX_JOBS', 'jobs');
+
+	// only for debug (renamed to 'undebug' in production script)
 	define('DEBUG', 1);
 
-	/* some ini settings */
+	// --- some ini settings
 
 	// turning off mongo warnings about non-utf8 values
 	ini_set('mongo.utf8', 0);
+
+	// ---
 
 	/* config */
 

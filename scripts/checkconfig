@@ -29,6 +29,14 @@ printCheck('mongodb driver', function() {
 	return class_exists('Mongo');
 } );
 
+printCheck('sphinx', function() {
+	return appExists('sphinx-searchd');
+} );
+
+printCheck('mysqli (for sphinx)', function() {
+	return class_exists('mysqli');
+} );
+
 printCheck('iconv', function() {
 	return function_exists('iconv');
 } );
@@ -45,14 +53,6 @@ printCheck('runkit', function() {
 
 printCheck('curl module', function() {
 	return function_exists('curl_init');
-} );
-
-printCheck('english stemmer', function() {
-	return function_exists('stem_english');
-} );
-
-printCheck('russian stemmer', function() {
-	return function_exists('stem_russian_unicode');
 } );
 
 printCheck('open_basedir is empty', function() {

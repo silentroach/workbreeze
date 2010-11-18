@@ -183,7 +183,7 @@ class WorkbreezeNotifierRequest extends Request {
 		}
 
 		if (isset($this->attrs['filter_keys'])) {
-			$this->fkeys = Text::Stem(Text::ExtractWords($this->attrs['filter_keys']));
+			// query for sphinx
 
 			if (0 === sizeof($this->fkeys)) {
 				$this->fkeys = false;

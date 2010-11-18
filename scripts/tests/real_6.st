@@ -1,1 +1,0 @@
-have, exist, busi, intellig, project, with, the, follow, technolog, sql, server, ssas, ssrs, ssis, net, use, bid, websit, that, connect, and, mdx, from, time, need, small, chang, for, this, you, would, comfort, abov, first, will, take, about, hour, let, know, are, interest, pleas, specifi, your, experi

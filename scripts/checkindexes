@@ -51,9 +51,6 @@ checkCI($db, 'jobs', array(
 	),
 	array(
 		'cats' => 1
-	),
-	array(
-		'stem' => 1
 	)
 ));
 

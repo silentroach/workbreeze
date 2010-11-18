@@ -128,14 +128,7 @@ class MUp extends Module {
 		}
 		
 		if (isset($_POST['filter_keys'])) {
-			$val = Text::ExtractWords($_POST['filter_keys']);
-			$val = Text::Stem($val);
-			
-			if (count($val)) {
-				$filter['stem'] = array(
-					'$in' => $val
-				);
-			}
+			// query to sphinx
 		}
 
 		if (1 == count($filter)) { // only stamp

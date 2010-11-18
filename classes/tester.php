@@ -23,7 +23,6 @@ class Tester {
 		$out  = trim(file_get_contents($outname));
 		
 		$tmp = Text::HTMLPrepare($text);
-		$tmpw = Text::ExtractWords($tmp);
 	
 		$check1 = str_replace("\n", '<br />', $tmp);
 	
@@ -39,23 +38,6 @@ class Tester {
 			return $out;
 		}
 		
-		if (substr($i['filename'], 0, 4) !== 'real') {
-			return true;
-		}
-		
-		$outname = $i['dirname'] . DS . $i['filename'] . '.st';
-		$out = trim(file_get_contents($outname));
-
-		$check2 = Text::Stem($tmpw);
-
-		$text = implode($check2, ', ');
-		
-		if ($text != $out) {
-			return $text .
-				"\n---------------------------------------------------\n" . 
-				$out . "\n";
-		}
-	
 		return true;
 	}
 

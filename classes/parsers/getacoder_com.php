@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * getacoder.com parser
+ * @author Kalashnikov Igor <igor.kalashnikov@gmail.com>
+ */
 class Parser_getacoder_com extends Parser implements IParser {
 
 	public function getSiteCode() {

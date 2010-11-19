@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * vworker.com parser
+ * @author Kalashnikov Igor <igor.kalashnikov@gmail.com>
+ */
 class Parser_vworker_com extends Parser implements IParser {
 
 	public function getSiteCode() {

@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * freelancejob.ru parser
+ * @author Kalashnikov Igor <igor.kalashnikov@gmail.com>
+ */
 class Parser_freelancejob_ru extends Parser implements IParser {
 
 	public function getSiteCode() {

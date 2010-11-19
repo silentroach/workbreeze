@@ -1,7 +1,10 @@
 <?php
 
-// TODO rename to free_lance_ru
-
+/**
+ * freelance.ru parser
+ * @todo rename to free_lance_ru
+ * @author Kalashnikov Igor <igor.kalashnikov@gmail.com>
+ */
 class Parser_freelance_ru extends Parser implements IParser {
 
 	public function getSiteCode() {

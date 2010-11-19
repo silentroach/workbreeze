@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Something like scheduler
+ * @author Kalashnikov Igor <igor.kalashnikov@gmail.com>
+ */
 class Scheduler {
 
 	private $db;
@@ -94,8 +98,8 @@ EOF;
 
 		while ($site = $c->getNext()) {
 			if (
-				isset($site['disabled']) && 
-				1 == $site['disabled']
+				isset($site['disabled']) 
+				&& 1 == $site['disabled']
 			) {
 				continue;
 			}

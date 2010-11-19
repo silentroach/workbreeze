@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Interface for all the parsers
+ * @author Kalashnikov Igor <igor.kalashnikov@gmail.com>
+ */
 interface IParser {
 	public function getSiteCode();
 	public function getSiteName();
@@ -21,6 +25,10 @@ interface IParser {
 	public function parseJobMoney($content);
 }
 
+/**
+ * Base parser class
+ * @author Kalashnikov Igor <igor.kalashnikov@gmail.com>
+ */
 class Parser {
 
 	const Agent     = 'Mozilla/5.0 (compatible; WorkbreezeCrawler/1.0; +http://workbreeze.com)';

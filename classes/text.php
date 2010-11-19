@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Ugly class for text beautification
+ * @author Kalashnikov Igor <igor.kalashnikov@gmail.com>
+ */
 class Text {
 
 	/**

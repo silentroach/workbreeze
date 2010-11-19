@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * scriptlance.com parser
+ * @author Kalashnikov Igor <igor.kalashnikov@gmail.com>
+ */
 class Parser_scriptlance_com extends Parser implements IParser {
 
 	public function getSiteCode() {

@@ -4,6 +4,11 @@ if (isset($argc) && $argc > 1 && in_array('br', $argv)) {
 	define('BRCONVERT', 1);
 }
 
+/**
+ * Tester class
+ * @todo replace with phpunit
+ * @author Kalashnikov Igor <igor.kalashnikov@gmail.com>
+ */
 class Tester {
 
 	private $db;

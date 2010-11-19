@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * weblancer.net parser
+ * @author Kalashnikov Igor <igor.kalashnikov@gmail.com>
+ */
 class Parser_weblancer_net extends Parser implements IParser {
 
 	public function getSiteCode() {

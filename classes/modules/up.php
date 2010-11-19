@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Module for /up ajax request
+ * @author Kalashnikov Igor <igor.kalashnikov@gmail.com>
+ */
 class MUp extends Module {
 
 	const VSITES = 5;

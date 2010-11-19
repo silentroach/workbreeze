@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Page
+ * @author Kalashnikov Igor <igor.kalashnikov@gmail.com>
+ */
 class Page {
 
 	private static $ga   = '';

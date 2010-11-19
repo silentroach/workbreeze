@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Job
+ * @author Kalashnikov Igor <igor.kalashnikov@gmail.com>
+ */
 class Job {
 	
 	const CUR_RUBLE  = 0;

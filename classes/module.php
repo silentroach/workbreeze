@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Base class for modules
+ * @author Kalashnikov Igor <igor.kalashnikov@gmail.com> 
+ */
 class Module {
 
 	private $app;

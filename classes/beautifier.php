@@ -1,10 +1,10 @@
 <?php
 
 /**
- * Ugly class for text beautification
+ * Beautification class
  * @author Kalashnikov Igor <igor.kalashnikov@gmail.com>
  */
-class Text {
+class Beautificator {
 
 	/**
 	 * Lists can be started with these marks

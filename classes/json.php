@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Extracted from JsHttpRequest
+ * (c) Dmitry Koterov, http://en.dklab.ru
+ */
 class JSON {
 
 	public static function encode($a = false, $level = 0)

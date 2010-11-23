@@ -18,14 +18,15 @@ Workbreeze.Feed = function(s) {
 	/** @type {Array} **/ var joblist  = [];
 	/** @type {Array} **/ var money = ['%d р.', '$%d'];
 
-	/** @type {jQueryObject} **/ var jobsContainer = $('#jobs');
-	/** @type {jQueryObject} **/ var jobTemplate   = $('ul.job:first');
+	/** @type {jQueryObject} **/ var $jobsContainer = $('#jobs');
+	/** @type {jQueryObject} **/ var $jobTemplate   = $('ul.job:first');
 
-	// TODO remove this object
-	var places = {
-		/** @type {jQueryObject} **/ buttonPlay:  null,
-		/** @type {jQueryObject} **/ buttonPause: null
-	};
+	/** @type {jQueryObject} **/ var $shadow  = $('#shadow');
+	/** @type {jQueryObject} **/ var $preview = $('#previewm');
+	/** @type {jQueryObject} **/ var $frame   = $('iframe', $preview);
+
+	/** @type {jQueryObject} **/ var $buttonPlay = $('#play');
+	/** @type {jQueryObject} **/ var $buttonPause = $('#pause');
 
 	var options = $.extend( {
 		/** @type {number} **/  defJobPageCount: 30,
@@ -187,6 +188,27 @@ Workbreeze.Feed = function(s) {
 	// -- /highlights
 
 	/**
+	 * Show preview
+	 * @param {jQueryObject} $link Link element.
+	 */
+	var preview = function($link) {
+		var href = $link.attr('href');
+
+		$frame.attr('src', href);
+
+		$shadow.fadeIn();
+		$preview.fadeIn();						
+	}
+
+	/**
+	 * Hide the preview
+	 */
+	var hidePreview = function() {
+		$shadow.fadeOut();
+		$preview.fadeOut();
+	}
+
+	/**
 	 * Add job to feed
 	 * @param {!Object} job Job object.
 	 */
@@ -198,7 +220,7 @@ Workbreeze.Feed = function(s) {
 		}
 
 		// new html element for job
-		var $jobEl = jobTemplate.clone();
+		var $jobEl = $jobTemplate.clone();
 
 		$jobEl
 			.attr( {
@@ -235,7 +257,13 @@ Workbreeze.Feed = function(s) {
 				'title': job.title + ' ' + locale.translate('on') + ' ' + site[2]
 			})
 			.html(htmltitle)
-			.appendTo( $('li.title', $jobEl) );
+			.appendTo( $('li.title', $jobEl) )
+			.click( function(e) {
+				e.stopPropagation();
+				preview( $(this) );
+
+				return false;
+			} );
 
 		$('li.desc', $jobEl).html(job.desc);
 	
@@ -266,7 +294,7 @@ Workbreeze.Feed = function(s) {
 		
 		if (job.stamp < 0) {
 			// add job to the bottom (stamp is below zero)
-			$jobEl.appendTo(jobsContainer);
+			$jobEl.appendTo($jobsContainer);
 		
 			options.maxJobPageCount++;
 		} else {
@@ -280,7 +308,7 @@ Workbreeze.Feed = function(s) {
 			}
 	
 			// append to the top
-			$jobEl.prependTo(jobsContainer);
+			$jobEl.prependTo($jobsContainer);
 		}
 
 		// make job normal width after 30 seconds
@@ -388,8 +416,8 @@ Workbreeze.Feed = function(s) {
 	 * Pause the stream
 	 */
 	var streamPause = function() {
-		places.buttonPause.slideUp(options.animationSpeed);
-		places.buttonPlay.slideDown(options.animationSpeed);
+		$buttonPause.slideUp(options.animationSpeed);
+		$buttonPlay.slideDown(options.animationSpeed);
 
 		notifier.stop();
 
@@ -403,8 +431,8 @@ Workbreeze.Feed = function(s) {
 		streamAutoPaused = false;
 		paused = false;
 
-		places.buttonPlay.slideUp(options.animationSpeed);
-		places.buttonPause.slideDown(options.animationSpeed);
+		$buttonPlay.slideUp(options.animationSpeed);
+		$buttonPause.slideDown(options.animationSpeed);
 
 		lastStamp = Math.round(new Date().getTime() / 1000);
 
@@ -415,7 +443,7 @@ Workbreeze.Feed = function(s) {
 	 * Update feed from the bottom
 	 */
 	var updateBottom = function() {
-		var firstStamp = parseInt($('ul:last', jobsContainer).attr('stamp'), 10);
+		var firstStamp = parseInt($('ul:last', $jobsContainer).attr('stamp'), 10);
 	
 		if (lastBottom == firstStamp) {
 			return;
@@ -460,11 +488,15 @@ Workbreeze.Feed = function(s) {
 			initialized = true;
 		}
 
-		places.buttonPlay  = $('#play');
-		places.buttonPause = $('#pause');
-	
-		places.buttonPause.click(streamToggle);
-		places.buttonPlay.click(streamToggle);
+		// FIXME temporary
+		$shadow
+			.css('opacity', .7);
+
+		$preview
+			.click(hidePreview);
+
+		$buttonPause.click(streamToggle);
+		$buttonPlay.click(streamToggle);
 
 		// @todo localize just needed parts
 		locale.localize();

@@ -285,6 +285,36 @@ ul.filtered {
 	padding-top: 0.5em;
 }
 
+#shadow, #previewm {
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 100%;
+}
+
+#shadow {
+	background-color: black;
+}
+
+#previewm a {
+	float: right;
+	margin-top: -2em;
+}
+
+#preview {
+	width: 80%;
+	margin: 5% auto;
+	border: 1px solid silver;
+	height: 80%;
+}
+
+#preview iframe {
+	width: 100%;
+	height: 100%;
+	border: 0px;
+}
+
 .fw {
 	width: 100%;
 }

@@ -3,10 +3,4 @@
 
 require dirname(__DIR__) . DIRECTORY_SEPARATOR . 'bootstrap.php';
 
-$mongo = new Mongo();
-
-$dbname = DB;
-
-$db = $mongo->$dbname;
-
-Tester::testFolder($db, dirname(__FILE__) . DIRECTORY_SEPARATOR . 'tests' . DIRECTORY_SEPARATOR);
+Tester::testFolder(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'tests' . DIRECTORY_SEPARATOR);

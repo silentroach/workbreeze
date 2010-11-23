@@ -4,7 +4,7 @@
  * Beautification class
  * @author Kalashnikov Igor <igor.kalashnikov@gmail.com>
  */
-class Beautificator {
+class Beautifier {
 
 	/**
 	 * Lists can be started with these marks

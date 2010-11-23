@@ -6,18 +6,8 @@
  */
 class Module {
 
-	private $app;
-
-	public function __construct($app) {
-		$this->app = $app;
-	}
-
 	protected function isAjax() {
 		return true;
-	}
-	
-	protected function db() {
-		return $this->app->getDatabase();
 	}
 	
 	protected function runModule($query) {

@@ -4,8 +4,15 @@ $root = dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR;
 
 require $root . 'bootstrap.php';
 
+/**
+ * Class for the http request
+ * @author Kalashnikov Igor <igor.kalashnikov@gmail.com>
+ */
 class WorkbreezeRequest extends HTTPRequest {
-	
+
+	/**
+	 * Process the request
+	 */
 	public function run() {
 		if (
 			!isset($_SERVER['DOCUMENT_URI'])
@@ -17,12 +24,16 @@ class WorkbreezeRequest extends HTTPRequest {
 
 		$uri = isset($_SERVER['DOCUMENT_URI']) ? $_SERVER['DOCUMENT_URI'] : $_SERVER['REQUEST_URI'];
 
+		// stripping get params in url
 		$params = explode('?', $uri);
 
+		// getting the query from url
 		$query = explode('/', array_shift($params));
 
+		// shifting first useless part
 		array_shift($query);
 
+		// module is the next part
 		$module = array_shift($query);
 
 		if (null === $module) {
@@ -33,6 +44,7 @@ class WorkbreezeRequest extends HTTPRequest {
 		$m = $this->appInstance->getModule($module);
 
 		if (!$m) {
+			// module not found
 			$this->status(404);
 			return;
 		}
@@ -42,15 +54,15 @@ class WorkbreezeRequest extends HTTPRequest {
 
 }
 
+/**
+ * Workbreeze application instance
+ * @author Kalashnikov Igor <igor.kalashnikov@gmail.com>
+ */
 class Workbreeze extends AppInstance {
 
 	private static $modules = array();
-	private $database;
 
 	public function init() {
-		$connection = new Mongo();
-		$this->database = $connection->selectDB(DB);
-
 		Daemon::log('Workbreeze up');
 	}
 
@@ -58,12 +70,8 @@ class Workbreeze extends AppInstance {
 		return true;
 	}
 
-	public function beginRequest($req,$upstream) {
+	public function beginRequest($req, $upstream) {
 		return new WorkbreezeRequest($this, $upstream, $req);
-	}
-
-	public function getDatabase() {
-		return $this->database;
 	}
 
 	public function getModule($module) {
@@ -73,11 +81,11 @@ class Workbreeze extends AppInstance {
 			$className = 'M' . ucfirst($module);
 
 			if (!class_exists($className)) {
-        			self::$modules[$module] = false;
+				self::$modules[$module] = false;
 				return false;
 			}
 
-			self::$modules[$module] = new $className($this);
+			self::$modules[$module] = new $className();
 		}
 
 		return self::$modules[$module];

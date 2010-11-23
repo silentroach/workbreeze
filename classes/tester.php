@@ -11,14 +11,8 @@ if (isset($argc) && $argc > 1 && in_array('br', $argv)) {
  */
 class Tester {
 
-	private $db;
-	
 	private $rowcnt;
 	
-	public function __construct($db) {
-		$this->db = $db;
-	}
-
 	private function testTextFuncsFile($file) {
 		$i = pathinfo($file);
 
@@ -27,7 +21,7 @@ class Tester {
 		$text = trim(file_get_contents($file));
 		$out  = trim(file_get_contents($outname));
 		
-		$tmp = Text::HTMLPrepare($text);
+		$tmp = Beautifier::HTMLPrepare($text);
 	
 		$check1 = str_replace("\n", '<br />', $tmp);
 	
@@ -130,13 +124,13 @@ class Tester {
 	}
 
 	private function testParsers($folder) {
-		$s = $this->db->sites->find();
+		$s = Database::sites()->find();
 
 		foreach($s as $site) {
 			$file  = $site['script'];
 			$class = $site['class'];
 			
-			$parser = new $class($this->db);
+			$parser = new $class();
 			
 			$fld = $folder . $parser->getSiteFolder() . DS;
 			
@@ -205,8 +199,8 @@ class Tester {
 		return true;
 	}
 	
-	public static function testFolder($db, $folder) {
-		$tester = new Tester($db);
+	public static function testFolder($folder) {
+		$tester = new Tester();
 		
 		$tester->testParsers($folder);
 		$tester->testTextFuncs($folder);

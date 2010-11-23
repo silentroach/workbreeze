@@ -6,16 +6,11 @@
  */
 class Scheduler {
 
-	private $db;
 	private $parsers;
 
-	public function __construct($db) {
-		$this->db = $db;
-	}
-	
 	private function initParser($info) {
 		if (!isset($this->parsers[$info['code']])) {	
-			$this->parsers[$info['code']] = new $info['class']($this->db);
+			$this->parsers[$info['code']] = new $info['class']();
 		}
 		
 		return $this->parsers[$info['code']];
@@ -27,11 +22,11 @@ class Scheduler {
 
 		$filename = PATH_PUBLIC . 'jobs/rss-global.xml';		
 
-		$sites = $this->db->sites;
+		$sites = Database::sites();
 		
 		$st = array();
 		
-		$cursor = $this->db->jobs->find();
+		$cursor = Database::jobs()->find();
 		$cursor->sort(array('stamp' => -1));
 		$cursor->limit(25);
 		
@@ -94,7 +89,7 @@ EOF;
 	}
 
 	public function processJobList() {
-		$c = $this->db->sites->find();
+		$c = Database::sites()->find();
 
 		while ($site = $c->getNext()) {
 			if (
@@ -115,7 +110,7 @@ EOF;
 
 			echo '[' . date('H:m:s') . '] Process main pages for ' . $site['name'] . "\n";
 			
-			$this->db->sites->update(
+			Database::sites()->update(
 				array('code' => $site['code']),
 				array('$set' => 
 					array(
@@ -127,12 +122,14 @@ EOF;
 			$parser->processJobList();
 			
 			if ($parser->getQueuedCount() > 0) {
-				$this->db->slog->remove(array(
+				$slog = Database::slog();
+
+				$slog->remove(array(
 					'site'  => $parser->getSiteCode(),
 					'wyear' => array('$lt' => date('W'))
 				));
 			
-				$this->db->slog->insert(array(
+				$slog->insert(array(
 					'site'  => $parser->getSiteCode(),
 					'wday'  => date('N'),
 					'wyear' => date('W'),
@@ -144,8 +141,8 @@ EOF;
 	}
 	
 	public function processQueue() {	
-		$queue = $this->db->queue;
-		$sites = $this->db->sites;
+		$queue = Database::queue();
+		$sites = Database::sites();
 		
 		$c = $queue->find();
 		$c->sort(array('rnd' => 1));

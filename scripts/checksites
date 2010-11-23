@@ -3,13 +3,7 @@
 
 require dirname(__DIR__) . DIRECTORY_SEPARATOR . 'bootstrap.php';
 
-$mongo = new Mongo();
-
-$dbname = DB;
-
-$db = $mongo->$dbname;
-
-$pc = $db->sites;
+$sites = Database::sites();
 
 $parsers = glob(PATH_CLASSES . 'parsers' . DIRECTORY_SEPARATOR . '*.php');
 
@@ -24,10 +18,10 @@ foreach($parsers as $parser) {
 		'code' => $parser->getSiteCode()
 	);
 	
-	$tmp = $pc->findOne($info);
+	$tmp = $sites->findOne($info);
 	
 	if (null != $tmp) {
-		$pc->remove($info);
+		$sites->remove($info);
 	}
 	
 	$info['class']  = $className;
@@ -37,7 +31,7 @@ foreach($parsers as $parser) {
 	$info['lang']   = $parser->getLang();
 	$info['script'] = $pinfo['basename'];
 	
-	$pc->insert($info);
+	$sites->insert($info);
 }
 
 echo "Done\n";

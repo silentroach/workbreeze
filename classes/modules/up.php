@@ -46,9 +46,7 @@ class MUp extends Module {
 		if (self::VSITES === $ver)
 			return false;
 	
-		$db = $this->db();
-		
-		$c = $db->sites;
+		$c = Database::sites();
 		
 		$sites = array();
 		
@@ -71,9 +69,7 @@ class MUp extends Module {
 	}
 
 	private function getJobs($stamp) {
-		$db = $this->db();
-	
-		$c = $db->jobs;
+		$c = Database::jobs();
 	
 		$jobs = array();
 		

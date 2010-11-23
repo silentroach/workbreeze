@@ -75,8 +75,6 @@ class Job {
 		)
 	);
 
-	private $db;
-
 	private $site;
 	private $id;
 	private $url;
@@ -94,24 +92,22 @@ class Job {
 	
 	private $money = array();
 
-	public function __construct($db) {
-		$this->db = $db;
-		
+	public function __construct() {
 		$this->stamp = time();
 	}
 	
-	public static function create($db) {
-		return new Job($db);
+	public static function create() {
+		return new Job();
 	}
 	
-	public static function createBySite($db, $site) {
-		$job = new Job($db);
+	public static function createBySite($site) {
+		$job = new Job();
 		$job->setSite($site);
 		return $job;
 	}
 	
-	public static function loadBySiteAndId($db, $site, $id) {
-		$job = new Job($db);
+	public static function loadBySiteAndId($site, $id) {
+		$job = new Job();
 		$job->load($site, $id);
 		return $job;
 	}
@@ -139,7 +135,7 @@ class Job {
 			$arr['money'] = $this->getMoney();
 		}
 		
-		return $this->db->jobs->insert($arr);
+		return Database::jobs()->insert($arr);
 	}
 	
 	public function getUrl() {

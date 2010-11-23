@@ -5,23 +5,37 @@
  * @author Kalashnikov Igor <igor.kalashnikov@gmail.com>
  */
 interface IParser {
+	// site code (identifier in the database)
 	public function getSiteCode();
+	// site name
 	public function getSiteName();
+	// folder to store site jobs
 	public function getSiteFolder();
+	// the name of parser
 	public function getParserName();
+	// site url
 	public function getUrl();
+	// job language
 	public function getLang();
 
+	// use proxy to get info
 	public function isProxyfied();
+	// use authorisation (credentials.php)
 	public function isAuth();
 
+	// function to get job list to queue
 	public function processJobList();
 
+	// period to check new jobs
 	public function getUpdatePeriod();
-	
+
+	// extract title from page
 	public function parseJobTitle($content);
+	// extract description from page
 	public function parseJobDescription($content);
+	// extract categories (textual) from page
 	public function parseJobCategories($content);
+	// extract budget from page
 	public function parseJobMoney($content);
 }
 
@@ -34,20 +48,8 @@ class Parser {
 	const Agent     = 'Mozilla/5.0 (compatible; WorkbreezeCrawler/1.0; +http://workbreeze.com)';
 	const UserAgent = 'Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US) AppleWebKit/534.7 (KHTML, like Gecko) Chrome/7.0.517.41 Safari/534.7';
 	
-	private $db;
-
-	private $queue;
-	private $jobs;
-	
 	private $queuedCount = 0;
 
-	public function __construct($db) {
-		$this->db = $db;
-		
-		$this->queue = $db->queue;
-		$this->jobs  = $db->jobs;
-	}
-	
 	public function getQueuedCount() {
 		return $this->queuedCount;
 	}
@@ -107,7 +109,7 @@ class Parser {
 	
 	protected function log($info) {
 		$info['stamp'] = time();
-		$this->db->log->insert($info);
+		Database::log()->insert($info);
 		
 		if (isset($info['msg'])) {
 			echo '[' . date('H:m:s') . '] ' . $info['msg'] . "\n";
@@ -120,14 +122,14 @@ class Parser {
 			'id'   => $jobId
 		);
 	
-		$tmp = $this->jobs->findOne($info);
+		$tmp = Database::jobs()->findOne($info);
 		
 		if (null != $tmp)
 			return false;
 			
 		$info['type'] = 'job';
 			
-		$tmp = $this->queue->findOne($info);
+		$tmp = Database::queue()->findOne($info);
 		
 		if (null != $tmp)
 			return false;
@@ -137,7 +139,7 @@ class Parser {
 		$info['url'] = $link;
 		$info['rnd'] = rand(1, 10000);
 		
-		$this->queue->insert($info);
+		Database::queue()->insert($info);
 		
 		$this->queuedCount++;
 		
@@ -221,7 +223,7 @@ EOF;
 	}
 	
 	protected function newJob() {
-		return Job::createBySite($this->db, $this->getSiteCode());
+		return Job::createBySite($this->getSiteCode());
 	}
 	
 	protected function afterRequest($data) {

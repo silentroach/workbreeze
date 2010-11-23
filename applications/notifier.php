@@ -8,16 +8,11 @@ class WorkbreezeNotifier extends AppInstance {
 
 	private $lastcheck;
 	private $laststamp;
-	private $db;
 	private $cache;
 
 	public function init() {
-		// connectingt to database
-		$connection = new Mongo();
-		$this->db = $connection->selectDB(DB);
-
 		// fetching the last offer stamp
-		$cursor = $this->db->jobs->find();
+		$cursor = Database::jobs()->find();
 		$cursor->sort(array('stamp' => -1))->limit(1);
 		
 		while ($item = $cursor->getNext()) {
@@ -72,7 +67,7 @@ class WorkbreezeNotifier extends AppInstance {
 		}
 
 		// checking new offers
-		$cursor = $this->db->jobs->find(array(
+		$cursor = Database::jobs()->find(array(
 			'stamp' => array(
 				'$gt' => $this->laststamp
 			)

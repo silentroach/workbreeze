@@ -3,19 +3,8 @@
 
 require dirname(__DIR__) . DIRECTORY_SEPARATOR . 'bootstrap.php';
 
-// initialize mongo connection
-try {
-	$mongo = new Mongo();
-} catch (MongoConnectionException $e) {
-	die("Can't connect to mongo db\n");
-}
-
-$dbname = DB;
-
-$db = $mongo->$dbname;
-
 // lets do it
-$scheduler = new Scheduler($db);
+$scheduler = new Scheduler();
 
 $action = isset($argv[1]) ? $argv[1] : 'joblist';
 

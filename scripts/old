@@ -3,13 +3,7 @@
 
 require dirname(__DIR__) . DIRECTORY_SEPARATOR . 'bootstrap.php';
 
-$mongo = new Mongo();
-
-$dbname = DB;
-
-$db = $mongo->$dbname;
-
-$jobs = $db->jobs;
+$jobs = Database::jobs();
 
 // half a year for job offers
 $t = time() - 60 * 60 * 24 * 30 * 6;

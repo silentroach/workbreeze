@@ -20,7 +20,7 @@ class Scheduler {
 	public function updateGlobalRSS() {
 		echo '[' . date('H:m:s') . "] Updating global RSS channel...\n";
 
-		$filename = PATH_PUBLIC . 'jobs/rss-global.xml';		
+		$filename = PATH_PUBLIC . 'rss-global.xml';		
 
 		$sites = Database::sites();
 		
@@ -60,7 +60,7 @@ class Scheduler {
 			
 			$writer->writeElement('title', $s['name'] . ': ' . $item['title']);
 			$writer->writeElement('link', 'http://workbreeze.com/jobs/' . 
-				$s['folder'] . '/' . $item['id'] . '.html');
+				$s['folder'] . '/' . $item['id']);
 			$writer->startElement('description');
 			
 			$cdata = <<<EOF
@@ -71,7 +71,7 @@ EOF;
 			$writer->endElement();
 			
 			$writer->writeElement('guid', 'http://workbreeze.com/jobs/' . 
-				$s['folder'] . '/' . $item['id'] . '.html');
+				$s['folder'] . '/' . $item['id']);
 				
 			$writer->writeElement('pubDate', date('D, d M Y H:i:s e', $item['stamp']));
 			

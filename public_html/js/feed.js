@@ -192,7 +192,7 @@ Workbreeze.Feed = function(s) {
 	 * @param {jQueryObject} $link Link element.
 	 */
 	var preview = function($link) {
-		var href = $link.attr('href');
+		var href = $link.attr('href') + '?preview';
 
 		$frame.attr('src', href);
 
@@ -253,7 +253,7 @@ Workbreeze.Feed = function(s) {
 			.addClass(options.siteIconPrefix)
 			.addClass(options.siteIconPrefix + '_' + site[0])
 			.attr({
-				'href': '/jobs/' + site[1] + '/' + job.id + '.html',
+				'href': '/jobs/' + site[1] + '/' + job.id,
 				'title': job.title + ' ' + locale.translate('on') + ' ' + site[2]
 			})
 			.html(htmltitle)

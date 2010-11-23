@@ -39,6 +39,7 @@ input {
 	font-size: 18pt;
 	font-weight: bold;
 	text-shadow: black 1px 1px 2px;
+	margin-bottom: 0.5em;
 }
 
 	#logo a {
@@ -231,6 +232,7 @@ div.help {
 
 p.title {
 	white-space: normal;
+	margin-top: 0px;
 }
 
 ul.job {
@@ -287,6 +289,7 @@ ul.filtered {
 
 #shadow, #previewm {
 	position: fixed;
+	display: none;
 	top: 0px;
 	left: 0px;
 	width: 100%;

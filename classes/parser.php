@@ -147,73 +147,11 @@ class Parser {
 	}
 	
 	private function getJobPagePath($id) {
-		return PATH_PUBLIC . 'jobs' . DS . $this->getSiteFolder() . DS . $id . '.html';
-	}
-	
-	private function generateJobPage($job) {
-		$fname = $this->getJobPagePath($job->getId());
-		
-		if (!file_exists(dirname($fname))) {
-			mkdir(dirname($fname), 0777, true);
-		}
-		
-		$title = $job->getTitle();
-		
-		$money = $job->getMoney();
-		
-		if (count($money)) {
-			switch ($money[1]) {
-				// TODO refactor currency names
-
-				case Job::CUR_DOLLAR:
-					$currency = '$%d';
-					break;
-				case Job::CUR_EURO;
-					$currency = '&euro;%d';
-					break;
-				case Job::CUR_RUBLE:
-					$currency = '%d руб.';
-					break;
-			}
-			
-			if (isset($currency)) {
-				$title .= ' [ ' . sprintf($currency, $money[0]) . ' ]';
-			}
-		}
-
-		switch ($this->getLang()) {
-			case Language::RUSSIAN:
-				$cl = 'ru';
-				break;
-			case Language::ENGLISH:
-				$cl = 'en';
-				break;
-			default:
-				$cl = 'ru,en';
-				break;
-		}
-		
-		$pageContent = <<<EOF
-<p class="title">{$title}</p>
-
-{$job->getHTMLDescription()}
-<br /><br />
-
-<a href="{$job->getUrl()}" class="sico sico_{$this->getSiteCode()}">{$this->getSiteName()}</a>
-EOF;
-		
-		$page = new Page();
-		$page->setTitle($title);
-		$page->setDescription($job->getTitle() . ', ' . $this->getSiteName());
-		$page->setLang($cl);
-		$page->setContent($pageContent);
-
-		$page->save($fname);
+		return PATH_PUBLIC . 'jobs' . DS . $this->getSiteFolder() . DS . $id;
 	}
 	
 	protected function addJob($job) {
 		if ($job->insert()) {		
-			$this->generateJobPage($job);
 			echo '[' . date('H:m:s') . '] Job ' . $job->getId() . " added\n";
 			
 			return true;

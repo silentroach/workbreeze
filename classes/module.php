@@ -1,10 +1,19 @@
 <?php
 
+class NotFoundModuleResult { }
+
 /**
  * Base class for modules
  * @author Kalashnikov Igor <igor.kalashnikov@gmail.com> 
  */
 class Module {
+
+	/**
+	 * For not found result
+	 */
+	public static function NotFound() {
+		return new NotFoundModuleResult();
+	}
 
 	protected function isAjax() {
 		return true;
@@ -31,7 +40,7 @@ class Module {
 		}
 	
 		$object = $this->runModule($query);
-	
+		
 		if (is_array($object)) {
 			if (0 === count($object)) {
 				header('204 No Content');
@@ -39,6 +48,12 @@ class Module {
 				header('Content-Type: application/json');
 				echo JSON::encode($object);
 			}
+		} else
+		if ($object instanceof NotFoundModuleResult) {
+			header('404 Not Found');
+		} else
+		if ($object instanceof Page) {
+			echo $object->out();
 		} elseif (
 			'' === $object
 			|| false === $object

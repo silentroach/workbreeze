@@ -10,6 +10,9 @@ $sphinx = mysqli_connect('127.0.0.1', '', '', '', 9306);
 $c = $j->find();
 
 while ($item = $c->getNext()) {
+	print_r($item);
+	continue;
+
 	if (isset($item['stem'])) {
 		unset($item['stem']);
 

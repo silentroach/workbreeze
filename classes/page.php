@@ -13,6 +13,7 @@ class Page {
 	private $lang        = 'ru,en';
 	private $description = '';
 	private $showads     = true;
+	private $showlogo    = true;
 	
 	public static function compress($content) {
 		$content = str_replace(array("\t", "\r", "\n"), '', $content);
@@ -46,18 +47,20 @@ class Page {
 	public function disableAds() {
 		$this->showads = false;
 	}
+
+	public function disableLogo() {
+		$this->showlogo = false;
+	}
 	
 	public function save($filename, $gzip = true) {
 		$content = $this->out();
 		
-		$content = self::compress($content);		
-			
 		file_put_contents($filename, $content);
 		
 		$out = system('gzip -c9 ' . escapeshellarg($filename) . ' > ' . escapeshellarg($filename . '.gz'));
 	}
 	
-	public function out() {
+	public function out($compress = true) {
 		$title = $this->title !== '' ? '&mdash; ' . $this->title : '';
 		$description = $this->description === '' ? '' : <<<EOF
 <meta name="description" content="{$this->description}" />
@@ -79,8 +82,10 @@ EOF;
 		}
 		
 		$ga = self::$ga;
-	
-		return <<<EOF
+
+		$logo = $this->showlogo ? '<div id="logo"><a href="/">Workbreeze</a></div>' : '';
+
+		$content = <<<EOF
 <!DOCTYPE html>
 <html>
 	<title>WorkBreeze {$title}</title>
@@ -96,7 +101,7 @@ EOF;
 
 {$ads}
 
-<div id="logo"><a href="/">WorkBreeze</a></div>
+{$logo}
 
 {$this->content}
 
@@ -104,6 +109,12 @@ EOF;
 </body>
 </html>
 EOF;
+
+		if ($compress) {
+			$content = self::compress($content);			
+		}
+
+		return $content;
 	}
 
 }

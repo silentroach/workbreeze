@@ -206,6 +206,8 @@ Workbreeze.Feed = function(s) {
 	var hidePreview = function() {
 		$shadow.fadeOut();
 		$preview.fadeOut();
+
+		return false;
 	}
 
 	/**

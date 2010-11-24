@@ -40,8 +40,8 @@ class MJobs extends Module {
 		}
 
 		$job = Database::jobs()->findOne(array(
-			'site' => $site['code'],
-			'id'   => $id
+			'site' => (int) $site['code'],
+			'id'   => (string) $id
 		) );
 
 		if (!$job) {

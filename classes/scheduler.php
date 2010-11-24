@@ -162,12 +162,13 @@ EOF;
 			
 			if ('job' === $item['type']) {
 				$time = time();
+
 				if ($parser->processJob($item['id'], $item['url'])) {
 					$queue->remove(array('_id' => $item['_id']));	
 
 					// stamps must be unique
 					if (time() == $time) {
-						sleep(1);
+						sleep(2);
 					}
 				}
 			}

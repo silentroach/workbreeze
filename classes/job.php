@@ -120,7 +120,7 @@ class Job {
 		$arr = array(
 			'stamp'  => $this->getStamp(),
 			'site'   => $this->getSite(),
-			'id'     => $this->getId(),
+			'id'     => (string) $this->getId(), // STRING!!!
 			'url'    => $this->getUrl(),
 			'title'  => $this->getTitle(),
 			'cats'   => $this->getCategories(),
@@ -260,7 +260,7 @@ class Job {
 	}
 
 	public function setDescription($text = '') {
-		$tmp = Text::HTMLPrepare($text);
+		$tmp = Beautifier::HTMLPrepare($text);
 	
 		$this->description = $tmp;
 

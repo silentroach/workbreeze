@@ -330,7 +330,7 @@ Workbreeze.Feed = function(s) {
 		// setup highlights on mouseover
 		$jobEl
 			.mouseenter( function(e) {
-				highlightJob(jobEl);
+				highlightJob($jobEl);
 			} )
 			.mouseleave(clearHighlight);
 

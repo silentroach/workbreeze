@@ -196,16 +196,18 @@ Workbreeze.Feed = function(s) {
 
 		$frame.attr('src', href);
 
-		$shadow.fadeIn();
-		$preview.fadeIn();						
+		$shadow.fadeIn(options.animationSpeed);
+		$preview.fadeIn(options.animationSpeed);
 	}
 
 	/**
 	 * Hide the preview
 	 */
 	var hidePreview = function() {
-		$shadow.fadeOut();
-		$preview.fadeOut();
+		$shadow.fadeOut(options.animationSpeed);
+		$preview.fadeOut(options.animationSpeed, function() {
+			$frame.attr('src', '');
+		} );
 
 		return false;
 	}

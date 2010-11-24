@@ -71,13 +71,15 @@ class MJobs extends Module {
 			}
 		}
 
+		$target = $preview ? ' target="_blank"' : '';
+
 		$content = <<<EOF
 <p class="title">{$title}</p>
 
 {$description}
 <br /><br />
 
-<a href="{$job['url']}" class="sico sico_{$site['code']}">{$site['name']}</a>
+<a href="{$job['url']}" class="sico sico_{$site['code']}"{$target}>{$site['name']}</a>
 EOF;
 
 		$page = new Page();

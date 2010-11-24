@@ -5,7 +5,7 @@ class Language {
 	const ENGLISH = 'en';
 	const RUSSIAN = 'ru';
 	
-	const VERSION = 11;
+	const VERSION = 12;
 
 	// TODO make translations as a separate project as non-php files
 
@@ -18,7 +18,7 @@ class Language {
 		return array(
 			'_'    => self::ENGLISH,
 
-			'kwds' => 'keywords separated by comma',
+			'kwds' => 'keywords',
 			'on'   => 'at',
 			'pl'   => 'start',
 			'pa'   => 'pause',
@@ -26,8 +26,9 @@ class Language {
 			's'    => 'statistics',
 			'y'    => 'yesterday',
 			'fm'   => 'filter mode',
-			
-			'hk'   => 'Example: <span class="ex">word1, word2</span><br />The offers containing [word1] <strong>or</strong> [word2] will be found.',
+			'cl'   => 'close',
+
+			'hk'   => 'Keywords to search.',
 			'hs'   => '<strong>Site list</strong>. Each element is a trigger.',
 			'hc'   => '<strong>Offers category list</strong>. Each element is a trigger.',
 			'hj'   => '<strong>Offers list</strong>. Fresh offers are wider than other for half a minute. Click the title to have more information. You can scroll it down endlessly.',
@@ -50,7 +51,7 @@ class Language {
 		return array(
 			'_'    => self::RUSSIAN,
 
-			'kwds' => 'ключевые слова через запятую',
+			'kwds' => 'ключевые слова',
 			'on'   => 'на',
 			'pl'   => 'запуск',
 			'pa'   => 'пауза',
@@ -58,8 +59,9 @@ class Language {
 			's'    => 'статистика',
 			'y'    => 'вчера',
 			'fm'   => 'режим фильтра',
+			'cl'   => 'закрыть',
 			
-			'hk'   => 'Пример: <span class="ex">слово1, слово2</span><br />Найдутся предложения, в содержимом которого упоминается [слово1] <strong>или</strong> [слово2].',
+			'hk'   => 'Ключевые слова для поиска.',
 			'hs'   => '<strong>Список сайтов</strong>, где каждый элемент - переключатель.',
 			'hc'   => '<strong>Список категорий предложений</strong>, где каждый элемент - переключатель.',
 			'hj'   => '<strong>Список предложений</strong>. Свежие предложения на 30 секунд выделяются шириной. Для просмотра полной информации следует щелкнуть по заголовку. Прокручивать список вниз можно до бесконечности.',

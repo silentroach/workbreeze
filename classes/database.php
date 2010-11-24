@@ -44,7 +44,7 @@ class Database {
 	 * Getting the database class instance
 	 * @return Database
 	 */
-	public static function instance() {
+	private static function instance() {
 		// check the instance exists
 		if (null === self::$instance) {
 			self::$instance = new Database();

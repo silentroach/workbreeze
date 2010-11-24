@@ -2,3 +2,5 @@ tmp/
 public_html/jobs
 *.iso
 credentials.php
+*.xml
+*.gz

@@ -167,8 +167,8 @@ EOF;
 					$queue->remove(array('_id' => $item['_id']));	
 
 					// stamps must be unique
-					if (time() == $time) {
-						sleep(2);
+					while (time() == $time) {
+						sleep(1);
 					}
 				}
 			}

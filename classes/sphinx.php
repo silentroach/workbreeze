@@ -41,12 +41,12 @@ class Sphinx {
 			}
 		}
 
-		mysql_query('INSERT INTO ' . $index . ' VALUES (' . $id . ', ' .
+		return false !== mysql_query('INSERT INTO ' . $index . ' VALUES (' . $id . ', ' .
 			implode(',', $values) . ')', $this->connection);
 	}
 
 	public function _remove($index, $id) {
-		mysql_query('DELETE FROM ' . $index . ' WHERE id = ' . $id, $this->connection);
+		return false !== mysql_query('DELETE FROM ' . $index . ' WHERE id = ' . $id, $this->connection);
 	}
 
 	// ------------------------

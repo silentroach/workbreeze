@@ -135,7 +135,16 @@ class Job {
 			$arr['money'] = $this->getMoney();
 		}
 		
-		return Database::jobs()->insert($arr);
+		$res = Database::jobs()->insert($arr);
+
+		if (false !== $res) {
+			return Sphinx::add('jobs', $this->getStamp(), array(
+				$this->getTitle() . '. ' . $this->getDescription(),
+				$this->getSite(), implode(' ', $this->getCategories())
+			) );
+		}
+
+		return false;
 	}
 	
 	public function getUrl() {

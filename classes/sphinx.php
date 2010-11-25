@@ -39,19 +39,22 @@ class Sphinx {
 			}
 		}
 
-		$q = 
-			'INSERT INTO ' . $index . ' VALUES (' . $id . ', ' .
-			implode(',', $values) . ');';
+		mysql_query('INSERT INTO ' . $index . ' VALUES (' . $id . ', ' .
+			implode(',', $values) . ')', $this->connection);
+	}
 
-		echo $q;
-
-		mysql_query($q, $this->connection);
+	public function _remove($index, $id) {
+		mysql_query('DELETE FROM ' . $index . ' WHERE id = ' . $id, $this->connection);
 	}
 
 	// ------------------------
 
 	public static function add($index, $id, $values = array()) {
-		self::instance()->_add($index, $id, $values);
+		return self::instance()->_add($index, $id, $values);
+	}
+
+	public static function remove($index, $id) {
+		return self::instance()->_remove($index, $id);
 	}
 
 }

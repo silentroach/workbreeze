@@ -29,7 +29,9 @@ class Sphinx {
 	}
 
 	private function escape($value) {
-		return preg_replace('@\'@u', '\\\'', $value);
+		return preg_replace('@\'@u', '\\\'', strip_tags($value));
+// not working. how to really escape?
+// return mysql_real_escape_string($value, $this->connection);
 	}
 
 	public function _add($index, $id, $values = array()) {

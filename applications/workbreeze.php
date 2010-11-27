@@ -7,6 +7,7 @@ require $root . 'bootstrap.php';
 /**
  * Class for the http request
  * @author Kalashnikov Igor <igor.kalashnikov@gmail.com>
+ * @license Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported
  */
 class WorkbreezeRequest extends HTTPRequest {
 
@@ -57,6 +58,7 @@ class WorkbreezeRequest extends HTTPRequest {
 /**
  * Workbreeze application instance
  * @author Kalashnikov Igor <igor.kalashnikov@gmail.com>
+ * @license Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported
  */
 class Workbreeze extends AppInstance {
 

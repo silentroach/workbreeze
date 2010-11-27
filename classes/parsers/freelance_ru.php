@@ -4,6 +4,7 @@
  * freelance.ru parser
  * @todo rename to free_lance_ru
  * @author Kalashnikov Igor <igor.kalashnikov@gmail.com>
+ * @license Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported
  */
 class Parser_freelance_ru extends Parser implements IParser {
 

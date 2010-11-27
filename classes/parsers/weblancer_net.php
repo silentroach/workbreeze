@@ -3,6 +3,7 @@
 /**
  * weblancer.net parser
  * @author Kalashnikov Igor <igor.kalashnikov@gmail.com>
+ * @license Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported
  */
 class Parser_weblancer_net extends Parser implements IParser {
 

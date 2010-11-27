@@ -3,6 +3,7 @@
 /**
  * Module for /up ajax request
  * @author Kalashnikov Igor <igor.kalashnikov@gmail.com>
+ * @license Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported
  */
 class MUp extends Module {
 

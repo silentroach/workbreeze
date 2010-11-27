@@ -3,6 +3,7 @@
 /**
  * Interface for all the parsers
  * @author Kalashnikov Igor <igor.kalashnikov@gmail.com>
+ * @license Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported
  */
 interface IParser {
 	// site code (identifier in the database)

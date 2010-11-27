@@ -3,6 +3,7 @@
 /**
  * getacoder.com parser
  * @author Kalashnikov Igor <igor.kalashnikov@gmail.com>
+ * @license Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported
  */
 class Parser_getacoder_com extends Parser implements IParser {
 

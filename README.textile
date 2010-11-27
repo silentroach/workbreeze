@@ -3,3 +3,5 @@ h1. Workbreeze
 The "realtime" freelance offers monitor site written in PHP. 
 
 Works with fast PHPDaemon FastCGI and WebSocket server.
+
+This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License.

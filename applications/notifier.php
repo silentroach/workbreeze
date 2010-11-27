@@ -4,6 +4,11 @@ $root = dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR;
 
 require $root . 'bootstrap.php';
 
+/**
+ * Workbreeze WebSocket notifier application instance
+ * @author Kalashnikov Igor <igor.kalashnikov@gmail.com>
+ * @license Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported
+ */
 class WorkbreezeNotifier extends AppInstance {
 
 	private $lastcheck;
@@ -99,6 +104,11 @@ class WorkbreezeNotifier extends AppInstance {
 
 }
 
+/**
+ * Workbreeze WebSocket notifier session
+ * @author Kalashnikov Igor <igor.kalashnikov@gmail.com>
+ * @license Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported
+ */
 class WorkbreezeWebSocketSession extends WebSocketRoute {
 
 	private $requests = array();
@@ -140,6 +150,11 @@ class WorkbreezeWebSocketSession extends WebSocketRoute {
 
 }
 
+/**
+ * Workbreeze WebSocket notifier request
+ * @author Kalashnikov Igor <igor.kalashnikov@gmail.com>
+ * @license Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported
+ */
 class WorkbreezeNotifierRequest extends Request {
 
 	public $stream;

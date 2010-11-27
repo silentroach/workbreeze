@@ -88,3 +88,7 @@ printCheck('gd library', function() {
 printCheck('tor proxy', function() {
 	return appExists('tor');
 } );
+
+printCheck('phpunit', function() {
+	return appExists('phpunit');
+} );

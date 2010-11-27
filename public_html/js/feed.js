@@ -492,12 +492,13 @@ Workbreeze.Feed = function(s) {
 			initialized = true;
 		}
 
-		// FIXME temporary
-		$shadow
-			.css('opacity', .7);
+		$shadow.css('opacity', .7);
 
 		$preview
-			.click(hidePreview);
+			.click(hidePreview)
+			.bind('mousewheel', function() {
+				return false;
+			} );
 
 		$buttonPause.click(streamToggle);
 		$buttonPlay.click(streamToggle);

@@ -12,7 +12,6 @@ class Page {
 	private $content     = '';
 	private $lang        = 'ru,en';
 	private $description = '';
-	private $showads     = true;
 	private $showlogo    = true;
 	
 	public static function compress($content) {
@@ -44,10 +43,6 @@ class Page {
 		$this->description = $desc;
 	}
 	
-	public function disableAds() {
-		$this->showads = false;
-	}
-
 	public function disableLogo() {
 		$this->showlogo = false;
 	}
@@ -68,13 +63,6 @@ EOF;
 
 		$lang = $this->lang === '' ? '' : <<<EOF
 <meta http-equiv="Content-Language" Content="{$this->lang}" />
-EOF;
-
-		$ads = !$this->showads ? '' : <<<EOF
-<div id="gads">
-<script type="text/javascript">google_ad_client = "pub-0168627540498115";google_ad_slot = "1958922984";google_ad_width = 120;google_ad_height = 240;</script>
-<script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></script>
-</div>
 EOF;
 
 		if (self::$ga === '') {
@@ -98,8 +86,6 @@ EOF;
 
 	<link rel="home" href="/" /> 
 <body>
-
-{$ads}
 
 {$logo}
 

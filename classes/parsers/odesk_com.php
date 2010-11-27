@@ -93,7 +93,7 @@ class Parser_odesk_com extends Parser implements IParser {
 			return false;
 		}
 
-		return $matches[2];
+		return trim($matches[2]);
 	}
 	
 	public function parseJobDescription($content) {
@@ -148,7 +148,9 @@ class Parser_odesk_com extends Parser implements IParser {
 		) {	
 			$cats .= ' ' . implode(' ', array_pop($matches));
 		}
-		
+	
+		$cats = trim($cats);
+
 		return ('' !== $cats) ? $cats : false;
 	}
 	

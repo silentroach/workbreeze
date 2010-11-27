@@ -80,7 +80,7 @@ class Parser_vworker_com extends Parser implements IParser {
 			return false;
 		}
 				
-		return $matches[1];
+		return trim($matches[1]);
 	}
 	
 	public function parseJobDescription($content) {
@@ -118,7 +118,7 @@ class Parser_vworker_com extends Parser implements IParser {
 			return false;
 		}
 		
-		return array_pop($matches);
+		return trim(array_pop($matches));
 	}
 	
 	public function parseJobMoney($content) {

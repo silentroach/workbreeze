@@ -84,7 +84,7 @@ class Parser_freelancer_com extends Parser implements IParser {
 		
 		$title = strip_tags($title);
 		
-		return str_replace('&nbsp;', '', $title);
+		return trim(str_replace('&nbsp;', '', $title));
 	}
 	
 	public function parseJobDescription($content) {
@@ -126,7 +126,7 @@ class Parser_freelancer_com extends Parser implements IParser {
 		) {
 			$cc = array_pop($matches);
 		
-			return implode(' ', $cc);
+			return trim(implode(' ', $cc));
 		}
 
 		return false;

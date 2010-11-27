@@ -87,7 +87,7 @@ http://www.scriptlance.com/projects/1284565862.shtml
 			return false;
 		}
 				
-		return $matches[1];
+		return trim($matches[1]);
 	}
 	
 	public function parseJobDescription($content) {
@@ -124,7 +124,7 @@ http://www.scriptlance.com/projects/1284565862.shtml
 			array_pop($tags);
 		}
 		
-		return implode(', ', $tags);
+		return trim(implode(', ', $tags));
 	}
 	
 	public function parseJobMoney($content) {

@@ -97,7 +97,9 @@ class Parser_weblancer_net extends Parser implements IParser {
 				$cats .= $k;
 			}
 		}
-		
+
+		$cats = trim($cats);
+
 		if ('' != $cats) {
 			return $cats;
 		} else {

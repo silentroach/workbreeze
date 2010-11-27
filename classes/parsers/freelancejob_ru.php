@@ -54,7 +54,7 @@ class Parser_freelancejob_ru extends Parser implements IParser {
 			return false;
 		}
 
-		return $matches[1];
+		return trim($matches[1]);
 	}
 	
 	public function parseJobDescription($content) {
@@ -106,7 +106,7 @@ class Parser_freelancejob_ru extends Parser implements IParser {
 			preg_match('/<b>Категория:<\/b>(.*?)<br\/><br\/>/ius', $content, $matches)
 			&& 2 == count($matches)
 		) {
-			return $matches[1];
+			return trim($matches[1]);
 		}
 		
 		return false;

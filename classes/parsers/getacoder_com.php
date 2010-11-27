@@ -130,7 +130,7 @@ class Parser_getacoder_com extends Parser implements IParser {
 		
 		$tags = array_shift($m);
 		
-		return str_replace(array('(', ')'), ' ', $tags);	
+		return trim(str_replace(array('(', ')'), ' ', $tags));
 	}
 	
 	public function parseJobMoney($content) {

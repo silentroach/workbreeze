@@ -1,6 +1,3 @@
-#!/usr/bin/php
-<?php
+#!/bin/bash
 
-require dirname(__DIR__) . DIRECTORY_SEPARATOR . 'bootstrap.php';
-
-Tester::testFolder(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'tests' . DIRECTORY_SEPARATOR);
+phpunit ../tests

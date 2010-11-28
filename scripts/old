@@ -14,29 +14,12 @@ $jc = $jobs->find(
 	))
 );
 
-$sfolders = array();
-
 while ($job = $jc->getNext()) {
-	if (!isset($sfolders[$job['site']])) {
-		$tmp = $db->sites->findOne(
-			array('code' => $job['site'])	
-		);
+	echo '-';
 
-		$sfolders[$tmp['code']] = $tmp['folder'];
-	}
-	
-	$file = PATH_PUBLIC . 'jobs' . 
-		DIRECTORY_SEPARATOR . $sfolders[$job['site']] .
-		DIRECTORY_SEPARATOR . $job['id'] . '.html';
-	$filegz = $file . '.gz';
-	
-	echo $file . "\n";
-	echo $filegz . "\n";
+	Sphinx::remove('jobs', $job['stamp']);
 
 	$jobs->remove(array(
 		'_id' => $job['_id']
 	));
-
-	unlink($file);
-	unlink($filegz);
 }

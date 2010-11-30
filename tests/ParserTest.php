@@ -42,8 +42,8 @@ class ParserTest extends PHPUnit_Framework_TestCase {
 
 		$parser = new $site['class']();
 
-		$this->assertInstanceOf('Parser', $parser);
-		$this->assertInstanceOf('IParser', $parser);
+		$this->assertTrue($parser instanceof Parser);
+		$this->assertTrue($parser instanceof IParser);
 
 		$this->parsers[$folder] = $parser;
 

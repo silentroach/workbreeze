@@ -17,9 +17,9 @@ class Sphinx {
 
 		return self::$instance;
 	}
-
-	// ------------------------
 	
+	// ---------------------------------------------------------
+
 	public function __construct() {
 		$this->connection = mysql_connect(SPHINX);
 
@@ -50,7 +50,9 @@ class Sphinx {
 		return false !== mysql_query('DELETE FROM ' . $index . ' WHERE id = ' . $id, $this->connection);
 	}
 
-	// ------------------------
+	// ---------------------------------------------------------
+	// main static functions
+	// ---------------------------------------------------------
 
 	public static function add($index, $id, $values = array()) {
 		return self::instance()->_add($index, $id, $values);

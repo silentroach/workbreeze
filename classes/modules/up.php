@@ -9,7 +9,10 @@ class MUp extends Module {
 
 	const VSITES = 5;
 	const VCATS  = 1;
-	
+
+	/**
+	 * Method to return the language array (will be replaced)
+	 */	
 	private function getLang($ver = 0) {
 		if ($ver == Language::VERSION)
 			return false;
@@ -20,7 +23,10 @@ class MUp extends Module {
 			'vl' => Language::getLang()
 		);
 	}	
-	
+
+	/**
+	 * Method to return categories array
+	 */
 	private function getCats($ver = 0) {
 		if (self::VCATS === $ver)
 			return false;
@@ -43,6 +49,9 @@ class MUp extends Module {
 		);
 	}
 
+	/**
+	 * Method to return sites array
+	 */
 	private function getSites($ver = 0) {
 		if (self::VSITES === $ver)
 			return false;
@@ -69,6 +78,9 @@ class MUp extends Module {
 		);
 	}
 
+	/**
+	 * The main method to return jobs array
+	 */
 	private function getJobs($stamp) {
 		$c = Database::jobs();
 	
@@ -166,7 +178,10 @@ class MUp extends Module {
 		
 		return $jobs;
 	}
-	
+
+	/**
+	 * Simple method to get and check some POST param as an integer
+	 */	
 	private function getIntParam($name) {
 		if (!isset($_POST[$name]))
 			return false;

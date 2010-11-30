@@ -11,24 +11,36 @@ class Module {
 
 	/**
 	 * For not found result
+	 * @return NotFoundModuleResult
 	 */
 	public static function NotFound() {
 		return new NotFoundModuleResult();
 	}
 
+	/**
+	 * Turn on additional checks for ajax requests
+	 * @return boolean
+	 */
 	protected function isAjax() {
 		return true;
 	}
-	
+
+	/**
+	 * Method to process module
+	 */
 	protected function runModule($query) {
 	
 	}
 
+	/**
+	 * Method to run on request 
+	 */
 	public function run($query) {
 		if (
 			$this->isAjax()
 			&& !defined('DEBUG')
 			&& (
+				// some stupid check for ajax requests
 				!isset($_SERVER['HTTP_X_REQUESTED_WITH'])
 				|| !isset($_SERVER['HTTP_REFERER'])
 				|| !isset($_SERVER['HTTP_HOST'])
@@ -39,10 +51,11 @@ class Module {
 			header('404 Not Found');
 			return;
 		}
-	
+
+		// runModule will return the module reply
 		$object = $this->runModule($query);
-		
-		if (is_array($object)) {
+
+		if (is_array($object)) {                                // array -> json object
 			if (0 === count($object)) {
 				header('204 No Content');
 			} else {
@@ -50,17 +63,17 @@ class Module {
 				echo JSON::encode($object);
 			}
 		} else
-		if ($object instanceof NotFoundModuleResult) {
+		if ($object instanceof NotFoundModuleResult) {         // not found -> 404
 			header('404 Not Found');
 		} else
-		if ($object instanceof Page) {
+		if ($object instanceof Page) {                         // Page -> string to print
 			echo $object->out();
-		} elseif (
+		} elseif (                                             // '' || false -> 204
 			'' === $object
 			|| false === $object
 		) {
 			header('204 No Content');
-		} else {
+		} else {                                              // something else -> string to print
 			echo $object;
 		}
 	}

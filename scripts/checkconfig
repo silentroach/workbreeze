@@ -30,7 +30,7 @@ printCheck('mongodb driver', function() {
 } );
 
 printCheck('sphinx', function() {
-	return appExists('sphinx-searchd');
+	return appExists('sphinx-searchd') || appExists('searchd');
 } );
 
 printCheck('mysql (for sphinx)', function() {

@@ -28,7 +28,6 @@ desc 'Links and folders'
 
 mkdir tmp/public_html/js
 mkdir tmp/public_html/css
-ln -s /srv/bstorage/jobs tmp/public_html/jobs
 
 desc 'Preparing static pages'
 ./htmlprepare ../../public_html/index.html tmp/public_html/

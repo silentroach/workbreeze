@@ -203,6 +203,11 @@ div.help {
 	list-style: none;
 }
 
+#pp li {
+	width: 4em;
+	text-align: right;
+}
+
 #play {
 	display: none;
 }

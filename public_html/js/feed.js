@@ -427,11 +427,25 @@ Workbreeze.Feed = function(s) {
 	};
 
 	/**
+	 * Toggle pause/play buttons
+	 */
+	var streamButtonsToggle = function() {
+		$buttonPause.animate( {
+			'height': 'toggle',
+			'opacity': 'toggle'
+		}, options.animationSpeed);
+
+		$buttonPlay.animate( {
+			'height': 'toggle',
+			'opacity': 'toggle'
+		}, options.animationSpeed);
+	};
+
+	/**
 	 * Pause the stream
 	 */
 	var streamPause = function() {
-		$buttonPause.slideUp(options.animationSpeed);
-		$buttonPlay.slideDown(options.animationSpeed);
+		streamButtonsToggle();
 
 		notifier.stop();
 
@@ -445,8 +459,7 @@ Workbreeze.Feed = function(s) {
 		streamAutoPaused = false;
 		paused = false;
 
-		$buttonPlay.slideUp(options.animationSpeed);
-		$buttonPause.slideDown(options.animationSpeed);
+		streamButtonsToggle();
 
 		lastStamp = Math.round(new Date().getTime() / 1000);
 

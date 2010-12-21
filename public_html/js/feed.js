@@ -15,6 +15,8 @@ Workbreeze.Feed = function(s) {
 	/** @type {boolean} **/ var paused = false;
 	/** @type {boolean} **/ var streamAutoPaused = false;
 
+	/** @type {boolean} **/ var isPreview = false;
+
 	/** @type {Array} **/ var joblist  = [];
 	/** @type {Array} **/ var money = ['%d р.', '$%d'];
 
@@ -192,6 +194,8 @@ Workbreeze.Feed = function(s) {
 	 * @param {jQueryObject} $link Link element.
 	 */
 	var preview = function($link) {
+		isPreview = true;
+
 		var href = $link.attr('href') + '?preview';
 
 		$frame.attr('src', href);
@@ -204,6 +208,12 @@ Workbreeze.Feed = function(s) {
 	 * Hide the preview
 	 */
 	var hidePreview = function() {
+		if (!isPreview) {
+			return false;
+		}
+
+		isPreview = false;
+
 		$shadow.fadeOut(options.animationSpeed);
 		$preview.fadeOut(options.animationSpeed, function() {
 			$frame.attr('src', '');
@@ -540,7 +550,14 @@ Workbreeze.Feed = function(s) {
 				// start the notifier			
 				notifier.setParams(prepareDataForJobs(lastStamp));
 			}		
-		} );		
+		} );
+
+		$(window).keyup( function(e) {
+			// close the preview on Esc key
+			if (e.which === 27) {
+				hidePreview();
+			}
+		} );
 	};
 
 	// some visual preparements

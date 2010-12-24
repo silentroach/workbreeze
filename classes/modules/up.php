@@ -141,7 +141,14 @@ class MUp extends Module {
 		}
 		
 		if (isset($_POST['filter_keys'])) {
-			// query to sphinx
+			$val = Stemmer::ExtractWords($_POST['filter_keys']);
+			$val = Stemmer::Stem($val);
+
+			if (count($val)) {
+				$filter['stem'] = array(
+					'$in' => $val
+				);
+			}		
 		}
 
 		if (1 == count($filter)) { // only stamp

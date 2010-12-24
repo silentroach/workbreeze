@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * Bootstrap for phpdaemon worker and scripts
+ * @author Kalashnikov Igor <igor.kalashnikov@gmail.com>
+ * @license Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported
+ */
 if (!defined('BOOTSTRAPPED')) {
 
 	define('BOOTSTRAPPED', 1);
@@ -14,10 +19,6 @@ if (!defined('BOOTSTRAPPED')) {
 
 	// for MongoDB
 	define('DB', 'breeze');
-
-	// for Sphinx
-	define('SPHINX', '127.0.0.1:9306');
-	define('IDX_JOBS', 'jobs');
 
 	// only for debug (renamed to 'undebug' in production script)
 	define('DEBUG', 1);

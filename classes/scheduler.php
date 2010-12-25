@@ -121,23 +121,6 @@ EOF;
 			);
 
 			$parser->processJobList();
-			
-			if ($parser->getQueuedCount() > 0) {
-				$slog = Database::slog();
-
-				$slog->remove(array(
-					'site'  => $parser->getSiteCode(),
-					'wyear' => array('$lt' => date('W'))
-				));
-			
-				$slog->insert(array(
-					'site'  => $parser->getSiteCode(),
-					'wday'  => date('N'),
-					'wyear' => date('W'),
-					'time'  => date('G') * 60 + date('i'),
-					'count' => $parser->getQueuedCount()
-				));
-			}
 		}
 	}
 	

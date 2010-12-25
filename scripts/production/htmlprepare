@@ -46,9 +46,7 @@ $content = str_replace('<!-- ga !-->', $analytics, $content);
 // replacing developer jquery with one on GoogleAPI
 $content = str_replace(
 	'"js/jquery.js"', 
-	'"http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"'
-// temporary
-//	'"http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"', 
+	'"http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"',
 	$content
 ); 
 

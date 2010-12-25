@@ -37,7 +37,7 @@ class Stemmer {
 
 		$text = mb_strtolower($text);
 
-		preg_match_all("/\p{L}\p{Mn}\p{Pd}'\x{2019}]*/u", $text, $matches);
+		preg_match_all("/\p{L}[\p{L}\p{Mn}\p{Pd}'\x{2019}]*/u", $text, $matches);
 		$all = array_shift($matches);
 
 		$en = str_word_count($text, 1, 'qwertyuiopasdfghjklzxcvbnm');

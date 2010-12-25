@@ -142,9 +142,9 @@ class Job {
 			$arr['stem'] = $this->stem;
 		}
 		
-		$res = Database::jobs()->insert($arr);
+		Database::jobs()->insert($arr);
 
-		return false;
+		return true;
 	}
 	
 	public function getUrl() {

@@ -139,15 +139,22 @@ class Parser_odesk_com extends Parser implements IParser {
 		) {
 			$cats .= implode(' ', array_pop($matches));
 		}
-		
+
 		// skills
 		if (
-			(
-				preg_match_all('/<a href="\/jobs\/\?qs=(.*?)>(.*?)<\/a>/siu', $content, $matches)
-				|| preg_match_all('/<a href="\/jobs\/skill\/(.*?)>(.*?)<\/a>/siu', $content, $matches)
-			) && 3 === sizeof($matches)
-		) {	
-			$cats .= ' ' . implode(' ', array_pop($matches));
+			preg_match('@Skills Required:(.*?)</div>@siu', $content, $matches)
+			&& 2 == sizeof($matches)
+		) {
+			$skillspart = array_pop($matches);
+			
+			if (
+				(
+					preg_match_all('/<a href="\/jobs\/\?qs=(.*?)>(.*?)<\/a>/siu', $skillspart, $matches)
+					|| preg_match_all('/<a href="\/jobs\/skill\/(.*?)>(.*?)<\/a>/siu', $skillspart, $matches)
+				) && 3 === sizeof($matches)
+			) {	
+				$cats .= ' ' . implode(' ', array_pop($matches));
+			}
 		}
 	
 		$cats = trim($cats);

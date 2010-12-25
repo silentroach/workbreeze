@@ -17,8 +17,6 @@ $jc = $jobs->find(
 while ($job = $jc->getNext()) {
 	echo '-';
 
-	Sphinx::remove('jobs', $job['stamp']);
-
 	$jobs->remove(array(
 		'_id' => $job['_id']
 	));

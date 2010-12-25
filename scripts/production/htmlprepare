@@ -142,7 +142,8 @@ if (
 				$cmd .= ' --externs ' . escapeshellarg(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'externs' . DIRECTORY_SEPARATOR . $ext . '.js');
 			}
 
-			$cmd .= ' --compilation_level ADVANCED_OPTIMIZATIONS --warning_level VERBOSE > ' . escapeshellarg($fileout);
+			$cmd .= ' --compilation_level SIMPLE_OPTIMIZATIONS --warning_level VERBOSE > ' . escapeshellarg($fileout);
+			// FIXME -> ADVANCED_OPTIMIZATIONS
 
 			echo "\n" . str_pad('js block #' . ($inc + 1), 40) . "[compiling]\n";
 

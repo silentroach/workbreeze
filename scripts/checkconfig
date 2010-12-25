@@ -29,6 +29,10 @@ printCheck('mongodb driver', function() {
 	return class_exists('Mongo');
 } );
 
+printCheck('xmlwriter php support', function() {
+	return class_exists('XMLWriter');
+} );
+
 printCheck('iconv', function() {
 	return function_exists('iconv');
 } );

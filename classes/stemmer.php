@@ -7,7 +7,7 @@
  */
 class Stemmer {
 
-	private $cache = array();
+	private static $cache = array();
 
 	private static function PrepareWordForStemming($word) {
 		if (mb_substr($word, 0, 1) == '-') {

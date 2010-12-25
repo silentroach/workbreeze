@@ -144,13 +144,6 @@ class Job {
 		
 		$res = Database::jobs()->insert($arr);
 
-		if (false !== $res) {
-			return Sphinx::add('jobs', $this->getStamp(), array(
-				$this->getTitle() . '. ' . $this->getDescription(),
-				$this->getSite(), implode(' ', $this->getCategories())
-			) );
-		}
-
 		return false;
 	}
 	
@@ -282,7 +275,7 @@ class Job {
 
 		// stemmer
 		$tmp .= ' ' . $this->getTitle();
-		$word = Stemmer::ExtractWords($tmp);
+		$words = Stemmer::ExtractWords($tmp);
 		$this->stem = Stemmer::Stem($words);
 		// /stemmer
 

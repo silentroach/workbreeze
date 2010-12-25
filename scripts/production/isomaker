@@ -29,6 +29,9 @@ desc 'Links and folders'
 mkdir tmp/public_html/js
 mkdir tmp/public_html/css
 
+ln -s /srv/bstorage/rss-global.xml tmp/public_html/rss-global.xml
+ln -s /srv/bstorage/rss-global.xml.gz tmp/public_html/rss-global.xml.gz
+
 desc 'Preparing static pages'
 ./htmlprepare ../../public_html/index.html tmp/public_html/
 

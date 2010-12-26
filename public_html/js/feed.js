@@ -396,23 +396,25 @@ Workbreeze.Feed = function(s) {
 	 * @param {!Array} jobs Job info array.
 	 */
 	var parseJobs = function(jobs) {
-		$(jobs).each( function() {
+		var tmp;
+
+		while (tmp = jobs.pop()) {
 			var job = {
-				id:    this['i'],
-				site:  this['s'],
-				stamp: this['st'],
-				title: this['t'],
-				cats:  this['c'],
-				desc:  this['d']
+				id:    tmp['i'],
+				site:  tmp['s'],
+				stamp: tmp['st'],
+				title: tmp['t'],
+				cats:  tmp['c'],
+				desc:  tmp['d']
 			};
 
-			if ('m' in this) {
-				job.money = this['m'][0];
-				job.currency = this['m'][1];
+			if ('m' in tmp) {
+				job.money = tmp['m'][0];
+				job.currency = tmp['m'][1];
 			}
 		
 			addJob(job);
-		} );
+		};
 	};
 
 	/**

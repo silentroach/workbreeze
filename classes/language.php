@@ -10,7 +10,7 @@ class Language {
 	const ENGLISH = 'en';
 	const RUSSIAN = 'ru';
 	
-	const VERSION = 12;
+	const VERSION = 13;
 
 	// TODO make translations as a separate project as non-php files
 

@@ -7,8 +7,8 @@
  */
 class MUp extends Module {
 
-	const VSITES = 5;
-	const VCATS  = 1;
+	const VSITES = 6;
+	const VCATS  = 2;
 
 	/**
 	 * Method to return the language array (will be replaced)

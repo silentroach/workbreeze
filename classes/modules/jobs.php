@@ -10,6 +10,13 @@ class MJobs extends Module {
 	private static $sites = array();
 
 	/**
+ 	 * Don't check for ajax request
+	 */
+	protected function isAjax() {
+		return false;
+	}
+
+	/**
 	 * Run the module
 	 * @param array Query array.
 	 */

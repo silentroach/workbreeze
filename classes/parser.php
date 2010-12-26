@@ -120,7 +120,7 @@ class Parser {
 	protected function queueJobLink($jobId, $link) {
 		$info = array(
 			'site' => $this->getSiteCode(),
-			'id'   => $jobId
+			'id'   => (string) $jobId
 		);
 	
 		$tmp = Database::jobs()->findOne($info);

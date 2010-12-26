@@ -71,7 +71,7 @@ EOF;
 <meta http-equiv="Content-Language" Content="{$this->lang}" />
 EOF;
 
-		if (self::$files[$this->ga] === '') {
+		if (!isset(self::$files[$this->ga])) {
 			self::$files[$this->ga] = file_get_contents(PATH_OTHER . $this->ga);
 		}
 

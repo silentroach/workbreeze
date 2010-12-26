@@ -7,7 +7,7 @@
  */
 class Page {
 
-	private static $files = '';
+	private static $files = array();
 
 	private $title        = '';
 	private $content      = '';

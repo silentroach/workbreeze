@@ -7,13 +7,14 @@
  */
 class Page {
 
-	private static $ga   = '';
+	private static $files = '';
 
-	private $title       = '';
-	private $content     = '';
-	private $lang        = 'ru,en';
-	private $description = '';
-	private $showlogo    = true;
+	private $title        = '';
+	private $content      = '';
+	private $lang         = 'ru,en';
+	private $description  = '';
+	private $showlogo     = true;
+	private $ga           = 'ga.js';
 	
 	public static function compress($content) {
 		$content = str_replace(array("\t", "\r", "\n"), '', $content);
@@ -43,6 +44,10 @@ class Page {
 	public function setDescription($desc) {
 		$this->description = $desc;
 	}
+
+	public function setAnalyticsScript($ga) {
+		$this->ga = $ga;
+	}
 	
 	public function disableLogo() {
 		$this->showlogo = false;
@@ -66,11 +71,11 @@ EOF;
 <meta http-equiv="Content-Language" Content="{$this->lang}" />
 EOF;
 
-		if (self::$ga === '') {
-			self::$ga = file_get_contents(PATH_OTHER . 'ga.js');
+		if (self::$files[$this->ga] === '') {
+			self::$files[$this->ga] = file_get_contents(PATH_OTHER . $this->ga);
 		}
-		
-		$ga = self::$ga;
+
+		$ga = self::$files[$this->ga];
 
 		$logo = $this->showlogo ? '<div id="logo"><a href="/">Workbreeze</a></div>' : '';
 

@@ -99,6 +99,7 @@ EOF;
 		$page->setTitle($job['title']);
 		$page->setContent($content);
 		$page->setLang($site['lang']);
+		$page->setAnalyticsScript('ga_jobs.js');
 
 		return $page;
 	}

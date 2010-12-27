@@ -15,6 +15,7 @@ class Page {
 	private $description  = '';
 	private $showlogo     = true;
 	private $ga           = 'ga.js';
+	private $js           = array();
 	
 	public static function compress($content) {
 		$content = str_replace(array("\t", "\r", "\n"), '', $content);
@@ -27,6 +28,10 @@ class Page {
 		$content = str_replace('> <', '><', $content);
 		
 		return $content;
+	}
+
+	public function addJS($js) {
+		$this->js[] = $js;
 	}
 
 	public function setTitle($title) {
@@ -79,6 +84,14 @@ EOF;
 
 		$logo = $this->showlogo ? '<div id="logo"><a href="/">Workbreeze</a></div>' : '';
 
+		$js = '';
+
+		while ($tmp = array_pop($this->js)) {
+			$js .= <<<EOF
+<script language="javascript" src="{$tmp}"></script>
+EOF;
+		}
+
 		$content = <<<EOF
 <!DOCTYPE html>
 <html>
@@ -92,7 +105,7 @@ EOF;
 
 	<link rel="home" href="/" /> 
 <body>
-
+{$js}
 {$logo}
 
 {$this->content}
@@ -102,7 +115,10 @@ EOF;
 </html>
 EOF;
 
-		if ($compress) {
+		if (
+			!defined('DEBUG')
+			&& $compress
+		) {
 			$content = self::compress($content);			
 		}
 

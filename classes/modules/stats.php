@@ -63,12 +63,10 @@ EOF;
 			$n = 1;
 			while ($site = $sites->getNext()) {
 				$c = Database::jobs()->find( array( 
-					'site' => $site['code'],
-					'stamp' => array(
-						'$gt' => $dt
-					),
-					'stamp' => array(
-						'$lt' => $dt + 60 * 60 * 24
+					'site'   => $site['code'],
+					'stamp'  => array(
+						'$gte' => $dt,
+						'$lt'  => $dt + 60 * 60 * 24
 					)
 				) )->count();
 
@@ -89,7 +87,7 @@ EOF;
 new google.visualization.LineChart(
 	document.getElementById('weekjobs')
 ).draw(data, {
-	height: 300,
+	height: 400,
 	width: 800,
 	backgroundColor: {
 		stroke: '#858585',
@@ -136,11 +134,11 @@ EOF;
 
 		$content = Cache::get($cacheKey);
 
-		if (!$content) {
+//		if (!$content) {
 			$content = $this->getPageContent();
 
 			Cache::set($cacheKey, $content, 60 * 60 * 10); // 10 minutes cache
-		}
+	//	}
 
 		$page = new Page();
 

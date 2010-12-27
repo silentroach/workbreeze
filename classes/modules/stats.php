@@ -134,11 +134,11 @@ EOF;
 
 		$content = Cache::get($cacheKey);
 
-//		if (!$content) {
+		if (!$content) {
 			$content = $this->getPageContent();
 
 			Cache::set($cacheKey, $content, 60 * 60 * 10); // 10 minutes cache
-	//	}
+		}
 
 		$page = new Page();
 

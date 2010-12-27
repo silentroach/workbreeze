@@ -15,10 +15,9 @@ class MStats extends Module {
 	}
 
 	/**
-	 * Run the module
-	 * @param array Query array.
+ 	 * Get the cacheble page content
 	 */
-	protected function runModule($query) {
+	private function getPageContent() {
 		$sites = Database::sites()->find()->sort(array('code' => 1));
 
 		$content = <<<EOF
@@ -124,6 +123,24 @@ new google.visualization.LineChart(
 });
 </script>
 EOF;
+
+		return $content;
+	}
+
+	/**
+ 	 * Run the module
+	 * @param array Query array.
+	 */
+	protected function runModule($query) {
+		$cacheKey = 'stats_en'; // fixme
+
+		$content = Cache::get($cacheKey);
+
+		if (!$content) {
+			$content = $this->getPageContent();
+
+			Cache::set($cacheKey, $content, 60 * 60 * 10); // 10 minutes cache
+		}
 
 		$page = new Page();
 

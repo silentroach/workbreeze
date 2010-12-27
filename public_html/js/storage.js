@@ -79,4 +79,23 @@ Workbreeze.Storage = function() {
 
 		return Math.floor(item[0]);
 	};
+
+	if (enabled) {
+		if (localStorage.getItem('settings')) {
+			// cleanup old crap
+			localStorage.removeItem('settings');
+
+			if (localStorage.getItem('lang')) {
+				localStorage.removeItem('lang');
+			}
+
+			if (localStorage.getItem('cats')) {
+				localStorage.removeItem('cats');
+			}
+
+			if (localStorage.getItem('sites')) {
+				localStorage.removeItem('sites');
+			}
+		}
+	}
 };

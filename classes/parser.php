@@ -198,15 +198,20 @@ class Parser {
 		}
 
 		if ($this->isAuth()) {
-			// setting the real useragent
-			curl_setopt($c, CURLOPT_USERAGENT, Parser::UserAgent);
-
 			// setting the cookie storage
 			curl_setopt($c, CURLOPT_COOKIEJAR,  '/tmp/authcookies');
 			curl_setopt($c, CURLOPT_COOKIEFILE, '/tmp/authcookies');
 
 			// follow the location if redirect is returned
 			curl_setopt($c, CURLOPT_FOLLOWLOCATION, true);
+		} 
+		
+		if (
+			$this->isProxyfied()
+			|| $this->isAuth()
+		) {
+			// setting the real useragent
+			curl_setopt($c, CURLOPT_USERAGENT, Parser::UserAgent);
 		} else {
 			// setting the default crawler useragent
 			curl_setopt($c, CURLOPT_USERAGENT, Parser::Agent);

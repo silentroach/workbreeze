@@ -65,7 +65,7 @@ http://www.scriptlance.com/projects/1284565862.shtml
 		$matches = array_combine($matches[1], $matches[0]);
 
 		foreach($matches as $id => $match) {
-			if (!preg_match('/:4"><a href="' . str_replace('/', '\/', $match) . '(.*?)<\/tr>/siu', $res, $matches)) {
+			if (!preg_match('/"><a href="' . str_replace('/', '\/', $match) . '(.*?)<\/tr>/siu', $res, $matches)) {
 				continue;
 			}	
 			

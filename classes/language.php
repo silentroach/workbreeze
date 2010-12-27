@@ -10,7 +10,7 @@ class Language {
 	const ENGLISH = 'en';
 	const RUSSIAN = 'ru';
 	
-	const VERSION = 13;
+	const VERSION = 14;
 
 	// TODO make translations as a separate project as non-php files
 
@@ -28,10 +28,12 @@ class Language {
 			'pl'   => 'start',
 			'pa'   => 'pause',
 			'h'    => 'help hints',
-			's'    => 'statistics',
 			'y'    => 'yesterday',
 			'fm'   => 'filter mode',
 			'cl'   => 'close',
+			
+			's'    => 'statistics',
+			'sdw'  => 'Daily jobs count',
 
 			'hk'   => 'Keywords to search.',
 			'hs'   => '<strong>Site list</strong>. Each element is a trigger.',
@@ -61,11 +63,13 @@ class Language {
 			'pl'   => 'запуск',
 			'pa'   => 'пауза',
 			'h'    => 'подсказки',
-			's'    => 'статистика',
 			'y'    => 'вчера',
 			'fm'   => 'режим фильтра',
 			'cl'   => 'закрыть',
 			
+			's'    => 'статистика',
+			'sdw'  => 'Количество предложений по дням',
+
 			'hk'   => 'Ключевые слова для поиска.',
 			'hs'   => '<strong>Список сайтов</strong>, где каждый элемент - переключатель.',
 			'hc'   => '<strong>Список категорий предложений</strong>, где каждый элемент - переключатель.',

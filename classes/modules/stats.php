@@ -17,7 +17,7 @@ class MStats extends Module {
 	/**
  	 * Get the cacheble page content
 	 */
-	private function getPageContent() {
+	private function getPageContent(array $lang) {
 		$sites = Database::sites()->find()->sort(array('code' => 1));
 
 		$content = <<<EOF
@@ -25,7 +25,7 @@ class MStats extends Module {
 google.load('visualization', '1', {packages: ['corechart']});
 </script>
 
-<p class="title">Statistics</p>
+<p class="title">{$lang['sdw']}</p>
 
 <div id="weekjobs"></div>
 
@@ -87,7 +87,7 @@ EOF;
 new google.visualization.LineChart(
 	document.getElementById('weekjobs')
 ).draw(data, {
-	height: 400,
+	height: 350,
 	width: 800,
 	backgroundColor: {
 		stroke: '#858585',
@@ -112,6 +112,7 @@ new google.visualization.LineChart(
 	curveType: 'function',
 	chartArea: {
 		left: 60,
+		top: 55,
 		width: 550
 	},
 	pointSize: 3,
@@ -130,19 +131,22 @@ EOF;
 	 * @param array Query array.
 	 */
 	protected function runModule($query) {
-		$cacheKey = 'stats_en'; // fixme
+		$langid = Language::getUserLanguage();
+		$lang = Language::getLang($langid);
+
+		$cacheKey = 'stats_' . $langid;
 
 		$content = Cache::get($cacheKey);
 
 		if (!$content) {
-			$content = $this->getPageContent();
+			$content = $this->getPageContent($lang);
 
 			Cache::set($cacheKey, $content, 60 * 60 * 10); // 10 minutes cache
 		}
 
 		$page = new Page();
 
-		//		$page->setTitle($job['title']);
+		$page->setTitle($lang['s']);
 		$page->addJS('http://www.google.com/jsapi');
 		$page->setContent($content);
 

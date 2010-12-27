@@ -36,7 +36,7 @@ class Parser_weblancer_net extends Parser implements IParser {
 	}
 	
 	public function isProxyfied() {
-		return true;
+		return false;
 	}
 
 	public function isAuth() {

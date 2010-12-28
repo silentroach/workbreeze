@@ -95,7 +95,7 @@ EOF;
 		$content = <<<EOF
 <!DOCTYPE html>
 <html>
-	<title>WorkBreeze {$title}</title>
+	<title>Workbreeze {$title}</title>
 
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	{$description}	

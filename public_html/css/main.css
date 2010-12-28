@@ -79,7 +79,7 @@ input {
 	#menu li {
 		cursor: pointer;
 		display: inline-block;
-		margin-right: 5px;
+		margin-right: 10px;
 		}
 	
 		#menu li.i, #menu a.i {

@@ -7,127 +7,85 @@
  */
 class Language {
 
-	const ENGLISH = 'en';
-	const RUSSIAN = 'ru';
-	
-	const VERSION = 14;
+	private static $cache = array();
 
-	// TODO make translations as a separate project as non-php files
-
-	public static $list = array(
-		self::ENGLISH => 'english',
-		self::RUSSIAN => 'русский'
+	private static $map = array(
+		'uk' => 'ru',
+		'ru' => 'ru',
+		'be' => 'ru'
 	);
 
-	private static function _english() {
-		return array(
-			'_'    => self::ENGLISH,
+	private static function parseData($data, $path) {
+		$out = array();
 
-			'kwds' => 'keywords',
-			'on'   => 'at',
-			'pl'   => 'start',
-			'pa'   => 'pause',
-			'h'    => 'help hints',
-			'y'    => 'yesterday',
-			'fm'   => 'filter mode',
-			'cl'   => 'close',
-			
-			's'    => 'statistics',
-			'sdw'  => 'Daily jobs count',
-
-			'hk'   => 'Keywords to search.',
-			'hs'   => '<strong>Site list</strong>. Each element is a trigger.',
-			'hc'   => '<strong>Offers category list</strong>. Each element is a trigger.',
-			'hj'   => '<strong>Offers list</strong>. Fresh offers are wider than other for half a minute. Click the title to have more information. You can scroll it down endlessly.',
-			'hf'   => '<strong>Filter mode</strong> allow you to receive offers only appropriate with filter settings.',
-			
-			'c' . Job::CAT_OTHER       => 'other',
-			'c' . Job::CAT_AUDIOVIDEO  => 'audio/video',
-			'c' . Job::CAT_DESIGN      => 'design',
-			'c' . Job::CAT_PHOTO       => 'photo',
-			'c' . Job::CAT_PROGRAMMING => 'programming',
-			'c' . Job::CAT_WEBPROG     => 'web-development',
-			'c' . Job::CAT_TRANSLATE   => 'translation',
-			'c' . Job::CAT_TEXT        => 'text work',
-			'c' . Job::CAT_ADVERTISING => 'advertisements',
-			'c' . Job::CAT_SYSADM      => 'system administration'
-		);	
-	}
-	
-	private static function _russian() {
-		return array(
-			'_'    => self::RUSSIAN,
-
-			'kwds' => 'ключевые слова',
-			'on'   => 'на',
-			'pl'   => 'запуск',
-			'pa'   => 'пауза',
-			'h'    => 'подсказки',
-			'y'    => 'вчера',
-			'fm'   => 'режим фильтра',
-			'cl'   => 'закрыть',
-			
-			's'    => 'статистика',
-			'sdw'  => 'Количество предложений по дням',
-
-			'hk'   => 'Ключевые слова для поиска.',
-			'hs'   => '<strong>Список сайтов</strong>, где каждый элемент - переключатель.',
-			'hc'   => '<strong>Список категорий предложений</strong>, где каждый элемент - переключатель.',
-			'hj'   => '<strong>Список предложений</strong>. Свежие предложения на 30 секунд выделяются шириной. Для просмотра полной информации следует щелкнуть по заголовку. Прокручивать список вниз можно до бесконечности.',
-			'hf'   => 'В <strong>режиме фильтра</strong> предложения, не подходящие под указанные выше критерии отбора не отображаются на экране.',
-			
-			'c' . Job::CAT_OTHER       => 'прочее',
-			'c' . Job::CAT_AUDIOVIDEO  => 'аудио/видео',
-			'c' . Job::CAT_DESIGN      => 'дизайн',
-			'c' . Job::CAT_PHOTO       => 'фото',
-			'c' . Job::CAT_PROGRAMMING => 'программирование',
-			'c' . Job::CAT_WEBPROG     => 'веб-разработка',
-			'c' . Job::CAT_TRANSLATE   => 'перевод',
-			'c' . Job::CAT_TEXT        => 'работа с текстом',
-			'c' . Job::CAT_ADVERTISING => 'реклама',
-			'c' . Job::CAT_SYSADM      => 'администрирование'
-		);
-	}
-	
-	public static function getLang($lang = false) {
-		if (!$lang) {
-			$lang = self::getUserLanguage();
+		foreach($data as $key => $value) {
+			if (is_array($value)) {
+				$out = array_merge($out, self::parseData($value, $key . '/'));
+			} else {
+				$out[$key] = $value;
+			}
 		}
-	
-		if (self::RUSSIAN == $lang)
-			return self::_russian();
-		else
-			return self::_english();
+
+		return $out;
 	}
-	
-	public static function getUserLanguage() {	
+
+	private static function checkLang($lang) {
+		if (!isset(self::$cache[$lang])) {
+			$filename = PATH_LANG . $lang . '.yaml';
+
+			if (!file_exists($filename)) {
+				self::$cache[$lang] = false;
+				return false;
+			}
+
+			$data = Spyc::YAMLLoad($filename);
+
+			$cache[$lang] = self::parseData($data, '');		
+		}
+
+		if (!self::$cache[$lang]) {
+			return false;
+		}
+
+		return true;
+	}
+
+	public static function getValue($lang, $path) {
+		if (isset(self::$cache[$lang][$path])) {
+			return self::$cache[$lang][$path];
+		}	
+
+		return false;
+	}
+
+	public static function getUserLanguage() {
+		$lng = 'en';
+
 		if (
-			isset($_COOKIE)
-			&& isset($_COOKIE['lang'])
-			&& in_array($_COOKIE['lang'], array_keys(self::$list))
+			isset($_COOKIE['lang'])
+			&& self::checkLang($_COOKIE['lang'])
 		) {
 			return $_COOKIE['lang'];
 		}
 	
-		if (!isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) 
-			$lng = self::ENGLISH;
-		else {			
+		if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
 			$lang = $_SERVER['HTTP_ACCEPT_LANGUAGE'];
-		
-			if (
-				false !== strpos($lang, 'uk')
-				|| false !== strpos($lang, 'ru')
-				|| false !== strpos($lang, 'be')
-			) {
-				$lng = self::RUSSIAN;
-			} else {
-				$lng = self::ENGLISH;
+
+			foreach(self::$map as $alias => $target) {
+				if (false !== strpos($lang, $alias)) {
+					$lng = $target;
+					break;
+				}
 			}
 
-			setcookie('lang', $lng, 60 * 60 * 24 * 7, '/up');
+			setcookie('lang', $lng, 60 * 60 * 24 * 7);
 		}
-		
-		return $lng;	
+
+		if (self::checkLang($lng)) {
+			return $lng;
+		}
+
+		return false;
 	}
 
 }

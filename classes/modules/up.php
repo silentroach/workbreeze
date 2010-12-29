@@ -11,20 +11,6 @@ class MUp extends Module {
 	const VCATS  = 2;
 
 	/**
-	 * Method to return the language array (will be replaced)
-	 */	
-	private function getLang($ver = 0) {
-		if ($ver == Language::VERSION)
-			return false;
-			
-		return array(
-			'v'  => Language::VERSION,
-			'a'  => Language::$list, 
-			'vl' => Language::getLang()
-		);
-	}	
-
-	/**
 	 * Method to return categories array
 	 */
 	private function getCats($ver = 0) {
@@ -203,16 +189,6 @@ class MUp extends Module {
 
 		$r = array();
 
-		// check for outdated language pack
-		$vlang = $this->getIntParam('lang');
-		if (false !== $vlang) {
-			$lang = $this->getLang($vlang);
-			
-			if ($lang) {
-				$r['l'] = $lang;
-			}
-		}
-	
 		// check for outdates sites
 		$vsites = $this->getIntParam('sites');
 		if (false !== $vsites) {

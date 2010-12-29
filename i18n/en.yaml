@@ -1,0 +1,38 @@
+description:
+  name: 'english'
+  alias: 'en'
+
+common:
+  keywords: 'keywords'
+  close: 'close'
+  yesterday: 'yestarday'
+  statistics: 'statistics'
+
+feed:
+  at: 'at'
+  start: 'start'
+  pause: 'pause'
+  hints: 'help hints'
+  filter_mode: 'filter mode'
+
+statistics:
+  daily: 'Daily jobs count'
+
+hints:
+  keywords: 'Keywords to search.'
+  sites: '<strong>Site list</strong>. Each element is a trigger.'
+  categories: '<strong>Offers category list</strong>. Each element is a trigger.'
+	offers: '<strong>Offers list</strong>. Fresh offers are wider than other for half a minute. Click the title to have more information. You can scroll it down endlessly.'
+	filter_mode: '<strong>Filter mode</strong> allow you to receive offers only appropriate with filter settings.'
+
+categories:
+  cat_0: 'other'
+  cat_1: 'audio/video'
+  cat_2: 'design'
+  cat_3: 'photo'
+	cat_4: 'programming'
+	cat_5: 'web-development'
+	cat_6: 'translation'
+	cat_7: 'text work'
+	cat_8: 'advertisements'
+	cat_9: 'system administration'

@@ -16,6 +16,7 @@ if (!defined('BOOTSTRAPPED')) {
 	define('PATH_CLASSES', $basepath . DS . 'classes' . DS);
 	define('PATH_PUBLIC',  $basepath . DS . 'public_html' . DS);
 	define('PATH_OTHER',   $basepath . DS . 'other' . DS);
+	define('PATH_LANG',    $basepath . DS . 'i18n' . DS);
 
 	// for MongoDB
 	define('DB', 'breeze');

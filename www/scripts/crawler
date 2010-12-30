@@ -1,11 +1,6 @@
 #!/usr/bin/php
 <?php
 
-require dirname(__DIR__) . DIRECTORY_SEPARATOR . 'bootstrap.php';
-
-// lets do it
-$scheduler = new Scheduler();
-
 $action = isset($argv[1]) ? $argv[1] : 'joblist';
 
 $lockname = '/tmp/lock_' . $action . '.tmp';
@@ -29,6 +24,11 @@ if (file_exists($lockname)) {
 file_put_contents($lockname, getmypid());
 
 echo '[' . date('H:m:s') . "] =============================================\n";
+
+require dirname(__DIR__) . DIRECTORY_SEPARATOR . 'bootstrap.php';
+
+// lets do it
+$scheduler = new Scheduler();
 
 if ('joblist' === $action) {
 	$scheduler->processJobList();

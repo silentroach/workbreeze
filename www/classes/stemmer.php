@@ -10,15 +10,23 @@ class Stemmer {
 	private static $cache = array();
 
 	private static function PrepareWordForStemming($word) {
+		$len = mb_strlen($word);
+
+		if ($len < 3) {
+			return false;
+		}
+
 		if (mb_substr($word, 0, 1) == '-') {
 			$word = mb_substr($word, 1);
+			--$len;
 		}
 
 		if (mb_substr($word, -1, 1) == '-') {
 			$word = mb_substr($word, 0, mb_strlen($word) - 1);
+			--$len;
 		}
 
-		if (mb_strlen($word) < 3) {
+		if ($len < 3) {
 			return false;
 		}
 

@@ -279,7 +279,7 @@ class Job {
 		$this->stem = Stemmer::Stem($words);
 		// /stemmer
 
-		if (preg_match('/([^ \n\r]+[ \n\r]+){40}/s', $this->description, $match))
+		if (preg_match('/([^ \n\r]+[ \n\r]+){30}/s', $this->description, $match))
 			$this->description_short = trim(str_replace("\n\n", "\n", $match[0])) . '...';
 		
 		return $this;

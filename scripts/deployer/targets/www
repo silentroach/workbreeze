@@ -20,7 +20,7 @@ mkdir ${ISOPATH}
 
 desc 'Syncing'
 echo 'rsync'
-rsync -rupEogtz --exclude-from=../excludes_www ../../../www/ ${ISOPATH}/ > /dev/null
+rsync -rupEogtz --exclude-from=../excludes/www ../../../www/ ${ISOPATH}/ > /dev/null
 
 desc 'PHP stripper'
 for File in `find ${ISOPATH} -name '*.php'`; do 

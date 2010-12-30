@@ -26,4 +26,7 @@ if (!isset($targets[$target])) {
 	die();
 }
 
-exec($targets[$target]);
+$file = $targets[$target];
+
+chdir(pathinfo($file, PATHINFO_DIRNAME));
+system('./' . pathinfo($file, PATHINFO_BASENAME));

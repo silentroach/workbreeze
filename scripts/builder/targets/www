@@ -1,31 +1,12 @@
 # www
-
 #!/bin/bash
-
-desc() {
-        echo ''
-        echo -e "\033[1m${1}...\033[0m"
-}
 
 dt=`date +%T`
 
 ISO=`date +%Y-%m-%d.iso`
-ISOPATH="/tmp/iso"
 
-desc "Lets begin (${dt})"
-
-if [ -d "${ISOPATH}" ]; then
-	rm -rf ${ISOPATH}
-fi
-
-mkdir ${ISOPATH}
-
-desc 'Syncing'
-echo 'rsync'
-rsync -rupEogtz --exclude-from=../excludes/www ../../../www/ ${ISOPATH}/ > /dev/null
-
-desc 'PHP stripper'
-for File in `find ${ISOPATH} -name '*.php'`; do 
+echo 'Stripping PHP files'
+for File in `find ${WORKDIR} -name '*.php'`; do 
 	echo ${File}
 
 	php -w ${File} > ${File}.tmp
@@ -33,27 +14,26 @@ for File in `find ${ISOPATH} -name '*.php'`; do
 	mv ${File}.tmp ${File}
 done
 
-desc 'Links and folders'
+echo 'Making links and folders'
 
-mkdir ${ISOPATH}/public_html/js
-mkdir ${ISOPATH}/public_html/css
+mkdir ${WORKDIR}public_html/js
+mkdir ${WORKDIR}public_html/css
 
-ln -s /srv/bstorage/rss-global.xml ${ISOPATH}/public_html/rss-global.xml
-ln -s /srv/bstorage/rss-global.xml.gz ${ISOPATH}/public_html/rss-global.xml.gz
+ln -s /srv/bstorage/rss-global.xml ${WORKDIR}public_html/rss-global.xml
+ln -s /srv/bstorage/rss-global.xml.gz ${WORKDIR}public_html/rss-global.xml.gz
 
-desc 'Preparing static pages'
-../htmlprepare ../../../www/public_html/index.html ${ISOPATH}/public_html/
+echo 'Preparing static pages'
+../htmlprepare ${SDIR}public_html/index.html ${WORKDIR}public_html/
 
-gzip -c9 ${ISOPATH}/public_html/index.html  > ${ISOPATH}/public_html/index.html.gz
-gzip -c9 ${ISOPATH}/public_html/favicon.ico > ${ISOPATH}/public_html/favicon.ico.gz
+gzip -c9 ${WORKDIR}public_html/index.html  > ${WORKDIR}public_html/index.html.gz
+gzip -c9 ${WORKDIR}public_html/favicon.ico > ${WORKDIR}public_html/favicon.ico.gz
 
-echo 'debug in bootstrap'
-sed 's/DEBUG/UNDEBUG/' ../../../www/bootstrap.php > ${ISOPATH}/bootstrap.php
-echo 'nginx...'
-sed "s/workbreeze.dev/workbreeze.com/;s/\/home\/Projects\/work/\/srv\//" ../../../www/configs/nginx.conf > ${ISOPATH}/configs/nginx.conf
+echo 'Undefine DEBUG in bootstrap'
+sed 's/DEBUG/UNDEBUG/' ${SDIR}bootstrap.php > ${WORKDIR}bootstrap.php
 
-desc 'Making iso'
-mkisofs -r -J -l -d -o ${ISO} ${ISOPATH}/
+echo 'Preparing nginx config...'
+sed "s/workbreeze.dev/workbreeze.com/;s/\/home\/Projects\/work/\/srv\//" ${SDIR}configs/nginx.conf > ${WORKDIR}configs/nginx.conf
 
-desc 'Removing temporary path'
-rm -rf ${ISOPATH}
+echo 'Building iso'
+mkisofs -r -J -l -d -o ${RDIR}${ISO} ${WORKDIR}
+

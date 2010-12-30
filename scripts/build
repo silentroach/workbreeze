@@ -62,7 +62,7 @@ echo "Building...\n";
 $cwd = getcwd();
 chdir(pathinfo($file, PATHINFO_DIRNAME));
 system('WBROOT=' . escapeshellarg(ROOT) . ' WORKDIR=' . escapeshellarg($workdir) . 
-	' RDIR=' . escapeshellarg($rdir) . ' ./' . pathinfo($file, PATHINFO_BASENAME));
+	' RDIR=' . escapeshellarg($rdir) . ' SDIR=' . escapeshellarg($dir) . ' ./' . pathinfo($file, PATHINFO_BASENAME));
 chdir($cwd);
 
 echo "Copying results...\n";

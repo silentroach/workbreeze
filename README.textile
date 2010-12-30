@@ -6,8 +6,8 @@ This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAl
 
 h1. Automatic build
 
-# scripts/build chromeapp
+* scripts/build chromeapp
   will produce the app.zip with Chrome Application for WebStore
 
-# scripts/build www
+* scripts/build www
   will prepare the iso image for production

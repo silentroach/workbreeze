@@ -52,3 +52,6 @@ sed "s/workbreeze.dev/workbreeze.com/;s/\/home\/Projects\/work/\/srv\//" ../../.
 
 desc 'Making iso'
 mkisofs -r -J -l -d -o ${ISO} ${ISOPATH}/
+
+desc 'Removing temporary path'
+rm -rf ${ISOPATH}

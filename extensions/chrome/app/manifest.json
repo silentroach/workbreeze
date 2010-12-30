@@ -11,10 +11,11 @@
 		"128": "icons/128.png",
 		"64":  "icons/64.png",
 		"48":  "icons/48.png",	  
-		"24":  "icons/24.png"
+		"24":  "icons/24.png",
+		"16":  "icons/16.png"
 	},
 	"name": "Workbreeze",
 	"permissions": [ ],
 	"update_url": "http://clients2.google.com/service/update2/crx",
-	"version": "0.2"
+	"version": "0.21"
 }

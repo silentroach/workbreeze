@@ -16,5 +16,5 @@
 	"name": "Workbreeze",
 	"permissions": [ ],
 	"update_url": "http://clients2.google.com/service/update2/crx",
-	"version": "0.1"
+	"version": "0.2"
 }

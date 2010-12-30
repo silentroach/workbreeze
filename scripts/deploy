@@ -1,0 +1,29 @@
+#!/usr/bin/php
+<?php
+
+define('DS', DIRECTORY_SEPARATOR);
+
+$targets = array();
+
+foreach(glob(dirname(__FILE__) . DS . 'deployer' . DS . 'targets/*') as $file) {
+	if (is_executable($file)) {
+		$targets[pathinfo($file, PATHINFO_FILENAME)] = $file;
+	}
+}
+
+if ($argc < 2) {
+	// showing list of targets
+	echo "Supported targets:\n";
+
+	echo "\n  " . implode("\n  ", array_keys($targets)) . "\n";
+	die();
+}
+
+$target = $argv[1];
+
+if (!isset($targets[$target])) {
+	echo "Target is not supported.\n";
+	die();
+}
+
+exec($targets[$target]);

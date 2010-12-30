@@ -1,7 +1,7 @@
 #!/usr/bin/php
 <?php
 
-require dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'bootstrap.php';
+require dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'www' . DIRECTORY_SEPARATOR . 'bootstrap.php';
 
 $tmpdir = '/tmp/tmpjs/';
 
@@ -31,8 +31,8 @@ if (substr($outdir, -1) !== '/') {
 }
 
 // paths for compilers
-$path_gcc    = trim(`find -name 'gcc.jar'`);
-$path_yui    = trim(`find -name 'yui.jar'`);
+$path_gcc    = trim(`find ../ -name 'gcc.jar'`);
+$path_yui    = trim(`find ../ -name 'yui.jar'`);
 
 $content   = file_get_contents($filename);
 $analytics = file_get_contents(PATH_OTHER . 'ga.js');

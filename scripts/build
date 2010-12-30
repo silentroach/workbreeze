@@ -1,0 +1,75 @@
+#!/usr/bin/php
+<?php
+
+define('DS', DIRECTORY_SEPARATOR);
+
+define('ROOT', dirname(dirname(__FILE__)) . DS);
+
+define('PATH_TARGETS',  dirname(__FILE__) . DS . 'builder' . DS . 'targets' . DS);
+define('PATH_EXCLUDES', dirname(__FILE__) . DS . 'builder' . DS . 'excludes' . DS);
+
+$targets = array();
+
+foreach(glob(PATH_TARGETS . '*') as $file) {
+	if (is_executable($file)) {
+		$targets[pathinfo($file, PATHINFO_FILENAME)] = $file;
+	}
+}
+
+if ($argc < 2) {
+	// showing list of targets
+	echo "Supported targets:\n";
+
+	echo "\n  " . implode("\n  ", array_keys($targets)) . "\n";
+	die();
+}
+
+$target = $argv[1];
+
+if (!isset($targets[$target])) {
+	echo "Target is not supported.\n";
+	die();
+}
+
+$file = $targets[$target];
+
+$handle = fopen($file, 'r');
+fseek($handle, 1, SEEK_SET);
+$dir = ROOT . trim(fgets($handle)) . DS;
+fclose($handle);
+
+$workdir = sys_get_temp_dir() . DS . 'wb_' . $target . DS;
+$rdir    = sys_get_temp_dir() . DS . 'wb_' . $target . '_res' . DS;
+
+if (file_exists($workdir)) {
+	system('rm -rf ' . escapeshellarg($workdir));
+}
+
+if (file_exists($rdir)) {
+	system('rm -rf ' . escapeshellarg($rdir));
+}
+
+system('mkdir ' . escapeshellarg($workdir));
+system('mkdir ' . escapeshellarg($rdir));
+
+echo "Running rsync to copy work data...\n";
+
+$excludes = file_exists(PATH_EXCLUDES . $target) ? '--exclude-from=' . escapeshellarg(PATH_EXCLUDES . $target) : '';
+system('rsync -rupEogtz ' . $excludes . ' ' . escapeshellarg($dir) . ' ' . escapeshellarg($workdir) . ' > /dev/null');
+
+echo "Building...\n";
+
+$cwd = getcwd();
+chdir(pathinfo($file, PATHINFO_DIRNAME));
+system('WBROOT=' . escapeshellarg(ROOT) . ' WORKDIR=' . escapeshellarg($workdir) . 
+	' RDIR=' . escapeshellarg($rdir) . ' ./' . pathinfo($file, PATHINFO_BASENAME));
+chdir($cwd);
+
+echo "Copying results...\n";
+foreach(glob($rdir . '*') as $file) {
+	echo '  ' . pathinfo($file, PATHINFO_BASENAME) . "\n";
+	system('mv ' . escapeshellarg($file) . ' ./');
+}
+
+system('rm -rf ' . escapeshellarg($workdir));
+system('rm -rf ' . escapeshellarg($rdir));

@@ -3,3 +3,11 @@ h1. Workbreeze
 The "realtime" freelance offers monitor site written in PHP. 
 
 This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License.
+
+h1. Automatic build
+
+# scripts/build chromeapp
+  will produce the app.zip with Chrome Application for WebStore
+
+# scripts/build www
+  will prepare the iso image for production

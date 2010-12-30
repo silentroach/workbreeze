@@ -1,0 +1,7 @@
+# extensions/chrome/app
+
+#!/bin/bash
+
+cd ${WORKDIR}
+
+zip -9 -r ${RDIR}app.zip ./

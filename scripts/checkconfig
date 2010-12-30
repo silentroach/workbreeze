@@ -23,47 +23,6 @@ function printCheck($message, $callback) {
 	echo "\n";
 }
 
-highlighted('Required:');
-
-printCheck('mongodb driver', function() {
-	return class_exists('Mongo');
-} );
-
-printCheck('xmlwriter php support', function() {
-	return class_exists('XMLWriter');
-} );
-
-printCheck('iconv', function() {
-	return function_exists('iconv');
-} );
-
-printCheck('apc', function() {
-	return function_exists('apc_store');
-} );
-
-printCheck('runkit', function() {
-	return
-		function_exists('runkit_function_add')
-		&& ini_get('runkit.internal_override');
-} );
-
-printCheck('curl module', function() {
-	return function_exists('curl_init');
-} );
-
-printCheck('english stemmer', function() {
-	return function_exists('stem_english');
-} );
-
-printCheck('russian stemmer', function() {
-	return function_exists('stem_russian_unicode');
-} );
-
-printCheck('open_basedir is empty', function() {
-	return ini_get('open_basedir') === '';
-} );
-
-echo "\n";
 highlighted('Required for production image maker:');
 
 printCheck('rsync', function() {
@@ -87,10 +46,6 @@ highlighted('Optional:');
 
 printCheck('gd library', function() {
 	return function_exists('imagecreatetruecolor');
-} );
-
-printCheck('tor proxy', function() {
-	return appExists('tor');
 } );
 
 printCheck('phpunit', function() {

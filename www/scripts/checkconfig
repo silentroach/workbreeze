@@ -1,0 +1,79 @@
+#!/usr/bin/php
+<?php
+
+function highlighted($msg) {
+	echo "\033[1m" . $msg . "\033[0m\n";
+}
+
+function appExists($app) {
+	exec('which ' . escapeshellarg($app) . ' 2>&1', $out, $code);
+
+	return 0 === $code;
+}
+
+function printCheck($message, $callback) {
+	echo str_pad($message, 50);
+
+	if ($callback()) {
+		echo '[PASS]';
+	} else {
+		echo '[FAIL]';
+	}
+
+	echo "\n";
+}
+
+highlighted('Required:');
+
+printCheck('mongodb driver', function() {
+	return class_exists('Mongo');
+} );
+
+printCheck('xmlwriter php support', function() {
+	return class_exists('XMLWriter');
+} );
+
+printCheck('iconv', function() {
+	return function_exists('iconv');
+} );
+
+printCheck('apc', function() {
+	return function_exists('apc_store');
+} );
+
+printCheck('runkit', function() {
+	return
+		function_exists('runkit_function_add')
+		&& ini_get('runkit.internal_override');
+} );
+
+printCheck('curl module', function() {
+	return function_exists('curl_init');
+} );
+
+printCheck('english stemmer', function() {
+	return function_exists('stem_english');
+} );
+
+printCheck('russian stemmer', function() {
+	return function_exists('stem_russian_unicode');
+} );
+
+printCheck('open_basedir is empty', function() {
+	return ini_get('open_basedir') === '';
+} );
+
+echo "\n";
+highlighted('Optional:');
+
+printCheck('gd library', function() {
+	return function_exists('imagecreatetruecolor');
+} );
+
+printCheck('tor proxy', function() {
+	return appExists('tor');
+} );
+
+printCheck('phpunit', function() {
+	return appExists('phpunit');
+} );

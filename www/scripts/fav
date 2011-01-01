@@ -2,7 +2,7 @@
 <?php
 
 require dirname(__DIR__) . DIRECTORY_SEPARATOR . 'bootstrap.php';
-require('_replacer.php');
+require dirname(dirname(__DIR__)) . DS . 'scripts' . DS . '_replacer.php';
 
 $cssfile = PATH_PUBLIC . 'css' . DIRECTORY_SEPARATOR . 'main.css';
 

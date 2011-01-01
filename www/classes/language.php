@@ -7,6 +7,9 @@
  */
 class Language {
 
+	const ENGLISH = 'en';
+	const RUSSIAN = 'ru';
+
 	private static $cache = array();
 
 	private static $map = array(

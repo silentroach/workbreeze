@@ -1,12 +1,11 @@
 <?php
 
 /**
- * freelance.ru parser
- * @todo rename to free_lance_ru
+ * free-lance.ru parser
  * @author Kalashnikov Igor <igor.kalashnikov@gmail.com>
  * @license Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported
  */
-class Parser_freelance_ru extends Parser implements IParser {
+class Parser_free_lance_ru extends Parser implements IParser {
 
 	public function getSiteCode() {
 		return 1;
@@ -17,7 +16,7 @@ class Parser_freelance_ru extends Parser implements IParser {
 	}
 	
 	public function getSiteFolder() {
-		return 'freelance_ru';
+		return 'free_lance_ru';
 	}
 
 	public function getParserName() {

@@ -28,7 +28,7 @@ class Parser_weblancer_net extends Parser implements IParser {
 	}
 
 	public function getUpdatePeriod() {
-		return 60 * 3; // 3 minutes
+		return 60 * 5;
 	}
 	
 	public function getLang() {

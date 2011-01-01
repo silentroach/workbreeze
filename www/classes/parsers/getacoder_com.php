@@ -28,7 +28,7 @@ class Parser_getacoder_com extends Parser implements IParser {
 	}
 
 	public function getUpdatePeriod() {
-		return 60 * 5;  // 5 minutes
+		return 60 * 10;
 	}
 	
 	public function getLang() {

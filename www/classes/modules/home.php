@@ -7,5 +7,15 @@
  */
 class MHome extends Module {
 
+	protected function getLanguage() {
+		return array(
+			'feed/at' => 'at'
+		);
+	}
+
+//	protected function runModule($query) {
+//		return 'test';
+//	}
+
 }
 

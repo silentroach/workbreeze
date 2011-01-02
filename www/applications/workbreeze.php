@@ -37,9 +37,8 @@ class WorkbreezeRequest extends HTTPRequest {
 		// module is the next part
 		$module = array_shift($query);
 
-		if (null === $module) {
-			$this->status(404);
-			return;
+		if (!$module) {
+			$module = 'home';
 		}
 
 		$m = $this->appInstance->getModule($module);

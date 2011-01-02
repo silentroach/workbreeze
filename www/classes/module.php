@@ -55,6 +55,13 @@ class Module {
 		// runModule will return the module reply
 		$object = $this->runModule($query);
 
+		$this->result($object);
+	}
+
+	/**
+	 * Return the content to user
+	 */
+	protected function result($object) {
 		if (is_array($object)) {                                // array -> json object
 			if (0 === count($object)) {
 				header('204 No Content');
@@ -65,9 +72,6 @@ class Module {
 		} else
 		if ($object instanceof NotFoundModuleResult) {         // not found -> 404
 			header('404 Not Found');
-		} else
-		if ($object instanceof Page) {                         // Page -> string to print
-			echo $object->out();
 		} elseif (                                              // '' || false -> 204
 			'' === $object
 			|| false === $object

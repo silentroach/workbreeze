@@ -55,7 +55,7 @@ system('mkdir ' . escapeshellarg($rdir));
 echo "Running rsync to copy work data...\n";
 
 $excludes = file_exists(PATH_EXCLUDES . $target) ? '--exclude-from=' . escapeshellarg(PATH_EXCLUDES . $target) : '';
-system('rsync -rupEogtz ' . $excludes . ' ' . escapeshellarg($dir) . ' ' . escapeshellarg($workdir) . ' > /dev/null');
+system('rsync -rupLEogtz ' . $excludes . ' ' . escapeshellarg($dir) . ' ' . escapeshellarg($workdir) . ' > /dev/null');
 
 echo "Building...\n";
 

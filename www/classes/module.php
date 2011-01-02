@@ -68,12 +68,12 @@ class Module {
 		} else
 		if ($object instanceof Page) {                         // Page -> string to print
 			echo $object->out();
-		} elseif (                                             // '' || false -> 204
+		} elseif (                                              // '' || false -> 204
 			'' === $object
 			|| false === $object
 		) {
 			header('204 No Content');
-		} else {                                              // something else -> string to print
+		} else {                                                // something else -> string to print
 			echo $object;
 		}
 	}

@@ -5,14 +5,7 @@
  * @author Kalashnikov Igor <igor.kalashnikov@gmail.com>
  * @license Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported
  */
-class MStats extends Module {
-
-	/**
- 	 * Don't check for ajax request
-	 */
-	protected function isAjax() {
-		return false;
-	}
+class MStats extends PageModule {
 
 	/**
  	 * Get the cacheble page content

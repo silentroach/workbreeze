@@ -7,7 +7,7 @@
  */
 class MUp extends Module {
 
-	const VSITES = 6;
+	const VSITES = 7;
 	const VCATS  = 2;
 
 	/**

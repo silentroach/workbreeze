@@ -25,7 +25,7 @@ class Language {
 			if (is_array($value)) {
 				$out = array_merge($out, self::parseData($value, $key . '/'));
 			} else {
-				$out[$key] = $value;
+				$out[$path . $key] = $value;
 			}
 		}
 
@@ -43,7 +43,7 @@ class Language {
 
 			$data = Spyc::YAMLLoad($filename);
 
-			$cache[$lang] = self::parseData($data, '');		
+			self::$cache[$lang] = self::parseData($data, '');
 		}
 
 		if (!self::$cache[$lang]) {

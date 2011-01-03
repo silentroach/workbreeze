@@ -54,7 +54,7 @@ var wb_i18n = wb_i18n || [];
 EOF;
 
 			foreach($lang as $langPath => $langKey) {
-				$langVal = Language::getValue($langPath);
+				$langVal = Language::getValue($this->langId, $langPath);
 
 				$langVal = str_replace('\'', '\\\'', $langVal);
 
@@ -64,7 +64,7 @@ EOF;
 			}
 		}
 
-		$this->page->setContent($content);
+//		$this->page->setContent($content);
 	}
 
 	protected function runModule($query) {

@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * Base class for page modules
+ * @author Kalashnikov Igor <igor.kalashnikov@gmail.com> 
+ * @license Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported
+ */
 class PageModule extends Module {
 
 	const COMPRESS = 1;
@@ -25,6 +30,10 @@ class PageModule extends Module {
 	}
 
 	protected function getLanguage() {
+		return false;
+	}
+
+	protected function getTitle() {
 		return false;
 	}
 
@@ -54,6 +63,8 @@ wb_i18n['{$langKey}'] = '{$langVal}';
 EOF;
 			}
 		}
+
+		$this->page->setContent($content);
 	}
 
 	protected function runModule($query) {
@@ -61,6 +72,7 @@ EOF;
 
 		$this->page = new Page();
 
+		/*
 		if ($this->cacheTime() > -1) {
 			$this->cacheKey = get_class($this) . '_' . $this->langId;
 
@@ -68,12 +80,15 @@ EOF;
 				$this->page->setContent($data);
 			}
 		}
+		 */
+
+		$this->_generatePage();
 	}
 
 	/**
 	 * Print result page to user
 	 */
-	protected function result() {
+	protected function result($object) {
 		echo $this->page->out();
 	}
 

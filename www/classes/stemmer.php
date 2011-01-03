@@ -9,6 +9,10 @@ class Stemmer {
 
 	private static $cache = array();
 
+	/**
+	 * Prepare words array for stemming
+	 * @param Array $word Words array
+	 */
 	private static function PrepareWordForStemming($word) {
 		$len = mb_strlen($word);
 

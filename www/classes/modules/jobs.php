@@ -5,22 +5,30 @@
  * @author Kalashnikov Igor <igor.kalashnikov@gmail.com>
  * @license Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported
  */
-class MJobs extends Module {
+class MJobs extends PageModule {
 
 	private static $sites = array();
+	
+	private $preview = false;
+	
+	private $job;
+	private $site;
 
-	/**
- 	 * Don't check for ajax request
-	 */
-	protected function isAjax() {
-		return false;
+	protected function getAnalytics() {
+		return 'ga_jobs.js';
 	}
-
-	/**
-	 * Run the module
-	 * @param array Query array.
-	 */
-	protected function runModule($query) {
+	
+	protected function getShowLogo() {
+		return !$this->preview;
+	}
+	
+	protected function getTitle() {
+		return $this->job['title'];
+	}
+	
+	protected function prepare($query) {
+		$this->preview = isset($_GET['preview']);
+		
 		$site = array_shift($query);
 		$id   = array_shift($query);
 
@@ -35,32 +43,34 @@ class MJobs extends Module {
 			return Module::NotFound();
 		}
 
-		$preview = isset($_GET['preview']);
-
 		if (!isset(self::$sites[$site])) {
 			self::$sites[$site] = Database::sites()->findOne(array('folder' => $site));
 		}
 
-		$site = self::$sites[$site];
+		$this->site = self::$sites[$site];
 
-		if (!$site) {
-			return Module::NotFound();
+		if (!$this->site) {
+			return false;
 		}
 
-		$job = Database::jobs()->findOne(array(
-			'site' => (int) $site['code'],
+		$this->job = Database::jobs()->findOne(array(
+			'site' => (int) $this->site['code'],
 			'id'   => (string) $id
 		) );
 
-		if (!$job) {
-			return Module::NotFound();
+		if (!$this->job) {
+			return false;
 		}
+		
+		return true;
+	}
+	
+	protected function getContent() {
+		$description = str_replace("\n", '<br />', $this->job['desc']);
+		$title = $this->job['title'];
 
-		$description = str_replace("\n", '<br />', $job['desc']);
-		$title = $job['title'];
-
-		if (isset($job['money'])) {
-			switch($job['money'][1]) {
+		if (isset($this->job['money'])) {
+			switch($this->job['money'][1]) {
 				// TODO refactor currency names
 
 				case Job::CUR_DOLLAR:
@@ -75,11 +85,11 @@ class MJobs extends Module {
 			}
 
 			if (isset($currency)) {
-				$title .= ' [ ' . sprintf($currency, $job['money'][0]). ' ]';
+				$title .= ' [ ' . sprintf($currency, $this->job['money'][0]). ' ]';
 			}
 		}
 
-		$target = $preview ? ' target="_blank"' : '';
+		$target = $this->preview ? ' target="_blank"' : '';
 
 		$content = <<<EOF
 <p class="title">{$title}</p>
@@ -87,21 +97,10 @@ class MJobs extends Module {
 {$description}
 <br /><br />
 
-<a href="{$job['url']}" class="sico sico_{$site['code']}"{$target}>{$site['name']}</a>
+<a href="{$this->job['url']}" class="sico sico_{$this->site['code']}"{$target}>{$this->site['name']}</a>
 EOF;
 
-		$page = new Page();
-
-		if ($preview) {
-			$page->disableLogo();
-		}
-
-		$page->setTitle($job['title']);
-		$page->setContent($content);
-		$page->setLang($site['lang']);
-		$page->setAnalyticsScript('ga_jobs.js');
-
-		return $page;
+		return $content;
 	}
 
 }

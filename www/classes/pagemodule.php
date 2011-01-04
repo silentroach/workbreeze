@@ -34,13 +34,17 @@ class PageModule extends Module {
 		return false;
 	}
 	
-	protected function prepare() {
-	
+	protected function prepare($query) {
+		return true;
 	}
 	
 	protected function getTitle() {
 		return false;
 	}
+	
+	protected function getJS() {
+		return false;
+	}	
 	
 	protected function getExternalJS() {
 		return false;
@@ -60,6 +64,10 @@ class PageModule extends Module {
 	
 	protected function getShowLogo() {
 		return true;
+	}
+	
+	protected function getScript() {
+		return false;
 	}
 	
 	protected function tr($path) {
@@ -103,14 +111,37 @@ class PageModule extends Module {
 <script language="javascript" src="/js/jquery.js"></script>
 EOF;
 
-		// + external module js files
+		// + module external js files
 		
 		$extjs = $this->getExternalJS();
 		
 		if ($extjs) {
 			foreach($extjs as $file) {
+				$script .= '<script language="javascript" src="' . $file . '"></script>';
+			}
+		}
+
+		// + module js files
+		
+		$extjs = $this->getJS();
+		
+		if ($extjs) {
+			foreach($extjs as $file) {
 				$script .= '<script language="javascript" src="/js/' . $file . '.js"></script>';
 			}
+		}
+		
+		// + script
+		
+		$sc = $this->getScript();
+		
+		if ($sc) {
+			if (is_array($sc)) {
+				foreach($sc as $sctmp) {
+					$script .= '<script language="javascript">' . $sctmp . '</script>';
+				}
+			} else 
+				$script .= '<script language="javascript">' . $sc . '</script>';
 		}
 		
 		// + google analytics code
@@ -131,8 +162,6 @@ EOF;
 	}
 	
 	private function generatePage() {
-		$this->prepare();
-		
 		if ($title = $this->getTitle()) {
 			$title = ' &mdash; ' . $title;
 		} else {
@@ -171,6 +200,10 @@ EOF;
 		$this->mtime = filemtime(__FILE__);
 	
 		$this->langId = Language::getUserLanguage();
+		
+		if (!$this->prepare($query)) {
+			return false;
+		}		
 
 		return $this->generatePage();
 	}
@@ -179,6 +212,11 @@ EOF;
 	 * Print result page to user
 	 */
 	protected function result($object) {
+		if (false === $object) {
+			header('404 Not Found');
+			return;
+		}
+	
 		if (defined('DEBUG')) {
 			echo $object;
 		} else {

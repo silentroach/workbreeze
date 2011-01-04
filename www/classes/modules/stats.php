@@ -7,22 +7,10 @@
  */
 class MStats extends PageModule {
 
-	/**
- 	 * Get the cacheble page content
-	 */
-	private function getPageContent(array $lang) {
+	protected function getScript() {
 		$sites = Database::sites()->find()->sort(array('code' => 1));
-
+	
 		$content = <<<EOF
-<script type="text/javascript">
-google.load('visualization', '1', {packages: ['corechart']});
-</script>
-
-<p class="title">{$lang['sdw']}</p>
-
-<div id="weekjobs"></div>
-
-<script language="javascript">
 var data = new google.visualization.DataTable();
 data.addColumn('string', 'date');
 EOF;
@@ -113,37 +101,28 @@ new google.visualization.LineChart(
 	min: 0,
 	legend: 'right'
 });
-</script>
+EOF;
+
+		return array(
+			'google.load(\'visualization\', \'1\', {packages: [\'corechart\']});',
+			$content
+		);
+	}
+	
+	protected function getExternalJS() {
+		return array(
+			'http://www.google.com/jsapi'
+		);
+	}
+
+	protected function getContent() {
+		$content = <<<EOF
+<p class="title">{$this->tr('statistics/daily')}</p>
+
+<div id="weekjobs"></div>
 EOF;
 
 		return $content;
-	}
-
-	/**
- 	 * Run the module
-	 * @param array Query array.
-	 */
-	protected function runModule($query) {
-		$langid = Language::getUserLanguage();
-		$lang = Language::getLang($langid);
-
-		$cacheKey = 'stats_' . $langid;
-
-		$content = Cache::get($cacheKey);
-
-		if (!$content) {
-			$content = $this->getPageContent($lang);
-
-			Cache::set($cacheKey, $content, 60 * 60 * 10); // 10 minutes cache
-		}
-
-		$page = new Page();
-
-		$page->setTitle($lang['s']);
-		$page->addJS('http://www.google.com/jsapi');
-		$page->setContent($content);
-
-		return $page;
 	}
 
 }

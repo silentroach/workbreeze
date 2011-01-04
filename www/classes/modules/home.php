@@ -25,7 +25,7 @@ class MHome extends PageModule {
 		);
 	}
 	
-	protected function getExternalJS() {
+	protected function getJS() {
 		return array(
 			'compat', 'storage', 'filter', 'lang', 'sites', 'categories', 'keywords', 'ajax', 'notifier', 'feed'
 		);

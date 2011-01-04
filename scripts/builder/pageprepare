@@ -9,46 +9,56 @@ if (
 	!isset($argc)
 	|| $argc < 2
 ) {
-	die("HTML file in parameter is required\n");
+	die("Source page modules dir required\n");
 }
 
 if ($argc < 3) {
-	die("Path to output file is required\n");
+	die("Path to store output modules required\n");
 }
 
-$filename = $argv[1];
+// source path
 
-if (!file_exists($filename)) {
-	die($filename . " - file not found\n");
+$sdir = realpath($argv[1]) . DS;
+
+if (!file_exists($sdir)) {
+	die($sdir . " - path not found\n");
 }
 
-echo "\n== " . $filename . "\n";
+// output path
 
-$outdir = $argv[2];
+$odir = realpath($argv[2]) . DS;
 
-if (substr($outdir, -1) !== '/') {
-	$outdir .= '/';
+if (!file_exists($odir)) {
+	die($odir . " - path not found\n");
 }
 
 // paths for compilers
+//
 $path_gcc    = trim(`find ../ -name 'gcc.jar'`);
 $path_yui    = trim(`find ../ -name 'yui.jar'`);
 
-$content   = file_get_contents($filename);
-$analytics = file_get_contents(PATH_OTHER . 'ga.js');
+// begin
 
-// date mark, we use it as a javascript/css version postfix
-$dd = date('mdHi');
+foreach(glob($sdir . '*.php') as $filename) {
+	$name = pathinfo($filename, PATHINFO_FILENAME);
 
-// replacing the "ga" comment with real Google Analytics Code
-$content = str_replace('<!-- ga !-->', $analytics, $content);
+	echo "\n== " . $name . ".php\n";
 
-// replacing developer jquery with one on GoogleAPI
-$content = str_replace(
-	'"js/jquery.js"', 
-	'"http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"',
-	$content
-); 
+	$jsname = $name . '.js';
+	$classname = 'M' . ucfirst($name);
+
+	$module = new $classname();
+
+	if (
+		$module instanceof PageModule
+		&& $scripts = $module->getJS()
+	) {
+		
+
+	}
+}
+
+__halt_compiler();
 
 if (false !== strpos($content, '#githash')) {
 	$hash = trim(`git show --pretty=format:%H --quiet`);

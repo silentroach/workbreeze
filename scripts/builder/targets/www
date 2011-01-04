@@ -22,8 +22,8 @@ mkdir ${WORKDIR}public_html/css
 ln -s /srv/bstorage/rss-global.xml ${WORKDIR}public_html/rss-global.xml
 ln -s /srv/bstorage/rss-global.xml.gz ${WORKDIR}public_html/rss-global.xml.gz
 
-echo 'Preparing static pages'
-../htmlprepare ${SDIR}public_html/index.html ${WORKDIR}public_html/
+echo 'Preparing page modules'
+../pageprepare ${SDIR}classes/modules/ ${WORKDIR}classes/modules/
 
 gzip -c9 ${WORKDIR}public_html/index.html  > ${WORKDIR}public_html/index.html.gz
 gzip -c9 ${WORKDIR}public_html/favicon.ico > ${WORKDIR}public_html/favicon.ico.gz

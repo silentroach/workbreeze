@@ -42,7 +42,7 @@ class PageModule extends Module {
 		return false;
 	}
 	
-	protected function getJS() {
+	public function getJS() {  // public for build script
 		return false;
 	}	
 	

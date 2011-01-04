@@ -11,7 +11,7 @@ Workbreeze.Locale = function(s) {
 	 * Language array
 	 * @type {Array} 
 	 */ 
-	var lang = i18n_wb || [];
+	var lang = window['i18n_wb'] || [];
 
 	/**
 	 * Add leading zero to val

@@ -58,16 +58,8 @@ class Page {
 		$this->showlogo = false;
 	}
 	
-	public function save($filename, $gzip = true) {
-		$content = $this->out();
-		
-		file_put_contents($filename, $content);
-		
-		$out = system('gzip -c9 ' . escapeshellarg($filename) . ' > ' . escapeshellarg($filename . '.gz'));
-	}
-	
 	public function out($compress = true) {
-		$title = $this->title !== '' ? '&mdash; ' . $this->title : '';
+		$title = $this->title !== '' ? ' &mdash; ' . $this->title : '';
 		$description = $this->description === '' ? '' : <<<EOF
 <meta name="description" content="{$this->description}" />
 EOF;
@@ -99,7 +91,8 @@ EOF;
 		$content = <<<EOF
 <!DOCTYPE html>
 <html>
-	<title>Workbreeze {$title}</title>
+<head>
+	<title>Workbreeze{$title}</title>
 
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	{$description}	
@@ -107,8 +100,8 @@ EOF;
 
 	<link rel="stylesheet" href="/css/main.css" type="text/css" />
 	<link rel="icon" type="image/png" href="/favicon.png" />	
-
 	<link rel="home" href="/" /> 
+</head>
 <body>
 {$js}
 {$logo}

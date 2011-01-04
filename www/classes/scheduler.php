@@ -33,24 +33,11 @@ class Scheduler {
 		
 		date_default_timezone_set('GMT');
 		
-		$writer = new XMLWriter();
-		$writer->openURI($filename);
-		if (defined('DEBUG')) {
-			$writer->setIndent(4);
-		}
-		$writer->startDocument('1.0');
-		$writer->startElement('rss');
-		$writer->writeAttribute('version', '2.0');
-		$writer->writeAttribute('xmlns:atom', 'http://www.w3.org/2005/Atom');		
+		// generating global rss feed
 		
-		$writer->startElement('channel');
-		$writer->writeElement('title', 'WorkBreeze');
-		$writer->writeElement('description', 'WorkBreeze');
-		$writer->writeElement('link', 'http://workbreeze.com');
-		$writer->writeElement('ttl', 5);
-		$writer->writeElement('pubDate', date('D, d M Y H:i:s e'));
+		$rss = RSS::create($filename);
 		
-		while ($item = $cursor->getNext()) {
+		while ($item = $cursor->getNext()) {		
 			$writer->startElement('item');
 			
 			if (!isset($st[$item['site']])) {
@@ -59,31 +46,20 @@ class Scheduler {
 			
 			$s = $st[$item['site']];
 			
-			$writer->writeElement('title', $s['name'] . ': ' . $item['title']);
-			$writer->writeElement('link', 'http://workbreeze.com/jobs/' . 
-				$s['folder'] . '/' . $item['id']);
-			$writer->startElement('description');
-			
-			$cdata = <<<EOF
+			$desc = <<<EOF
 {$item['desc']}<br /><p style="padding: 0.2em; background-color: silver; border: 1px dotted black; align: center;" align="center"><a href="{$item['url']}">{$item['title']}</a></p>
 EOF;
 			
-			$writer->writeCData($cdata);
-			$writer->endElement();
-			
-			$writer->writeElement('guid', 'http://workbreeze.com/jobs/' . 
-				$s['folder'] . '/' . $item['id']);
-				
-			$writer->writeElement('pubDate', date('D, d M Y H:i:s e', $item['stamp']));
-			
-			$writer->endElement();
+			$rss->addItem(
+				$s['name'] . ': ' . $item['title'],
+				'http://workbreeze.com/jobs/' . $s['folder'] . '/' . $item['id'],
+				$desc,
+				'http://workbreeze.com/jobs/' . $s['folder'] . '/' . $item['id'],
+				$item['stamp']
+			);
 		}
 		
-		$writer->endElement(); // </channel>
-		$writer->endElement(); // </rss>
-		$writer->endDocument();
-		
-		$writer->flush();
+		$rss->save();
 
 		// compressing for nginx static gzip
 		$out = system('gzip -c9 ' . escapeshellarg($filename) . ' > ' . escapeshellarg($filename . '.gz'));

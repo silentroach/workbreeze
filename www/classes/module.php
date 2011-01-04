@@ -70,7 +70,7 @@ class Module {
 				echo JSON::encode($object);
 			}
 		} else
-		if ($object instanceof NotFoundModuleResult) {         // not found -> 404
+		if ($object instanceof NotFoundModuleResult) {          // not found -> 404
 			header('404 Not Found');
 		} elseif (                                              // '' || false -> 204
 			'' === $object

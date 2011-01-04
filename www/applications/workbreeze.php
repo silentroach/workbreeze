@@ -77,7 +77,7 @@ class Workbreeze extends AppInstance {
 
 	public function getModule($module) {
 		$module = strtolower($module);
-
+		
 		if (!isset(self::$modules[$module])) {
 			$className = 'M' . ucfirst($module);
 
@@ -86,9 +86,9 @@ class Workbreeze extends AppInstance {
 				return false;
 			}
 
-			self::$modules[$module] = new $className();
+			self::$modules[$module] = $className;
 		}
 
-		return self::$modules[$module];
+		return new self::$modules[$module];
 	}
 }

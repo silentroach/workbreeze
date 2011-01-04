@@ -76,11 +76,15 @@ EOF;
 <meta http-equiv="Content-Language" Content="{$this->lang}" />
 EOF;
 
-		if (!isset(self::$files[$this->ga])) {
-			self::$files[$this->ga] = file_get_contents(PATH_OTHER . $this->ga);
-		}
+		if (!defined('DEBUG')) {
+			if (!isset(self::$files[$this->ga])) {
+				self::$files[$this->ga] = file_get_contents(PATH_OTHER . $this->ga);
+			}
 
-		$ga = self::$files[$this->ga];
+			$ga = self::$files[$this->ga];
+		} else {
+			$ga = '';
+		}
 
 		$logo = $this->showlogo ? '<div id="logo"><a href="/">Workbreeze</a></div>' : '';
 

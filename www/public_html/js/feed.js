@@ -62,9 +62,7 @@ Workbreeze.Feed = function(s) {
 	/**
 	 * @type {Workbreeze.Locale}
 	 */
-	var locale = new Workbreeze.Locale(storage, {
-		storagePath: options.elementLang
-	} );
+	var locale = new Workbreeze.Locale();
 
 	/**
 	 * @type {Workbreeze.Categories}
@@ -268,7 +266,7 @@ Workbreeze.Feed = function(s) {
 			.addClass(options.siteIconPrefix + '_' + site[0])
 			.attr({
 				'href': '/jobs/' + site[1] + '/' + job.id,
-				'title': job.title + ' ' + locale.translate('on') + ' ' + site[2]
+				'title': job.title + ' ' + locale.translate('at') + ' ' + site[2]
 			})
 			.html(htmltitle)
 			.appendTo( $('li.title', $jobEl) )
@@ -528,10 +526,6 @@ Workbreeze.Feed = function(s) {
 		$buttonPause.click(streamToggle);
 		$buttonPlay.click(streamToggle);
 
-		// @todo localize just needed parts
-		locale.localize();
-		locale.setTrigger('#lang');
-
 		categories.init();
 		sites.init();
 
@@ -598,7 +592,6 @@ Workbreeze.Feed = function(s) {
 
 	var adata = {};
 
-	adata[options.elementLang]  = locale.getLocalVersion();
 	adata[options.elementSites] = sites.getLocalVersion();
 	adata[options.elementCats]  = categories.getLocalVersion();
 

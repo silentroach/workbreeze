@@ -229,11 +229,8 @@ class Job {
 	
 	public function setTitle($title) {
 		$title = strip_tags($title);
-			
-		while (false !== strpos($title, '  ')) {
-			$title = str_replace('  ', ' ', $title);
-		}
-		
+		$title = preg_replace('/(\040|\t)+/', ' ', $title);
+
 		$this->title = trim($title);
 		
 		return $this;

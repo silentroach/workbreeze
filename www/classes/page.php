@@ -20,9 +20,7 @@ class Page {
 	public static function compress($content) {
 		$content = str_replace(array("\t", "\r", "\n"), '', $content);
 		
-		while (false !== strpos($content, '  ')) {
-			$content = str_replace('  ', ' ', $content);
-		}
+		$content = preg_replace('/(\040|\t)+/', ' ', $content);
 
 		$content = str_replace(' = ', '=', $content);
 		$content = str_replace('> <', '><', $content);

@@ -106,6 +106,7 @@ EOF;
 	{$lang}
 
 	<link rel="stylesheet" href="/css/main.css" type="text/css" />
+	<link rel="icon" type="image/png" href="/favicon.png" />	
 
 	<link rel="home" href="/" /> 
 <body>

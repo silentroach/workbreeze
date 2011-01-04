@@ -10,7 +10,18 @@ class MHome extends PageModule {
 	protected function getLanguage() {
 		return array(
 			'feed/at' => 'at',
-			'common/yesterday' => 'y'
+			'common/yesterday' => 'y',
+			
+			'categories/cat_0' => 'c0',
+			'categories/cat_1' => 'c1',
+			'categories/cat_2' => 'c2',
+			'categories/cat_3' => 'c3',
+			'categories/cat_4' => 'c4',
+			'categories/cat_5' => 'c5',
+			'categories/cat_6' => 'c6',
+			'categories/cat_7' => 'c7',
+			'categories/cat_8' => 'c8',
+			'categories/cat_9' => 'c9'
 		);
 	}
 	

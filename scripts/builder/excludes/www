@@ -1,6 +1,6 @@
+classes/modules/*
 public_html/js
 public_html/css
-public_html/index.html
 public_html/rss-global.*
 README.*
 .git

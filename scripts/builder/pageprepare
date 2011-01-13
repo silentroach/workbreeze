@@ -175,7 +175,7 @@ if (
 
 		echo "\n";
 
-		$content = str_replace($src[$bkey], '<script language="javascript" src="/js/' . $filecut . '?' . $dd . '"</script>', $content);
+		$content = str_replace($src[$bkey], '<script language="javascript" src="/js/' . $filecut . '?' . $dd . '"></script>', $content);
 	}
 }
 

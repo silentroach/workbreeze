@@ -33,7 +33,7 @@ if (!file_exists($odir)) {
 }
 
 // paths for compilers
-//
+
 $path_gcc    = trim(`find ../ -name 'gcc.jar'`);
 $path_yui    = trim(`find ../ -name 'yui.jar'`);
 
@@ -53,8 +53,13 @@ foreach(glob($sdir . '*.php') as $filename) {
 		$module instanceof PageModule
 		&& $scripts = $module->getJS()
 	) {
-		
+		echo file_get_contents($filename);
 
+		/*
+			foreach(array('jquery', 'json', 'localStorage', 'console') as $ext) {
+				$cmd .= ' --externs ' . escapeshellarg(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'externs' . DIRECTORY_SEPARATOR . $ext . '.js');
+			}
+		 */
 	}
 }
 

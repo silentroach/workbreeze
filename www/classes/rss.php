@@ -12,11 +12,11 @@
  
 	private $writer;
  
-	public static function create(string $filename) {
+	public static function create($filename) {	
 		return new self($filename);
 	}
 	
-	public function __constructor(string $filename) {
+	public function __construct($filename) {
 		$this->writer = new XMLWriter();
 		$this->writer->openURI($filename);
 		
@@ -38,7 +38,7 @@
 		$this->writer->writeElement('pubDate', date('D, d M Y H:i:s e'));
 	}
 	
-	public function addItem(string $title, string $link, string $description, string $guid, int $stamp) {
+	public function addItem($title, $link, $description, $guid, $stamp) {
 		$this->writer->startElement('item');
 		
 		$this->writer->writeElement('title', $title);

@@ -38,8 +38,6 @@ class Scheduler {
 		$rss = RSS::create($filename);
 		
 		while ($item = $cursor->getNext()) {		
-			$writer->startElement('item');
-			
 			if (!isset($st[$item['site']])) {
 				$st[$item['site']] = $sites->findOne(array('code' => $item['site']));
 			}

@@ -1,7 +1,7 @@
 <?php
 
-define('PATH_GCC', escapeshellarg(trim(`find ./ -name 'gcc.jar'`)));
-define('PATH_YUI', escapeshellarg(trim(`find ./ -name 'yui.jar'`)));
+define('PATH_GCC', __DIR__ . DS . 'utils' . DS . 'gcc.jar');
+define('PATH_YUI', __DIR__ . DS . 'utils' . DS . 'yui.jar');
 
 define('PATH_EXTERNS', __DIR__ . DIRECTORY_SEPARATOR . 'externs' . DIRECTORY_SEPARATOR);
 

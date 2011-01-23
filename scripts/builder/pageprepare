@@ -2,7 +2,9 @@
 <?php
 
 require dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'www' . DIRECTORY_SEPARATOR . 'bootstrap.php';
-require __DIR__ . DIRECTORY_SEPARATOR . 'compress.php';
+require __DIR__ . DS . 'compress.php';
+
+define('PATH_JSPREPARE', __DIR__ . DS . 'jsprepare');
 
 $tmpdir = '/tmp/tmpjs/';
 
@@ -57,14 +59,14 @@ foreach(glob($sdir . '*.php') as $filename) {
 		$js = '';
 	
 		foreach ($scripts as $script) {
-			$js .= shell_exec('./jsprepare ' . escapeshellarg(PATH_PUBLIC . 'js' . DS . $script . '.js')) . "\n";
+			$js .= shell_exec(escapeshellarg(PATH_JSPREPARE) . ' ' . escapeshellarg(PATH_PUBLIC . 'js' . DS . $script . '.js')) . "\n";
 		}
 		
 		$tmpname = '/tmp/' . $jsname;
 		
 		file_put_contents($tmpname, $js);
 		
-		//$compressedJS = compressJS(array($tmpname), '');
+		$compressedJS = compressJS(array($tmpname), '');
 		
 		unlink($tmpname);
 	}
@@ -101,126 +103,3 @@ foreach(glob($sdir . '*.php') as $filename) {
 	
 	file_put_contents($odir . $name . '.php', $content);
 }
-
-__halt_compiler();
-
-// adding version to all css files
-if (
-	preg_match_all('@"(css/(.*?)\.css)"@iu', $content, $matches)
-	&& 3 === sizeof($matches)
-) {
-	$files = $matches[1];
-
-	foreach($files as $file) {
-		$content = str_replace($file, $file . '?' . $dd, $content);
-
-		echo str_pad($file, 40);
-
-		$fileout = $outdir . $file;
-
-		if (file_exists($fileout)) {
-			echo "[exists]\n";
-			continue;
-		}
-
-		if (!file_exists(dirname($fileout))) {
-			mkdir(dirname($fileout));
-		}
-
-		echo "[compressing]\n";
-
-		$filepath = PATH_PUBLIC . $file;
-		
-		$output = system('java -jar ' . escapeshellarg($path_yui) . 
-				' --type css -o ' .	escapeshellarg($fileout) . ' ' .
-			escapeshellarg($filepath));
-
-		echo $output;
-	}
-
-	echo "\n";
-}
-
-if (
-	preg_match_all('@<\!-- gcc(.*?)\/gcc \!-->@siu', $content, $matches)
-	&& 2 === sizeof($matches)
-) {
-	$src = $matches[0];
-	$blocks = $matches[1];
-
-	$inc = -1;
-
-	foreach($blocks as $bkey => $block) {
-		if (
-			preg_match_all('@"(js/(.*?)\.js)"@iu', $block, $matches)
-			&& 3 === sizeof($matches)
-		) {
-			++$inc;
-
-			$files = $matches[1];
-
-			if (!file_exists($tmpdir)) {
-				mkdir($tmpdir);
-			}
-
-			$cmd = '';
-
-			foreach($files as &$file) {
-				echo str_pad($file, 40) . "[prepare]\n";
-
-				$tmpfile = $tmpdir . pathinfo($file, PATHINFO_BASENAME);
-
-				$cmd .= '--js ' . escapeshellarg($tmpfile) . ' ';
-
-				$output = system(dirname(__FILE__) . DIRECTORY_SEPARATOR . 
-					'jsprepare ' . escapeshellarg(PATH_PUBLIC . $file) . ' > ' . 
-					escapeshellarg($tmpfile));
-			}
-
-			$filecut = pathinfo($filename, PATHINFO_FILENAME) . ($inc < 1 ? '' : ($inc + 1)) . '.js';
-			$fileout = $outdir . 'js' . DIRECTORY_SEPARATOR . $filecut;
-
-			if (!file_exists(dirname($fileout))) {
-				mkdir(dirname($fileout));
-			}
-
-			$cmd = 'java -jar ' . escapeshellarg($path_gcc) . ' ' . $cmd;
-
-			foreach(array('jquery', 'json', 'localStorage', 'console') as $ext) {
-				$cmd .= ' --externs ' . escapeshellarg(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'externs' . DIRECTORY_SEPARATOR . $ext . '.js');
-			}
-
-			$cmd .= ' --compilation_level ADVANCED_OPTIMIZATIONS --warning_level VERBOSE > ' . escapeshellarg($fileout);
-
-			echo "\n" . str_pad('js block #' . ($inc + 1), 40) . "[compiling]\n";
-
-			$output = system($cmd);
-
-			system('gzip -c9 ' . escapeshellarg($fileout) . ' > ' . escapeshellarg($fileout . '.gz'));
-
-			// cleanup
-			foreach(glob($tmpdir . '/*') as $file) {
-				unlink($file);
-			}
-
-			rmdir($tmpdir);
-
-			if ('' !== $output) {
-				echo "!!! Error compiling javascript !!!\n";
-				die($output . "\n");
-			}
-		}
-
-		echo "\n";
-
-		$content = str_replace($src[$bkey], '<script language="javascript" src="/js/' . $filecut . '?' . $dd . '"></script>', $content);
-	}
-}
-
-// compressing content
-
-$content = preg_replace('/<!--(.*?)!-->/siu', '', $content);
-$content = Page::compress($content);
-
-// and save
-file_put_contents($outdir . pathinfo($filename, PATHINFO_BASENAME), $content);

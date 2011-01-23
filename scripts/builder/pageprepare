@@ -2,6 +2,7 @@
 <?php
 
 require dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'www' . DIRECTORY_SEPARATOR . 'bootstrap.php';
+require __DIR__ . DIRECTORY_SEPARATOR . 'compress.php';
 
 $tmpdir = '/tmp/tmpjs/';
 
@@ -34,8 +35,8 @@ if (!file_exists($odir)) {
 
 // paths for compilers
 
-$path_gcc    = trim(`find ../ -name 'gcc.jar'`);
-$path_yui    = trim(`find ../ -name 'yui.jar'`);
+$path_gcc = trim(`find ../ -name 'gcc.jar'`);
+$path_yui = trim(`find ../ -name 'yui.jar'`);
 
 // begin
 
@@ -53,23 +54,55 @@ foreach(glob($sdir . '*.php') as $filename) {
 		$module instanceof PageModule
 		&& $scripts = $module->getJS()
 	) {
-		echo file_get_contents($filename);
-
-		/*
-			foreach(array('jquery', 'json', 'localStorage', 'console') as $ext) {
-				$cmd .= ' --externs ' . escapeshellarg(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'externs' . DIRECTORY_SEPARATOR . $ext . '.js');
-			}
-		 */
+		$js = '';
+	
+		foreach ($scripts as $script) {
+			$js .= shell_exec('./jsprepare ' . escapeshellarg(PATH_PUBLIC . 'js' . DS . $script . '.js')) . "\n";
+		}
+		
+		$tmpname = '/tmp/' . $jsname;
+		
+		file_put_contents($tmpname, $js);
+		
+		//$compressedJS = compressJS(array($tmpname), '');
+		
+		unlink($tmpname);
 	}
+		
+	$c = file_get_contents($filename);
+	
+	if (preg_match('@getJS\(\) {(.*?)}@siu', $c, $matches)) {
+		$c = str_replace($matches[1], 'return array(\'' . $jsname . '\');', $c);
+	}
+
+	if (false !== strpos($c, '#githash')) {
+		$hash = trim(`git show --pretty=format:%H --quiet`);
+
+		$c = str_replace('#githash', $hash, $c);
+	}
+	
+	if (preg_match_all('@<<<EOF(.*?)EOF;@siu', $c, $matches)) {
+		$m = array_pop($matches);
+		
+		foreach($m as $part) {
+			$tmp = "\n" . PageModule::compress($part) . "\n";
+			
+			$c = str_replace($part, $tmp, $c);
+		}
+	}
+	
+	$tmpname = '/tmp/' . $name . '.php';
+	
+	file_put_contents($tmpname, $c);
+	
+	$content = shell_exec('php -w ' . escapeshellarg($tmpname));
+	
+	unlink($tmpname);
+	
+	file_put_contents($odir . $name . '.php', $content);
 }
 
 __halt_compiler();
-
-if (false !== strpos($content, '#githash')) {
-	$hash = trim(`git show --pretty=format:%H --quiet`);
-
-	$content = str_replace('#githash', $hash, $content);
-}
 
 // adding version to all css files
 if (

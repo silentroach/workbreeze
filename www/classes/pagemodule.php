@@ -13,9 +13,9 @@ class PageModule extends Module {
 	protected $langId = '';
 
 	/**
-	 * Module file modification time
+	 * Module file modification modifier
 	 */
-	private static $mtime = 0;
+	private static $modifier;
 	
 	/**
 	 * File cache
@@ -26,6 +26,10 @@ class PageModule extends Module {
 	 * Page result content
 	 */
 	private $content = '';
+	
+	private $css = array(
+		'main'
+	);
 	
 	/**
 	 * Don't use ajax checks
@@ -117,7 +121,7 @@ EOF;
 		
 		if ($extjs) {
 			foreach($extjs as $file) {
-				$script .= '<script language="javascript" src="' . $file . '"></script>';
+				$script .= '<script language="javascript" src="' . $file . '?' . self::$modifier . '"></script>';
 			}
 		}
 
@@ -125,9 +129,9 @@ EOF;
 		
 		$extjs = $this->getJS();
 		
-		if ($extjs) {
+		if ($extjs) {		
 			foreach($extjs as $file) {
-				$script .= '<script language="javascript" src="/js/' . $file . '.js"></script>';
+				$script .= '<script language="javascript" src="/js/' . $file . '.js?' . self::$modifier . '"></script>';
 			}
 		}
 		
@@ -174,6 +178,15 @@ EOF;
 		
 		$content = $this->getContent();
 		
+		$css = '';
+		$modifier = self::$modifier;
+		
+		foreach($this->css as $cssfile) {
+			$css .= <<<EOF
+<link rel="stylesheet" href="/css/{$cssfile}.css?{$modifier}" type="text/css" />	
+EOF;
+		}
+		
 		return <<<EOF
 <!DOCTYPE html>
 <html>
@@ -181,7 +194,7 @@ EOF;
 	<title>Workbreeze{$title}</title>
 	
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-	<link rel="stylesheet" href="/css/main.css" type="text/css" />
+{$css}
 	<link rel="icon" type="image/png" href="/favicon.png" />	
 	<link rel="home" href="/" /> 	
 </head>
@@ -197,7 +210,7 @@ EOF;
 	}
 
 	protected function runModule($query) {
-		$this->mtime = filemtime(__FILE__);
+		self::$modifier = date('Ymd', filemtime(__FILE__));
 	
 		$this->langId = Language::getUserLanguage();
 		

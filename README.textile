@@ -4,6 +4,12 @@ The "realtime" freelance offers monitor site written in PHP.
 
 This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License.
 
+h1. Don't forget
+
+Don't forget to init the i18n submodule
+
+git submodule update --init --recursive
+
 h1. Automatic build
 
 * scripts/build www

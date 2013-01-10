@@ -8,7 +8,7 @@ h1. Don't forget
 
 Don't forget to init the i18n submodule
 
-git submodule update --init --recursive
+@git submodule update --init --recursive@
 
 h1. Automatic build
 

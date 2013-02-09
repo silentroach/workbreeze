@@ -67,7 +67,7 @@ class Workbreeze extends AppInstance {
 		Daemon::log('Workbreeze up');
 	}
 
-	public function onShutdown() {
+	public function onShutdown($graceful = false) {
 		return true;
 	}
 
